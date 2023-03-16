@@ -1,4 +1,5 @@
 #include "GameEngineSerializer.h"
+#include "GameEngineDebug.h"
 
 GameEngineSerializer::GameEngineSerializer()
 {
@@ -8,6 +9,25 @@ GameEngineSerializer::~GameEngineSerializer()
 {
 }
 
+void GameEngineSerializer::BufferResize(size_t _Size)
+{
+	Datas.resize(_Size);
+}
+
+// 
+// [][][][][][][][][][]
+
+void GameEngineSerializer::Write(const int& _Value)
+{
+	Write(&_Value, sizeof(int));
+}
+
+void GameEngineSerializer::Write(const std::string_view& _Value)
+{
+	int Size = static_cast<int>(_Value.size());
+	Write(&Size, sizeof(int));
+	Write(_Value.data(), Size);
+}
 
 
 void GameEngineSerializer::Write(const void* _Ptr, size_t _Size)
@@ -24,17 +44,30 @@ void GameEngineSerializer::Write(const void* _Ptr, size_t _Size)
 	Offset += _Size;
 }
 
-// 
-// [][][][][][][][][][]
 
-void GameEngineSerializer::Write(const int& _Value)
+void GameEngineSerializer::Read(int& _Value)
 {
-	Write(&_Value, sizeof(int));
+	Read(&_Value, sizeof(int));
 }
 
-void GameEngineSerializer::Write(const std::string_view& _Value)
+void GameEngineSerializer::Read(std::string& _Value)
 {
-	// const char*
+	int Size = 0;
+	Read(&Size, sizeof(int));
+	_Value.clear();
+	_Value.resize(Size);
+	Read(_Value.data(), Size);
+}
 
-	// Write(_Value, sizeof(std::string_view));
+void GameEngineSerializer::Read(void* _Ptr, size_t _Size)
+{
+	//  1024             1023   + 4
+	if (Datas.size() <= Offset + _Size)
+	{
+		MsgAssert("데이터의 한도이상으로 읽으려고 했습니다.");
+	}
+
+	memcpy_s(_Ptr, _Size, &Datas[Offset], _Size);
+
+	Offset += _Size;
 }

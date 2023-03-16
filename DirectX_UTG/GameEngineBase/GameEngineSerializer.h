@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 #include <string>
 #include <string_view>
@@ -23,27 +22,42 @@ public:
 	GameEngineSerializer& operator=(const GameEngineSerializer& _Other) = delete;
 	GameEngineSerializer& operator=(GameEngineSerializer&& _Other) noexcept = delete;
 
+	void BufferResize(size_t _Size);
+
 	// 실수할 여지가 있어서 선생님은 템플릿을 나중에 만들려고 합니다.
 	void Write(const int& _Value);
 
 	void Write(const std::string_view& _Value);
 
-	//template<typename T>
-	//void Write(const T& _Value) 
-	//{
-	//	Write(&_Value, sizeof(_Value));
-	//}
-
 	void Write(const void* _Ptr, size_t _Size);
+
+
+	////////////////////// Read
+	void Read(int& _Value);
+
+	void Read(std::string& _Value);
+
+	void Read(void* _Ptr, size_t _Size);
+
 
 	inline void* GetData()
 	{
 		return &Datas[0];
 	}
 
-	inline size_t GetDataSize()
+	inline const void* GetConstData() const
+	{
+		return &Datas[0];
+	}
+
+	inline size_t GetOffset() const
 	{
 		return Offset;
+	}
+
+	inline size_t GetBufferSize() const
+	{
+		return Datas.size();
 	}
 
 protected:

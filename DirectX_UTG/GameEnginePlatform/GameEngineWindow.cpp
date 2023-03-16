@@ -145,7 +145,11 @@ void GameEngineWindow::DoubleBufferRender()
     BackBufferImage->BitCopy(DoubleBufferImage, WindowSize.half(), WindowSize);
 }
 
-int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
+int GameEngineWindow::WindowLoop(
+    std::function<void()> _Start,
+    std::function<void()> _Loop,
+    std::function<void()> _End
+)
 {
     // 단축키인데. 안써도 문제가 되지는 않는다.
     // HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSPROJECT1));
@@ -155,8 +159,7 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
         _Start();
     }
     
-
-    MSG msg;
+    MSG msg = {};
 
     // 동기 함수가 종료될때까지 프로그램이 멈춘다.
 
