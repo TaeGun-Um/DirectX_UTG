@@ -16,6 +16,11 @@ GameEngineFile::GameEngineFile(std::filesystem::path _Path)
 
 }
 
+// 간간히 윈도우 사용 중 파일을 열 때, "다른 ~가 사용중"이라고 뜨는 것은 fopen가 해당 파일을 잡아채고 있기 때문이다.
+// fopen으로 머리채가 잡힌 파일은 fclose 전까지 편집을 진행할 수 없다.
+// fwrite : 파일 수정
+// fread  : 파일 불러오기
+
 // 직렬화된 바이너리 데이터 저장
 void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 {
