@@ -49,16 +49,10 @@ public:
 	static void DoubleBufferClear();
 	static void DoubleBufferRender();
 
-	// 오직 나는 외부에서 오는게 실행시켜주기만 하면 되게 만드는것.
-	// 그러면 다른 클래스나 컨텐츠와의 관련을 맺지 않고 오로지 시키는 일을 하는 클래스가 되는것
-	// 남의 함수를 대신 실행시켜주는 이 함수포인터를 이용한 방식을 callback 방식이라고 합니다.
-	// void(*Start)(), void(*Loop)(), void(*End)() 외부에서 함수포인터를 맡기는 방식.
-	// => 컨텐츠와 기능을 분리하기 위해서
-	static int WindowLoop(
-		std::function<void()> _Start,
-		std::function<void()> _Loop,
-		std::function<void()> _End
-	);
+	// 해당 함수는 외부에서 전달된 인자가 실행시켜주기만 하면 되게 만드는 것
+	// 다른 클래스나 컨텐츠와의 관련을 맺지 않고 오리지 시키는 일을 하는 클래스가 되는 것
+	// 남의 함수를 대신 실행시켜주는 형식인데, 이러한 방식을 callback 방식이라고 한다. 이번에는 functional로 인자 전달
+	static int WindowLoop(std::function<void()> _Start, std::function<void()> _Loop, std::function<void()> _End);
 
 	static float4 GetMousePosition();
 

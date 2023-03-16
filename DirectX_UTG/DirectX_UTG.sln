@@ -41,6 +41,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineContents", "GameE
 		{AF63769E-71C7-4B4D-B9DB-06CC7D262E69} = {AF63769E-71C7-4B4D-B9DB-06CC7D262E69}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{7E1B77B6-48E3-4822-B2D0-AF89770DF7CE}"
+	ProjectSection(SolutionItems) = preProject
+		New연산이 느린 이유.txt = New연산이 느린 이유.txt
+		GameEngineSerializer.txt = GameEngineSerializer.txt
+		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

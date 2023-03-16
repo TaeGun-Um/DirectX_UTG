@@ -34,6 +34,7 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 	}
 
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280, 720 }, { 0, 0 });
+	// functional에 멤버함수를 담은 뒤 WindowLoop 인자로 전달
 	GameEngineWindow::WindowLoop(GameEngineCore::EngineStart, GameEngineCore::EngineUpdate, GameEngineCore::EngineEnd);
 }
 

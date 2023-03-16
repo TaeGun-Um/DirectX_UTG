@@ -145,11 +145,8 @@ void GameEngineWindow::DoubleBufferRender()
     BackBufferImage->BitCopy(DoubleBufferImage, WindowSize.half(), WindowSize);
 }
 
-int GameEngineWindow::WindowLoop(
-    std::function<void()> _Start,
-    std::function<void()> _Loop,
-    std::function<void()> _End
-)
+// 이번에는 functional을 이용하여 루프를 돌릴 예정
+int GameEngineWindow::WindowLoop(std::function<void()> _Start, std::function<void()> _Loop, std::function<void()> _End)
 {
     // 단축키인데. 안써도 문제가 되지는 않는다.
     // HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSPROJECT1));
