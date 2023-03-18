@@ -17,19 +17,28 @@ GameEngineFile::GameEngineFile(std::filesystem::path _Path)
 }
 
 // 간간히 윈도우 사용 중 파일을 열 때, "다른 ~가 사용중"이라고 뜨는 것은 fopen가 해당 파일을 잡아채고 있기 때문이다.
-// fopen으로 머리채가 잡힌 파일은 fclose 전까지 편집을 진행할 수 없다.
+// fopen  : 경로의 파일을 열어서 수정하도록 함
 // fwrite : 파일 수정
 // fread  : 파일 불러오기
+
+// w : wirte, 파일을 쓰고 만약 해당 경로에 파일이 존재하지 않으면 만들겠다.
+// r : read, 파일을 읽는다
+// t : text, 텍스트 형식, 67을 저장하면 "a"로 저장된다.
+// b : binary, 바이너리 형식, 67을 저장하면 1010101... 로 저장된다.
+
 
 // 직렬화된 바이너리 데이터 저장
 void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 {
-	FILE* FilePtr = nullptr;                                // 
+	FILE* FilePtr = nullptr;                                // C스타일 파일 저장 형식으로 진행할 예정
 
-	std::string PathString = Path.GetPathToString();        // 저장할 위치 지정
-	std::string Text = "wb";                                // w : 쓰기 // b : 바이너리 데이터
+	std::string PathString = Path.GetPathToString();        // FileName 지정
+	std::string Text = "wb";                                // 어떤 형식으로 작업을 진행
 
-	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());    // fopen은 파일을 여는 함수
+	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());    // 1. FilePtr이 들어가면 값이 바뀌어서 나온다 2. FileName 전달 3. 작업 진행 방식
+
+	// 여기까지 진행하면 파일에 대해 fopen_s 함수가 파일을 수정하고 있는 상황이다.
+	// 고로 fclose를 실시하여 fopen 실행을 멈춰줘야 함
 
 	if (nullptr == FilePtr)
 	{
@@ -52,7 +61,7 @@ void GameEngineFile::SaveText(const std::string_view& _View)
 {
 	FILE* FilePtr = nullptr;
 	std::string PathString = Path.GetPathToString();
-	std::string Text = "wt";  // 위와 유사하지만, 여기만 다르다 // w : 쓰기 // t : 텍스트 데이터
+	std::string Text = "wt";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
 
@@ -75,9 +84,8 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 	FILE* FilePtr = nullptr;
 
 	std::string PathString = Path.GetPathToString();
-	std::string Text = "rb"; // r : 읽기 // b : 바이너리 데이터
+	std::string Text = "rb";
 
-	//     이것을      해당경로에서        열어라
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
 
 	if (nullptr == FilePtr)
@@ -85,10 +93,11 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 		MsgAssert("파일 오픈에 실패했습니다." + PathString);
 	}
 
-	// 파일 사이즈는 불러온 파일에 대한 사이즈를 할당
+	// 파일의 크기를 알아내고, 시리얼라이저를 키워서 읽어오는 인터페이스 구성
+	// std::filesystem::file_size() == 경로의 파일에 대한 크기를 가져옴
 	size_t FileSize = std::filesystem::file_size(Path.Path);
 
-	//      가져온 데이터     버퍼사이즈              읽어야하는 사이즈
+	//      여기에 복사해줘라  버퍼사이즈              읽어야하는 사이즈
 	fread_s(_Data.GetData(), _Data.GetBufferSize(), FileSize, 1, FilePtr);
 
 	// 끝나면 종료

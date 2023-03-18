@@ -41,7 +41,8 @@ public:
 		return Offset;
 	}
 
-	void BufferResize(size_t _Size);            // Datas.resize(_Size) 함수
+	// 읽어온 데이터에 대해 저장 공간을 확보하기 위한 함수
+	void BufferResize(size_t _Size);
 
 	////////////////////// Write
 	void Write(const int& _Value);              // 정수 자료형 저장 (바이너리)

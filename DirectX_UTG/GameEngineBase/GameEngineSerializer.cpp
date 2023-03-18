@@ -27,7 +27,7 @@ void GameEngineSerializer::Write(const std::string_view& _Value)
 {
 	// 문자열의 크기 측정
 	int Size = static_cast<int>(_Value.size());
-	Write(&Size, sizeof(int));
+	Write(&Size, sizeof(int));   // 사이즈를 먼저 저장
 	Write(_Value.data(), Size);  // 저장 함수 실행
 }
 
