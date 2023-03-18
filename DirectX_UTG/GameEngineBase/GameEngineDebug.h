@@ -28,3 +28,6 @@ private:
 
 
 #define MsgAssert(MsgText) std::string ErrorText = MsgText; MessageBoxA(nullptr, ErrorText.c_str(), "Error", MB_OK); assert(false);
+
+// 단순히 메세지를 출력하는 함수, assert가 제거된 형태
+#define MsgTextBox(MsgText) std::string ErrorText = MsgText; MessageBoxA(nullptr, ErrorText.c_str(), "Text", MB_OK);

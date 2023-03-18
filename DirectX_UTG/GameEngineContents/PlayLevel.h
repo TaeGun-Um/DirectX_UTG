@@ -1,7 +1,9 @@
 #pragma once
 
+#include <GameEngineCore/GameEngineLevel.h>
+
 // Ό³Έν :
-class PlayLevel
+class PlayLevel : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
@@ -15,6 +17,7 @@ public:
 	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
 
 protected:
+	void Loading() override;
 
 private:
 

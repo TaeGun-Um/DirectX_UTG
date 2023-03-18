@@ -43,9 +43,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineContents", "GameE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{7E1B77B6-48E3-4822-B2D0-AF89770DF7CE}"
 	ProjectSection(SolutionItems) = preProject
-		New연산이 느린 이유.txt = New연산이 느린 이유.txt
 		GameEngineSerializer.txt = GameEngineSerializer.txt
+		New연산이 느린 이유.txt = New연산이 느린 이유.txt
 		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
+		클래스의 결합도와 응집도.txt = 클래스의 결합도와 응집도.txt
 	EndProjectSection
 EndProject
 Global

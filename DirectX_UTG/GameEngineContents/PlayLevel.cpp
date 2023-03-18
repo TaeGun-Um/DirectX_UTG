@@ -8,3 +8,7 @@ PlayLevel::~PlayLevel()
 {
 }
 
+void PlayLevel::Loading()
+{
+
+}
