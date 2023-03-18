@@ -1,4 +1,6 @@
 #pragma once
+
+// pragma comment를 GameEngineCore.h에서 실시했기 때문에, GameEngineCore 프로젝트 내 다른 파일에서는 따로 참조 선언하지 않아도 된다.
 #include <GameEngineBase\GameEngineTimeEvent.h>
 
 // 설명 :

@@ -38,10 +38,12 @@ public:
 
 		std::string Name = _Name.data();
 
+		// 클래스에 typeid를 활용하여 타입 정보체중 하나인 클래스명을 Name으로 설정
 		if (_Name == "")
 		{
 			const type_info& Info = typeid(LevelType);
 			Name = Info.name();
+			// "Class Player" 에서 replace(0, 6, "") 시, 인덱스 0부터 6까지 텍스트를 제거하고 7부터 ""에 삽입
 			Name.replace(0, 6, "");
 		}
 
@@ -52,6 +54,7 @@ public:
 			MsgAssert("같은 이름의 레벨을 2개 만들수는 없습니다.");
 		}
 
+		// 상속받은 Level로 이동하여 Loading() 실행
 		LevelInit(NewLevel);
 
 		LevelMap.insert(std::make_pair(Name, NewLevel));
@@ -70,7 +73,7 @@ private:
 	static void EngineEnd(std::function<void()> __ContentsEnd);
 
 	static std::map<std::string, std::shared_ptr<GameEngineLevel>> LevelMap;
-	static std::shared_ptr<GameEngineLevel> MainLevel;
-	static std::shared_ptr<GameEngineLevel> NextLevel;
+	static std::shared_ptr<GameEngineLevel> NextLevel; // 우선 ChangeLevel()에서 NextLevel에 find한 레벨 복사
+	static std::shared_ptr<GameEngineLevel> MainLevel; // UpdateLoop에서 NextLevel을 MainLevel에 복수
 };
 

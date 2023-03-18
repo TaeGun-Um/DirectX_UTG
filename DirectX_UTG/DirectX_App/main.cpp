@@ -12,10 +12,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	GameEngineCore::Start(hInstance,
-		ContentsCore::GameStart,
-		ContentsCore::GameEnd
-	);
+	// 시작할 때,          핸들       함수 인스턴스(Start)      함수 인스턴스(End)
+	GameEngineCore::Start(hInstance, ContentsCore::GameStart, ContentsCore::GameEnd);
 }
 
 // 엔진은 각 게임마다 다를 예정
