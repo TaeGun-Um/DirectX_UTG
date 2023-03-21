@@ -3,7 +3,7 @@
 #include <vector>
 #include <GameEngineBase/GameEngineMath.h>
 
-// 설명 :
+// 설명 : 3D 물체를 메쉬(mesh)라고 합니다.
 class GameEngineMesh : public GameEngineResource
 {
 public:

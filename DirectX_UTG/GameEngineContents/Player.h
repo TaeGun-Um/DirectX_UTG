@@ -20,6 +20,10 @@ protected:
 	void Render(float _Delta) override;
 
 private:
+	
+	float4 Pos = { 640, 360 };
+	float4 ArrVertex[4];
+	int Count = 1;
 
 };
 

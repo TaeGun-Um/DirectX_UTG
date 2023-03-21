@@ -49,13 +49,13 @@ public:
 		IsDeath = true;
 	}
 
-	//                 "드래곤"
-	// 동적할당 1번을 줄이려고.
+	// string_view를 인자로 받는 이유는 동적할당을 한번이라도 줄이기 위해서.
 	void SetName(const std::string_view& _Name)
 	{
 		Name = _Name;
 	}
 
+	// Actor의 Parent 설정 (this == Level)
 	void SetParent(GameEngineObject* _Parent)
 	{
 		Parent = _Parent;

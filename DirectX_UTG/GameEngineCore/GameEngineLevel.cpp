@@ -9,8 +9,6 @@ GameEngineLevel::~GameEngineLevel()
 {
 }
 
-
-
 void GameEngineLevel::Loading()
 {
 
@@ -19,12 +17,12 @@ void GameEngineLevel::Loading()
 
 void GameEngineLevel::Update(float _DeltaTime)
 {
+	// Actors(map)의 Update 호출
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
 		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
 
-		// TimeScale;
-		// 추후에 적용하겠다.
+		// 해당 부분에서 TimeScale을 적용하여 느려지거나, 잠시 멈추거나 하는 인터페이스를 추가할 예정
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
 			Actor->Update(_DeltaTime);
@@ -34,13 +32,12 @@ void GameEngineLevel::Update(float _DeltaTime)
 
 void GameEngineLevel::Render(float _DeltaTime)
 {
-	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+	// 랜더러의 랜더가 다 끝나고 호출되는 랜더들 (디버깅용 예정)
+	// Actors(map)의 Render 호출
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
 		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
 
-		// TimeScale;
-		// 추후에 적용하겠다.
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
 			Actor->Render(_DeltaTime);
@@ -48,6 +45,8 @@ void GameEngineLevel::Render(float _DeltaTime)
 	}
 }
 
+// 간단한 함수이지만, 헤더에서 구현할 경우 Actor 헤더를 참조해야할 수 있다.
+// 이 경우 순환참조의 발생 우려가 있기 때문에 여기서 구현
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
 {
 	_Actor->SetParent(_Parent);
