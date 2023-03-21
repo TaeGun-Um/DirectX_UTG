@@ -1,0 +1,13 @@
+
+ - GameEngineObject에 포인터가 해당 형식으로 존재하는 이유
+   GameEngineObject* Parent = nullptr;
+   std::list<std::shared_ptr<GameEngineObject>> Child;
+ 
+   해당 포인터 구조를 가지면 GameEngineObject를 상속받는 클래스들은 트리구조가 될 수 있다.
+   이런 구조는 예를 들어 플레이어 랜더러에 무기 랜더러를 붙이는 등의 행위를 할 때, 플레이어 랜더러가 무기 랜더러의 부모가 되는 형태가 되도록 한다.
+
+   이때, 만약 Parent와 Child가 서로 shared_ptr<GameEngineObject>를 이용하여 참조하면 순환참조 문제가 발생한다.
+   이때 weak_ptr을 활용하면 되는데, 이 형태가 Parent - child 구조인 것이다.
+ 
+   GameEngineObject를 상속받는 클래스는 모두 Pos를 가지도록 할 것
+   여기서 Parent의 Pos가 {100, 100}에 위치할 때, child의 Pos가 {0,0}이라면 화면 상에 {100,100}에 존재하도록 하는 인터페이스

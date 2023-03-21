@@ -65,8 +65,6 @@ public:
 	GameEngineWindow& operator=(const GameEngineWindow& _Other) = delete;
 	GameEngineWindow& operator=(GameEngineWindow&& _Other) noexcept = delete;
 
-	
-
 protected:
 
 private:

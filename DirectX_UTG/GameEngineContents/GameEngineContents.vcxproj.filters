@@ -4,17 +4,26 @@
     <Filter Include="Levels">
       <UniqueIdentifier>{d554d10a-497e-401b-a0f0-7bdaf61db99e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b2c2db1a-b4d3-4a06-9798-23b3f39d9343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="PlayLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="PlayLevel.cpp">
       <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
