@@ -226,10 +226,6 @@ public:
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
-		// functon(1) == 50; 1을 50으로 바꾸는 함수
-		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
-		
-		// cosf(각도);
 
 		float Result = acosf(AngleCheck.x);
 
@@ -261,8 +257,6 @@ public:
 		return sqrtf(x * x + y * y);
 	}
 
-	// 2, 0
-	// 0, 2
 	void Normalize() 
 	{
 		float SizeValue = Size();
@@ -271,7 +265,6 @@ public:
 		z /= SizeValue;
 	}
 
-	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
 	float4 NormalizeReturn()
 	{
 		float4 Result = *this;
@@ -281,7 +274,6 @@ public:
 
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
-		// 1.5 + 0.5 * 2.5;
 		return Start * (1.0f - Ratio) + (End * Ratio);
 	}
 
