@@ -6,10 +6,7 @@
 #include <Windows.h>
 #include <vector>
 
-
-// final 더이상 상속내릴지 못한다.
-// 상속도 못하고 만들지도 못하게 만든 상태로
-
+// final 더이상 상속내릴지 못한다.상속도 못하고 만들지도 못하게 만든 상태로
 class GameEngineMath final
 {
 public:
@@ -43,16 +40,13 @@ public:
 
 	static float4 AngleToDirection2DToRad(float _Rad)
 	{
-		// 빗변의 길이가 1일수밖에 없다.
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
-	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
 	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
 	{
 		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
 	}
-
 
 	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
@@ -101,8 +95,6 @@ public:
 
 	}
 
-	// 마지막이 1인지는 3d 때 배우게 될겁니다.
-
 	int ix() const
 	{
 		return static_cast<int>(x);
@@ -142,7 +134,6 @@ public:
 	{
 		return static_cast<int>(w * 0.5f);
 	}
-
 
 	float hx() const
 	{
@@ -236,19 +227,14 @@ public:
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
-		// functon(1) == 50; 1을 50으로 바꾸는 함수
-		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
-
-		// cosf(각도);
-
 		float Result = acosf(AngleCheck.x);
 
 		if (AngleCheck.y > 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}
-		return Result;
 
+		return Result;
 	}
 
 	POINT ToWindowPOINT()
@@ -268,12 +254,9 @@ public:
 
 	float Size() const
 	{
-		// 완벽
 		return sqrtf(x * x + y * y + z * z);
 	}
 
-	// 2, 0
-	// 0, 2
 	void Normalize()
 	{
 		float SizeValue = Size();
@@ -282,7 +265,6 @@ public:
 		z /= SizeValue;
 	}
 
-	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
 	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
@@ -292,7 +274,6 @@ public:
 
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
-		// 1.5 + 0.5 * 2.5;
 		return Start * (1.0f - Ratio) + (End * Ratio);
 	}
 
@@ -324,7 +305,6 @@ public:
 	{
 		return _Value.x == x && _Value.y == y && _Value.z == z;
 	}
-
 
 	float4 operator +(const float4& _Value) const
 	{
@@ -383,7 +363,6 @@ public:
 		return *this;
 	}
 
-
 	float4& operator *=(const float4& _Other)
 	{
 		x *= _Other.x;
@@ -418,7 +397,6 @@ public:
 
 		return std::string(ArrReturn);
 	}
-
 };
 
 class CollisionData
@@ -569,5 +547,4 @@ public:
 
 		return Return;
 	}
-
 };
