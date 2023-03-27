@@ -43,10 +43,18 @@ public:
 
 	static float4 AngleToDirection2DToRad(float _Rad)
 	{
+		// 빗변의 길이가 1일수밖에 없다.
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
-	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
+	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
+	{
+		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
+	}
+
+
+	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
 		float4 ReturnValue;
 		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
@@ -93,22 +101,24 @@ public:
 
 	}
 
+	// 마지막이 1인지는 3d 때 배우게 될겁니다.
+
 	int ix() const
 	{
 		return static_cast<int>(x);
 	}
 
-	int iy() const 
+	int iy() const
 	{
 		return static_cast<int>(y);
 	}
 
-	int iz() const 
+	int iz() const
 	{
 		return static_cast<int>(z);
 	}
 
-	int iw() const 
+	int iw() const
 	{
 		return static_cast<int>(w);
 	}
@@ -154,9 +164,30 @@ public:
 		return w * 0.5f;
 	}
 
-	float GetAnagleDeg() 
+	float GetAnagleDeg()
 	{
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
+	}
+
+	float4 RotaitonXDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotaitonYDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotaitonZDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
 	}
 
 	void RotaitonXDeg(float _Deg)
@@ -201,31 +232,14 @@ public:
 		y = X * sinf(_Rad) + Y * cosf(_Rad);
 	}
 
-	float4 RotaitonXDegReturn(float _Deg)
-	{
-		float4 ReturnValue = *this;
-		ReturnValue.RotaitonXRad(_Deg * GameEngineMath::DegToRad);
-		return ReturnValue;
-	}
-
-	float4 RotaitonYDegReturn(float _Deg)
-	{
-		float4 ReturnValue = *this;
-		ReturnValue.RotaitonYRad(_Deg * GameEngineMath::DegToRad);
-		return ReturnValue;
-	}
-
-	float4 RotaitonZDegReturn(float _Deg)
-	{
-		float4 ReturnValue = *this;
-		ReturnValue.RotaitonZRad(_Deg * GameEngineMath::DegToRad);
-		return ReturnValue;
-	}
-
 	float GetAnagleRad()
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
+		// functon(1) == 50; 1을 50으로 바꾸는 함수
+		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
+
+		// cosf(각도);
 
 		float Result = acosf(AngleCheck.x);
 
@@ -237,14 +251,14 @@ public:
 
 	}
 
-	POINT ToWindowPOINT() 
+	POINT ToWindowPOINT()
 	{
 		return POINT(ix(), iy());
 	}
 
 	float4 half() const
 	{
-		return {x * 0.5f,y * 0.5f,z * 0.5f,w};
+		return { x * 0.5f,y * 0.5f,z * 0.5f,w };
 	}
 
 	bool IsZero() const
@@ -254,10 +268,13 @@ public:
 
 	float Size() const
 	{
-		return sqrtf(x * x + y * y);
+		// 완벽
+		return sqrtf(x * x + y * y + z * z);
 	}
 
-	void Normalize() 
+	// 2, 0
+	// 0, 2
+	void Normalize()
 	{
 		float SizeValue = Size();
 		x /= SizeValue;
@@ -265,7 +282,8 @@ public:
 		z /= SizeValue;
 	}
 
-	float4 NormalizeReturn()
+	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
+	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
 		Result.Normalize();
@@ -274,6 +292,7 @@ public:
 
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
+		// 1.5 + 0.5 * 2.5;
 		return Start * (1.0f - Ratio) + (End * Ratio);
 	}
 
@@ -301,7 +320,13 @@ public:
 		return Return;
 	}
 
-	float4 operator +(const float4 _Value) const
+	bool operator ==(const float4& _Value) const
+	{
+		return _Value.x == x && _Value.y == y && _Value.z == z;
+	}
+
+
+	float4 operator +(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x + _Value.x;
@@ -310,7 +335,7 @@ public:
 		return Return;
 	}
 
-	float4 operator -(const float4 _Value) const
+	float4 operator -(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x - _Value.x;
@@ -319,7 +344,7 @@ public:
 		return Return;
 	}
 
-	float4 operator *(const float4 _Value) const
+	float4 operator *(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x * _Value.x;
@@ -328,7 +353,7 @@ public:
 		return Return;
 	}
 
-	float4 operator /(const float4 _Value) const
+	float4 operator /(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x / _Value.x;
@@ -339,10 +364,10 @@ public:
 
 	float4 operator -() const
 	{
-		return {-x, -y, -z, 1.0f};
+		return { -x, -y, -z, 1.0f };
 	}
 
-	float4& operator +=(const float4& _Other) 
+	float4& operator +=(const float4& _Other)
 	{
 		x += _Other.x;
 		y += _Other.y;
@@ -350,7 +375,7 @@ public:
 		return *this;
 	}
 
-	float4& operator *=(const float& _Value)
+	float4& operator *=(const float _Value)
 	{
 		x *= _Value;
 		y *= _Value;
@@ -385,7 +410,7 @@ public:
 
 	float4 operator*(const class float4x4& _Other);
 
-	std::string ToString() 
+	std::string ToString()
 	{
 		char ArrReturn[256];
 
@@ -421,7 +446,7 @@ public:
 
 	float4 LeftTop() const
 	{
-		return float4{Left(), Top()};
+		return float4{ Left(), Top() };
 	}
 	float4 RightTop() const
 	{
@@ -439,6 +464,17 @@ public:
 
 class float4x4
 {
+	static const float4x4 Zero;
+
+	static const int YCount = 4;
+	static const int XCount = 4;
+
+private:
+	float4x4(bool)
+	{
+		memset(Arr1D, 0, sizeof(float4x4));
+	}
+
 public:
 	union
 	{
@@ -481,7 +517,57 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	void Scale(const float4& _Value)
+	{
+		//100, 0 , 0 , 0
+		// 0 ,100, 0 , 0
+		// 0 , 0 ,100, 0
+		// 0 , 0 , 0 , 1
 
-	// float4 operator*()
+		Identity();
+		Arr2D[0][0] = _Value.x;
+		Arr2D[1][1] = _Value.y;
+		Arr2D[2][2] = _Value.z;
+	}
+
+
+	void Pos(const float4& _Value)
+	{
+		//  0   1   2   3
+		//0 0,  0 , 0 , 0
+		//1 0 , 0,  0 , 0
+		//2 0 , 0 , 0 , 0
+		//3 200, 200 , 200 , 1
+
+		Identity();
+		Arr2D[3][0] = _Value.x;
+		Arr2D[3][1] = _Value.y;
+		Arr2D[3][2] = _Value.z;
+	}
+
+	float4x4 operator*(const float4x4& _Other)
+	{
+		//  0   0   0   0			   		  0   0   0   0	    0   0   0   0
+		//  0,  0 , 0 , 0			   		  0,  0 , 0 , 0	    0,  0 , 0 , 0
+		//  0 , 0,  0 , 0          *   		  0 , 0,  0 , 0  =  0 , 0,  0 , 0
+		//  0 , 0 , 0 , 0			   		  0 , 0 , 0 , 0	    0 , 0 , 0 , 0
+
+		this->Arr2D;
+		_Other.Arr2D;
+
+		float4x4 Return = Zero;
+		for (size_t y = 0; y < YCount; y++)
+		{
+			for (size_t x = 0; x < XCount; x++)
+			{
+				for (size_t j = 0; j < 4; j++)
+				{
+					Return.Arr2D[y][x] += Arr2D[y][j] * _Other.Arr2D[j][x];
+				}
+			}
+		}
+
+		return Return;
+	}
 
 };
