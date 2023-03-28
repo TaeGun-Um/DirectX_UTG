@@ -1,8 +1,11 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
+#include "GameEngineCamera.h"
 
+// CreateActor를 실시하면서, shared_ptr을 활용하면 절대 지울 수 없게 된다.
 GameEngineLevel::GameEngineLevel()
 {
+	MainCamera = CreateActor<GameEngineCamera>();
 }
 
 GameEngineLevel::~GameEngineLevel()

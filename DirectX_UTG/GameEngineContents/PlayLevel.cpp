@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCamera.h>
 
 PlayLevel::PlayLevel() 
 {
@@ -13,13 +14,7 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Loading()
 {
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>("Player");
+	GetMainCamera()->GetTransform().SetLocalPosition({ 0, 0, -100.0f });
 
-	if (false == GameEngineInput::IsKey("Q"))
-	{
-		GameEngineInput::CreateKey("Q", 'Q');
-		GameEngineInput::CreateKey("W", 'W');
-		GameEngineInput::CreateKey("E", 'E');
-		GameEngineInput::CreateKey("R", 'R');
-	}
+	std::shared_ptr<Player> NewPlayer = CreateActor<Player>("Player");
 }

@@ -20,11 +20,9 @@ void Player::Render(float _Delta)
 {
 	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
-	// Rectangle(Dc, 0, 0, 100, 100);
-
 	const int VertexCount = 24;
 
-	float4 Pos = { 640, 360 };
+	// float4 Pos = {640, 360};
 
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
@@ -65,28 +63,13 @@ void Player::Render(float _Delta)
 
 	POINT ArrPoint[VertexCount];
 
-	float4x4 ScaleMat;
-	ScaleMat.Scale({ 100, 100, 100 });
+	GetTransform().SetLocalScale({ 100, 100, 100 });
 
-	float4x4 PosMat;
-	PosMat.Pos(Pos);
-
-	float4x4 WorldMat = ScaleMat * PosMat;
-
-	// 크자이공부
-
-	// 크기를 키우고
-	// 회전시킨다음
-	// 이동하고
-	// 공전시키고
-	// 부모의 변환을 적용시킨다.
-	// 공간변환의 순서.
-
-	// 벡터의 외적에 대해서 알아봅시다.
+	GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
-		ArrVertex[i] = ArrVertex[i] * WorldMat;
+		ArrVertex[i] = ArrVertex[i] * GetTransform().GetLocalWorldMatrixRef();
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
 
