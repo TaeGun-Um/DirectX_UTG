@@ -41,8 +41,9 @@ void GameEngineCore::EngineUpdate()
 		return;
 	}
 
-	GameEngineSound::SoundUpdate();
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+	GameEngineInput::Update(TimeDeltaTime);
+	GameEngineSound::SoundUpdate();
 	GameEngineInput::Update(TimeDeltaTime);
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);

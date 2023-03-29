@@ -52,6 +52,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 // 이 경우 순환참조의 발생 우려가 있기 때문에 여기서 구현
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
 {
+	_Actor->Level = this;        // ActorInit 과정에서 즉시 레벨 지정 (GetLevel 활용 가능)
 	_Actor->SetParent(_Parent);
 	_Actor->SetOrder(_Order);
 	_Actor->Start();

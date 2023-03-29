@@ -1,6 +1,9 @@
 #include "Player.h"
+
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCamera.h>
 
 Player::Player()
 {
@@ -22,29 +25,23 @@ void Player::Render(float _Delta)
 
 	const int VertexCount = 24;
 
-	// float4 Pos = {640, 360};
-
-	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
-	// 앞면
+
 	ArrVertex[0] = { -0.5f, -0.5f, 0.5f };
 	ArrVertex[1] = { 0.5f, -0.5f,0.5f };
 	ArrVertex[2] = { 0.5f, 0.5f,0.5f };
 	ArrVertex[3] = { -0.5f, 0.5f,0.5f };
 
-	// 뒷면
 	ArrVertex[4] = ArrVertex[0].RotaitonXDegReturn(180.0f);
 	ArrVertex[5] = ArrVertex[1].RotaitonXDegReturn(180.0f);
 	ArrVertex[6] = ArrVertex[2].RotaitonXDegReturn(180.0f);
 	ArrVertex[7] = ArrVertex[3].RotaitonXDegReturn(180.0f);
 
-	// 왼쪽면
 	ArrVertex[8] = ArrVertex[0].RotaitonYDegReturn(90.0f);
 	ArrVertex[9] = ArrVertex[1].RotaitonYDegReturn(90.0f);
 	ArrVertex[10] = ArrVertex[2].RotaitonYDegReturn(90.0f);
 	ArrVertex[11] = ArrVertex[3].RotaitonYDegReturn(90.0f);
 
-	// 오른쪽
 	ArrVertex[12] = ArrVertex[0].RotaitonYDegReturn(-90.0f);
 	ArrVertex[13] = ArrVertex[1].RotaitonYDegReturn(-90.0f);
 	ArrVertex[14] = ArrVertex[2].RotaitonYDegReturn(-90.0f);
@@ -60,16 +57,16 @@ void Player::Render(float _Delta)
 	ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
 	ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
 
-
 	POINT ArrPoint[VertexCount];
 
 	GetTransform().SetLocalScale({ 100, 100, 100 });
-
 	GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
+
+	GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
-		ArrVertex[i] = ArrVertex[i] * GetTransform().GetLocalWorldMatrixRef();
+		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
 

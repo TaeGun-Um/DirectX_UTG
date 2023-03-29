@@ -61,8 +61,8 @@ public:
 
 protected:
 	virtual void Loading() = 0;
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override;
+	void Update(float _DeltaTime);
+	void Render(float _DeltaTime);
 
 private:
 	// 레벨을 만들면 메인 카메라를 무조건 만들고 지울 수 없게 할 예정이다 == shared_ptr 사용

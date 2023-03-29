@@ -56,6 +56,36 @@ public:
 		TransformUpdate();
 	}
 
+	float4 GetLocalForwardVector()
+	{
+		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	float4 GetLocalUpVector()
+	{
+		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	float4 GetLocalRightVector()
+	{
+		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	float4 GetLocalPosition()
+	{
+		return LocalPosition;
+	}
+
+	float4 GetLocalScale()
+	{
+		return LocalScale;
+	}
+
+	float4 GetLocalRotation()
+	{
+		return LocalRotation;
+	}
+
 	// LocalWorldMatrix는 액터에 적용된 행렬 결과값이다.
 	float4x4 GetLocalWorldMatrix()
 	{
@@ -66,6 +96,22 @@ public:
 	const float4x4& GetLocalWorldMatrixRef()
 	{
 		return LocalWorldMatrix;
+	}
+
+	const float4x4 GetWorldMatrix()
+	{
+		return WorldMatrix;
+	}
+
+	const float4x4& GetWorldMatrixRef()
+	{
+		return WorldMatrix;
+	}
+
+	inline const void SetView(const float4x4& _View)
+	{
+		View = _View;
+		WorldMatrix = WorldMatrix * View;
 	}
 
 protected:
@@ -86,5 +132,8 @@ private:
 	float4x4 LocalPositionMatrix;         // 이동 변환 행렬
 
 	float4x4 LocalWorldMatrix;
+
+	float4x4 WorldMatrix;
+	float4x4 View;
 };
 
