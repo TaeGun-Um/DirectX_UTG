@@ -370,7 +370,6 @@ public:
 		return *this;
 	}
 
-
 	float4& operator *=(const float4& _Other)
 	{
 		x *= _Other.x;
@@ -406,7 +405,6 @@ public:
 
 		return std::string(ArrReturn);
 	}
-
 };
 
 class CollisionData
@@ -419,14 +417,17 @@ public:
 	{
 		return Position.x - Scale.hx();
 	}
+
 	float Right() const
 	{
 		return Position.x + Scale.hx();
 	}
+
 	float Top() const
 	{
 		return Position.y - Scale.hy();
 	}
+
 	float Bot() const
 	{
 		return Position.y + Scale.hy();
@@ -436,14 +437,17 @@ public:
 	{
 		return float4{ Left(), Top() };
 	}
+
 	float4 RightTop() const
 	{
 		return float4{ Right(), Top() };
 	}
+
 	float4 LeftBot() const
 	{
 		return float4{ Left(), Bot() };
 	}
+
 	float4 RightBot() const
 	{
 		return float4{ Right(), Bot() };
@@ -454,7 +458,6 @@ class float4x4
 {
 public:
 	static const float4x4 Zero;
-
 	static const int YCount = 4;
 	static const int XCount = 4;
 
@@ -495,13 +498,18 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+
+	// 뷰 행렬을 만들기 위해선 Z(앞, Dir)와 Y(위, Up)가 필요하다.
+	// LookAtLH 함수는 외적과 내적이 필요하다.
+	// 외적을 통해서 회전해야 하는 방향을 구하고, 내적을 통해서 얼마만큼 돌아야하는지 구하는 것이다.
 	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
 		Identity();
 
 		float4 EyePos = _EyePos;
 
-		// 합쳐져서 회전행렬이 된다.
+		// Up과 Dir를 알기 때문에, Right를 알 수 있다(외적)
+		// 셋을 노말라이즈 하기 때문에, 회전행렬이 된다고 할 수 있다.
 		float4 EyeDir = _EyeDir.NormalizeReturn();
 		float4 EyeUp = _EyeUp;
 		float4 Right = float4::Cross3DReturn(EyeUp, EyeDir);
@@ -512,18 +520,20 @@ public:
 
 		float4 NegEyePos = -_EyePos;
 
-		float D0Value = float4::DotProduct3D(Right, NegEyePos);
-		float D1Value = float4::DotProduct3D(UpVector, NegEyePos);
-		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
+		// 플레이어가 원점(0, 0, 0)에 존재한다면, 카메라는 그보다 조금 떨어진 위치(0, 0, -100)에서 플레이어를 바라본다.
+		// 뷰 행렬의 원칙은 다른 위치(0, 0, -100)에 존재하는 카메라를 원점(0, 0, 0)으로 이동 회전 시킨 값의 반대값을 액터들에게 적용하는 것이다.
 
-		// 여기서 내적을 사용합니다.
+		float D0Value = float4::DotProduct3D(Right, NegEyePos);     // DXValue == 카메라가 이동한 만큼 이동해야하는 액터들의 이동값, D0Value == X값
+		float D1Value = float4::DotProduct3D(UpVector, NegEyePos);  // D1Value == Y값
+		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);    // D2Value == Z값
+
+		// 그냥 차이를 구하면 안되는 것인가(NegEyePos만큼 이동시키면 되지 않나?)에 대해서 생각한다면, 여기까지는 이동 과정이기 때문이다. 아직 회전을 적용하지 않았다.
+		// 회전을 적용하기 위해선 내적을 통해 벡터의 정사영 값들 (D0Value, D1Value, D2Value)을 구해야 한다.
 
 		ArrVector[0] = { 1, 0, 0, 0 };
 		ArrVector[1] = { 0, 1, 0, 0 };
 		ArrVector[2] = { 0, 0, 1, 0 };
 		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
-
-
 	}
 
 	void Scale(const float4& _Value)

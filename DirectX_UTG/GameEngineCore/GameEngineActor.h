@@ -17,6 +17,7 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	// 액터가 해당되는 레벨 리턴
 	inline class GameEngineLevel* GetLevel() const
 	{
 		return Level;
@@ -28,6 +29,6 @@ protected:
 	virtual void Render(float _DeltaTime) {}
 
 private:
-	class GameEngineLevel* Level;
+	class GameEngineLevel* Level;  // Actorinit 단계에서 Level을 this로 지정해주기 때문에, 액터의 레벨이 결정된다.
 };
 

@@ -27,7 +27,7 @@ protected:
 private:
 	bool FreeCamera = false;
 
-	float4x4 View;
+	float4x4 View;        // 카메라의 뷰 행렬 결과가 적용된 값
 	float4x4 Projection;
 
 };

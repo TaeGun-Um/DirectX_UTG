@@ -19,7 +19,7 @@ public:
 	// 모든 행렬 변환 결과는 즉시 TransformUpdate()를 호출하여 적용되도록 한다.
 	// 값을 변경하면 행렬의 전체 결과가 즉시 재계산되는 구조이다.
 	// 결과값을 바로 확인할 수 있어서, 굉장히 직관적이다.
-	// 고정된 오브젝트 만들땐 이게 좋음
+	// 행렬의 낭비가 있을 수 있지만, 특정 오브젝트는 아닐 수 있음 (고정된 오브젝트는 이게 좋음)
 	void SetLocalScale(const float4& _Value)
 	{
 		LocalScale = _Value;
@@ -56,31 +56,37 @@ public:
 		TransformUpdate();
 	}
 
+	// Local에서의 z(앞)벡터 리턴
 	float4 GetLocalForwardVector()
 	{
 		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
 	}
 
+	// Local에서의 y(위)벡터 리턴
 	float4 GetLocalUpVector()
 	{
 		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
 	}
 
+	// Local에서의 x(오른쪽)벡터 리턴
 	float4 GetLocalRightVector()
 	{
 		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
 
+	// Local에서의 위치 리턴
 	float4 GetLocalPosition()
 	{
 		return LocalPosition;
 	}
 
+	// Local에서의 크기 리턴
 	float4 GetLocalScale()
 	{
 		return LocalScale;
 	}
 
+	// Local에서의 회전 리턴
 	float4 GetLocalRotation()
 	{
 		return LocalRotation;
