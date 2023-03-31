@@ -1,4 +1,5 @@
 #pragma once
+
 #include <GameEngineCore/GameEngineActor.h>
 
 // Ό³Έν :
@@ -23,4 +24,3 @@ private:
 	float Angle = 0.0f;
 
 };
-

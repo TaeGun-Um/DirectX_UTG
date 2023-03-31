@@ -79,61 +79,14 @@ unsigned int GameEngineMath::GetLenth(int _Value)
 
 float4 float4::operator*(const class float4x4& _Other)
 {
-	// this
-
-	// 크기
-	// 0.5f, 0.5f, 0.5f, 1; *  100   0   0   0
-	// 					         0 100   0   0
-	// 					         0   0 100   0
-	// 					         0   0   0   1
-	// 
-	//(100 * -0.5) + (0 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (100 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (0 * Arr1D[0]) + (100 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (0 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-
-	// 위치
-	// 100.0f, 100.0f, 100.0f, 1; *    1   0   0   0
-	// 					               0   1   0   0
-	// 					               0   0   1   0
-	// 					             100  80  50   1
-
-	// 100 + 100, 100 + 80, 100 + 50
-
-	//(100 * 1) + (0 * 0) + (0 * 0) + (100 * 1);
-	//(0 * 0) + (100 * 1) + (0 * 0) + (80 * 1);
-	//(0 * 0) + (0 * 0) + (100 * 1) + (50 * 1);
-	//(0 * 0) + (0 * 0) + (0 * 0) +   (1 * 1);
-
-	// 크기
-	// 1.0f, 0.0f, 0.0f, 1; *    1   0   0   0
-	// 					         0   1   0   0
-	// 					         0   0   1   0
-	// 					         0   0   0   1
-
-	// 0.5f, 0.5f, 0.0f  1  x 0   0  -1   0
-	//						y 0   1   0   0
-	//						z 1   0   0   0
-	//						  0   0   0   1
-
-	float4 ReturnValue;
-	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[1][0] * Arr1D[1]) + (_Other.Arr2D[2][0] * Arr1D[2]) + (_Other.Arr2D[3][0] * Arr1D[3]);
-	ReturnValue.y = (_Other.Arr2D[0][1] * Arr1D[0]) + (_Other.Arr2D[1][1] * Arr1D[1]) + (_Other.Arr2D[2][1] * Arr1D[2]) + (_Other.Arr2D[3][1] * Arr1D[3]);
-	ReturnValue.z = (_Other.Arr2D[0][2] * Arr1D[0]) + (_Other.Arr2D[1][2] * Arr1D[1]) + (_Other.Arr2D[2][2] * Arr1D[2]) + (_Other.Arr2D[3][2] * Arr1D[3]);
-	ReturnValue.w = (_Other.Arr2D[0][3] * Arr1D[0]) + (_Other.Arr2D[1][3] * Arr1D[1]) + (_Other.Arr2D[2][3] * Arr1D[2]) + (_Other.Arr2D[3][3] * Arr1D[3]);
+	float4 ReturnValue = DirectX::XMVector3Transform(*this, _Other);
 
 	return ReturnValue;
 }
 
 float4& float4::operator*=(const class float4x4& _Other)
 {
-	float4 ReturnValue;
-	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[1][0] * Arr1D[1]) + (_Other.Arr2D[2][0] * Arr1D[2]) + (_Other.Arr2D[3][0] * Arr1D[3]);
-	ReturnValue.y = (_Other.Arr2D[0][1] * Arr1D[0]) + (_Other.Arr2D[1][1] * Arr1D[1]) + (_Other.Arr2D[2][1] * Arr1D[2]) + (_Other.Arr2D[3][1] * Arr1D[3]);
-	ReturnValue.z = (_Other.Arr2D[0][2] * Arr1D[0]) + (_Other.Arr2D[1][2] * Arr1D[1]) + (_Other.Arr2D[2][2] * Arr1D[2]) + (_Other.Arr2D[3][2] * Arr1D[3]);
-	ReturnValue.w = (_Other.Arr2D[0][3] * Arr1D[0]) + (_Other.Arr2D[1][3] * Arr1D[1]) + (_Other.Arr2D[2][3] * Arr1D[2]) + (_Other.Arr2D[3][3] * Arr1D[3]);
-	*this = ReturnValue;
-
+	DirectVector = DirectX::XMVector4Transform(*this, _Other);;
 	return *this;
 }
 

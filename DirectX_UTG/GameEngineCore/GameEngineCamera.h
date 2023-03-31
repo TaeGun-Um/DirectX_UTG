@@ -20,6 +20,16 @@ public:
 		return View;
 	}
 
+	inline float4x4 GetProjection()
+	{
+		return Projection;
+	}
+
+	inline float4x4 GetViewPort()
+	{
+		return ViewPort;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -29,5 +39,8 @@ private:
 
 	float4x4 View;        // 카메라의 뷰 행렬 결과가 적용된 값
 	float4x4 Projection;
+	float4x4 ViewPort;
+	float Near = 0.1f;
+	float Far = 10000.0f;
 
 };

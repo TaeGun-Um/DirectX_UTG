@@ -1,5 +1,6 @@
 #include "GameEngineCamera.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -21,6 +22,13 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
+
+		GameEngineInput::CreateKey("RotY+", VK_NUMPAD1);
+		GameEngineInput::CreateKey("RotY-", VK_NUMPAD2);
+		GameEngineInput::CreateKey("RotZ+", VK_NUMPAD4);
+		GameEngineInput::CreateKey("RotZ-", VK_NUMPAD5);
+		GameEngineInput::CreateKey("RotX+", VK_NUMPAD7);
+		GameEngineInput::CreateKey("RotX-", VK_NUMPAD8);
 	}
 }
 
@@ -33,6 +41,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	if (true == FreeCamera)
 	{
+		float RotSpeed = 180.0f;
 		float Speed = 200.0f;
 
 		if (true == GameEngineInput::IsPress("SpeedBoost"))
@@ -64,6 +73,31 @@ void GameEngineCamera::Update(float _DeltaTime)
 		{
 			GetTransform().AddLocalPosition(float4::Back * Speed * _DeltaTime);
 		}
+
+		if (true == GameEngineInput::IsPress("RotY+"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, RotSpeed * _DeltaTime, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotY-"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, -RotSpeed * _DeltaTime, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotZ+"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, 0.0f, RotSpeed * _DeltaTime });
+		}
+		if (true == GameEngineInput::IsPress("RotZ-"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, 0.0f, -RotSpeed * _DeltaTime });
+		}
+		if (true == GameEngineInput::IsPress("RotX+"))
+		{
+			GetTransform().AddLocalRotation({ RotSpeed * _DeltaTime, 0.0f, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotX-"))
+		{
+			GetTransform().AddLocalRotation({ -RotSpeed * _DeltaTime, 0.0f, 0.0f });
+		}
 	}
 
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
@@ -71,5 +105,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 	float4 EyeUp = GetTransform().GetLocalUpVector();
 	float4 EyePos = GetTransform().GetLocalPosition();
 
-	View.LookAtLH(EyePos, EyeDir, EyeUp);
+	View.LookToLH(EyePos, EyeDir, EyeUp);
+	Projection.PerspectiveFovLH(60.0f, GameEngineWindow::GetScreenSize().x / GameEngineWindow::GetScreenSize().y, Near, Far);
+	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
 }
