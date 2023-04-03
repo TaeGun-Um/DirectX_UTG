@@ -13,6 +13,12 @@
     <Filter Include="Object\Rendering">
       <UniqueIdentifier>{481f8de6-9773-4f8b-bf60-68761fede17d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Collision">
+      <UniqueIdentifier>{9e353e66-c2e4-40b9-b104-05102446c518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Component">
+      <UniqueIdentifier>{01e7a3bc-aac4-46ef-910a-4d7f981c0e04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -40,6 +46,15 @@
     <ClInclude Include="GameEngineCamera.h">
       <Filter>Object\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCollision.h">
+      <Filter>Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderer.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineUpdateObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -66,6 +81,15 @@
     </ClCompile>
     <ClCompile Include="GameEngineCamera.cpp">
       <Filter>Object\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCollision.cpp">
+      <Filter>Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderer.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineUpdateObject.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

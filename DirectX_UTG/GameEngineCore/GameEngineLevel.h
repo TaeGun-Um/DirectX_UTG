@@ -3,12 +3,12 @@
 #include <string_view>
 
 #include <GameEngineBase\GameEngineTimeEvent.h>
-#include "GameEngineObject.h"
+#include "GameEngineUpdateObject.h"
 
 // Ό³Έν :
 class GameEngineActor;
 class GameEngineCamera;
-class GameEngineLevel : public GameEngineObject
+class GameEngineLevel : public GameEngineUpdateObject
 {
 	friend class GameEngineCore;
 
@@ -60,7 +60,7 @@ public:
 	}
 
 protected:
-	virtual void Loading() = 0;
+	virtual void Start() = 0;
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);
 

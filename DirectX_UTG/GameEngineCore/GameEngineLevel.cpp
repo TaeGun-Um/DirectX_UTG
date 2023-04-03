@@ -12,7 +12,7 @@ GameEngineLevel::~GameEngineLevel()
 {
 }
 
-void GameEngineLevel::Loading()
+void GameEngineLevel::Start()
 {
 
 
@@ -53,7 +53,9 @@ void GameEngineLevel::Render(float _DeltaTime)
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
 {
 	_Actor->Level = this;        // ActorInit 과정에서 즉시 레벨 지정 (GetLevel 활용 가능)
-	_Actor->SetParent(_Parent);
 	_Actor->SetOrder(_Order);
 	_Actor->Start();
+
+	// Level이 관리하고 있는 액터를 관리하는 리스트에 들어간다.
+	Actors[_Order].push_back(_Actor);
 }

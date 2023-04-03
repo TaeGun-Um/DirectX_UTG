@@ -16,6 +16,50 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
+	void SetWorldScale(const float4& _Value)
+	{
+		//float4 LocalPostionValue = WorldPostion * Parent.InverseReturn();
+		//float4 WorldPostionValue = LocalPostion * Parent;
+
+		WorldScale = _Value;
+
+		if (nullptr == Parent)
+		{
+			LocalScale = WorldScale;
+			TransformUpdate();
+			CalChild();
+			//for (GameEngineTransform* Parent : Child)
+			//{
+			//	Parent->SetLocalScale(Parent->GetLocalScale());
+			//	Parent->TransformUpdate();
+			//}
+			return;
+		}
+
+		LocalScale = WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetWorldRotation(const float4& _Value)
+	{
+		WorldRotation = _Value;
+
+		if (nullptr == Parent)
+		{
+			LocalRotation = WorldRotation;
+		}
+
+
+		TransformUpdate();
+	}
+
+	void SetWorldPosition(const float4& _Value)
+	{
+		WorldPosition = _Value;
+		TransformUpdate();
+	}
+
 	// 모든 행렬 변환 결과는 즉시 TransformUpdate()를 호출하여 적용되도록 한다.
 	// 값을 변경하면 행렬의 전체 결과가 즉시 재계산되는 구조이다.
 	// 결과값을 바로 확인할 수 있어서, 굉장히 직관적이다.
@@ -127,6 +171,10 @@ public:
 		WorldMatrix *= ViewPort;
 	}
 
+	void CalChild()
+	{
+	}
+
 protected:
 
 private:
@@ -134,11 +182,15 @@ private:
 
 	// weak_ptr 구조, 후에 쓸 예정
 	GameEngineTransform* Parent = nullptr;
-	std::list<GameEngineTransform*> Child;
+	std::list <GameEngineTransform*> Child;
 
 	float4 LocalScale = float4::One;      // 크기는 0이면 변환이 안되기 때문에, 원벡터를 활용한다.
 	float4 LocalRotation = float4::Zero;  // 나머지는 제로벡터
 	float4 LocalPosition = float4::Zero;
+
+	float4 WorldScale = float4::One;
+	float4 WorldRotation = float4::Zero;
+	float4 WorldPosition = float4::Zero;
 
 	float4x4 LocalScaleMatrix;            // 크기 변환 행렬
 	float4x4 LocalRotationMatrix;         // 회전 변환 행렬

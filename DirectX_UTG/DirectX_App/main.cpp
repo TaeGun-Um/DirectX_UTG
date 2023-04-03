@@ -12,21 +12,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	float4x4 Proj;
-	Proj.PerspectiveFovLH(60.0f, 1280.0f / 720.0f);
+	//float4x4 Parent;
 
-	float4 Test = { -500.0f, 0, 5000.0f };
+	//Parent.ArrVector[3] = { -100, -100 };
+	//Parent.Arr2D[0][0] = 2.0f;
+	//Parent.Arr2D[1][1] = 2.0f;
 
-	Test *= Proj;
+	//float4 LocalPostion = { 100, 100 };
+	//float4 WorldPostion = { 300, 300 };
 
-	Test.x /= Test.w;
-	Test.y /= Test.w;
-	Test.z /= Test.w;
+	//float4 LocalScale = { 2, 2, 0.0f, 0.0f };
+	//float4 WorldScale = { 2, 2, 0.0f, 0.0f };
+
+	//float4 LocalPostionValue = WorldPostion * Parent.InverseReturn();
+	//float4 WorldPostionValue = LocalPostion * Parent;
+
+	//float4 LocalScaleValue = WorldScale * Parent.InverseReturn();
+	//float4 WorldScaleValue = LocalScale * Parent;
 
 	GameEngineCore::Start(hInstance, ContentsCore::GameStart, ContentsCore::GameEnd);
 }
-
-
 
 // 
 // 

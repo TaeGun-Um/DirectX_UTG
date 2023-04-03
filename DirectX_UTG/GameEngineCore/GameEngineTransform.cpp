@@ -1,4 +1,5 @@
 #include "GameEngineTransform.h"
+#include "GameEngineObject.h"
 
 GameEngineTransform::GameEngineTransform()
 {
@@ -16,5 +17,14 @@ void GameEngineTransform::TransformUpdate()
 	LocalPositionMatrix.Pos(LocalPosition);
 
 	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
-	WorldMatrix = LocalWorldMatrix;
+
+	if (nullptr == Parent)
+	{
+		WorldMatrix = LocalWorldMatrix;
+	}
+	else
+	{
+		WorldMatrix = LocalWorldMatrix * Parent->GetWorldMatrixRef();
+	}
+
 }

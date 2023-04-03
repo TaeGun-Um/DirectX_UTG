@@ -17,6 +17,7 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 protected:
+	void Start();
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
 

@@ -86,7 +86,7 @@ float4 float4::operator*(const class float4x4& _Other)
 
 float4& float4::operator*=(const class float4x4& _Other)
 {
-	DirectVector = DirectX::XMVector4Transform(*this, _Other);;
+	float4 ReturnValue = DirectX::XMVector4Transform(*this, _Other);
 	return *this;
 }
 

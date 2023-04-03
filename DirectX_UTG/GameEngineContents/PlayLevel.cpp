@@ -12,7 +12,7 @@ PlayLevel::~PlayLevel()
 }
 
 
-void PlayLevel::Loading()
+void PlayLevel::Start()
 {
 	GetMainCamera()->GetTransform().SetLocalPosition({ 0, 0, -1000.0f });
 

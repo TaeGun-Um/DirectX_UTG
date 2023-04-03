@@ -543,13 +543,24 @@ public:
 		DirectMatrix = DirectX::XMMatrixTranspose(*this);
 	}
 
+	void Inverse()
+	{
+		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
+	}
+
+	float4x4 InverseReturn() const
+	{
+		float4x4 Return = *this;
+		Return.Inverse();
+		return Return;
+	}
+
 	void Scale(const float4& _Value)
 	{
 		Identity();
 
 		DirectMatrix = DirectX::XMMatrixScalingFromVector(_Value);
 	}
-
 
 	void Pos(const float4& _Value)
 	{
