@@ -1,4 +1,5 @@
 #pragma once
+
 #include <GameEngineCore\GameEngineLevel.h>
 
 // Ό³Έν :
@@ -22,4 +23,3 @@ protected:
 private:
 
 };
-

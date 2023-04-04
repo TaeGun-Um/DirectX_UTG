@@ -15,14 +15,12 @@ GameEngineRenderer::~GameEngineRenderer()
 void GameEngineRenderer::Render(float _Delta)
 {
 	// 여기서 랜더링 할수 있겠지만 랜더러 못받는다.
- //여기서 하고 싶다 모든 구조를 이해하고 다 직접
- //여기를 쓴다는 ???????
+	// 여기서 하고 싶다 모든 구조를 이해하고 다 직접
+	// 여기를 쓴다는 ???????
 
 	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
 	const int VertexCount = 24;
-
-	// float4 Pos = {640, 360};
 
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
@@ -64,7 +62,6 @@ void GameEngineRenderer::Render(float _Delta)
 	POINT ArrPoint[VertexCount];
 
 	GetTransform()->SetLocalScale({ 100, 100, 100 });
-	// GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
 
 	GameEngineLevel* Level = GetLevel();
 
@@ -82,11 +79,7 @@ void GameEngineRenderer::Render(float _Delta)
 		return;
 	}
 
-	// GetTransform().SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
-
 	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
-
-	// GetTransform().SetViewPort(GetLevel()->GetMainCamera()->GetViewPort());
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
@@ -94,7 +87,6 @@ void GameEngineRenderer::Render(float _Delta)
 		// 투영행렬의 핵심
 		ArrVertex[i] /= ArrVertex[i].w;
 
-		// TransformCoord
 		ArrVertex[i].w = 1.0f;
 
 		ArrVertex[i] *= MainCamera->GetViewPort();

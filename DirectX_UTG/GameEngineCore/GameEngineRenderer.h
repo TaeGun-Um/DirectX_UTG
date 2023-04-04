@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameEngineComponent.h"
 
 // Ό³Έν :
@@ -21,4 +22,3 @@ protected:
 private:
 
 };
-

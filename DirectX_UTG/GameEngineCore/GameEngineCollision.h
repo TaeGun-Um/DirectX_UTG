@@ -19,4 +19,3 @@ protected:
 private:
 
 };
-

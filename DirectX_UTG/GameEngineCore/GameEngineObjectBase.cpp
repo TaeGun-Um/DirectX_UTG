@@ -7,4 +7,3 @@ GameEngineObjectBase::GameEngineObjectBase()
 GameEngineObjectBase::~GameEngineObjectBase()
 {
 }
-

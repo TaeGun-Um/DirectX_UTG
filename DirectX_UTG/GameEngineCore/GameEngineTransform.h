@@ -20,9 +20,6 @@ public:
 
 	void SetWorldScale(const float4& _Value)
 	{
-		//float4 LocalPostionValue = WorldPostion * Parent.InverseReturn();
-		//float4 WorldPostionValue = LocalPostion * Parent;
-
 		WorldScale = _Value;
 
 		if (nullptr == Parent)
@@ -45,7 +42,6 @@ public:
 			int a = 0;
 		}
 
-		// 90 0 0 
 		WorldRotation = _Value;
 
 		if (nullptr == Parent)
@@ -55,7 +51,6 @@ public:
 		else
 		{
 			float4 Rot = Parent->GetWorldRotation();
-			//   0, 0, 0    // 90,0,0       90 0 0 
 			LocalRotation = WorldRotation - Parent->GetWorldRotation();
 		}
 
@@ -107,7 +102,6 @@ public:
 		}
 		else
 		{
-			//  180         90, 0,           90, 0, 0
 			WorldRotation = LocalRotation + Parent->GetWorldRotation();
 		}
 
@@ -192,7 +186,6 @@ public:
 		return LocalRotation;
 	}
 
-
 	float4 GetWorldPosition()
 	{
 		return WorldPosition;
@@ -207,7 +200,6 @@ public:
 	{
 		return WorldRotation;
 	}
-
 
 	float4x4 GetLocalWorldMatrix()
 	{

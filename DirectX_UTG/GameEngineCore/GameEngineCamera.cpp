@@ -10,7 +10,6 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
@@ -40,8 +39,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 	{
 		FreeCamera = !FreeCamera;
 	}
-
-
 
 	if (true == FreeCamera)
 	{
@@ -104,7 +101,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 			GetTransform()->AddLocalRotation({ -RotSpeed * _DeltaTime, 0.0f, 0.0f });
 		}
 	}
-
 
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
