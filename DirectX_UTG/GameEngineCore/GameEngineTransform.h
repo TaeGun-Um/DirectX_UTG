@@ -1,9 +1,11 @@
 #pragma once
 #include <list>
+#include <memory>
 #include <GameEngineBase/GameEngineMath.h>
+#include "GameEngineObjectBase.h"
 
-// 설명 : 특정한 물체의 크기, 이동, 회전에 관련되는 기하 속성들을 관리해주는 클래스
-class GameEngineTransform
+// 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
+class GameEngineTransform : public GameEngineObjectBase
 {
 public:
 	// constrcuter destructer
@@ -26,123 +28,192 @@ public:
 		if (nullptr == Parent)
 		{
 			LocalScale = WorldScale;
-			TransformUpdate();
-			CalChild();
-			//for (GameEngineTransform* Parent : Child)
-			//{
-			//	Parent->SetLocalScale(Parent->GetLocalScale());
-			//	Parent->TransformUpdate();
-			//}
-			return;
+		}
+		else
+		{
+			LocalScale = WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
 		}
 
-		LocalScale = WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
 		TransformUpdate();
 		CalChild();
 	}
 
 	void SetWorldRotation(const float4& _Value)
 	{
+		if (true == IsDebug())
+		{
+			int a = 0;
+		}
+
+		// 90 0 0 
 		WorldRotation = _Value;
 
 		if (nullptr == Parent)
 		{
 			LocalRotation = WorldRotation;
 		}
-
+		else
+		{
+			float4 Rot = Parent->GetWorldRotation();
+			//   0, 0, 0    // 90,0,0       90 0 0 
+			LocalRotation = WorldRotation - Parent->GetWorldRotation();
+		}
 
 		TransformUpdate();
+		CalChild();
 	}
 
 	void SetWorldPosition(const float4& _Value)
 	{
 		WorldPosition = _Value;
+
+		if (nullptr == Parent)
+		{
+			LocalPosition = WorldPosition;
+		}
+		else
+		{
+			LocalPosition = WorldPosition * Parent->GetWorldMatrixRef().InverseReturn();
+		}
+
 		TransformUpdate();
+		CalChild();
 	}
 
-	// 모든 행렬 변환 결과는 즉시 TransformUpdate()를 호출하여 적용되도록 한다.
-	// 값을 변경하면 행렬의 전체 결과가 즉시 재계산되는 구조이다.
-	// 결과값을 바로 확인할 수 있어서, 굉장히 직관적이다.
-	// 행렬의 낭비가 있을 수 있지만, 특정 오브젝트는 아닐 수 있음 (고정된 오브젝트는 이게 좋음)
 	void SetLocalScale(const float4& _Value)
 	{
 		LocalScale = _Value;
+
+		if (nullptr == Parent)
+		{
+			WorldScale = LocalScale;
+		}
+		else
+		{
+			WorldScale = LocalScale * Parent->GetWorldMatrixRef();
+		}
+
 		TransformUpdate();
+		CalChild();
 	}
 
 	void SetLocalRotation(const float4& _Value)
 	{
 		LocalRotation = _Value;
+
+		if (nullptr == Parent)
+		{
+			WorldRotation = LocalRotation;
+		}
+		else
+		{
+			//  180         90, 0,           90, 0, 0
+			WorldRotation = LocalRotation + Parent->GetWorldRotation();
+		}
+
 		TransformUpdate();
+		CalChild();
 	}
 
 	void SetLocalPosition(const float4& _Value)
 	{
 		LocalPosition = _Value;
+
+		if (nullptr == Parent)
+		{
+			WorldPosition = LocalPosition;
+		}
+		else
+		{
+			WorldPosition = LocalPosition * Parent->GetWorldMatrixRef();
+		}
+
 		TransformUpdate();
+		CalChild();
 	}
 
 	void AddLocalScale(const float4& _Value)
 	{
-		LocalScale += _Value;
-		TransformUpdate();
+		SetLocalScale(LocalScale + _Value);
 	}
 
 	void AddLocalRotation(const float4& _Value)
 	{
-		LocalRotation += _Value;
-		TransformUpdate();
+		SetLocalRotation(LocalRotation + _Value);
 	}
 
 	void AddLocalPosition(const float4& _Value)
 	{
-		LocalPosition += _Value;
-		TransformUpdate();
+		SetLocalPosition(LocalPosition + _Value);
 	}
 
-	// Local에서의 z(앞)벡터 리턴
+	float4 GetWorldForwardVector()
+	{
+		return WorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	float4 GetWorldUpVector()
+	{
+		return WorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	float4 GetWorldRightVector()
+	{
+		return WorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
 	float4 GetLocalForwardVector()
 	{
 		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
 	}
 
-	// Local에서의 y(위)벡터 리턴
 	float4 GetLocalUpVector()
 	{
 		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
 	}
 
-	// Local에서의 x(오른쪽)벡터 리턴
 	float4 GetLocalRightVector()
 	{
 		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
 
-	// Local에서의 위치 리턴
 	float4 GetLocalPosition()
 	{
 		return LocalPosition;
 	}
 
-	// Local에서의 크기 리턴
 	float4 GetLocalScale()
 	{
 		return LocalScale;
 	}
 
-	// Local에서의 회전 리턴
 	float4 GetLocalRotation()
 	{
 		return LocalRotation;
 	}
 
-	// LocalWorldMatrix는 액터에 적용된 행렬 결과값이다.
+
+	float4 GetWorldPosition()
+	{
+		return WorldPosition;
+	}
+
+	float4 GetWorldScale()
+	{
+		return WorldScale;
+	}
+
+	float4 GetWorldRotation()
+	{
+		return WorldRotation;
+	}
+
+
 	float4x4 GetLocalWorldMatrix()
 	{
 		return LocalWorldMatrix;
 	}
 
-	// 혹시나 모를 최적화를 위한 레퍼런스값 리턴
 	const float4x4& GetLocalWorldMatrixRef()
 	{
 		return LocalWorldMatrix;
@@ -158,49 +229,68 @@ public:
 		return WorldMatrix;
 	}
 
+	const float4x4 GetWorldViewProjectionMatrix()
+	{
+		return WorldViewProjectionMatrix;
+	}
+
+	const float4x4& GetWorldViewProjectionMatrixRef()
+	{
+		return WorldViewProjectionMatrix;
+	}
+
 	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
 		View = _View;
 		Projection = _Projection;
-		WorldMatrix = WorldMatrix * View * Projection;
+		WorldViewProjectionMatrix = WorldMatrix * View * Projection;
 	}
 
 	inline const void SetViewPort(const float4x4& _ViewPort)
 	{
 		ViewPort = _ViewPort;
-		WorldMatrix *= ViewPort;
+		WorldViewProjectionMatrix *= ViewPort;
 	}
 
 	void CalChild()
 	{
+		for (GameEngineTransform* ChildTrans : Child)
+		{
+			ChildTrans->SetLocalScale(ChildTrans->GetLocalScale());
+			ChildTrans->SetLocalRotation(ChildTrans->GetLocalRotation());
+			ChildTrans->SetLocalPosition(ChildTrans->GetLocalPosition());
+		}
 	}
+
+	void SetParent(GameEngineTransform* _Parent);
 
 protected:
 
 private:
 	void TransformUpdate();
 
-	// weak_ptr 구조, 후에 쓸 예정
-	GameEngineTransform* Parent = nullptr;
-	std::list <GameEngineTransform*> Child;
-
-	float4 LocalScale = float4::One;      // 크기는 0이면 변환이 안되기 때문에, 원벡터를 활용한다.
-	float4 LocalRotation = float4::Zero;  // 나머지는 제로벡터
+	float4 LocalScale = float4::One;
+	float4 LocalRotation = float4::Null;
 	float4 LocalPosition = float4::Zero;
 
 	float4 WorldScale = float4::One;
-	float4 WorldRotation = float4::Zero;
+	float4 WorldRotation = float4::Null;
 	float4 WorldPosition = float4::Zero;
 
-	float4x4 LocalScaleMatrix;            // 크기 변환 행렬
-	float4x4 LocalRotationMatrix;         // 회전 변환 행렬
-	float4x4 LocalPositionMatrix;         // 이동 변환 행렬
+	float4x4 LocalScaleMatrix;
+	float4x4 LocalRotationMatrix;
+	float4x4 LocalPositionMatrix;
 
 	float4x4 LocalWorldMatrix;
 
 	float4x4 WorldMatrix;
+	float4x4 WorldViewProjectionMatrix;
+
 	float4x4 View;
 	float4x4 Projection;
 	float4x4 ViewPort;
+
+	GameEngineTransform* Parent = nullptr;
+	std::list<GameEngineTransform*> Child;
 };
 

@@ -1,14 +1,10 @@
 #pragma once
-
-#include <list>
-#include <string>
-#include <memory>
-
 #include <GameEngineBase/GameEngineMath.h>
+#include "GameEngineObjectBase.h"
 #include "GameEngineTransform.h"
 
 // 설명 :
-class GameEngineObject
+class GameEngineObject : public GameEngineObjectBase
 {
 	friend class GameEngineLevel;
 
@@ -27,52 +23,13 @@ public:
 	GameEngineObject& operator=(const GameEngineObject& _Other) = delete;
 	GameEngineObject& operator=(GameEngineObject&& _Other) noexcept = delete;
 
-	int GetOrder()
+	GameEngineTransform* GetTransform()
 	{
-		return Order;
+		return &Transform;
 	}
 
-	void SetOrder(int _Order)
-	{
-		Order = _Order;
-	}
 
-	void On()
-	{
-		IsActive = true;
-	}
-
-	void Off()
-	{
-		IsActive = false;
-	}
-
-	void Death()
-	{
-		IsDeath = true;
-	}
-
-	// string_view를 인자로 받는 이유는 동적할당을 한번이라도 줄이기 위해서.
-	void SetName(const std::string_view& _Name)
-	{
-		Name = _Name;
-	}
-
-	GameEngineTransform& GetTransform()
-	{
-		return Transform;
-	}
-
-protected:
-
-private:
-	std::string Name = "";
-	bool IsActive = true; // 켜졌다 꺼졌다
-	bool IsDeath = false; // 죽었다 살았다.
-	int Order = 0;
-
-////////////////////////////////////////////////////////////// Transform 기하구조
 private:
 	GameEngineTransform Transform;
-	
+
 };

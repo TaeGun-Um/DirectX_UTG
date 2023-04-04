@@ -9,11 +9,15 @@ GameEngineTransform::~GameEngineTransform()
 {
 }
 
-// 모든 행렬에 대한 결과값, LocalWorldMatrix에 저장된다.
+
 void GameEngineTransform::TransformUpdate()
 {
 	LocalScaleMatrix.Scale(LocalScale);
-	LocalRotationMatrix.RotationDeg(LocalRotation);
+
+	LocalRotation.w = 0.0f;
+
+	// LocalRotationMatrix.RotationDeg(LocalRotation);
+	LocalRotationMatrix.RotationDegToXYZ(LocalRotation);
 	LocalPositionMatrix.Pos(LocalPosition);
 
 	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
@@ -28,3 +32,14 @@ void GameEngineTransform::TransformUpdate()
 	}
 
 }
+
+void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
+{
+	Parent = _Parent;
+
+	// 내가 이미 다른 부모가 있다면
+
+	Parent->Child.push_back(this);
+}
+
+

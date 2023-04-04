@@ -1,5 +1,5 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineActor.h"
 
 // 설명 :
 class GameEngineComponent : public GameEngineUpdateObject
@@ -17,12 +17,21 @@ public:
 	GameEngineComponent& operator=(const GameEngineComponent& _Other) = delete;
 	GameEngineComponent& operator=(GameEngineComponent&& _Other) noexcept = delete;
 
+	class GameEngineActor* GetActor()
+	{
+		return Actor;
+	}
+
+	class GameEngineLevel* GetLevel()
+	{
+		return Actor->GetLevel();
+	}
+
 protected:
 
 private:
 	class GameEngineActor* Actor;
 
-	// Actor(Parent 등록?)
 	void SetActor(class GameEngineActor* _Actor);
 
 };

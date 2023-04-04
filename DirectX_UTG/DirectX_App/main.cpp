@@ -12,6 +12,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
+
 	//float4x4 Parent;
 
 	//Parent.ArrVector[3] = { -100, -100 };
@@ -30,26 +31,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//float4 LocalScaleValue = WorldScale * Parent.InverseReturn();
 	//float4 WorldScaleValue = LocalScale * Parent;
 
-	GameEngineCore::Start(hInstance, ContentsCore::GameStart, ContentsCore::GameEnd);
+
+	GameEngineCore::Start(hInstance,
+		ContentsCore::GameStart,
+		ContentsCore::GameEnd,
+		{ 0, 0 }
+	);
 }
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+
