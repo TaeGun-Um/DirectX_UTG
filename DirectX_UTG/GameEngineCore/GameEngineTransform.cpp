@@ -15,9 +15,8 @@ void GameEngineTransform::TransformUpdate()
 	LocalScaleMatrix.Scale(LocalScale);
 
 	LocalRotation.w = 0.0f;
-
-	LocalRotationMatrix.RotationDegToXYZ(LocalRotation);
-
+	LocalQuaternion = LocalRotation.EulerDegToQuaternion();
+	LocalRotationMatrix = LocalQuaternion.QuaternionToRotationMatrix();
 	LocalPositionMatrix.Pos(LocalPosition);
 
 	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
@@ -30,14 +29,12 @@ void GameEngineTransform::TransformUpdate()
 	{
 		WorldMatrix = LocalWorldMatrix * Parent->GetWorldMatrixRef();
 	}
-
 }
 
 void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 {
 	Parent = _Parent;
 
+
 	Parent->Child.push_back(this);
 }
-
-

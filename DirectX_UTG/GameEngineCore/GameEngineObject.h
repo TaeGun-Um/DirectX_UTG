@@ -2,9 +2,10 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineObjectBase.h"
 #include "GameEngineTransform.h"
+#include <GameEngineCore/GameEngineNameObject.h>
 
 // Ό³Έν :
-class GameEngineObject : public GameEngineObjectBase
+class GameEngineObject : public GameEngineObjectBase, public GameEngineNameObject
 {
 	friend class GameEngineLevel;
 

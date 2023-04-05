@@ -17,7 +17,6 @@ public:
 	GameEngineObjectBase& operator=(const GameEngineObjectBase& _Other) = delete;
 	GameEngineObjectBase& operator=(GameEngineObjectBase&& _Other) noexcept = delete;
 
-
 	int GetOrder()
 	{
 		return Order;
@@ -43,12 +42,6 @@ public:
 		DeathValue = true;
 	}
 
-	//                 "드래곤"
-	// 동적할당 1번을 줄이려고.
-	void SetName(const std::string_view& _Name)
-	{
-		Name = _Name;
-	}
 
 	void DebugOn()
 	{
@@ -63,7 +56,6 @@ public:
 protected:
 
 private:
-	std::string Name = "";
 	bool ActiveValue = true; // 켜졌다 꺼졌다
 	bool DeathValue = false; // 죽었다 살았다
 	bool DebugValue = false;

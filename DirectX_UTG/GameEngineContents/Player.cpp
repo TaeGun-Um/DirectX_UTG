@@ -106,7 +106,7 @@ void Player::Update(float _DeltaTime)
 
 	// Render1->GetTransform()->SetWorldPosition({ 0.0f, 0.0f, 0.0f });
 
-	Render1->GetTransform()->SetWorldRotation({ 0.0f, 0.0f, 0.0f });
+	Render1->GetTransform()->SetLocalRotation(-GetTransform()->GetWorldRotation());
 }
 
 void Player::Start()

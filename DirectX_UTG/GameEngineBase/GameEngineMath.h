@@ -139,6 +139,15 @@ public:
 
 	}
 
+	void RotaitonXRad(float _Rad);
+	void RotaitonYRad(float _Rad);
+	void RotaitonZRad(float _Rad);
+	float4 EulerDegToQuaternion();
+	class float4x4 QuaternionToRotationMatrix();
+
+	float4 QuaternionToEulerDeg();
+	float4 QuaternionToEulerRad();
+
 	int ix() const
 	{
 		return static_cast<int>(x);
@@ -239,10 +248,6 @@ public:
 	{
 		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
-
-	void RotaitonXRad(float _Rad);
-	void RotaitonYRad(float _Rad);
-	void RotaitonZRad(float _Rad);
 
 	float GetAnagleRadZ()
 	{
@@ -477,6 +482,8 @@ public:
 	}
 };
 
+typedef float4 Quaternion;
+
 class float4x4
 {
 public:
@@ -540,6 +547,35 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	{
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeRotQuaternion(float4& _RotQuaternion)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &_RotQuaternion.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
+	void DecomposePos(float4& _Pos)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &Temp1.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeScale(float4& _Scale)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &Temp0.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
 	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
 		Identity();
@@ -570,7 +606,6 @@ public:
 
 		DirectMatrix = DirectX::XMMatrixScalingFromVector(_Value);
 	}
-
 
 	void Pos(const float4& _Value)
 	{
@@ -609,7 +644,6 @@ public:
 		DirectMatrix = DirectX::XMMatrixRotationX(_Rad);
 	}
 
-
 	void RotationYDeg(const float _Deg)
 	{
 		RotationYRad(_Deg * GameEngineMath::DegToRad);
@@ -633,7 +667,6 @@ public:
 
 		DirectMatrix = DirectX::XMMatrixRotationZ(_Rad);
 	}
-
 
 	float4x4 operator*(const float4x4& _Other)
 	{

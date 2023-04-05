@@ -42,7 +42,16 @@ public:
 			int a = 0;
 		}
 
+		// 90 0 0 
+		// 여기에는 이미 최종값이 들어가 있다.
+		// 내가 어떤 과정을 거쳐서 여기로 들어온 것이다.
+
+		// 최종적으로 적용된 행렬이다.
 		WorldRotation = _Value;
+		// 부모가 적용됐기 때문에 나는 이상태가 된겁니다.
+
+		// RotationMatrix 이게 최종 나의 회전행렬이다.
+		// RotationMatrix <= 누구때문에 나는 이렇게 되었나?
 
 		if (nullptr == Parent)
 		{
@@ -263,10 +272,12 @@ private:
 
 	float4 LocalScale = float4::One;
 	float4 LocalRotation = float4::Null;
+	Quaternion LocalQuaternion = DirectX::XMQuaternionIdentity();
 	float4 LocalPosition = float4::Zero;
 
 	float4 WorldScale = float4::One;
 	float4 WorldRotation = float4::Null;
+	Quaternion WorldQuaternion = DirectX::XMQuaternionIdentity();
 	float4 WorldPosition = float4::Zero;
 
 	float4x4 LocalScaleMatrix;

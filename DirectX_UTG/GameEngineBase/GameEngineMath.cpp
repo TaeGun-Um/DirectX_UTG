@@ -38,6 +38,38 @@ void float4::RotaitonZRad(float _Rad)
 	*this *= Rot;
 }
 
+float4 float4::EulerDegToQuaternion()
+{
+	float4 Return = DirectVector;
+	Return *= GameEngineMath::DegToRad;
+	Return = DirectX::XMQuaternionRotationRollPitchYawFromVector(Return.DirectVector);
+	return Return;
+}
+
+float4 float4::QuaternionToEulerDeg()
+{
+	return QuaternionToEulerRad() * GameEngineMath::RadToDeg;
+}
+
+float4 float4::QuaternionToEulerRad()
+{
+	float sqw = w * w;
+	float sqx = x * x;
+	float sqy = y * y;
+	float sqz = z * z;
+
+	float AngleX = asinf(2.0f * (w * x - y * z));
+	float AngleY = atan2f(2.0f * (x * z - w * y), (-sqx - sqy + sqz + sqw));
+	float AngleZ = atan2f(2.0f * (x * y - w * z), (-sqx + sqy - sqz + sqw));
+
+	return float4(AngleX, AngleY, AngleZ);
+}
+
+float4x4 float4::QuaternionToRotationMatrix()
+{
+	return DirectX::XMMatrixRotationQuaternion(DirectVector);
+}
+
 std::vector<unsigned int> GameEngineMath::GetDigits(int _Value)
 {
 	std::vector<unsigned int> ResultValue = std::vector<unsigned int>();
