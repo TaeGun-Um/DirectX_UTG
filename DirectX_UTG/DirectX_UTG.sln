@@ -50,6 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{7E1B77B6-48E
 		New연산이 느린 이유.txt = New연산이 느린 이유.txt
 		수학.txt = 수학.txt
 		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
+		쿼터니온.txt = 쿼터니온.txt
 		클래스의 결합도와 응집도.txt = 클래스의 결합도와 응집도.txt
 	EndProjectSection
 EndProject

@@ -22,7 +22,6 @@ public:
 		std::shared_ptr<GameEngineMesh> NewMesh = GameEngineResource::Create(_Name);
 	}
 
-
 protected:
 
 private:

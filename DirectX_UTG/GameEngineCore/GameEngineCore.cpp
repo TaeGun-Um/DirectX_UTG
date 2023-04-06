@@ -5,6 +5,7 @@
 #include <GameEnginePlatform\GameEngineSound.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
+#include "GameEngineDevice.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -20,6 +21,12 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
+	GameEngineDevice::Initialize();
+
+	// 메쉬는 CreateLevel 전에 만들어져 있어야 한다.
+	// 보통 엔진에서 박스나 구, 렉트 정도는 지원해줘야 한다.
+	// 릭은 안남지만 내가 원하는 타이밍에 제거시키기 위해 CoreResourcesEnd에서 삭제
+
 	CoreResourcesInit();
 
 	if (nullptr == _ContentsStart)
@@ -63,6 +70,8 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	LevelMap.clear();
 
 	CoreResourcesEnd();
+
+	GameEngineDevice::Release();
 }
 
 void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)

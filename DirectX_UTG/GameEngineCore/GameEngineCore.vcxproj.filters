@@ -19,6 +19,9 @@
     <Filter Include="Object\Rendering\Component">
       <UniqueIdentifier>{01e7a3bc-aac4-46ef-910a-4d7f981c0e04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{5f72f827-d55b-4f13-963e-1111ae5302f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -63,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="GameEngineTexture.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDevice.h">
+      <Filter>Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineTexture.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDevice.cpp">
+      <Filter>Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

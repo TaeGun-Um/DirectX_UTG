@@ -5,6 +5,10 @@
 #include <GameEngineCore/GameEngineNameObject.h>
 
 // 설명 :
+// 다중상속
+// 다중상속을 가장 잘 사용하는 것은 인터페이스만 제공하는 것이다.
+// 멤버변수는 항상 문제를 일으키기 때문에.
+// 사실 풀네임으로 선언하면 알아낼 수 있음(모호성이 사라진다.)
 class GameEngineObject : public GameEngineObjectBase, public GameEngineNameObject
 {
 	friend class GameEngineLevel;

@@ -84,6 +84,8 @@ private:
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
 
+	// 원하는 타이밍에 제거되도록 함
+	// 이를 위해 Core에 friend
 	static void ResourcesClear()
 	{
 		NamedResources.clear();

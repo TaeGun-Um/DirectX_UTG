@@ -12,10 +12,6 @@
 #include <d3dcompiler.h>
 #include <DirectXPackedVector.h>
 
-#pragma comment(lib, "d3d11")
-#pragma comment(lib, "d3dcompiler")
-#pragma comment(lib, "dxguid")
-
 // final 더이상 상속내릴지 못한다.
 class GameEngineMath final
 {
@@ -206,6 +202,46 @@ public:
 	float hw() const
 	{
 		return w * 0.5f;
+	}
+
+	int uix() const
+	{
+		return static_cast<unsigned int>(x);
+	}
+
+	int uiy() const
+	{
+		return static_cast<unsigned int>(y);
+	}
+
+	int uiz() const
+	{
+		return static_cast<unsigned int>(z);
+	}
+
+	int uiw() const
+	{
+		return static_cast<unsigned int>(w);
+	}
+
+	int uhix() const
+	{
+		return static_cast<unsigned int>(x * 0.5f);
+	}
+
+	int uhiy() const
+	{
+		return static_cast<unsigned int>(y * 0.5f);
+	}
+
+	int uhiz() const
+	{
+		return static_cast<unsigned int>(z * 0.5f);
+	}
+
+	int uhiw() const
+	{
+		return static_cast<unsigned int>(w * 0.5f);
 	}
 
 	float GetAnagleDegZ()
