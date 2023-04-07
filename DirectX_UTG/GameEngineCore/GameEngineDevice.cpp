@@ -1,5 +1,6 @@
 #include "GameEngineDevice.h"
 #include <GameEngineBase/GameEngineDebug.h>
+#include "GameEngineRenderTarget.h"
 
 #pragma comment(lib, "d3d11")
 #pragma comment(lib, "d3dcompiler")
@@ -9,6 +10,7 @@
 ID3D11Device* GameEngineDevice::Device = nullptr;
 ID3D11DeviceContext* GameEngineDevice::Context = nullptr;
 IDXGISwapChain* GameEngineDevice::SwapChain = nullptr;
+std::shared_ptr<GameEngineRenderTarget> GameEngineDevice::BackBufferTarget = nullptr;
 
 GameEngineDevice::GameEngineDevice()
 {
@@ -27,8 +29,10 @@ IDXGIAdapter* GameEngineDevice::GetHighPerformanceAdapter()
 	IDXGIFactory* Factory = nullptr;
 	IDXGIAdapter* Adapter = nullptr;
 
-	// __uuidof(IDXGIFactory) == c++에서 지원하는 클래스를 구분하기 위한 GUI를 얻어오는 것이다.
-	// 내부로 들어가서 확인하면 절대 겹치지 않는 고유 값을 받아온다. == MIDL_INTERFACE("7b7166ec-21c7-44ae-b21a-c9ae321ae369")
+	// __uuidof(IDXGIFactory) == Direct에서는 자신의 라이브러리를 활용할 때, Factory 인터페이스를 활용하여 얻어오도록 했다.
+	// 이를 활용하면 == GUID MIDL_INTERFACE("7b7166ec-21c7-44ae-b21a-c9ae321ae369")를 얻어오게 된다.
+	// 이것은 절대 겹치지 않는 고유 값이다.
+	// 프로그램을 통틀어서 단 하나만 존재할 수 있는 키를 만드는 기법, __uuidof(IDXGIFactory) 했는데 아이디가 같을 가능성을 없에는 것.
 	HRESULT HR = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&Factory);
 
 	// 여기서부터는 선생님이 작성한 코드, VRAM이 가장 높은 그래픽카드가 좋다는 기준을 세움
@@ -103,7 +107,10 @@ void GameEngineDevice::CreateSwapChain()
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;                        // 기억 안나심
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;   // 특정 윈도우에서 윈도우 전용 옵션이 설정된 다이렉트 스왑체인을 사용하겠다는 의미. 쉐이더에서도 이걸 적용하겠다는 의미
 	SwapChainDesc.SampleDesc.Quality = 0;                                                    // 샘플링 퀄리티 0은 자동으로 해달라는 뜻
-	SwapChainDesc.SampleDesc.Count = 1;                                                      // 퀄리티를 1짜리로 만들어달라는 뜻이 아님
+	SwapChainDesc.SampleDesc.Count = 1;                                                      // 퀄리티 0짜리를 한개 만들라는 뜻은 아니다. 대부분의 프로그래머는 셰이더로 안티얼라이어싱을 만들어서 쓴다. 기본 기능은 너무 느리기 때문이다.
+	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;								 // 이미지는 최종적으로 화면에 출력되어야 한다. 화면에 출력하기 전 필요한 이미지를 띄워놓는 버퍼를 두개 만든다는 뜻.
+	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;                            // 화면 크기를 바꾸거나 모니터를 바꿀 때 필요한 것으로, 게임에서 해상도 조정 가능성에 대비해 넣는 옵션인데, 이는 무시한다는 뜻이다. 아무것도 없으면 알아서 한다.
+	SwapChainDesc.Windowed = true;                                                           // false면 전체화면 입니다.
 
 	// SwapChainDesc.BufferUsage == 단순히 특정 모니터에만 그리는 용도로 만드는 것이 아니라, 여러 종류를 옵션으로 정해서 만들 수 있다.
 	// 윈도우가 하나니까 하나만 만들 수 있는 것이 아니라, 여러 개 만들 수 있다.
@@ -115,11 +122,96 @@ void GameEngineDevice::CreateSwapChain()
 	// 이때, 픽셀 자신에 특정 물체가 들어올 경우, 자신이 가진 점의 갯수에 따라서 색을 진하게, 흐리게 조절할 수 있다.
 	// 점을 2개 가졌는데, 하나에 닿았다면 약간 흐리게, 두개 다 닿았다면 원래 색으로 이런 뜻
 	// 픽셀 하나가 지니는 점의 갯수가 많을 수록 색의 진함과 흐림에 대해 세분화하여 표현한다.
+
+	// SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	// Direct는 기본적으로 쓰레드 방식을 취하기 때문에 고속으로 화면에 랜더링 하기 위해서 화면에 이미지가 들어가는 시간동안 멈추지 않고 인풋이 되지 않았다면 다른 버퍼를 이용한다.
+	// 다른 버퍼를 이용하는 순간, 기존의 버퍼는 다시 대기 상태에 놓인다.
+
+	IDXGIDevice* SwapDevice = nullptr;
+	IDXGIAdapter* SwapAdapter = nullptr;
+	IDXGIFactory* SwapFactory = nullptr;
+
+	// static IDXGIAdapter* GetHighPerformanceAdapter();를 통해 얻어온 어댑터를 활용할 수 있긴 한데, D3D11CreateDevice()를 통해 Device가 만들어진다.
+	// SwapDevice에게 Device 정보를 복사
+	Device->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&SwapDevice));
+	if (nullptr == SwapDevice)
+	{
+		MsgAssert("DXGI 디바이스를 DirectX디바이스에서 얻어오지 못했습니다.");
+		return;
+	}
+
+	// 이 만들어진 SwapDevice를 통해 SwapAdapter를 역으로 얻어올 수 있다. (마치 WinAPI의 GetLevel() 같은 느낌)
+	SwapDevice->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void**>(&SwapAdapter));
+	if (nullptr == SwapAdapter)
+	{
+		MsgAssert("DXGI 디바이스를 DirectX디바이스에서 얻어오지 못했습니다.");
+		return;
+	}
+
+	// 위에서 GetHighPerformanceAdapter()를 통해 Adapter로 Factory로 얻어왔다.
+	// 여기선 역으로 SwapAdapter를 통해 SwapFactory 정보를 가져온다.
+	SwapAdapter->GetParent(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&SwapFactory));
+
+	// 가져온 SwapFactory로 SwapChain을 만든다.
+	if (S_OK != SwapFactory->CreateSwapChain(Device, &SwapChainDesc, &SwapChain))
+	{
+		MsgAssert("스왑체인 생성에 실패했습니다.");
+		return;
+	}
+
+	// SwapChain 생성이 완료됐다면 SwapDevice, SwapAdapter, SwapFactory는 Release를 실시한다.
+	SwapDevice->Release();
+	SwapAdapter->Release();
+	SwapFactory->Release();
+
+	ID3D11Texture2D* SwapBackBufferTexture = nullptr;
+
+	// SwapChain을 생성했다면, 내부에 Texture를 지니고 있다. ID3D11Texture2D* SwapBackBufferTexture에게 그것을 얻어오는 것이다.
+	HRESULT Result = SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&SwapBackBufferTexture));
+	if (S_OK != Result)
+	{
+		MsgAssert("스왑체인 생성에 실패했습니다.");
+		return;
+	}
+
+	// 그림에서 RenderTarget을 만든다.
+	// 그래픽카드한테 이 텍스쳐를 수정할 수 있는 권한을 만들어 달라고 하는 것이다.
+	// 이때, SwapChain으로 얻어온 Texture는 윈도우의 핸들과 연결된 Direct의 Texture이다.
+	// 이걸 수정할 권한이 없기 때문에 Device->CreateTargetview(백버퍼, 랜더타겟)을 실시하지만, 이걸 GameEngineTextuer, GameEngineRenderTarget 두 개로 나눴다.
+
+	std::shared_ptr<GameEngineTexture> BackBufferTexture = std::make_shared<GameEngineTexture>();
+	BackBufferTexture->Create(SwapBackBufferTexture);
+
+	// RenderTarget은 HDC라고 생각하면 된다. HDC는 이미지를 수정할 수 있는 권한(핸들)이다.
+	BackBufferTarget = GameEngineRenderTarget::Create("MainBackBufferTarget", BackBufferTexture, { 0.0f, 0.0f, 1.0f, 1.0f });
+
+	// WinAPI에서도 이미지를 로드할 때마다 HDC를 얻어왔기 때문에, 우리는 수 백, 수 천개의 HDC를 컨트롤 했다. 이미지를 로드한 만큼 HDC가 존재하기 때문이다.
+	// 그런데 HDC만 가지고 이미지를 화면에 띄울 수는 없었다.
+	// HDC는 화면에 그림을 띄우기 전 수정하는 것이다. 이게 없으면 화면에 띄우려고 해도 못띄우고, 이것만 해선 못띄운다.
+	// 이걸 RenderTarget이 그려주는 것이다.
+
+	// 요약 : 생성된 Window로 부터 HWND를 얻어옴 -> 이걸로 SwapChain을 만듬 -> SwapChain이 Texture를 만듬 -> Texture가 그림 그릴 권한인 RenderTarget을 만듬
 }
 
+// 백버퍼 클리어
+void GameEngineDevice::RenderStart()
+{
+	BackBufferTarget->Clear();
+}
 
-
-
+// 백버퍼에 이미지 생성(HDC로 수정된 이미지 화면에 띄우기)
+void GameEngineDevice::RenderEnd()
+{
+	// 윈도우(창)을 변경할 경우(해상도 변경) 이 부분에서 터진다.
+	// 근데 크기를 변경하는 기능은 디바이스 초기화, 리소스 삭제 후 다시 디바이스 생성하는 과정을 거치는데 << 이거 안만들기로 했으니 수정하면 여기서 터짐.
+	HRESULT Result = SwapChain->Present(0, 0);
+	if (Result == DXGI_ERROR_DEVICE_REMOVED || Result == DXGI_ERROR_DEVICE_RESET)
+	{
+		// 디바이스 다시만들기
+		MsgAssert("랜더타겟 생성에 실패했습니다.");
+		return;
+	}
+}
 
 // 다이렉트 로드는 핸들(HWND)이 필요하다.
 void GameEngineDevice::Initialize()
@@ -191,6 +283,9 @@ void GameEngineDevice::Initialize()
 		return;
 	}
 
+	// 다이렉트 x에서 멀티쓰레드 관련 
+	Result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+
 	// 스왑체인 == 윈도우(창)에서의 BackBuffer와 같은 역할
 	// 윈도우(창)과 연결하는 작업을 실시하는 것이다.
 	CreateSwapChain();
@@ -199,10 +294,12 @@ void GameEngineDevice::Initialize()
 // 릴리즈 구조 (End에서 호출)
 void GameEngineDevice::Release()
 {
-	if (nullptr != Device)
+	BackBufferTarget = nullptr;
+
+	if (nullptr != SwapChain)
 	{
-		Device->Release();
-		Device = nullptr;
+		SwapChain->Release();
+		SwapChain = nullptr;
 	}
 
 	if (nullptr != Context)
@@ -211,5 +308,9 @@ void GameEngineDevice::Release()
 		Context = nullptr;
 	}
 
-
+	if (nullptr != Device)
+	{
+		Device->Release();
+		Device = nullptr;
+	}
 }

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <memory>
+
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
@@ -23,6 +26,20 @@ public:
 	// 릴리즈 구조(알아서 되지만 명시적 확인을 위해 직접 호출)
 	static void Release();
 
+	static void RenderStart();
+
+	static void RenderEnd();
+
+	static ID3D11Device* GetDevice()
+	{
+		return Device;
+	}
+
+	static ID3D11DeviceContext* GetContext()
+	{
+		return Context;
+	}
+
 protected:
 
 private:
@@ -43,7 +60,10 @@ private:
 	// 윈도우(창) 기준으로 본다면 스왑체인은 BackBuffer이다.
 	static IDXGISwapChain* SwapChain;
 
+	// 그래픽카드 Adapter를 얻어옴
 	static IDXGIAdapter* GetHighPerformanceAdapter();
+
+	static std::shared_ptr<class GameEngineRenderTarget> BackBufferTarget;
 
 	// constrcuter destructer
 	GameEngineDevice();

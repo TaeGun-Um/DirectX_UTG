@@ -19,6 +19,7 @@ GameEngineCore::~GameEngineCore()
 {
 }
 
+// Core의 시작 구간 (리소스, 액터, 레벨 Start)
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
 	GameEngineDevice::Initialize();
@@ -36,6 +37,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	_ContentsStart();
 }
 
+// Core의 루프 구간
 void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
@@ -49,15 +51,20 @@ void GameEngineCore::EngineUpdate()
 		return;
 	}
 
-	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
-	GameEngineInput::Update(TimeDeltaTime);
-	GameEngineSound::SoundUpdate();
+	// 델타타임 체크
+	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck(); 
 
-	MainLevel->TimeEvent.Update(TimeDeltaTime);
-	MainLevel->Update(TimeDeltaTime);
-	MainLevel->Render(TimeDeltaTime);
+	GameEngineInput::Update(TimeDeltaTime);       // 할당 후 변동된 Key 값 업데이트
+	GameEngineSound::SoundUpdate();               // FMOD Sound 업데이트
+
+	MainLevel->TimeEvent.Update(TimeDeltaTime);   // Level의 TimeEvent 변동 값 업데이트
+	MainLevel->Update(TimeDeltaTime);             // Level의 Actor 변동 값 업데이트
+	GameEngineDevice::RenderStart();              // 백버퍼 클리어
+	MainLevel->Render(TimeDeltaTime);             // Render를 실시며 HDC를 활용하여 이미지 수정
+	GameEngineDevice::RenderEnd();                // 백버퍼에 이미지 랜더
 }
 
+// Core의 종료 구간 (Level(map) clear, 할당된 shared_ptr 명시적 해제, DirectX 명시적 해제(Release))
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 {
 	if (nullptr == _ContentsEnd)

@@ -6,11 +6,11 @@
 
 #include "GameEngineMesh.h"
 #include "GameEngineTexture.h"
+#include "GameEngineRenderTarget.h"
 
 
 void GameEngineCore::CoreResourcesInit()
 {
-
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	std::vector<float4> ArrVertex;
 	ArrVertex.resize(24);
@@ -63,4 +63,5 @@ void GameEngineCore::CoreResourcesEnd()
 {
 	GameEngineResource<GameEngineMesh>::ResourcesClear();
 	GameEngineResource<GameEngineTexture>::ResourcesClear();
+	GameEngineResource<GameEngineRenderTarget>::ResourcesClear();
 }
