@@ -159,7 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ContentsCore.h">
+    <ClInclude Include="CupheadCore.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -173,7 +173,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContentsCore.cpp">
+    <ClCompile Include="CupheadCore.cpp">
       <SubType>
       </SubType>
     </ClCompile>

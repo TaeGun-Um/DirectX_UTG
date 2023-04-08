@@ -9,7 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="CupheadCore.h" />
     <ClInclude Include="PlayLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
@@ -18,7 +18,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="CupheadCore.cpp" />
     <ClCompile Include="PlayLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>

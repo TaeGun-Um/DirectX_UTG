@@ -1,18 +1,18 @@
-#include "ContentsCore.h"
+#include "CupheadCore.h"
 
 #include <GameEngineCore\GameEngineCore.h>
 
 #include "PlayLevel.h"
 
-ContentsCore::ContentsCore()
+CupheadCore::CupheadCore()
 {
 }
 
-ContentsCore::~ContentsCore()
+CupheadCore::~CupheadCore()
 {
 }
 
-void ContentsCore::GameStart()
+void CupheadCore::GameStart()
 {
 	new int(); // ½Å·ÚÀÇ ¸¯
 
@@ -20,7 +20,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::ChangeLevel("PlayLevel");
 }
 
-void ContentsCore::GameEnd()
+void CupheadCore::GameEnd()
 {
 
 }
