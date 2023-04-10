@@ -48,11 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. DOC", "0. DOC", "{7E1B77
 		GameEngineSerializer.txt = GameEngineSerializer.txt
 		Modal.txt = Modal.txt
 		New연산이 느린 이유.txt = New연산이 느린 이유.txt
+		랜더링파이프라인과 Vertex.txt = 랜더링파이프라인과 Vertex.txt
 		수학.txt = 수학.txt
 		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
 		쿼터니온.txt = 쿼터니온.txt
 		클래스의 결합도와 응집도.txt = 클래스의 결합도와 응집도.txt
-		프리컴파일헤더.txt = 프리컴파일헤더.txt
 	EndProjectSection
 EndProject
 Global

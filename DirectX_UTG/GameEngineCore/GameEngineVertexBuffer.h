@@ -2,7 +2,7 @@
 #include "GameEngineResource.h"
 #include "GameEngineDirectBuffer.h"
 
-// 설명 :
+// 설명 : GameEngineDirectBuffer를 상속받았기 때문에 ID3D11Buffer, D3D11_BUFFER_DESC를 활용할 수 있다.
 class GameEngineVertexBuffer : public GameEngineResource<GameEngineVertexBuffer>, public GameEngineDirectBuffer
 {
 public:
