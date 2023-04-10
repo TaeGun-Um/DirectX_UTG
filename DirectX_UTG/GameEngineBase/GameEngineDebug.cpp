@@ -1,5 +1,7 @@
+#include "PrecompileHeader.h"
+#include "PrecompileHeader.h"
 #include "GameEngineDebug.h"
-// #include <iostream>
+
 #include <crtdbg.h>
 
 GameEngineDebug::GameEngineDebug() 
