@@ -40,21 +40,25 @@ public:
 	static const float4 Zero;
 	static const float4 Null;
 
+	// Degree를 Radian으로 변환한 뒤 벡터 회전
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{
 		return AngleToDirection2DToRad(_Deg * GameEngineMath::DegToRad);
 	}
 
+	// 벡터 회전
 	static float4 AngleToDirection2DToRad(float _Rad)
 	{
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	// Degree를 Radian으로 변환한 뒤 백터의 내적 계산
 	static float GetAngleVectorToVectorDeg(const float4& _Left, const float4& _Right)
 	{
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
+	// 벡터의 내적
 	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
 	{
 		float4 Left = _Left;
@@ -63,26 +67,32 @@ public:
 		Left.Normalize();
 		Right.Normalize();
 
-		float CosSeta = DotProduct3D(Left, Right);
+		float CosSeta = DotProduct3D(Left, Right); // 벡터의 내적 실시
 
-		float Angle = acosf(CosSeta);
+		float Angle = acosf(CosSeta); // 내적 결과 각도
 
 		return Angle;
 	}
 
+	// 벡터를 노말라이즈 한 뒤 외적
 	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
 	{
 		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
 	}
 
+	// 벡터의 외적
 	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
+		// 다이렉트의 네임 스페이스는 DirectX:: 이다.
+		// DirectX::XMVector3Cross == 다이렉트 벡터의 외적
 		float4 ReturnValue = DirectX::XMVector3Cross(_Left, _Right);
 		return ReturnValue;
 	}
 
+	// 다이렉트 벡터 내적
 	static float DotProduct3D(const float4& _Left, const float4& _Right)
 	{
+		// DirectX::XMVector3Dot == 다이렉트 벡터의 내적
 		float4 ReturnValue = DirectX::XMVector3Dot(_Left, _Right);
 		return ReturnValue.x;
 	}
@@ -100,6 +110,7 @@ public:
 
 		float Arr1D[4];
 
+		// 심드 연산을 위한 Direct 전용 float3, float4, DirectVector
 		DirectX::XMFLOAT3 DirectFloat3;
 		DirectX::XMFLOAT4 DirectFloat4;
 		DirectX::XMVECTOR DirectVector;
@@ -324,6 +335,7 @@ public:
 		DirectVector = DirectX::XMVector3Normalize(*this);
 	}
 
+	// 벡터 노말라이즈 (단위기저벡터로 변환 : 1)
 	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
