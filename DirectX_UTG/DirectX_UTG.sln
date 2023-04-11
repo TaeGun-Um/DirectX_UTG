@@ -46,14 +46,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. DOC", "0. DOC", "{7E1B77
 		3D 함수.txt = 3D 함수.txt
 		GameEngineObject.txt = GameEngineObject.txt
 		GameEngineSerializer.txt = GameEngineSerializer.txt
+		GameEngineRenderingPipeLine.txt = GameEngineRenderingPipeLine.txt
 		Modal.txt = Modal.txt
 		New연산이 느린 이유.txt = New연산이 느린 이유.txt
-		랜더링파이프라인과 Vertex.txt = 랜더링파이프라인과 Vertex.txt
 		수학.txt = 수학.txt
 		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
 		쿼터니온.txt = 쿼터니온.txt
 		클래스의 결합도와 응집도.txt = 클래스의 결합도와 응집도.txt
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "Shader\Shader.vcxproj", "{E008D2B4-24D2-4C19-9323-143E30C98048}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{E33348D8-5FD5-40B8-AEBC-CF4D1F75132F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +107,14 @@ Global
 		{234D53D3-FCA5-4044-ABF1-1FAF05E641C8}.Release|x64.Build.0 = Release|x64
 		{234D53D3-FCA5-4044-ABF1-1FAF05E641C8}.Release|x86.ActiveCfg = Release|Win32
 		{234D53D3-FCA5-4044-ABF1-1FAF05E641C8}.Release|x86.Build.0 = Release|Win32
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Debug|x64.ActiveCfg = Debug|x64
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Debug|x64.Build.0 = Debug|x64
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Debug|x86.ActiveCfg = Debug|Win32
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Debug|x86.Build.0 = Debug|Win32
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Release|x64.ActiveCfg = Release|x64
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Release|x64.Build.0 = Release|x64
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Release|x86.ActiveCfg = Release|Win32
+		{E008D2B4-24D2-4C19-9323-143E30C98048}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +127,8 @@ Global
 		{7DC4EF44-0D32-4835-85AF-502C34F9C7AB} = {3BF51892-4C85-400C-8928-A1D597CE7675}
 		{AF63769E-71C7-4B4D-B9DB-06CC7D262E69} = {7DC4EF44-0D32-4835-85AF-502C34F9C7AB}
 		{234D53D3-FCA5-4044-ABF1-1FAF05E641C8} = {628D1620-A2A6-45BD-AE94-4E74886945B9}
+		{E008D2B4-24D2-4C19-9323-143E30C98048} = {E33348D8-5FD5-40B8-AEBC-CF4D1F75132F}
+		{E33348D8-5FD5-40B8-AEBC-CF4D1F75132F} = {3BF51892-4C85-400C-8928-A1D597CE7675}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF449C8D-3447-477B-BBA8-59F5672E3D86}

@@ -19,40 +19,48 @@ const float4 float4::One = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::Zero = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::Null = { 0.0f, 0.0f, 0.0f, 0.0f };
 
+const float4 float4::Red = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+// Radian을 통한 X축 회전
 void float4::RotaitonXRad(float _Rad)
 {
 	float4x4 Rot;
-	Rot.RotationXRad(_Rad);
+	Rot.RotationXRad(_Rad); // 회전 행렬 (X축)
 	*this *= Rot;
 }
 
+// Radian을 통한 Y축 회전
 void float4::RotaitonYRad(float _Rad)
 {
 	float4x4 Rot;
-	Rot.RotationYRad(_Rad);
+	Rot.RotationYRad(_Rad); // 회전 행렬 (Y축)
 	*this *= Rot;
 }
 
+// Radian을 통한 Z축 회전
 void float4::RotaitonZRad(float _Rad)
 {
 	float4x4 Rot;
-	Rot.RotationZRad(_Rad);
+	Rot.RotationZRad(_Rad); // 회전 행렬 (Z축)
 	*this *= Rot;
 }
 
+// 오일러 각도를 쿼터니온으로 변환하여 리턴
 float4 float4::EulerDegToQuaternion()
 {
 	float4 Return = DirectVector;
 	Return *= GameEngineMath::DegToRad;
-	Return = DirectX::XMQuaternionRotationRollPitchYawFromVector(Return.DirectVector);
+	Return = DirectX::XMQuaternionRotationRollPitchYawFromVector(Return.DirectVector); // 전달한 벡터로부터 롤(X축 회전), 피치(Y축 회전), 야(Z축 회전) 정보를 리턴
 	return Return;
 }
 
+// 쿼터니온을 오일러 각도로 변환하여 리턴(Degree)
 float4 float4::QuaternionToEulerDeg()
 {
 	return QuaternionToEulerRad() * GameEngineMath::RadToDeg;
 }
 
+// 쿼터니온을 오일러 각도로 변환하여 리턴(Radian)
 float4 float4::QuaternionToEulerRad()
 {
 	float sqw = w * w;
@@ -60,6 +68,7 @@ float4 float4::QuaternionToEulerRad()
 	float sqy = y * y;
 	float sqz = z * z;
 
+	// 인터넷에 있던 어떤 식을 가져왔습니다.
 	float AngleX = asinf(2.0f * (w * x - y * z));
 	float AngleY = atan2f(2.0f * (x * z - w * y), (-sqx - sqy + sqz + sqw));
 	float AngleZ = atan2f(2.0f * (x * y - w * z), (-sqx + sqy - sqz + sqw));
@@ -67,8 +76,10 @@ float4 float4::QuaternionToEulerRad()
 	return float4(AngleX, AngleY, AngleZ);
 }
 
+// 쿼터니온을 행렬로 변환하여 리턴
 float4x4 float4::QuaternionToRotationMatrix()
 {
+	// 다이렉트 XMMatrixRotationQuaternion == 쿼터니온을 행렬로 변환
 	return DirectX::XMMatrixRotationQuaternion(DirectVector);
 }
 

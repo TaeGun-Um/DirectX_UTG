@@ -16,12 +16,13 @@ GameEngineRenderer::~GameEngineRenderer()
 void GameEngineRenderer::Render(float _Delta)
 {
 	// 여기서 랜더링 할수 있겠지만 랜더러 못받는다.
-	// 여기서 하고 싶다 모든 구조를 이해하고 다 직접
-	// 여기를 쓴다는 ???????
+	//여기서 하고 싶다 모든 구조를 이해하고 다 직접
+	//여기를 쓴다는 ???????
 
-	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
 	const int VertexCount = 24;
+
+	// float4 Pos = {640, 360};
 
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
@@ -63,6 +64,7 @@ void GameEngineRenderer::Render(float _Delta)
 	POINT ArrPoint[VertexCount];
 
 	GetTransform()->SetLocalScale({ 100, 100, 100 });
+	// GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
 
 	GameEngineLevel* Level = GetLevel();
 
@@ -80,20 +82,38 @@ void GameEngineRenderer::Render(float _Delta)
 		return;
 	}
 
+	// GetTransform().SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
+
 	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
 
+	// GetTransform().SetViewPort(GetLevel()->GetMainCamera()->GetViewPort());
+
+	//  버텍스 쉐이더 단계
 	for (size_t i = 0; i < VertexCount; i++)
 	{
+		// 버텍스 쉐이더
 		ArrVertex[i] = ArrVertex[i] * GetTransform()->GetWorldViewProjectionMatrixRef();
+	}
+
+	// 레스터라이저 단계
+	for (size_t i = 0; i < VertexCount; i++)
+	{
+		// w나누기는 레스터 라이저가하기로 약속함
 		// 투영행렬의 핵심
 		ArrVertex[i] /= ArrVertex[i].w;
 
+		// TransformCoord
 		ArrVertex[i].w = 1.0f;
 
 		ArrVertex[i] *= MainCamera->GetViewPort();
 
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
+
+	// 색깔정하기
+	// 픽셀쉐이더
+
+	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
 	for (size_t i = 0; i < 6; i++)
 	{

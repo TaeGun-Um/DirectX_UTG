@@ -40,6 +40,8 @@ public:
 	static const float4 Zero;
 	static const float4 Null;
 
+	static const float4 Red;
+
 	// Degree를 Radian으로 변환한 뒤 벡터 회전
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{
@@ -111,9 +113,9 @@ public:
 		float Arr1D[4];
 
 		// 심드 연산을 위한 Direct 전용 float3, float4, DirectVector
-		DirectX::XMFLOAT3 DirectFloat3;
-		DirectX::XMFLOAT4 DirectFloat4;
-		DirectX::XMVECTOR DirectVector;
+		DirectX::XMFLOAT3 DirectFloat3; // x, y, z
+		DirectX::XMFLOAT4 DirectFloat4; // x, y, z, w
+		DirectX::XMVECTOR DirectVector; // 
 	};
 
 	float4()
@@ -146,120 +148,136 @@ public:
 
 	}
 
-	void RotaitonXRad(float _Rad);
-	void RotaitonYRad(float _Rad);
-	void RotaitonZRad(float _Rad);
-	float4 EulerDegToQuaternion();
+	// 쿼터니온을 행렬로 변환하여 리턴(DirectX : XMMatrixRotationQuaternion(쿼터니온))
 	class float4x4 QuaternionToRotationMatrix();
+	
+	// 오일러 각도를 쿼터니온으로 변환하여 리턴(DirectX : XMQuaternionRotationRollPitchYawFromVector(오일러각도))
+	float4 EulerDegToQuaternion();
 
+	// 쿼터니온을 오일러 각도로 변환하여 리턴(Degree)
 	float4 QuaternionToEulerDeg();
+
+	// 쿼터니온을 오일러 각도로 변환하여 리턴(Radian)
 	float4 QuaternionToEulerRad();
 
-	int ix() const
-	{
-		return static_cast<int>(x);
-	}
-
-	int iy() const
-	{
-		return static_cast<int>(y);
-	}
-
-	int iz() const
-	{
-		return static_cast<int>(z);
-	}
-
-	int iw() const
-	{
-		return static_cast<int>(w);
-	}
-
-	int hix() const
-	{
-		return static_cast<int>(x * 0.5f);
-	}
-
-	int hiy() const
-	{
-		return static_cast<int>(y * 0.5f);
-	}
-
-	int hiz() const
-	{
-		return static_cast<int>(z * 0.5f);
-	}
-
-	int hiw() const
-	{
-		return static_cast<int>(w * 0.5f);
-	}
-
+	// float4의 x, y, z, w의 절반값(1/2)를 리턴
 	float hx() const
 	{
 		return x * 0.5f;
 	}
-
 	float hy() const
 	{
 		return y * 0.5f;
 	}
-
 	float hz() const
 	{
 		return z * 0.5f;
 	}
-
 	float hw() const
 	{
 		return w * 0.5f;
 	}
 
+	// float4의 x, y, z, w를 int로 static_cast 후 리턴
+	int ix() const
+	{
+		return static_cast<int>(x);
+	}
+	int iy() const
+	{
+		return static_cast<int>(y);
+	}
+	int iz() const
+	{
+		return static_cast<int>(z);
+	}
+	int iw() const
+	{
+		return static_cast<int>(w);
+	}
+
+	// float4의 x, y, z, w의 절반값(1/2)를 int로 static_cast 후 리턴
+	int hix() const
+	{
+		return static_cast<int>(x * 0.5f);
+	}
+	int hiy() const
+	{
+		return static_cast<int>(y * 0.5f);
+	}
+	int hiz() const
+	{
+		return static_cast<int>(z * 0.5f);
+	}
+	int hiw() const
+	{
+		return static_cast<int>(w * 0.5f);
+	}
+
+	// float4의 x, y, z, w를 unsigned int로 static_cast 후 리턴
 	int uix() const
 	{
 		return static_cast<unsigned int>(x);
 	}
-
 	int uiy() const
 	{
 		return static_cast<unsigned int>(y);
 	}
-
 	int uiz() const
 	{
 		return static_cast<unsigned int>(z);
 	}
-
 	int uiw() const
 	{
 		return static_cast<unsigned int>(w);
 	}
 
+	// float4의 x, y, z, w의 절반값(1/2)를 unsigned int로 static_cast 후 리턴
 	int uhix() const
 	{
 		return static_cast<unsigned int>(x * 0.5f);
 	}
-
 	int uhiy() const
 	{
 		return static_cast<unsigned int>(y * 0.5f);
 	}
-
 	int uhiz() const
 	{
 		return static_cast<unsigned int>(z * 0.5f);
 	}
-
 	int uhiw() const
 	{
 		return static_cast<unsigned int>(w * 0.5f);
 	}
 
-	float GetAnagleDegZ()
+	// Degree을 통한 X축 회전 (Radian으로 변환)
+	void RotaitonXDeg(float _Deg)
 	{
-		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
+		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
 	}
 
+	// Degree을 통한 Y축 회전 (Radian으로 변환)
+	void RotaitonYDeg(float _Deg)
+	{
+		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	// Degree을 통한 Z축 회전 (Radian으로 변환)
+	void RotaitonZDeg(float _Deg)
+	{
+		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	// Radian을 통한 X축 회전 (내부에서 회전 행렬 활용)
+	void RotaitonXRad(float _Rad);
+
+	// Radian을 통한 Y축 회전 (내부에서 회전 행렬 활용)
+	void RotaitonYRad(float _Rad);
+
+	// Radian을 통한 Z축 회전 (내부에서 회전 행렬 활용)
+	void RotaitonZRad(float _Rad);
+
+	// Degree을 통한 X축 회전값 리턴 (내부에서 회전 행렬 활용)
 	float4 RotaitonXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
@@ -267,6 +285,7 @@ public:
 		return ReturnValue;
 	}
 
+	// Degree을 통한 Y축 회전값 리턴 (내부에서 회전 행렬 활용)
 	float4 RotaitonYDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
@@ -274,6 +293,7 @@ public:
 		return ReturnValue;
 	}
 
+	// Degree을 통한 Z축 회전값 리턴 (내부에서 회전 행렬 활용)
 	float4 RotaitonZDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
@@ -281,61 +301,64 @@ public:
 		return ReturnValue;
 	}
 
-	void RotaitonXDeg(float _Deg)
+	// Z각도 얻기(Degree)
+	float GetAnagleDegZ()
 	{
-		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
-	void RotaitonYDeg(float _Deg)
-	{
-		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
-	}
-
-	void RotaitonZDeg(float _Deg)
-	{
-		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
-	}
-
+	// Z각도 얻기, 값 리턴(Radian)
 	float GetAnagleRadZ()
 	{
 		float4 AngleCheck = (*this);
+		// this를 노말라이즈
 		AngleCheck.Normalize();
+		// 노말라이즈한 this의 x에 대해 acosf()(cosf() 역함수) 값
 		float Result = acosf(AngleCheck.x);
 
+		// 노말라이즈한 this의 y 값이 0보다 크면 0으로 초기화(2파이)
 		if (AngleCheck.y > 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}
-		return Result;
 
+		return Result;
 	}
 
+	// 4바이트 자료형 x, y 구조체 값 리턴
 	POINT ToWindowPOINT()
 	{
 		return POINT(ix(), iy());
 	}
 
+	// float4의 전체 half값 리턴 (w는 1.0f로 고정)
 	float4 half() const
 	{
-		return { x * 0.5f,y * 0.5f,z * 0.5f,w };
+		return { x * 0.5f, y * 0.5f, z * 0.5f, w};
 	}
 
+	// float4의 전체 0.0f 으로 리턴 (w는 1.0f로 고정)
 	bool IsZero() const
 	{
 		return x == 0.0f && y == 0.0f && z == 0.0f;
 	}
 
+	// 빗변의 제곱근 값 구하기
 	float Size() const
 	{
+		// sqrtf() : 제곱근 함수 (제곱의 근 : 2^2 = 4 일때, 2제곱2의 제곱근은 2)
+		// 2차원 예시 : x, y의 제곱(밑변, 높이의 제곱)을 알 경우 빗변의 제곱을 알 수 있음
+		// 밑변^2 + 높이^2 = 빗변^2
 		return sqrtf(x * x + y * y + z * z);
 	}
 
+	// 벡터 노말라이즈, 기저단위벡터(길이 1)로 변경, DirectX : XMVector3Normalize(벡터)
 	void Normalize()
 	{
 		DirectVector = DirectX::XMVector3Normalize(*this);
 	}
 
-	// 벡터 노말라이즈 (단위기저벡터로 변환 : 1)
+	// 벡터 노말라이즈, 기저단위벡터(길이 1)로 변경, DirectX : XMVector3Normalize(벡터)의 값 리턴
 	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
@@ -343,11 +366,13 @@ public:
 		return Result;
 	}
 
+	// 벡터 러프값 리턴
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
 		return DirectX::XMVectorLerp(Start, End, Ratio);
 	}
 
+	// 벡터 러프클럼프(Ratio의 범위 0.0f ~ 1.0f 로 고정) 후 러프 값 리턴
 	static float4 LerpClamp(const float4& Start, const float4& End, float Ratio)
 	{
 		if (0 >= Ratio)
@@ -363,21 +388,19 @@ public:
 		return Lerp(Start, End, Ratio);
 	}
 
+	// 심드 연산을 위한 Direct 전용 벡터
 	operator DirectX::FXMVECTOR() const
 	{
 		return DirectVector;
 	}
 
-	float4 operator *(const float _Value) const
-	{
-		return DirectX::XMVectorMultiply(*this, float4{ _Value , _Value , _Value , 1.0f });
-	}
-
+	// float4 x, y, z 비교 연산 bool값 리턴
 	bool operator ==(const float4& _Value) const
 	{
 		return _Value.x == x && _Value.y == y && _Value.z == z;
 	}
 
+	// float4 x, y, z 합 리턴, DirectX : XMVectorAdd(주체, 대상)
 	float4 operator +(const float4& _Value) const
 	{
 		float PrevW = w;
@@ -386,6 +409,7 @@ public:
 		return Return;
 	}
 
+	// float4 x, y, z 차 리턴, DirectX : XMVectorAdd(주체, 대상)
 	float4 operator -(const float4& _Value) const
 	{
 		float PrevW = w;
@@ -394,6 +418,13 @@ public:
 		return Return;
 	}
 
+	// float과 float4 곱 리턴, DirectX : XMVectorMultiply(float, float4)
+	float4 operator *(const float _Value) const
+	{
+		return DirectX::XMVectorMultiply(*this, float4{ _Value , _Value , _Value , 1.0f });
+	}
+
+	// float4과 float4 곱 리턴, DirectX : XMVectorMultiply(float4, float4)
 	float4 operator *(const float4& _Value) const
 	{
 		float PrevW = w;
@@ -402,14 +433,7 @@ public:
 		return Return;
 	}
 
-	float4 operator /(const float4& _Value) const
-	{
-		float PrevW = w;
-		float4 Return = DirectX::XMVectorDivide(*this, _Value);
-		Return.w = PrevW;
-		return Return;
-	}
-
+	// float과 float4 나눗셈 리턴, DirectX : XMVectorDivide(float, float4)
 	float4 operator /(const float _Value) const
 	{
 		float PrevW = w;
@@ -418,59 +442,59 @@ public:
 		return Return;
 	}
 
+	// float4과 float4 나눗셈 리턴, DirectX : XMVectorDivide(float4, float4)
+	float4 operator /(const float4& _Value) const
+	{
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorDivide(*this, _Value);
+		Return.w = PrevW;
+		return Return;
+	}
+
+	// float4의 w 제외 x, y, z에 음수 적용
 	float4 operator -() const
 	{
 		return { -x, -y, -z, w };
 	}
 
+	// float4 += 연산 (자기 자신 합)
 	float4& operator +=(const float4& _Other)
 	{
 		*this = *this + _Other;
 		return *this;
 	}
 
-	float4& operator *=(const float _Value)
-	{
-		//x *= _Value;
-		//y *= _Value;
-		//z *= _Value;
-		*this = *this * _Value;
-		return *this;
-	}
-
-	float4& operator /=(const float _Value)
-	{
-		//x /= _Value;
-		//y /= _Value;
-		//z /= _Value;
-
-		*this = *this / _Value;
-		return *this;
-	}
-
-	float4& operator *=(const float4& _Other)
-	{
-		//x *= _Other.x;
-		//y *= _Other.y;
-		//z *= _Other.z;
-		*this = *this * _Other;
-		return *this;
-	}
-
+	// float4 -= 연산 (자기 자신 합)
 	float4& operator -=(const float4& _Other)
 	{
-		//x -= _Other.x;
-		//y -= _Other.y;
-		//z -= _Other.z;
 		*this = *this - _Other;
 		return *this;
 	}
 
+	// float4, float *= 연산 (자기 자신 곱)
+	float4& operator *=(const float _Value)
+	{
+		*this = *this * _Value;
+		return *this;
+	}
+
+	// float4 *= 연산 (자기 자신 곱)
+	float4& operator *=(const float4& _Other)
+	{
+		*this = *this * _Other;
+		return *this;
+	}
+
+	// float4, float /= 연산 (자기 자신 나누기)
+	float4& operator /=(const float _Value)
+	{
+		*this = *this / _Value;
+		return *this;
+	}
+
+	// float4 (자기 자신 나누기)
 	float4& operator /=(const float4& _Other)
 	{
-		//x /= _Other.x;
-		//y /= _Other.y;
-		//z /= _Other.z;
 		*this = *this / _Other;
 		return *this;
 	}
