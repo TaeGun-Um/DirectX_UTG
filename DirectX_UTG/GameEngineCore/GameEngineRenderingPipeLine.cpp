@@ -11,9 +11,6 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 {
 }
 
-// 매쉬 + 머티리얼
-
-// 점에 대한 정보를 준비하고
 void GameEngineRenderingPipeLine::InputAssembler1()
 {
 	if (nullptr == VertexBuffer)
@@ -22,30 +19,25 @@ void GameEngineRenderingPipeLine::InputAssembler1()
 		return;
 	}
 
+	// GameEngineVertexBuffer::Setting() 실시
 	VertexBuffer->Setting();
-	// GameEngineDevice::GetContext()->IASetVertexBuffers()
 }
-// 로컬에 존재하는 점을 우리가 만든 행렬을 통해서 변환하고.
+
+// InputAssembler1() 이후 해당 단계로 넘어오면 다시 한 번 InputAssembler1() 단계로 넘어갈 수 있음. 나중에 알려줌.
 void GameEngineRenderingPipeLine::VertexShader()
 {
 	// GameEngineDevice::GetContext()->VSSetShader
 }
 
-// 점의 정보를 토대로 어떤 순서로 그릴지 정하고
 void GameEngineRenderingPipeLine::InputAssembler2()
 {
 	// GameEngineDevice::GetContext()->IASetIndexBuffer
 }
 
-// w나누기를 해줍니다. 
-// 뷰포트도 곱해줍니다.
-// 화면 컬링 
-// 픽셀 건지기
 void GameEngineRenderingPipeLine::Rasterizer()
 {
 	// GameEngineDevice::GetContext()->RSSetState
 }
-
 
 void GameEngineRenderingPipeLine::PixelShader()
 {
@@ -55,7 +47,6 @@ void GameEngineRenderingPipeLine::OutputMerger()
 {
 	// GameEngineDevice::GetContext()->OMSetRenderTargets
 }
-
 
 void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value)
 {
