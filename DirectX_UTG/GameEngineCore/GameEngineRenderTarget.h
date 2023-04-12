@@ -2,7 +2,7 @@
 
 #include "GameEngineTexture.h"
 
-// 설명 :
+// 설명 : WinAPI에서 HDC를 배운적이 있다. Direct에서는 RenderTarget이 HDC 역할을 함
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 {
 public:
@@ -33,7 +33,7 @@ protected:
 
 private:
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };     // 백버퍼를 Clear하기 위한 색 지정
-	std::shared_ptr<GameEngineTexture> Texture;    // RenderTarget을 생성한 Texture(?)
+	std::shared_ptr<GameEngineTexture> Texture;    // RenderTarget을 생성한 Texture
 	void Create(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
 };

@@ -18,6 +18,7 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
+	// 월드 크기 지정
 	void SetWorldScale(const float4& _Value)
 	{
 		WorldScale = _Value;
@@ -35,6 +36,7 @@ public:
 		CalChild();
 	}
 
+	// 월드 위치 지정
 	void SetWorldRotation(const float4& _Value)
 	{
 		if (true == IsDebug())
@@ -42,15 +44,7 @@ public:
 			int a = 0;
 		}
 
-		// 여기에는 이미 최종값이 들어가 있다.
-		// 내가 어떤 과정을 거쳐서 여기로 들어온 것이다.
-
-		// 최종적으로 적용된 행렬이다.
 		WorldRotation = _Value;
-		// 부모가 적용됐기 때문에 나는 이상태가 된겁니다.
-
-		// RotationMatrix 이게 최종 나의 회전행렬이다.
-		// RotationMatrix <= 누구때문에 나는 이렇게 되었나?
 
 		if (nullptr == Parent)
 		{
@@ -66,6 +60,7 @@ public:
 		CalChild();
 	}
 
+	// 월드 이동 지정
 	void SetWorldPosition(const float4& _Value)
 	{
 		WorldPosition = _Value;
@@ -83,6 +78,25 @@ public:
 		CalChild();
 	}
 
+	// 월드 크기 행렬 리턴
+	float4 GetWorldScale()
+	{
+		return WorldScale;
+	}
+
+	// 월드 회전 행렬 리턴
+	float4 GetWorldRotation()
+	{
+		return WorldRotation;
+	}
+
+	// 월드 이동 행렬 리턴
+	float4 GetWorldPosition()
+	{
+		return WorldPosition;
+	}
+
+	// 로컬 크기 지정
 	void SetLocalScale(const float4& _Value)
 	{
 		LocalScale = _Value;
@@ -100,6 +114,7 @@ public:
 		CalChild();
 	}
 
+	// 로컬 회전 지정
 	void SetLocalRotation(const float4& _Value)
 	{
 		LocalRotation = _Value;
@@ -117,6 +132,7 @@ public:
 		CalChild();
 	}
 
+	// 로컬 이동 지정
 	void SetLocalPosition(const float4& _Value)
 	{
 		LocalPosition = _Value;
@@ -134,111 +150,115 @@ public:
 		CalChild();
 	}
 
-	void AddLocalScale(const float4& _Value)
-	{
-		SetLocalScale(LocalScale + _Value);
-	}
-
-	void AddLocalRotation(const float4& _Value)
-	{
-		SetLocalRotation(LocalRotation + _Value);
-	}
-
-	void AddLocalPosition(const float4& _Value)
-	{
-		SetLocalPosition(LocalPosition + _Value);
-	}
-
-	float4 GetWorldForwardVector()
-	{
-		return WorldMatrix.ArrVector[2].NormalizeReturn();
-	}
-
-	float4 GetWorldUpVector()
-	{
-		return WorldMatrix.ArrVector[1].NormalizeReturn();
-	}
-
-	float4 GetWorldRightVector()
-	{
-		return WorldMatrix.ArrVector[0].NormalizeReturn();
-	}
-
-	float4 GetLocalForwardVector()
-	{
-		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
-	}
-
-	float4 GetLocalUpVector()
-	{
-		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
-	}
-
-	float4 GetLocalRightVector()
-	{
-		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
-	}
-
-	float4 GetLocalPosition()
-	{
-		return LocalPosition;
-	}
-
+	// 로컬 크기 행렬 리턴
 	float4 GetLocalScale()
 	{
 		return LocalScale;
 	}
 
+	// 로컬 회전 행렬 리턴
 	float4 GetLocalRotation()
 	{
 		return LocalRotation;
 	}
 
-	float4 GetWorldPosition()
+	// 로컬 이동 행렬 리턴
+	float4 GetLocalPosition()
 	{
-		return WorldPosition;
+		return LocalPosition;
 	}
 
-	float4 GetWorldScale()
-	{
-		return WorldScale;
-	}
-
-	float4 GetWorldRotation()
-	{
-		return WorldRotation;
-	}
-
-	float4x4 GetLocalWorldMatrix()
-	{
-		return LocalWorldMatrix;
-	}
-
-	const float4x4& GetLocalWorldMatrixRef()
-	{
-		return LocalWorldMatrix;
-	}
-
+	// 월드 행렬 리턴
 	const float4x4 GetWorldMatrix()
 	{
 		return WorldMatrix;
 	}
 
+	// 월드 행렬 리턴(래퍼런스)
 	const float4x4& GetWorldMatrixRef()
 	{
 		return WorldMatrix;
 	}
 
+	// 로컬월드 행렬 리턴
+	float4x4 GetLocalWorldMatrix()
+	{
+		return LocalWorldMatrix;
+	}
+
+	// 로컬월드 행렬 리턴(래퍼런스)
+	const float4x4& GetLocalWorldMatrixRef()
+	{
+		return LocalWorldMatrix;
+	}
+
+	// 로컬 크기 Add
+	void AddLocalScale(const float4& _Value)
+	{
+		SetLocalScale(LocalScale + _Value);
+	}
+
+	// 로컬 회전 Add
+	void AddLocalRotation(const float4& _Value)
+	{
+		SetLocalRotation(LocalRotation + _Value);
+	}
+
+	// 로컬 이동 Add
+	void AddLocalPosition(const float4& _Value)
+	{
+		SetLocalPosition(LocalPosition + _Value);
+	}
+
+	// 월드에서 자신이 바라보는 방향 월드 단위기저벡터 리턴
+	float4 GetWorldForwardVector()
+	{
+		return WorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	// 월드에서 자신의 위로 향하는 월드 단위기저벡터 리턴
+	float4 GetWorldUpVector()
+	{
+		return WorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	// 월드에서 자신의 오른쪽 방향 단위기저벡터 리턴
+	float4 GetWorldRightVector()
+	{
+		return WorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	// 로컬에서 자신이 바라보는 방향 월드 단위기저벡터 리턴
+	float4 GetLocalForwardVector()
+	{
+		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	// 로컬에서 자신의 위로 향하는 월드 단위기저벡터 리턴
+	float4 GetLocalUpVector()
+	{
+		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	// 로컬에서 자신의 오른쪽 방향 단위기저벡터 리턴
+	float4 GetLocalRightVector()
+	{
+		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	// 월드 프로젝션 행렬 리턴
 	const float4x4 GetWorldViewProjectionMatrix()
 	{
 		return WorldViewProjectionMatrix;
 	}
 
+	// 월드 프로젝션 행렬 리턴(래퍼런스)
 	const float4x4& GetWorldViewProjectionMatrixRef()
 	{
 		return WorldViewProjectionMatrix;
 	}
 
+	// 카메라 행렬(뷰, 프로젝션) 적용
 	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
 		View = _View;
@@ -246,12 +266,17 @@ public:
 		WorldViewProjectionMatrix = WorldMatrix * View * Projection;
 	}
 
+	// 카메라 행렬(뷰포트) 적용
 	inline const void SetViewPort(const float4x4& _ViewPort)
 	{
 		ViewPort = _ViewPort;
 		WorldViewProjectionMatrix *= ViewPort;
 	}
 
+	// 부모 설정
+	void SetParent(GameEngineTransform* _Parent);
+
+	// 부모의 영향을 자식에게 적용
 	void CalChild()
 	{
 		for (GameEngineTransform* ChildTrans : Child)
@@ -262,37 +287,37 @@ public:
 		}
 	}
 
-	void SetParent(GameEngineTransform* _Parent);
-
 protected:
 
 private:
+	// 행렬 곱이 실시되면 무조건 행렬 데이터가 최신화됨
 	void TransformUpdate();
 
+	// 로컬 크자(쿼)이
 	float4 LocalScale = float4::One;
 	float4 LocalRotation = float4::Null;
-	Quaternion LocalQuaternion = DirectX::XMQuaternionIdentity();
+	Quaternion LocalQuaternion = DirectX::XMQuaternionIdentity(); // XMQuaternionIdentity() = 항등쿼터니온 생성
 	float4 LocalPosition = float4::Zero;
 
+	// 월드 크자(쿼)이
 	float4 WorldScale = float4::One;
 	float4 WorldRotation = float4::Null;
 	Quaternion WorldQuaternion = DirectX::XMQuaternionIdentity();
 	float4 WorldPosition = float4::Zero;
 
-	float4x4 LocalScaleMatrix;
-	float4x4 LocalRotationMatrix;
-	float4x4 LocalPositionMatrix;
+	float4x4 LocalScaleMatrix;               // 로컬 크기 행렬
+	float4x4 LocalRotationMatrix;            // 로컬 회전 행렬
+	float4x4 LocalPositionMatrix;            // 로컬 이동 행렬
 
-	float4x4 LocalWorldMatrix;
+	float4x4 LocalWorldMatrix;               // 로컬월드 행렬
+	float4x4 WorldMatrix;                    // 월드 행렬 (SRT)
 
-	float4x4 WorldMatrix;
-	float4x4 WorldViewProjectionMatrix;
+	float4x4 View;                           // 뷰행렬
+	float4x4 Projection;                     // 프로젝션 행렬
+	float4x4 ViewPort;                       // 뷰포트 행렬
+	float4x4 WorldViewProjectionMatrix;      // 뷰행렬 * 프로젝션행렬
 
-	float4x4 View;
-	float4x4 Projection;
-	float4x4 ViewPort;
-
-	GameEngineTransform* Parent = nullptr;
-	std::list<GameEngineTransform*> Child;
+	GameEngineTransform* Parent = nullptr;   // weak_ptr 구조
+	std::list<GameEngineTransform*> Child;   // 부모자식관계를 결정한다.
 };
 

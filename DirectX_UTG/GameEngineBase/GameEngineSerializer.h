@@ -3,7 +3,7 @@
 #include <string>
 #include <string_view>
 
-// 설명 :
+// 설명 : 저장, 불러오기를 위한 클래스
 class GameEngineSerializer
 {
 public:

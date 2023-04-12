@@ -35,7 +35,5 @@ void GameEngineTransform::TransformUpdate()
 void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 {
 	Parent = _Parent;
-
-
 	Parent->Child.push_back(this);
 }

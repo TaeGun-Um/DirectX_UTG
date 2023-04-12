@@ -16,6 +16,7 @@ public:
 	GameEngineVertexBuffer& operator=(const GameEngineVertexBuffer& _Other) = delete;
 	GameEngineVertexBuffer& operator=(GameEngineVertexBuffer&& _Other) noexcept = delete;
 
+	// 리소스에 Vertex 추가
 	template<typename VertexType>
 	static void Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
 	{
@@ -29,6 +30,7 @@ public:
 protected:
 
 private:
+	// GEVertex의 Vertex 기반으로, 정보 Create, 업데이트
 	void Create(const void* _Data, UINT _VertexSize, UINT _VertexCount);
 
 	UINT Offset;

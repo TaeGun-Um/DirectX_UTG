@@ -1,7 +1,7 @@
 #pragma once
 #include "GameEngineObject.h"
 
-// 설명 :
+// 설명 : 상속한 클래스에게 protected의 Start(), Updata(). Render()를 구현하도록 하는 클래스
 class GameEngineUpdateObject : public GameEngineObject
 {
 public:

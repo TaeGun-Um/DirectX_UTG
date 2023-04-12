@@ -4,7 +4,7 @@
 #include <string_view>
 #include <map>
 
-// 설명 :
+// 설명 : 레벨
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineLevel : public GameEngineUpdateObject
@@ -24,13 +24,15 @@ public:
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
+	// string 매개 변수만 활용한 CreateActor
 	template<typename ActorType >
 	std::shared_ptr<ActorType> CreateActor(const std::string_view& _Name)
 	{
 		return CreateActor<ActorType>(0, _Name);
 	}
 
-	template<typename ActorType >
+	// Order 지정, string 매개 변수를 통한 CreateActor
+	template<typename ActorType>
 	std::shared_ptr<ActorType> CreateActor(int _Order = 0, const std::string_view& _Name = "")
 	{
 		std::shared_ptr<GameEngineActor> NewActor = std::make_shared<ActorType>();
@@ -46,10 +48,10 @@ public:
 
 		ActorInit(NewActor, _Order, this);
 
-
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
 
+	// 레벨의 메인 카메라 리턴
 	std::shared_ptr<class GameEngineCamera> GetMainCamera()
 	{
 		return MainCamera;
@@ -61,10 +63,10 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
-	std::shared_ptr<GameEngineCamera> MainCamera;
-	std::shared_ptr<GameEngineCamera> UICamera;
+	std::shared_ptr<GameEngineCamera> MainCamera;                       // 메인 카메라, 레벨 생성 시 생성자에서 생성됨
+	std::shared_ptr<GameEngineCamera> UICamera;                         // UI 카메라, 아직 안만듬
 
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;  // 레벨에 포함되는 Actor들의 리스트
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 

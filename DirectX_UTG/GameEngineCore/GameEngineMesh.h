@@ -3,7 +3,7 @@
 #include <vector>
 #include <GameEngineBase/GameEngineMath.h>
 
-// 설명 :
+// 설명 : 버텍스로 이뤄진 색이 없는 면, 도형 등을 매쉬라고 한다.
 class GameEngineMesh : public GameEngineResource<GameEngineMesh>
 {
 public:

@@ -5,21 +5,18 @@
 
 GameEngineLevel::GameEngineLevel()
 {
-	MainCamera = CreateActor<GameEngineCamera>();
+	MainCamera = CreateActor<GameEngineCamera>(); // 레벨은 생성 시 즉시 메인 카메라를 하나 생성함
 }
 
 GameEngineLevel::~GameEngineLevel()
 {
 }
 
-
-
 void GameEngineLevel::Start()
 {
-
-
 }
 
+// 액터의 정보 갱신
 void GameEngineLevel::Update(float _DeltaTime)
 {
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
@@ -35,10 +32,9 @@ void GameEngineLevel::Update(float _DeltaTime)
 		}
 	}
 }
-
 void GameEngineLevel::Render(float _DeltaTime)
 {
-	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 사용되는 랜더가 이용할 것
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
 		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
@@ -55,10 +51,9 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
 {
-	_Actor->Level = this;
-	_Actor->SetOrder(_Order);
-	_Actor->Start();
+	_Actor->Level = this;              // 액터의 레벨은 해당 레벨이 된다.
+	_Actor->SetOrder(_Order);          // CreateActor에서 지정한 Order가 복사된다.
+	_Actor->Start();                   // 액터의 정보 업데이트
 
-	// Level이 관리하고 있는 액터를 관리하는 리스트에 들어간다.
-	Actors[_Order].push_back(_Actor);
+	Actors[_Order].push_back(_Actor);  // Level이 관리하고 있는 액터를 관리하는 리스트에 들어간다.
 }
