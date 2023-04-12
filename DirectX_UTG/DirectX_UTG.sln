@@ -20,7 +20,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX_App", "DirectX_App\
 		{AF63769E-71C7-4B4D-B9DB-06CC7D262E69} = {AF63769E-71C7-4B4D-B9DB-06CC7D262E69}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Contents", "2.Contents", "{628D1620-A2A6-45BD-AE94-4E74886945B9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Contents", "2. Contents", "{628D1620-A2A6-45BD-AE94-4E74886945B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Engine", "1. Engine", "{3BF51892-4C85-400C-8928-A1D597CE7675}"
 EndProject
@@ -45,10 +45,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. DOC", "0. DOC", "{7E1B77
 	ProjectSection(SolutionItems) = preProject
 		3D 함수.txt = 3D 함수.txt
 		GameEngineObject.txt = GameEngineObject.txt
-		GameEngineSerializer.txt = GameEngineSerializer.txt
 		GameEngineRenderingPipeLine.txt = GameEngineRenderingPipeLine.txt
-		Modal.txt = Modal.txt
+		GameEngineSerializer.txt = GameEngineSerializer.txt
 		GameEngineShader.txt = GameEngineShader.txt
+		Modal.txt = Modal.txt
 		New연산이 느린 이유.txt = New연산이 느린 이유.txt
 		수학.txt = 수학.txt
 		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt

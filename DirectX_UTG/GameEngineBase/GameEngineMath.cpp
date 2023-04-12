@@ -83,6 +83,24 @@ float4x4 float4::QuaternionToRotationMatrix()
 	return DirectX::XMMatrixRotationQuaternion(DirectVector);
 }
 
+// flaot4와 행렬의 곱 (1x4 * 4x4), DirectX : XMVector4Transform(float4, float4x4)
+float4 float4::operator*(const class float4x4& _Other)
+{
+	float4 ReturnValue = DirectX::XMVector4Transform(*this, _Other);
+
+	return ReturnValue;
+}
+
+// flaot4와 행렬의 곱 (1x4 * 4x4) 래퍼런스형, DirectX : XMVector4Transform(float4, float4x4)
+float4& float4::operator*=(const class float4x4& _Other)
+{
+	DirectVector = DirectX::XMVector4Transform(*this, _Other);;
+	return *this;
+}
+
+// 제로행렬
+const float4x4 float4x4::Zero = float4x4(float4::Null, float4::Null, float4::Null, float4::Null);
+
 std::vector<unsigned int> GameEngineMath::GetDigits(int _Value)
 {
 	std::vector<unsigned int> ResultValue = std::vector<unsigned int>();
@@ -121,19 +139,3 @@ unsigned int GameEngineMath::GetLenth(int _Value)
 
 	return static_cast<unsigned int>(StringValue.size()) - StartIndex;
 }
-
-float4 float4::operator*(const class float4x4& _Other)
-{
-	float4 ReturnValue = DirectX::XMVector4Transform(*this, _Other);
-
-	return ReturnValue;
-}
-
-
-float4& float4::operator*=(const class float4x4& _Other)
-{
-	DirectVector = DirectX::XMVector4Transform(*this, _Other);;
-	return *this;
-}
-
-const float4x4 float4x4::Zero = float4x4(float4::Null, float4::Null, float4::Null, float4::Null);

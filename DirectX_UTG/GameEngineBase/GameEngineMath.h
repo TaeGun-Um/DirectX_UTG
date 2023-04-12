@@ -16,17 +16,19 @@
 class GameEngineMath final
 {
 public:
-	static std::vector<unsigned int> GetDigits(int _Value);
-	static unsigned int GetLenth(int _Value);
 	static const float PIE;
 	static const float PIE2;
 	static const float DegToRad;
 	static const float RadToDeg;
 
+	static std::vector<unsigned int> GetDigits(int _Value);
+	static unsigned int GetLenth(int _Value);
+
 private:
 	virtual ~GameEngineMath() = 0;
 };
 
+// float4 (x, y, z, w) 데이터
 class float4
 {
 public:
@@ -499,9 +501,13 @@ public:
 		return *this;
 	}
 
+	// float4와 행렬의 곱(다이렉트)
 	float4 operator*(const class float4x4& _Other);
+
+	// float4와 자기자신, 행렬의 곱
 	float4& operator*=(const class float4x4& _Other);
 
+	// float4의 x, y, z, w 값 string으로 출력
 	std::string ToString()
 	{
 		char ArrReturn[256];
@@ -513,11 +519,12 @@ public:
 
 };
 
+// 충돌체 데이터
 class CollisionData
 {
 public:
-	float4 Position;
-	float4 Scale; // x만 원의 반지름으로 보겠습니다.
+	float4 Position;  // 충돌체 Pos
+	float4 Scale;     // x만 원의 반지름으로 보겠습니다.
 
 	float Left() const
 	{
@@ -554,23 +561,26 @@ public:
 	}
 };
 
-typedef float4 Quaternion;
+typedef float4 Quaternion; // Quaternion == float4
 
+// 행렬 데이터
 class float4x4
 {
 public:
+	// 영행렬(제로행렬)
 	static const float4x4 Zero;
-
+	
+	// 4x4 행렬로 설정
 	static const int YCount = 4;
 	static const int XCount = 4;
 
 public:
 	union
 	{
-		float Arr1D[16];
-		float Arr2D[4][4];
-		float4 ArrVector[4];
-		DirectX::XMMATRIX DirectMatrix;
+		float Arr1D[16];                // 일렬로 나열
+		float Arr2D[4][4];              // 4x4로 나열
+		float4 ArrVector[4];            // 한 행만 나열
+		DirectX::XMMATRIX DirectMatrix; // DirectX 행렬 : XMMATRIX
 
 		struct
 		{
@@ -593,180 +603,7 @@ public:
 		};
 	};
 
-	void Identity()
-	{
-		DirectMatrix = DirectX::XMMatrixIdentity();
-	}
-
-	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixPerspectiveFovLH(_FovAngle * GameEngineMath::DegToRad, _AspectRatio, _NearZ, _FarZ);
-	}
-
-	void ViewPort(float _Width, float _Height, float _Left, float _Right, float _ZMin = 0.0f, float _ZMax = 1.0f)
-	{
-		Identity();
-
-		Arr2D[0][0] = _Width * 0.5f;
-		Arr2D[1][1] = -_Height * 0.5f;
-		Arr2D[2][2] = _ZMax != 0.0f ? 1.0f : _ZMin / _ZMax;
-
-		Arr2D[3][0] = Arr2D[0][0] + _Left;
-		Arr2D[3][1] = _Height * 0.5f + _Right;
-		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;
-		Arr2D[3][3] = 1.0f;
-	}
-
-	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
-	{
-		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
-	}
-
-	void DecomposeRotQuaternion(float4& _RotQuaternion)
-	{
-		float4 Temp0;
-		float4 Temp1;
-
-		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &_RotQuaternion.DirectVector, &Temp1.DirectVector, DirectMatrix);
-	}
-
-	void DecomposePos(float4& _Pos)
-	{
-		float4 Temp0;
-		float4 Temp1;
-
-		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &Temp1.DirectVector, &_Pos.DirectVector, DirectMatrix);
-	}
-
-	void DecomposeScale(float4& _Scale)
-	{
-		float4 Temp0;
-		float4 Temp1;
-
-		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &Temp0.DirectVector, &Temp1.DirectVector, DirectMatrix);
-	}
-
-	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixLookToLH(_EyePos, _EyeDir, _EyeUp);
-	}
-
-	void Transpose()
-	{
-		DirectMatrix = DirectX::XMMatrixTranspose(*this);
-	}
-
-	void Inverse()
-	{
-		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
-	}
-
-	float4x4 InverseReturn() const
-	{
-		float4x4 Return = *this;
-		Return.Inverse();
-		return Return;
-	}
-
-	void Scale(const float4& _Value)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixScalingFromVector(_Value);
-	}
-
-	void Pos(const float4& _Value)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixTranslationFromVector(_Value);
-	}
-
-	void RotationDegToXYZ(const float4& _Deg)
-	{
-		float4 Rot = _Deg * GameEngineMath::DegToRad;
-
-		float4x4 RotX = DirectX::XMMatrixRotationX(Rot.x);
-		float4x4 RotY = DirectX::XMMatrixRotationY(Rot.y);
-		float4x4 RotZ = DirectX::XMMatrixRotationZ(Rot.z);
-
-		*this = RotX * RotY * RotZ;
-	}
-
-	void RotationDeg(const float4& _Deg)
-	{
-		float4 Rot = _Deg * GameEngineMath::DegToRad;
-
-		DirectMatrix = DirectX::XMMatrixRotationRollPitchYaw(Rot.x, Rot.y, Rot.z);
-	}
-
-	void RotationXDeg(const float _Deg)
-	{
-		RotationXRad(_Deg * GameEngineMath::DegToRad);
-	}
-
-	void RotationXRad(const float _Rad)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixRotationX(_Rad);
-	}
-
-	void RotationYDeg(const float _Deg)
-	{
-		RotationYRad(_Deg * GameEngineMath::DegToRad);
-	}
-
-	void RotationYRad(const float _Rad)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixRotationY(_Rad);
-	}
-
-	void RotationZDeg(const float _Deg)
-	{
-		RotationZRad(_Deg * GameEngineMath::DegToRad);
-	}
-
-	void RotationZRad(const float _Rad)
-	{
-		Identity();
-
-		DirectMatrix = DirectX::XMMatrixRotationZ(_Rad);
-	}
-
-	float4x4 operator*(const float4x4& _Other)
-	{
-		float4x4 Return = DirectX::XMMatrixMultiply(*this, _Other);
-
-		return Return;
-	}
-
-	float4x4& operator*=(const float4x4& _Other)
-	{
-		// *this = *this * _Other;
-
-		DirectMatrix = DirectX::XMMatrixMultiply(*this, _Other);
-
-		return *this;
-	}
-
-	// w 가 0인 곱하기
-	float4 TransformNormal(const float4& _Value)
-	{
-		return DirectX::XMVector3TransformNormal(_Value, *this);
-	}
-	// w 가 1인 곱하기
-	float4 TransformCoord(const float4& _Value)
-	{
-		return DirectX::XMVector3TransformCoord(_Value, *this);
-	}
-
+	// 다이렉트 행렬 리턴
 	operator DirectX::FXMMATRIX() const
 	{
 		return DirectMatrix;
@@ -791,5 +628,196 @@ public:
 		ArrVector[3] = _w;
 	}
 
+	// 항등행렬, DirectX : XMMatrixIdentity()
+	void Identity()
+	{
+		DirectMatrix = DirectX::XMMatrixIdentity();
+	}
+
+	// 행렬 전치, DirectX : XMMatrixTranspose(전치할 행렬)
+	void Transpose()
+	{
+		DirectMatrix = DirectX::XMMatrixTranspose(*this);
+	}
+
+	// 역행렬, DirectX : XMMatrixTranspose(nullptr, 역행렬 구할 행렬)
+	void Inverse()
+	{
+		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
+	}
+
+	// 역행렬된 행렬을 리턴
+	float4x4 InverseReturn() const
+	{
+		float4x4 Return = *this;
+		Return.Inverse();
+		return Return;
+	}
+
+	// 뷰 행렬을 위한 Z(앞; _EyeDir), Y(위; _EyeUp)
+	// 외적을 통해 회전 방향 구함, 내적을 통해 얼만큼 돌아야하는지 구함, DirectX : XMMatrixLookToLH()
+	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixLookToLH(_EyePos, _EyeDir, _EyeUp);
+	}
+
+	// 프로젝션 행렬, DirectX : XMMatrixPerspectiveFovLH()
+	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixPerspectiveFovLH(_FovAngle * GameEngineMath::DegToRad, _AspectRatio, _NearZ, _FarZ);
+	}
+
+	// 뷰포트 행렬, 뷰포트 행렬은 다이렉트 함수가 없다.
+	// -1 ~ 1 사이에 존재하게 된 액터들을 화면 크기로 확장
+	void ViewPort(float _Width, float _Height, float _Left, float _Right, float _ZMin = 0.0f, float _ZMax = 1.0f)
+	{
+		Identity();
+
+		Arr2D[0][0] = _Width * 0.5f;                             // 화면 너비 절반
+		Arr2D[1][1] = -_Height * 0.5f;                           // 화면 높이 절반
+		Arr2D[2][2] = _ZMax != 0.0f ? 1.0f : _ZMin / _ZMax;      // 프로젝션 시 z 범위 (0 ~ 1)
+
+		Arr2D[3][0] = Arr2D[0][0] + _Left;                       // 화면 너비 절반 + 화면 왼쪽 끝 
+		Arr2D[3][1] = _Height * 0.5f + _Right;                   // 화면 높이 저란 + 화면 오른쪽 끝
+		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;      // 프로젝션 시 z 범위 (0 ~ 1)
+		Arr2D[3][3] = 1.0f;                                      // w = 1
+	}
+
+	// SRT(변환 행렬) 분리
+	// 변환행렬은 위치벡터에서 크기, 회전, 위치변환을 위해 곱해지는 행렬을 말한다.
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	{
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	// SRT 중 크기 분리
+	void DecomposeScale(float4& _Scale)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &Temp0.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
+	// SRT 중 회전 분리
+	void DecomposeRotQuaternion(float4& _RotQuaternion)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &_RotQuaternion.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
+	// SRT 중 이동 분리
+	void DecomposePos(float4& _Pos)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &Temp1.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	// 크기 행렬, DirectX : XMMatrixScalingFromVector()
+	void Scale(const float4& _Value)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixScalingFromVector(_Value);
+	}
+
+	// 이동 행렬, DirectX : XMMatrixTranslationFromVector()
+	void Pos(const float4& _Value)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixTranslationFromVector(_Value);
+	}
+
+	// 회전 행렬, DirectX : XMMatrixRotationRollPitchYaw(x, y, z)
+	void RotationDeg(const float4& _Deg)
+	{
+		float4 Rot = _Deg * GameEngineMath::DegToRad;
+
+		DirectMatrix = DirectX::XMMatrixRotationRollPitchYaw(Rot.x, Rot.y, Rot.z);
+	}
+
+	// X, Y, Z 회전 행렬, X->Y->Z 순으로 곱함
+	void RotationDegToXYZ(const float4& _Deg)
+	{
+		float4 Rot = _Deg * GameEngineMath::DegToRad;
+
+		float4x4 RotX = DirectX::XMMatrixRotationX(Rot.x);
+		float4x4 RotY = DirectX::XMMatrixRotationY(Rot.y);
+		float4x4 RotZ = DirectX::XMMatrixRotationZ(Rot.z);
+
+		*this = RotX * RotY * RotZ;
+	}
+
+	// X축 회전 행렬, DirectX : XMMatrixRotationX(라디안)
+	void RotationXDeg(const float _Deg)
+	{
+		RotationXRad(_Deg * GameEngineMath::DegToRad);
+	}
+	void RotationXRad(const float _Rad)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixRotationX(_Rad);
+	}
+
+	// Y축 회전 행렬, DirectX : XMMatrixRotationY(라디안)
+	void RotationYDeg(const float _Deg)
+	{
+		RotationYRad(_Deg * GameEngineMath::DegToRad);
+	}
+	void RotationYRad(const float _Rad)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixRotationY(_Rad);
+	}
+
+	// Z축 회전 행렬, DirectX : XMMatrixRotationZ(라디안)
+	void RotationZDeg(const float _Deg)
+	{
+		RotationZRad(_Deg * GameEngineMath::DegToRad);
+	}
+	void RotationZRad(const float _Rad)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixRotationZ(_Rad);
+	}
+
+	// 노말 : w가 0인 곱하기
+	float4 TransformNormal(const float4& _Value)
+	{
+		return DirectX::XMVector3TransformNormal(_Value, *this);
+	}
+	// 쿠드 : w가 1인 곱하기
+	float4 TransformCoord(const float4& _Value)
+	{
+		return DirectX::XMVector3TransformCoord(_Value, *this);
+	}
+
+	// 행렬과 행렬 곱, DirectX : XMMatrixMultiply(주체, 대상)
+	float4x4 operator*(const float4x4& _Other)
+	{
+		float4x4 Return = DirectX::XMMatrixMultiply(*this, _Other);
+
+		return Return;
+	}
+
+	// 자신행렬과 행렬 곱, DirectX : XMMatrixMultiply(주체, 대상)
+	float4x4& operator*=(const float4x4& _Other)
+	{
+		DirectMatrix = DirectX::XMMatrixMultiply(*this, _Other);
+
+		return *this;
+	}
 };
 
