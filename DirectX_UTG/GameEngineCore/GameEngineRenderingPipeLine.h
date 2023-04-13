@@ -15,26 +15,32 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
-	// DirectX RenderingPipeLine 과정
-	void InputAssembler1();
-	void VertexShader();
-	void InputAssembler2();
-
-	// void HullShader(); 버텍스를 쪼개기 위한 표시를 새기고
-	// void Tessellator(); 쪼갠다.
-	// void DomainShader(); 입자처리
-	// void GeometryShaeder(); 버텍스 생성.
-
-	void Rasterizer();
-	void PixelShader();
-	void OutputMerger();
-
+	// 각 단계 클래스에서 Load를 마친 값들에 대해 Set 함수 실시
 	void SetVertexBuffer(const std::string_view& _Value);
+	void SetIndexBuffer(const std::string_view& _Value);
+	void SetVertexShader(const std::string_view& _Value);
+
+	void Render();
 
 protected:
 
 private:
-	std::shared_ptr<class GameEngineVertexBuffer> VertexBuffer;
+	// DirectX RenderingPipeLine 과정
+	void InputAssembler1();
+	void VertexShader();
+	void InputAssembler2();
+	void HullShader();
+	void Tessellator();
+	void DomainShader();
+	void GeometryShaeder();
+	void Rasterizer();
+	void PixelShader();
+	void OutputMerger();
+
+
+	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
+	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
+	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;
 
 };
 

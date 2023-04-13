@@ -29,11 +29,12 @@ public:
 
 	GameEnginePath GetPlusFileName(const std::string_view& _String);
 
-	std::vector<GameEngineFile> GetAllFile(const std::string_view& _Ext = "");
+	// 하위는 돌지 않고 그 디렉토리에 해당하는 모든 파일만 리턴해주는 함수.
+	std::vector<GameEngineFile> GetAllFile(std::vector<std::string_view> _Ext);
 
 protected:
 
 private:
-	GameEnginePath Path; // == "D:\Project\AR45\WINAPI\APIApp\ContentsResources\Iamge\";
+	GameEnginePath Path;
 };
 

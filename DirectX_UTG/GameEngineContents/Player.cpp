@@ -141,8 +141,11 @@ void Player::Start()
 
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
 	Render0 = CreateComponent<GameEngineRenderer>();
+	Render0->SetPipeLine("2DTexture");
 	Render1 = CreateComponent<GameEngineRenderer>();
+	Render1->SetPipeLine("2DTexture");
 	Render2 = CreateComponent<GameEngineRenderer>();
+	Render2->SetPipeLine("2DTexture");
 
 	Render1->GetTransform()->DebugOn();
 

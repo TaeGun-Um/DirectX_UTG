@@ -63,6 +63,10 @@ public:
 		return NamedResources[UpperName];
 	}
 
+	// 모든 리소스는 Setting()을 가지고 이를 통해 그래픽카드에게 영향을 주는 인터페이스로 만들 예정
+	// 상속한 클래스에게 Setting 함수를 설정하도록 함
+	virtual void Setting() {}
+
 protected:
 	// 리소스를 상속받은 클래스는 Create를 활용할 수 있다.
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)

@@ -20,12 +20,14 @@ struct Input
 
 struct OutPut
 {
-    // SV_Position == 레스터라이져한테 w로 나눈 후 뷰포트를 곱하고 픽셀 건져낼 때 쓸 position 정보를 본인이 보낸 것이라고 알려주는 것
+    // SV_Position == 레스터라이져한테 w로 나눈 후 뷰포트를 곱하고 픽셀 건져낼 때 쓸 position 정보를 본인이 보낸 것이라고 알려주는 것(누굴 가지고 픽셀 건지기 할지 모르니 알려주는 것)
     // COLOR == 최초로 COLOR를 입력하면 COLOR[n]이 생성된다. 이건 구조체 내부의 COLOR가 COLOR0, COLOR1, COLOR2, ... 로 여러 개 선언될 수 있기 때문
     float4 Pos : SV_Position;
     float4 Color : COLOR;
 };
 
+// 외부에서 쉐이더를 컴파일할 때, EntryPount를 원하는 경우가 있다.
+// 함수의 이름, "Texture_VS"를 입력하는 것이 EntryPoint 이다.
 OutPut Texture_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut)0;
