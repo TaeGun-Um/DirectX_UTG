@@ -38,15 +38,28 @@ OutPut Texture_VS(Input _Value)
     return OutPutValue;
 }
 
+// 픽셀쉐이더 이후는 아웃풋머저 단계에 들어간다. 아웃풋머저는 도화지를 깔고(RenderTarget) 여기에 그리라고 하는 단계
+// 여기서 동시에 5장 그리기 같은 것을 할 수 있다.
+// 아래에서 
+// float4 Color : SV_Target0;
+// float4 Color : SV_Target1;
+// float4 Color : SV_Target2;
+// float4 Color : SV_Target3;
+// float4 Color : SV_Target4;
+// 이런 식으로 하면 동시에 RenderTarget 5개에 그릴 수 있음. 근데 그럴 필요 없으니 SV_Target0 하나만 만든다.
+
 struct OutColor
 {
-    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
-    float4 Color : SV_Target0;
+    float4 Color : SV_Target0; // 0번째 도화지에 출력하라
 };
 
+// 픽셀쉐이더의 엔트리포인트는 PS, 여기에 OutPut 값이 들어온다.
+// 이 쉐이더는 먼저 정점 정보가 들어온다. 그 다음 레스터라이저 넘기기용으로 Output 실시
+// 그러면 레스터라이저에서 w나누기를 하고 PS에 OutPut으로 전달 된다.
+// 이때, 디폴트 값은 Red이기 때문에 레드, 레드, 레드, 레드 이런 식으로 나올 것이다.
 OutColor Texture_PS(OutPut _Value)
 {
     OutColor ReturnColor = (OutColor) 0;
-    ReturnColor.Color = _Value.Color;
+    ReturnColor.Color = _Value.Color;     // 지금은 디폴트 컬러를 Red로 넣어놨음, 아마 설정을 바꾸지 않으면 Red 도형이 출력될 예정
     return ReturnColor;
 }

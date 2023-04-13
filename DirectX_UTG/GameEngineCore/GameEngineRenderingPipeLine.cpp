@@ -15,6 +15,18 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 {
 }
 
+
+// 인풋레이아웃 오류
+// D3D11 ERROR: ID3D11DeviceContext::DrawIndexed: The Vertex Shader expects 
+// application provided input data (which is to say data other than hardware 
+// auto-generated values such as VertexID or InstanceID). Therefore an Input 
+// Assembler object is expected, but none is bound. 
+// [ EXECUTION ERROR #349: DEVICE_DRAW_INPUTLAYOUT_NOT_SET]
+// 드로우 이후 나타나는 오류로, 밑에 단계로 넘어올 수 있음이라 주석건 것이 있다. 지금이 그 시점임
+// 쉐이더의 시멘틱을 봤을 때, 구조체 내부에 따라 순서가 결정된다고 했지만, 사실은 그게 아니다.
+// 뭔가 (LayOut)를 직접 만들어서 전달해줘야 한다.
+// 그것은 이제 GameEngineVertex에서 실시
+
 void GameEngineRenderingPipeLine::InputAssembler1()
 {
 	if (nullptr == VertexBufferPtr)
@@ -22,13 +34,6 @@ void GameEngineRenderingPipeLine::InputAssembler1()
 		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
 		return;
 	}
-
-	// 인풋레이아웃 오류
-	// D3D11 ERROR: ID3D11DeviceContext::DrawIndexed: The Vertex Shader expects 
-	// application provided input data (which is to say data other than hardware 
-	// auto-generated values such as VertexID or InstanceID). Therefore an Input 
-	// Assembler object is expected, but none is bound. 
-	// [ EXECUTION ERROR #349: DEVICE_DRAW_INPUTLAYOUT_NOT_SET]
 
 	// GameEngineVertexBuffer::Setting() 실시, GetContext()->IASetVertexBuffers()
 	VertexBufferPtr->Setting();
@@ -51,6 +56,7 @@ void GameEngineRenderingPipeLine::VertexShader()
 void GameEngineRenderingPipeLine::InputAssembler2()
 {
 	// Topology 셋팅을 위한 IASetPrimitiveTopology() 호출
+	// TOPOLOGY == D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST == 삼각형으로 그려라. 애초에 우리의 인덱스도 삼각형으로 그리게 설정되어 있음
 	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
 
 	if (nullptr == IndexBufferPtr)
@@ -70,6 +76,7 @@ void GameEngineRenderingPipeLine::DomainShader() {}     // 입자처리
 void GameEngineRenderingPipeLine::GeometryShaeder() {}  // 버텍스 생성.
 // ------------------------- ---------------------------------- -----------------------------
 
+// 레스터라이저는 고정단계라는 것을 정확하게 알고 있어야 한다.
 void GameEngineRenderingPipeLine::Rasterizer()
 {
 	if (nullptr == RasterizerPtr)
@@ -78,10 +85,10 @@ void GameEngineRenderingPipeLine::Rasterizer()
 		return;
 	}
 
-	RasterizerPtr->SetFILL_MODE(FILL_MODE);
-	RasterizerPtr->Setting();
+	RasterizerPtr->SetFILL_MODE(FILL_MODE); // 고정단계는 보통 State를 넘기라고 한다. 기본값은 솔리드, 물론 우리는 둘 다 만들 예정
 
-	// GameEngineDevice::GetContext()->RSSetState
+	// GameEngineRasterizer::Setting() 실시, GetContext()->RSSetState(CurState);
+	RasterizerPtr->Setting();
 }
 
 void GameEngineRenderingPipeLine::PixelShader()
@@ -92,13 +99,12 @@ void GameEngineRenderingPipeLine::PixelShader()
 		return;
 	}
 
+	// GameEnginePixelShader::Setting() 실시, GetContext()->PSSetShader();
 	PixelShaderPtr->Setting();
-
-	// GameEngineDevice::GetContext()->PSSetShader
 }
 void GameEngineRenderingPipeLine::OutputMerger()
 {
-	// GameEngineDevice::GetContext()->OMSetRenderTargets
+	// 아웃풋머저는 여기서 실시하지 않고, GameEngineRenderTarget에서 실시함
 }
 
 void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value)
@@ -160,6 +166,13 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 // 랜더라고 하는 부분은 랜더링 파이프라인을 한바뀌 돌리는 것이다.
 void GameEngineRenderingPipeLine::Render()
 {
+	// 메쉬    <= 외형이 어떻게 보일것인가.
+	//            픽셀건져내기할 범위를 지정하는 Rasterizer
+	//            w나누기를 하고 뷰포트를 곱해서
+
+	// 머티리얼 <= 색깔이 어떻게 나올것인가?
+	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
+
 	InputAssembler1();
 	VertexShader();
 	InputAssembler2();
@@ -171,15 +184,19 @@ void GameEngineRenderingPipeLine::Render()
 	PixelShader();
 	OutputMerger();
 
-	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데.
+	// 위의 세팅이 모두 끝났다면 Draw 실시
+	// DrawIndexed()는 인덱스버퍼 세팅이 됐을 때만 그리겠다는 뜻이다.
+	// 우리의 인터페이스는 세팅을 안할 생각이 없기 때문이 이것으로만 Draw를 실시할 것이다.
+	// DrawIndexed()는 내가 번호까지 지정해서 그려주는 느낌이라 직관적이라서 좋음. Auto같은 경우에는 012345 햇으면 6개 고정에 4개로는 못그림 이런 느낌
+	// 사실 나머지는 까먹어서 그냥 이걸로 실시
 	GameEngineDevice::GetContext()->DrawIndexed(IndexBufferPtr->GetIndexCount(), 0, 0);
+	// 1번 인자 : IndexCount
+	// 2번 인자 : 인덱스 몇 번부터 그리는가? 0
+	// 3번 인자 : 버텍스 몇 번부터 그리는가? 0
 
-	// 다 끝났다면
-
-	// 메쉬 <= 외형이 어떻게 보일것인가.
-	//         픽셀건져내기할 범위를 지정하는 Rasterizer
-	//         w나누기를 하고 뷰포트를 곱해서
-
-	// 머티리얼 <= 색깔이 어떻게 나올것인가?
-	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
+	// 여기까지만 하면 오류가 뜬다.
+	// 1. Rimitive Topology : InputAssmebler2 단계에서 IASetPrimitiveTopology() 실시.
+	// 2. ViewPort Setting  : 뷰포트 세팅을 안해줌. Camera에 Setting 추가 후 GameEngineDevice::GetContext()->RSSetViewport() 실시.
+	// 3. Vertex InputData  : 인풋레이아웃 낫셋. 쉐이더의 시멘틱에게 버텍스 구성이 어떻게 되어있는지의 인풋데이터를 생성 후 전달 필요
+	//                        GameEngineVertex로 이동하여 인풋 레이아웃 생성 함수 만들기
 }

@@ -1,21 +1,20 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
 
-// D3D11_INPUT_ELEMENT_DESC
-
+// 인풋레이아웃 낫셋오류를 해결하기 위한 Vertex LayOut 생성, Vertex의 구성이 어떻게 되어 있는지를 쉐이더의 시멘틱쪽에 다 알려줘야 한다.
 class GameEngineInputLayOut
 {
 private:
-	std::vector<D3D11_INPUT_ELEMENT_DESC> Descs;
+	std::vector<D3D11_INPUT_ELEMENT_DESC> Descs;  // LayOut 구조체
 
 public:
 	void AddInputLayOut(
-		LPCSTR SemanticName, // 내가 포지션이다 내가 컬러다.
-		DXGI_FORMAT Format, // 내가 n바이트 짜리 정보다 자료형
-		D3D11_INPUT_CLASSIFICATION InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA, // 버텍스 데이터가 인스턴싱 데이터다 라는걸 표현
-		UINT InstanceDataStepRate = 0, // 나중에 나중에 인스턴싱이라는 구조를 배울때 쓸때가 있을것이다.
-		UINT AlignedByteOffset = -1, // 0번째 바이트부터 
-		UINT InputSlot = 0, // n개의 버텍스 버퍼를 세팅할때 n번째 버텍스 버퍼의 인풋 레이아웃이다 라는걸 표현하는것
+		LPCSTR SemanticName,
+		DXGI_FORMAT Format,
+		D3D11_INPUT_CLASSIFICATION InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA,
+		UINT InstanceDataStepRate = 0,
+		UINT AlignedByteOffset = -1,
+		UINT InputSlot = 0,
 		UINT SemanticIndex = 0
 	);
 };
@@ -27,6 +26,6 @@ public:
 	static GameEngineInputLayOut LayOut;
 
 public:
-	float4 POSITION; // 0 16
-	float4 COLOR;    // 16 32
+	float4 POSITION;
+	float4 COLOR;
 };

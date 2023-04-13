@@ -113,45 +113,41 @@ void GameEngineCore::CoreResourcesInit()
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 	}
 
+	// 레스터라이저의 Desc 설정
 	{
 		D3D11_RASTERIZER_DESC Desc = {};
 
-		//D3D11_FILL_MODE FillMode;
-		// 렌더링할 때 사용할 채우기 모드를 결정합니다( D3D11_FILL_MODE 참조 ).
-		//D3D11_CULL_MODE CullMode;
-		// 지정된 방향을 향하는 삼각형이 그려지지 않음을 나타냅니다( D3D11_CULL_MODE 참조 ).
-		//BOOL FrontCounterClockwise;
-		// 삼각형이 앞면인지 뒷면인지 결정합니다. 
-		// 이 매개변수가 TRUE 이면 정점 이 렌더 대상에서 
-		// 시계 반대 방향이면 삼각형이 전면을 향하는 것으로 
-		// 간주되고 시계 방향이면 후면을 향하는 것으로 간주됩니다. 
-		// 이 매개변수가 FALSE 이면 그 반대입니다.
-		//INT DepthBias;
-		// 지정된 픽셀에 추가된 깊이 값입니다. 깊이 편향에 대한 정보는 깊이 편향 을 참조하십시오 .
-		//FLOAT DepthBiasClamp;
-		// 픽셀의 최대 깊이 편향. 깊이 편향에 대한 정보는 깊이 편향 을 참조하십시오 .
-		//FLOAT SlopeScaledDepthBias;
-		// 주어진 픽셀의 기울기에 대한 스칼라. 깊이 편향에 대한 정보는 깊이 편향 을 참조하십시오 .
-		//BOOL DepthClipEnable;
-		// 거리에 따라 클리핑을 활성화합니다.
-		// 하드웨어는 항상 래스터화된 좌표의 x 및 y 클리핑을 수행합니다.
-		// DepthClipEnable이 기본값인 TRUE 로 설정 되면 하드웨어도 z 
-		// 값을 자릅니다(즉, 하드웨어는 다음 알고리즘의 마지막 단계를 수행합니다).
-		//BOOL ScissorEnable;
-		// 가위 사각형 컬링을 활성화합니다. 활성 가위 사각형 외부의 모든 픽셀이 추려집니다.
-		//BOOL MultisampleEnable;
-		// 다중 샘플 앤티앨리어싱(MSAA) 렌더 대상에서 사변형 또는 알파 라인 앤티앨리어싱 
-		// 알고리즘을 사용할지 여부를 지정합니다. 사변형 라인 앤티 앨리어싱 알고리즘을 
-		// 사용하려면 TRUE 로 설정 하고 알파 라인 앤티 앨리어싱 알고리즘을 사용하려면 
-		// FALSE 로 설정합니다. 이 멤버에 대한 자세한 내용은 비고를 참조하세요.
-		//BOOL AntialiasedLineEnable;
-		// 선 앤티앨리어싱을 활성화할지 여부를 지정합니다. 선 그리기를 수행하고 MultisampleEnable이 
-		// FALSE 인 경우에만 적용됩니다 . 이 멤버에 대한 자세한 내용은 비고를 참조하세요.
+		// 1번 인자 : FILL모드 == 솔리드와 와이어 프레임이 있다. 와이어 프레임은 와이어로 표현, 솔리느는 면으로 표현하는 것이다.
+		//                       FILL모드는 만들지 않았으면 전환이 순식간에 되지 않기 때문에, 우리는 두개 다 만들어서 사용할 예정이다.
+		//                       어차피 세팅 단계이며, 엔진에서만 이뤄지는 것, 게임할때는 호출되지 않아서 상관없다.
 
-		// 와이어 프레임은 선으로 표현하는 겁니다. 
-		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
-		Desc.FrontCounterClockwise = TRUE;
+		// 2번 인자 : CULL모드 == 앞면인지, 뒷면인지, 상관없음(None)인지 설정. 사실 다 만들어야하는 것이다. 그래서 SetCULL_MODE(_Value)를
+		//                       만들고 호출될 때마다 ResCreate(Desc)를 실시하여 다시 만드는 인터페이스로 구성함. 지금 당장은 Front로 실시
+		//                       이것이 가능한 이유는 ResCreate()로 다시 만들어도 빠르기 때문에 그런 것(이렇게 해도 상관 없을 정도로 빠르다는 뜻)
+
+		// 3번 인자 : FrontCounterClockwise == 삼각형이 앞면인지 뒷면인지 결정. 이 매개변수가 TRUE 이면 정점 이 렌더 대상에서 
+		//                                     시계 반대 방향이면 삼각형이 전면을 향하는 것으로 간주되고 시계 방향이면 후면을 향하는 것으로 간주됩니다. 
+		//                                     이 매개변수가 FALSE 이면 그 반대입니다 (반전시킨다는 뜻).
+		 
+		// 4번 인자 : DepthBias == 픽셀의 깊이 값 추가. 깊이 편향에 대한 정보는 깊이 편향 을 참조(msdn)
+		// 5번 인자 : DepthBiasClamp == 픽셀의 최대 깊이 편항 추가. 깊이 편향에 대한 정보는 깊이 편향 을 참조(msdn)
+		// 6번 인자 : SlopeScaledDepthBias == 주어진 픽셀의 기울기에 대한 스칼라. 깊이 편향에 대한 정보는 깊이 편향 을 참조(msdn)
+		// 7번 인자 : DepthClipEnable == 거리에 따라 클리핑 실시. 왼쪽 오른쪽 삐져나온것 이외에 이걸 true하면 z도 짜름
+		//                               게임하다가 갑자기 생성되는 액터들을 생각하면 뭔지 이해가능
+		// 8번 인자 : ScissorEnable == 가위 사각형 컬링. 윈도우창 안에서 또 렉트를 만들어서 자르겠냐는 뜻. false
+		
+		// 9번 인자 : MultisampleEnable == 솔리드 방식일때의 안티얼라이어싱, True면 사용, false
+		//                                다중 샘플 앤티앨리어싱(MSAA) 렌더 대상에서 사변형 또는 알파 라인 앤티앨리어싱 알고리즘을 사용할지 여부를 지정합니다. 
+		//                                사변형 라인 앤티 앨리어싱 알고리즘을 사용하려면 TRUE 로 설정 하고 알파 라인 앤티 앨리어싱 알고리즘을 사용하려면 
+		//                                FALSE 로 설정합니다.
+		
+		// 10번 인자 : AntialiasedLineEnable == 와이어 프레임 방식일때의 안티얼라이어싱, True면 사용, false
+	    //                                     선 앤티앨리어싱을 활성화할지 여부를 지정합니다. 선 그리기를 수행하고 MultisampleEnable이 FALSE 인 경우에만 적용됩니다.
+        //                                     와이어 프레임은 선으로 표현하는 겁니다. 
+
+		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME; // 1번
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;      // 2번
+		Desc.FrontCounterClockwise = TRUE;                     // 3번
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
 	}

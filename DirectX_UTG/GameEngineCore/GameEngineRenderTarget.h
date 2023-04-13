@@ -29,6 +29,8 @@ public:
 	// 백버퍼(화면)를 일정한 색으로 Clear (다음 그림을 그리기 위함)
 	void Clear();
 
+	// 아웃풋머저 단계를 실시하기 위한 Setting 함수
+	// GameEngineDevice::RenderStart() 에서 Clear() 실시
 	void Setting() override;
 
 protected:

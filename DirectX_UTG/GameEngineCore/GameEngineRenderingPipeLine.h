@@ -44,14 +44,12 @@ private:
 	void PixelShader();
 	void OutputMerger();
 
-	// Directx11 랜더링 파이프라인의 단계에는 2가지 구분이 있는데.
-	// 고정기능 단계 => 내가 옵션정도만 넘겨서 만드는 단계
-	// 프로그래밍 가능 단계 => 특정 규칙만 지키면 나머지는 이제 내가 마음대로 짤수 있는 단계를 의미한다.
-	// 쉐이더 계열은 다 프로그래밍 가능 단계 단계와 
-	// 나머지들은 고정기능 단계라고 부른다.
+	// DirectX11 랜더링 파이프라인은 고정기능 단계와 프로그래밍 가능 단계가 존재한다.
+	// 고정기능 단계 == 이미 세팅은 되어있고 옵션만 이거로 하라고 하며 넘겨주고 만드는 단계 // 쉐이더 이외의 단계들
+	// 프로그래밍 가능 단계 == 특정 규칙만 지키면 마음대로 설계할 수 있는 단계 // 쉐이더가 프로그래밍 가능 단계
 
-	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;                                        // 레스터라이저의 FILL을 선택, 솔리드와 와이어프레임이 있다. 기본은 솔리드로 실시
+	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;  // TOPOLOGY 오류를 위한 TRIANGLELIST 기본값
 
 	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
 	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;

@@ -27,6 +27,7 @@ public:
 
 	void Setting() override;
 
+	// IndexCount 가져오기 (Draw에서 사용)
 	inline UINT GetIndexCount()
 	{
 		return IndexCount;

@@ -197,8 +197,10 @@ void GameEngineDevice::CreateSwapChain()
 // 백버퍼 클리어
 void GameEngineDevice::RenderStart()
 {
-	BackBufferTarget->Clear();
-	BackBufferTarget->Setting();
+	BackBufferTarget->Clear();   // 백버퍼 클리어
+	BackBufferTarget->Setting(); // 아웃풋머저 세팅
+	// 여기에 아웃풋머저 세팅이 있다고 착각하면 안되는 것이, 세팅을 순서대로 해야한다고 생각하는 것이다.
+	// 랜더링 파이프라인은 그저 세팅일 뿐, Draw 전에는 세팅의 순서에 상관이 없다. 실제로 전단계를 안했다고 다음단계를 못하는게 아님
 }
 
 // 백버퍼에 이미지 생성(HDC로 수정된 이미지 화면에 띄우기)

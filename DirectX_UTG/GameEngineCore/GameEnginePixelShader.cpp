@@ -14,6 +14,8 @@ GameEnginePixelShader::~GameEnginePixelShader()
 	}
 }
 
+// 쉐이더 로드 방식에서 엔트리포인트 이름만 PS인 것 이외에
+// 버텍스 쉐이더와 생성 방식이 동일하다.
 void GameEnginePixelShader::ShaderLoad(const std::string_view& _Path
 	, const std::string_view& _EntryPoint
 	, UINT _VersionHigh /*= 5*/
@@ -25,10 +27,11 @@ void GameEnginePixelShader::ShaderLoad(const std::string_view& _Path
 	unsigned int Flag = 0;
 
 #ifdef _DEBUG
+
 	Flag = D3D10_SHADER_DEBUG;
+
 #endif
 
-	// 상수버퍼 할때 이옵션이 관련이 있습니다.
 	Flag |= D3DCOMPILE_PACK_MATRIX_ROW_MAJOR;
 
 	ID3DBlob* Error;
@@ -50,7 +53,6 @@ void GameEnginePixelShader::ShaderLoad(const std::string_view& _Path
 		)
 	{
 
-		// 에러를 텍스트로 알려줍니다.
 		std::string ErrorString = reinterpret_cast<char*>(Error->GetBufferPointer());
 		MsgAssert(ErrorString);
 		return;
@@ -77,4 +79,5 @@ void GameEnginePixelShader::Setting()
 	}
 
 	GameEngineDevice::GetContext()->PSSetShader(ShaderPtr, nullptr, 0);
+	// 전달 인자 방식이 버텍스쉐이더와 동일하다
 }
