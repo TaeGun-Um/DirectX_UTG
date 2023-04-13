@@ -3,6 +3,7 @@
 #include "GameEngineCamera.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include "GameEngineDevice.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -33,6 +34,13 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
 	}
+
+	ViewPortData.TopLeftX = 0;
+	ViewPortData.TopLeftY = 0;
+	ViewPortData.Width = GameEngineWindow::GetScreenSize().x;
+	ViewPortData.Height = GameEngineWindow::GetScreenSize().y;
+	ViewPortData.MinDepth = 0.0f;
+	ViewPortData.MaxDepth = 1.0f;
 }
 
 void GameEngineCamera::Update(float _DeltaTime)
@@ -112,4 +120,10 @@ void GameEngineCamera::Update(float _DeltaTime)
 	View.LookToLH(EyePos, EyeDir, EyeUp);
 	Projection.PerspectiveFovLH(60.0f, GameEngineWindow::GetScreenSize().x / GameEngineWindow::GetScreenSize().y, Near, Far);
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+}
+
+void GameEngineCamera::Setting()
+{
+	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
 }

@@ -23,6 +23,12 @@ public:
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
 	}
 
+	static void Create(const std::string_view& _Name, ID3D11Texture2D* _Value)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		NewTexture->ResCreate(_Value);
+	}
+
 	// RenderTarget 가져오기
 	ID3D11RenderTargetView* GetRTV()
 	{
@@ -39,7 +45,7 @@ private:
 	ID3D11RenderTargetView* RenderTarget = nullptr;
 
 	// HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
-	void Create(ID3D11Texture2D* _Value);
+	void ResCreate(ID3D11Texture2D* _Value);
 
 	void CreateRenderTargetView();
 

@@ -181,7 +181,7 @@ void GameEngineDevice::CreateSwapChain()
 	// 이걸 수정할 권한이 없기 때문에 Device->CreateTargetview(백버퍼, 랜더타겟)을 실시하지만, 이걸 GameEngineTextuer, GameEngineRenderTarget 두 개로 나눴다.
 
 	std::shared_ptr<GameEngineTexture> BackBufferTexture = std::make_shared<GameEngineTexture>();
-	BackBufferTexture->Create(SwapBackBufferTexture);
+	BackBufferTexture->ResCreate(SwapBackBufferTexture);
 
 	// RenderTarget은 HDC라고 생각하면 된다. HDC는 이미지를 수정할 수 있는 권한(핸들)이다.
 	BackBufferTarget = GameEngineRenderTarget::Create("MainBackBufferTarget", BackBufferTexture, { 0.0f, 0.0f, 1.0f, 1.0f });
@@ -198,6 +198,7 @@ void GameEngineDevice::CreateSwapChain()
 void GameEngineDevice::RenderStart()
 {
 	BackBufferTarget->Clear();
+	BackBufferTarget->Setting();
 }
 
 // 백버퍼에 이미지 생성(HDC로 수정된 이미지 화면에 띄우기)

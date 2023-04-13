@@ -21,7 +21,7 @@ public:
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
 
-		NewRenderTarget->Create(_Texture, _Color);
+		NewRenderTarget->ResCreate(_Texture, _Color);
 
 		return NewRenderTarget;
 	}
@@ -29,12 +29,15 @@ public:
 	// 백버퍼(화면)를 일정한 색으로 Clear (다음 그림을 그리기 위함)
 	void Clear();
 
+	void Setting() override;
+
 protected:
 
 private:
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };     // 백버퍼를 Clear하기 위한 색 지정
 	std::shared_ptr<GameEngineTexture> Texture;    // RenderTarget을 생성한 Texture
-	void Create(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
+
+	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
 };
 

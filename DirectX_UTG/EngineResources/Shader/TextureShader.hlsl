@@ -8,7 +8,7 @@ struct Input
     // 시멘틱 == 앞 : 뒤
     // 앞 == 뒤에 있는게 어떤 역할을 가졌는지에 대한 변수
     // 뒤 == 역할
-	float4 Pos   : POSITION0;
+	float4 Pos   : POSITION;
 	float4 Color : COLOR;
 };
 
@@ -36,4 +36,17 @@ OutPut Texture_VS(Input _Value)
     OutPutValue.Color = _Value.Color;
 
     return OutPutValue;
+}
+
+struct OutColor
+{
+    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
+    float4 Color : SV_Target0;
+};
+
+OutColor Texture_PS(OutPut _Value)
+{
+    OutColor ReturnColor = (OutColor) 0;
+    ReturnColor.Color = _Value.Color;
+    return ReturnColor;
 }

@@ -10,7 +10,7 @@ GameEngineIndexBuffer::~GameEngineIndexBuffer()
 }
 
 // 점을 그릴 순서를 Create하는 단계.
-void GameEngineIndexBuffer::Create(const void* _Data, UINT _VertexSize, UINT _VertexCount)
+void GameEngineIndexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT _VertexCount)
 {
 	// 공간의 크기
 	IndexSize = _VertexSize;

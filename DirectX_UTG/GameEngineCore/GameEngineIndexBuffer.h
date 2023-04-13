@@ -22,10 +22,15 @@ public:
 	{
 		std::shared_ptr<GameEngineIndexBuffer> Res = GameEngineResource::Create(_Name);
 
-		Res->Create(&_Vertexs[0], sizeof(IndexType), static_cast<UINT>(_Vertexs.size()));
+		Res->ResCreate(&_Vertexs[0], sizeof(IndexType), static_cast<UINT>(_Vertexs.size()));
 	}
 
 	void Setting() override;
+
+	inline UINT GetIndexCount()
+	{
+		return IndexCount;
+	}
 
 protected:
 
@@ -33,13 +38,13 @@ private:
 	// ID3D11Buffer* Buffer = nullptr;         // 모든 Buffer 계열은 ID3D11Buffer를 멤버 변수로 가지고 있다. << 상속받음
 	// D3D11_BUFFER_DESC BufferInfo = { 0, };  // 그리고 D3D11_BUFFER_DESC로 정보를 받아서 활용한다.         << 상속받음
 
-	void Create(const void* _Data, UINT _IndexSize, UINT _IndexCount);
+	void ResCreate(const void* _Data, UINT _IndexSize, UINT _IndexCount);
 
-	DXGI_FORMAT Format;
+	DXGI_FORMAT Format = DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
 
-	UINT Offset;
-	UINT IndexSize;   // 공간의 크기
-	UINT IndexCount;  // 정점의 갯수
-	UINT VertexCount;
+	UINT Offset = 0;
+	UINT IndexSize = 0;   // 공간의 크기
+	UINT IndexCount = 0;  // 정점의 갯수
+	UINT VertexCount = 0;
 };
 

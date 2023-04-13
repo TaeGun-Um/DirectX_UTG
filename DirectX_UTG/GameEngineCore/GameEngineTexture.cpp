@@ -22,7 +22,7 @@ GameEngineTexture::~GameEngineTexture()
 }
 
 // HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
-void GameEngineTexture::Create(ID3D11Texture2D* _Create)
+void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
 	CreateRenderTargetView();

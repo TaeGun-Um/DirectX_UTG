@@ -22,7 +22,7 @@
     <Filter Include="Device">
       <UniqueIdentifier>{5f72f827-d55b-4f13-963e-1111ae5302f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Rendering\Shader">
+    <Filter Include="Resources\Shader">
       <UniqueIdentifier>{55d67acd-3b90-4ef8-aaca-9c88cc460a75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -90,12 +90,18 @@
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineShader.h">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineVertexShader.h">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineIndexBuffer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePixelShader.h">
+      <Filter>Resources\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRasterizer.h">
       <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,12 +170,18 @@
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineShader.cpp">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineVertexShader.cpp">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePixelShader.cpp">
+      <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRasterizer.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>

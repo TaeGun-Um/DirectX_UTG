@@ -33,6 +33,8 @@ public:
 		return ViewPort;
 	}
 
+	void Setting();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -43,6 +45,8 @@ private:
 	float4x4 View;          // 카메라 뷰 행렬
 	float4x4 Projection;    // 카메라 프로젝션 행렬
 	float4x4 ViewPort;      // 카메라 뷰포트 행렬
+
+	D3D11_VIEWPORT ViewPortData;
 
 	float Near = 0.1f;      // 근평면
 	float Far = 10000.0f;   // 원평면
