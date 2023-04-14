@@ -20,6 +20,11 @@ const float4 float4::Zero = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::Null = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 const float4 float4::Red = { 1.0f, 0.0f, 0.0f, 1.0f };
+const float4 float4::Blue = { 0.0f, 0.0f, 1.0f, 1.0f };
+const float4 float4::Green = { 0.0f, 1.0f, 0.0f, 1.0f };
+const float4 float4::White = { 1.0f, 1.0f, 1.0f, 1.0f };
+const float4 float4::Black = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 
 // Radian을 통한 X축 회전
 void float4::RotaitonXRad(float _Rad)

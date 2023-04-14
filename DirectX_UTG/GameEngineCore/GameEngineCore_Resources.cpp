@@ -22,36 +22,27 @@ void GameEngineCore::CoreResourcesInit()
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
-	//typedef struct D3D11_INPUT_ELEMENT_DESC
-	//{
-	//	LPCSTR SemanticName; = "POSITION"
-	//	UINT SemanticIndex; = 0
-	//	DXGI_FORMAT Format; 
-	//	UINT InputSlot;
-	//	UINT AlignedByteOffset;
-	//	D3D11_INPUT_CLASSIFICATION InputSlotClass;
-	//	UINT InstanceDataStepRate; 
-	//} 	
-
-
-	//const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
-	//UINT NumElements, // 
-	//const void* pShaderBytecodeWithInputSignature,  // 쉐이더의 바이너리 코드를 내놔
-	//SIZE_T BytecodeLength,
-	//ID3D11InputLayout** ppInputLayout // 만들어져 나오는 포인터
-
+	// 버텍스 버퍼의 내용과 인풋 레이아웃의 내용이 더 중요하다.
+	// 인풋 레이아웃을 만들 때, 만든 내용은 넣어줘야 한다.
+	// 만든것보다 적게 넣어주는건 상관없지만
+	// 만든 순서가 바뀐다던지, 만든 것보다 더 많이 선언하면 안된다.
+	// 지금은 POSITION과 COLOR를 만들었으니 POSITION, COLOR를 순서대로 선언하여 넣어준다.
 
 	// Rect 생성
 	{
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
-		// 앞면
+		
 		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, 0.5f,0.0f }, float4::Red };
-		ArrVertex[2] = { { 0.5f, -0.5f,0.0f }, float4::Red };
-		ArrVertex[3] = { { -0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, float4::Green };
+		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, float4::Black };
+		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, float4::White };
 
-		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 3, 2 };
+		// Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+		// Desc.FrontCounterClockwise = FALSE;
+		// 이기 때문에 그리는 순서는 시계 방향으로 실시
+
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
 
 		// 외적해서 앞면과 뒷면을 구분했었던 것
 		// 시계방향으로 해야 눈에 보임
@@ -63,6 +54,10 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
+		// 230414 인풋레이아웃 생성 수업
+		// Vertex는 ArrVertex로 여기서 전달됨
+		// 그렇기 때문에 VertexBuffer가 인풋레이아웃의 정보를 생성 즉시 가질 수 있도록 인터페이스 구성
+		// GameEngineVertexBuffer::Create 단계에서 Res->LayOutInfo = &VertexType::LayOut; 추가
 	}
 
 	// Box 생성
@@ -109,6 +104,7 @@ void GameEngineCore::CoreResourcesInit()
 		NewDir.Move("Shader");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
+
 		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 	}
@@ -147,7 +143,7 @@ void GameEngineCore::CoreResourcesInit()
 
 		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME; // 1번
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;      // 2번
-		Desc.FrontCounterClockwise = TRUE;                     // 3번
+		Desc.FrontCounterClockwise = FALSE;                    // 3번
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
 	}
@@ -164,13 +160,12 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetPixelShader("TextureShader.hlsl");
 		}
 	}
-
 }
 
 // 실제로는 알아서 Release 되지만, 내가 명시적으로 확인하기 위하여 호출하는 것들
 void GameEngineCore::CoreResourcesEnd()
 {
-	GameEngineResource<GameEnginePixelShader>::ResourcesClear();
+GameEngineResource<GameEnginePixelShader>::ResourcesClear();
 	GameEngineResource<GameEngineRasterizer>::ResourcesClear();
 	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
 	GameEngineResource<GameEngineIndexBuffer>::ResourcesClear();

@@ -51,6 +51,7 @@ private:
 	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;                                        // 레스터라이저의 FILL을 선택, 솔리드와 와이어프레임이 있다. 기본은 솔리드로 실시
 	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;  // TOPOLOGY 오류를 위한 TRIANGLELIST 기본값
 
+	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
 	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
 	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
 	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;

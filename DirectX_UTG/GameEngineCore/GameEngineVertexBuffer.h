@@ -1,11 +1,14 @@
 #pragma once
 #include "GameEngineResource.h"
+#include "GameEngineVertex.h"
 #include "GameEngineDirectBuffer.h"
 
 // 설명 : GameEngineDirectBuffer를 상속받았기 때문에 ID3D11Buffer, D3D11_BUFFER_DESC를 활용할 수 있다.
 //        랜더링파이프라인 단계에서 InputAssembler1 단계를 담당하는 클래스
 class GameEngineVertexBuffer : public GameEngineResource<GameEngineVertexBuffer>, public GameEngineDirectBuffer
 {
+	friend class GameEngineInputLayOut;
+
 public:
 	// constrcuter destructer
 	GameEngineVertexBuffer();
@@ -22,7 +25,8 @@ public:
 	static void Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
 	{
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::Create(_Name);
-
+		// 생성과 동시에 GameEngineInputLayOutInfo를 지니도록 한다.
+		Res->LayOutInfo = &VertexType::LayOut;
 		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
 	}
 
@@ -31,11 +35,13 @@ public:
 protected:
 
 private:
+	GameEngineInputLayOutInfo* LayOutInfo = nullptr;
+
 	// GEVertex의 Vertex 기반으로, 정보 Create, 업데이트
 	void ResCreate(const void* _Data, UINT _VertexSize, UINT _VertexCount);
 
-	UINT Offset;
-	UINT VertexSize;
-	UINT VertexCount;
+	UINT Offset = 0;
+	UINT VertexSize = 0;
+	UINT VertexCount = 0;
 };
 

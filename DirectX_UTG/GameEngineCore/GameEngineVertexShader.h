@@ -6,6 +6,8 @@
 //        랜더링파이프라인 단계에서 VertexShader를 담당하는 클래스
 class GameEngineVertexShader : public GameEngineResource<GameEngineVertexShader>, public GameEngineShader
 {
+	friend class GameEngineInputLayOut;
+
 public:
 	// constrcuter destructer
 	GameEngineVertexShader();
@@ -32,6 +34,7 @@ public:
 	{
 		std::shared_ptr<GameEngineVertexShader> Res = GameEngineVertexShader::Create(_Name);
 		Res->ShaderLoad(_Path, _EntryPoint, _VersionHigh, _VersionLow);
+
 		return Res;
 	}
 

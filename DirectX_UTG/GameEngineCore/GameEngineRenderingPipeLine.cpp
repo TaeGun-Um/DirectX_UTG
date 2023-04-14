@@ -6,15 +6,16 @@
 #include "GameEngineVertexShader.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineInputLayOut.h"
 
 GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 {
+	InputLayOutPtr = std::make_shared<GameEngineInputLayOut>(); // 인풋 레이아웃이 RenderingPipeLine의 생성과 동시에 생성
 }
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 {
 }
-
 
 // 인풋레이아웃 오류
 // D3D11 ERROR: ID3D11DeviceContext::DrawIndexed: The Vertex Shader expects 
@@ -29,6 +30,16 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 
 void GameEngineRenderingPipeLine::InputAssembler1()
 {
+	// 생성된 인풋레이아웃 Setting
+	if (nullptr == InputLayOutPtr)
+	{
+		MsgAssert("인풋 레이아웃이 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
+		return;
+	}
+
+	// GameEngineInputLayOut::Setting() 실시, GetContext()->IASetInputLayout();
+	InputLayOutPtr->Setting();
+
 	if (nullptr == VertexBufferPtr)
 	{
 		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
@@ -116,6 +127,18 @@ void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
 	}
+
+	// SetVertexBuffer와 SetVertexShader에서 이런 식으로 구조가 되어 있는 이유
+	// 세팅 단계에서는 둘 중 어떤 것이 먼저 만들어질지 모른다.
+	// 또한, 인풋 레이아웃의 GameEngineDevice::GetDevice()->CreateInputLayout() 함수는
+	// 버텍스 버퍼의 D3D11_INPUT_ELEMENT_DESC와 쉐이더의 바이너리 코드를 기반으로 인풋 레이아웃을 만드는 것이다.
+	// 따라서, 둘 중 하나의 단계에서 만들어졌을 때, InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr); 로 진입할 수 있는 인터페이스로 구성
+	if (nullptr == VertexShaderPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 void GameEngineRenderingPipeLine::SetIndexBuffer(const std::string_view& _Value)
@@ -138,6 +161,14 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 쉐이더를 사용하려고 했습니다.");
 	}
+
+	// SetVertexBuffer와 SetVertexShader에서 이런 식으로 구조가 되어 있는 이유 (SetVertexBuffer에서 설명)
+	if (nullptr == VertexBufferPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 void GameEngineRenderingPipeLine::SetPixelShader(const std::string_view& _Value)
@@ -189,7 +220,8 @@ void GameEngineRenderingPipeLine::Render()
 	// 우리의 인터페이스는 세팅을 안할 생각이 없기 때문이 이것으로만 Draw를 실시할 것이다.
 	// DrawIndexed()는 내가 번호까지 지정해서 그려주는 느낌이라 직관적이라서 좋음. Auto같은 경우에는 012345 햇으면 6개 고정에 4개로는 못그림 이런 느낌
 	// 사실 나머지는 까먹어서 그냥 이걸로 실시
-	GameEngineDevice::GetContext()->DrawIndexed(IndexBufferPtr->GetIndexCount(), 0, 0);
+	UINT IndexCount = IndexBufferPtr->GetIndexCount();
+	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
 	// 1번 인자 : IndexCount
 	// 2번 인자 : 인덱스 몇 번부터 그리는가? 0
 	// 3번 인자 : 버텍스 몇 번부터 그리는가? 0
