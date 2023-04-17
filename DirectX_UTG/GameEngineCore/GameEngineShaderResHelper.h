@@ -29,7 +29,7 @@ public:
 class GameEngineShaderResHelper
 {
 private:
-	// 상수 버퍼의 경우, 이름은 하나지만 Vertex에 사용되기도 하고 Shader에 사용되기도 한다. 이를 위한 multimap
+	// 상수 버퍼의 경우, 이름은 하나지만 Vertex에 사용되기도 하고 Shader에 사용되기도 한다. 이를 위한 multimap == key(first)의 중복이 가능한 map
 	// 상수 버퍼는 쉐이더가 컴파일 되면서 이런 컴파일을 쓰는구나 하는 정보를 얻었을 때 상수 버퍼가 만들어진다(GameEngineShader::ShaderResCheck()로 이동)
 	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBuffer;
 
