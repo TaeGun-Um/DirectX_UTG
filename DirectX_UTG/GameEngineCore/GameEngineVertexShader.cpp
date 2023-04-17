@@ -3,6 +3,7 @@
 
 GameEngineVertexShader::GameEngineVertexShader()
 {
+	Type = ShaderType::Vertex;
 }
 
 GameEngineVertexShader::~GameEngineVertexShader()
@@ -14,6 +15,7 @@ GameEngineVertexShader::~GameEngineVertexShader()
 	}
 }
 
+// 쉐이더 컴파일 실시
 void GameEngineVertexShader::ShaderLoad(const std::string_view& _Path ,const std::string_view& _EntryPoint ,UINT _VersionHigh /*= 5*/ ,UINT _VersionLow /*= 0*/)
 {
 	CreateVersion("vs", _VersionHigh, _VersionLow);
@@ -67,6 +69,9 @@ void GameEngineVertexShader::ShaderLoad(const std::string_view& _Path ,const std
 		MsgAssert("버텍스 쉐이더 핸들 생성에 실패했습니다");
 		return;
 	}
+
+	// GameEngineConstantBuffer의 ShaderResCheck 실행
+	ShaderResCheck();
 }
 
 // VertexShader Setting 단계, Load 후 값을 저장한 ShaderPtr을 활용

@@ -47,6 +47,7 @@ private:
 	// DirectX VertextShader의 정보를 참조하기 위한 포인터 ID3D11VertexShader
 	ID3D11VertexShader* ShaderPtr = nullptr;
 
+	// 쉐이더 컴파일
 	void ShaderLoad(const std::string_view& _Path, const std::string_view& _EntryPoint, UINT _VersionHigh = 5, UINT _VersionLow = 0);
 
 };

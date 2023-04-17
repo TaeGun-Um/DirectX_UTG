@@ -15,6 +15,16 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
+	inline  std::shared_ptr<class GameEngineVertexShader> GetVertexShader()
+	{
+		return VertexShaderPtr;
+	}
+
+	inline  std::shared_ptr<class GameEnginePixelShader> GetPixelShader()
+	{
+		return PixelShaderPtr;
+	}
+
 	// 각 단계 클래스에서 Load를 마친 값들에 대해 Set 함수 실시
 	void SetVertexBuffer(const std::string_view& _Value);
 	void SetIndexBuffer(const std::string_view& _Value);

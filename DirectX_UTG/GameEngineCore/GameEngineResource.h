@@ -68,6 +68,14 @@ public:
 	virtual void Setting() {}
 
 protected:
+	// Name을 인자로 받지 않는 Create
+	static std::shared_ptr<ResourcesType> CreateUnNamed()
+	{
+		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
+		UnNamedRes.push_back(NewRes);
+		return NewRes;
+	}
+
 	// 리소스를 상속받은 클래스는 Create를 활용할 수 있다.
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)
 	{
@@ -86,6 +94,13 @@ protected:
 		return NewRes;
 	}
 
+	// 원하는 타이밍에 제거되도록 하기 위해 생성 후 Core에게 friend
+	static void ResourcesClear()
+	{
+		NamedResources.clear();
+		UnNamedRes.clear();
+	}
+
 private:
 	std::string Path;  // 상속받은 클래스의 Path
 	std::string Name;  // 상속받은 클래스의 Name
@@ -93,12 +108,6 @@ private:
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources; // Create 시 map으로 insert된 리소스들
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
 
-	// 원하는 타이밍에 제거되도록 하기 위해 생성 후 Core에게 friend
-	static void ResourcesClear()
-	{
-		NamedResources.clear();
-		UnNamedRes.clear();
-	}
 };
 
 // 템플릿 클래스는 예외적으로 헤더에서 초기화가 가능하다.

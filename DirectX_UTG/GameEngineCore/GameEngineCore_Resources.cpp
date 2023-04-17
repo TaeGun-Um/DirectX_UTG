@@ -15,6 +15,7 @@
 #include "GameEngineRenderingPipeLine.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineConstantBuffer.h"
 
 void GameEngineCore::CoreResourcesInit()
 {
@@ -165,12 +166,13 @@ void GameEngineCore::CoreResourcesInit()
 // 실제로는 알아서 Release 되지만, 내가 명시적으로 확인하기 위하여 호출하는 것들
 void GameEngineCore::CoreResourcesEnd()
 {
-GameEngineResource<GameEnginePixelShader>::ResourcesClear();
-	GameEngineResource<GameEngineRasterizer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
-	GameEngineResource<GameEngineIndexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineMesh>::ResourcesClear();
-	GameEngineResource<GameEngineTexture>::ResourcesClear();
-	GameEngineResource<GameEngineRenderTarget>::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
+	GameEngineMesh::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
+	GameEngineRenderTarget::ResourcesClear();
 }
