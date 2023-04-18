@@ -21,6 +21,11 @@ public:
 	GameEngineDirectBuffer& operator=(const GameEngineDirectBuffer& _Other) = delete;
 	GameEngineDirectBuffer& operator=(GameEngineDirectBuffer&& _Other) noexcept = delete;
 
+	UINT GetBufferSize()
+	{
+		return BufferInfo.ByteWidth;
+	}
+
 protected:
 	ID3D11Buffer* Buffer = nullptr;         // 모든 Buffer 계열은 ID3D11Buffer를 멤버 변수로 가지고 있다.
 	D3D11_BUFFER_DESC BufferInfo = { 0, };  // 그리고 D3D11_BUFFER_DESC로 정보를 받아서 활용한다.

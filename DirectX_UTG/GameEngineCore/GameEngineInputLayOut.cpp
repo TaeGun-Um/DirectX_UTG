@@ -38,7 +38,7 @@ void GameEngineInputLayOut::ResCreate(std::shared_ptr<class GameEngineVertexBuff
 	// 버텍스버퍼와 버텍스쉐이더를 기반으로 인풋레이아웃 생성
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateInputLayout(
 		&LayOutInfos[0],                         // 버텍스버퍼의 시작 주소값
-		LayOutInfos.size(),                      // 버텍스버퍼의 사이즈
+		static_cast<UINT>(LayOutInfos.size()),   // 버텍스버퍼의 사이즈
 		_Shader->BinaryCode->GetBufferPointer(), // 쉐이더의 바이너리 코드
 		_Shader->BinaryCode->GetBufferSize(),    // 쉐이더의 바이너리 코드 사이즈
 		&InputLayOut);                           // 여기로 생성된 값 복사

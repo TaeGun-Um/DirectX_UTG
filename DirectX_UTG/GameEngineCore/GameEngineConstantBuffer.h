@@ -20,6 +20,8 @@
 // 설명 : 상수 버퍼를 생성하기 위한 클래스
 class GameEngineConstantBuffer : public GameEngineResource<GameEngineConstantBuffer>, public GameEngineDirectBuffer
 {
+	friend class GameEngineConstantBufferSetter;
+
 public:
 
 	// constrcuter destructer
@@ -55,12 +57,15 @@ public:
 		// 없는 상수버퍼를 만드는 단계
 		// 매개 변수를 Byte와 Name으로 하는 이유 == 크기는 같지만 슬롯과 이름이 다를 경우 상수 버퍼를 만들기 위함이다.
 		std::shared_ptr<GameEngineConstantBuffer> Buffer = CreateUnNamed(); // GameEngineResource의 UnNamedRes에 pushback 하여 값을 저장
+		Buffer->SetName(UpperName);
 		ConstantBufferRes[_Byte][UpperName] = Buffer;                       // 저장한 값도 해당 클래스의 multimap에 저장
 		Buffer->ResCreate(_BufferDesc);                                     // GameEngineDevice::GetDevice()->CreateBuffer() 실시
 
 		// 만들어서 리턴해준다.
 		return Buffer;
 	}
+
+	void ChangeData(const void* _Data, UINT _Size);
 
 	// 리소스 클리어
 	static void ResourcesClear();
@@ -71,4 +76,6 @@ protected:
 private:
 	static std::map<int, std::map<std::string, std::shared_ptr<GameEngineConstantBuffer>>> ConstantBufferRes; // 상수 버퍼를 저장하기 위한 multi-map
 
+	void VSSetting(UINT _Slot);
+	void PSSetting(UINT _Slot);
 };

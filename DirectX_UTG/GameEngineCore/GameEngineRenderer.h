@@ -24,6 +24,11 @@ public:
 	// GameEngineVertexShader에서 ShaderLoad() 실행 마지막에 ShaderResCheck()를 실시함
 	void SetPipeLine(const std::string_view& _Name);
 
+	inline GameEngineShaderResHelper& GetShaderResHelper()
+	{
+		return ShaderResHelper;
+	}
+
 protected:
 	void Render(float _Delta) override;
 

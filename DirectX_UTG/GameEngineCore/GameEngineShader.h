@@ -30,6 +30,11 @@ public:
 		return ResHelper;
 	}
 
+	inline ShaderType GetType()
+	{
+		return Type;
+	}
+
 protected:
 	ID3DBlob* BinaryCode = nullptr;  // 쉐이더 코드를 2진데이터로 변형했을때 그걸 그래픽카드가 내부에 숨기고 우리에게는 BinaryCode로 준다.
 	std::string Version = "";        // 쉐이더의 버전, 보통 5.0

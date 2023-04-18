@@ -57,6 +57,7 @@ OutPut Texture_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
 	
+    _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldMatrix);
     // OutPutValue.Pos = _Value.Pos;
     OutPutValue.Color = _Value.Color;
@@ -94,7 +95,13 @@ OutPut Texture_VS(Input _Value)
 //}
 
 // 아웃풋머저에 0번 타겟에 출력된 float4를 레드로 출력하라는 뜻
+
+cbuffer OutPixelColor : register(b0)
+{
+    float4 OutColor;
+}
+
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    return float4(1.0f, 0.0f, 0.0f, 1.0f);
+    return OutColor;
 }

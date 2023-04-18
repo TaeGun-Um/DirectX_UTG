@@ -9,6 +9,8 @@ public:
 	int BindPoint = -1;                     // b0, t0 같은 몇 번째 슬롯에 세팅되어야 하는지에 대한 정보.
 	std::string Name;                       // 쉐이더 이름
 	class GameEngineShader* ParentShader;   // 부모 쉐이더
+
+	virtual void Setting() = 0;
 };
 
 // 상수 버퍼 헬퍼 클래스
@@ -16,6 +18,10 @@ class GameEngineConstantBufferSetter : public GameEngineShaderResources
 {
 public:
 	std::shared_ptr<GameEngineConstantBuffer> Res; // 상수 버퍼 리소스 집합
+	const void* CPUData;
+	size_t CPUDataSize;
+
+	void Setting() override;
 };
 
 // 텍스쳐 세팅 헬퍼 클래스
@@ -40,6 +46,30 @@ public:
 		ConstantBuffer.insert(std::make_pair(_Buffer.Name, _Buffer));
 	}
 
+	bool IsConstantBuffer(const std::string_view& _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+
+		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBuffer.find(UpperName);
+
+		if (ConstantBuffer.end() == FindIter)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	template<typename DataType>
+	void SetConstantBufferLink(const std::string_view& _Name, const DataType& _Data)
+	{
+		SetConstantBufferLink(_Name, reinterpret_cast<const void*>(&_Data), sizeof(DataType));
+	}
+
+	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, size_t _Size);
+
 	// ConstantBuffer를 순회하며 필요로 하는 GameEngineShaderResHelper를 복사
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
+
+	void Setting();
 };
