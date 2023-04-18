@@ -57,7 +57,7 @@ public:
 		// 없는 상수버퍼를 만드는 단계
 		// 매개 변수를 Byte와 Name으로 하는 이유 == 크기는 같지만 슬롯과 이름이 다를 경우 상수 버퍼를 만들기 위함이다.
 		std::shared_ptr<GameEngineConstantBuffer> Buffer = CreateUnNamed(); // GameEngineResource의 UnNamedRes에 pushback 하여 값을 저장
-		Buffer->SetName(UpperName);
+		Buffer->SetName(UpperName);                                         // UnNamed이긴 하지만, 이름으로 구분하는 경우도 있기 때문에 일단 SetName으로 저장
 		ConstantBufferRes[_Byte][UpperName] = Buffer;                       // 저장한 값도 해당 클래스의 multimap에 저장
 		Buffer->ResCreate(_BufferDesc);                                     // GameEngineDevice::GetDevice()->CreateBuffer() 실시
 
@@ -65,6 +65,7 @@ public:
 		return Buffer;
 	}
 
+	// 세팅된 초기값에서 다른 값으로 변경할 경우 해당 함수 호출
 	void ChangeData(const void* _Data, UINT _Size);
 
 	// 리소스 클리어

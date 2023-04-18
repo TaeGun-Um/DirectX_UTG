@@ -6,11 +6,11 @@
 class GameEngineShaderResources
 {
 public:
-	int BindPoint = -1;                     // b0, t0 같은 몇 번째 슬롯에 세팅되어야 하는지에 대한 정보.
+	int BindPoint = -1;                     // b0, t0 같은 몇 번째 슬롯인지에 대한 정보
 	std::string Name;                       // 쉐이더 이름
-	class GameEngineShader* ParentShader;   // 부모 쉐이더
+	class GameEngineShader* ParentShader;   // 쉐이더 타입(버텍스냐 픽셀이냐)
 
-	virtual void Setting() = 0;
+	virtual void Setting() = 0;             // 세터들에게 Setting을 강요하도록 virtual 실시
 };
 
 // 상수 버퍼 헬퍼 클래스
@@ -21,6 +21,7 @@ public:
 	const void* CPUData;
 	size_t CPUDataSize;
 
+	// 상수 버퍼는 모든 쉐이더에서 사용하기 때문에, 구분을 위한 switch 실시
 	void Setting() override;
 };
 
@@ -35,8 +36,10 @@ public:
 class GameEngineShaderResHelper
 {
 private:
-	// 상수 버퍼의 경우, 이름은 하나지만 Vertex에 사용되기도 하고 Shader에 사용되기도 한다. 이를 위한 multimap == key(first)의 중복이 가능한 map
-	// 상수 버퍼는 쉐이더가 컴파일 되면서 이런 컴파일을 쓰는구나 하는 정보를 얻었을 때 상수 버퍼가 만들어진다(GameEngineShader::ShaderResCheck()로 이동)
+	// 슬롯이 똑같아도, 쉐이더 타입이 다르면(버텍스, 픽셀) 슬롯이 겹쳐도 상관이 없다.
+	// 이게 겹쳐서 문제가 됐던 거라면, 애초에 VSSetting, PSSetting 이렇게 나눌 필요가 없었지.
+	// 문제가 되는 것은 같은 쉐이더 내에 같은 슬롯을 쓴다고 선언하는 것 뿐이다.
+	// 물론 좋지 않은 코딩 습관이지만, 이름이 겹치는 상수 버퍼가 슬롯만 다를 경우에도 map에 넣을 수 있도록(Key값이 똑같아도 insert 되도록) 멀티맵을 활용한 것이다.
 	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBuffer;
 
 public:
@@ -71,5 +74,6 @@ public:
 	// ConstantBuffer를 순회하며 필요로 하는 GameEngineShaderResHelper를 복사
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
 
+	// 상수 버퍼 세팅을 ParentShader로 구분하고, Type에 맞는 쉐이더 세팅 실시
 	void Setting();
 };

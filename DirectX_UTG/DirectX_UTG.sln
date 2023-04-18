@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. DOC", "0. DOC", "{7E1B77
 		GameEngineRenderingPipeLine.txt = GameEngineRenderingPipeLine.txt
 		GameEngineSerializer.txt = GameEngineSerializer.txt
 		GameEngineShader.txt = GameEngineShader.txt
+		GameEngineShader와 GameEnigneRenderer의 관계(ResHelper).txt = GameEngineShader와 GameEnigneRenderer의 관계(ResHelper).txt
 		Modal.txt = Modal.txt
 		New연산이 느린 이유.txt = New연산이 느린 이유.txt
 		수학.txt = 수학.txt

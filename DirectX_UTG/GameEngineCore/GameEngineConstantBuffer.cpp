@@ -19,9 +19,10 @@ void GameEngineConstantBuffer::ResourcesClear()
 	ConstantBufferRes.clear();
 }
 
+// 세팅된 초기값에서 다른 값으로 변경할 경우 해당 함수 호출
+// 물론 ResCreate에서 CreateBuffer를 통해 상수 버퍼가 만들어지지 않았다면 호출이 안되는 함수(Assert로 오류 출력)
 void GameEngineConstantBuffer::ChangeData(const void* _Data, UINT _Size)
 {
-	// 머티리얼들은 상수버퍼나 이런걸 통일해 놓은 것이다.
 	if (nullptr == _Data)
 	{
 		std::string Name = GetName().data();
@@ -38,18 +39,30 @@ void GameEngineConstantBuffer::ChangeData(const void* _Data, UINT _Size)
 
 	D3D11_MAPPED_SUBRESOURCE SettingResources = { 0, };
 
-	// 그래픽카드야 너한테 보낼께있어 잠깐 멈춰봐 
-	// D3D11_MAP_WRITE_DISCARD 최대한 빠르게 처리하는 
+	// 상수 버퍼는 GPU의 VRAM 안에 존재한다.
+	// 물론 그래픽카드는 쓰레드로 연산을 진행하고 있긴 하지만, GPU가 작업을 진행하는 도중, 특정 쓰레드 내의 연산 값을 변경하는 것은 위험한 행위임(오버헤드가 발생할 수 있다)
+	// 그래도 일단 해당 쓰레드의 연산을 진행하려고 할 경우, 잠시 그래픽카드의 작업을 멈추는 함수가 Map
+
+	// 1번 인자 : 이 버퍼를 고치겠다.
+	// 2번 인자 : 필요없음
+	// 3번 인자 : D3D11_MAP_WRITE_DISCARD == 최대한 빠르게 처리하라는 뜻
+	// 4번 인자 : D3D11_MAPPED_SUBRESOURCE == 여기에 수정된 값이 채워진다.
 	GameEngineDevice::GetContext()->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &SettingResources);
 
+	// 수정된 값이 널포인터인 경우
 	if (SettingResources.pData == nullptr)
 	{
 		std::string Name = GetName().data();
 		MsgAssert(Name + " 그래픽카드에게 메모리 접근을 허가받지 못했습니다.");
 		return;
 	}
+
+	// 수정된 값(SettingResources.pData)을 BufferInfo.ByteWidth에 복사(memcpy_s)
 	memcpy_s(SettingResources.pData, BufferInfo.ByteWidth, _Data, BufferInfo.ByteWidth);
 
+	// Map의 사용과 값 복사가 끝났다며느 Umap으로 Map 사용이 끝났음을 선언
+	// 1번 인자 : 해당 버퍼 다썼다
+	// 2번 인자 : 필요없음
 	GameEngineDevice::GetContext()->Unmap(Buffer, 0);
 }
 
@@ -67,19 +80,26 @@ void GameEngineConstantBuffer::ResCreate(const D3D11_SHADER_BUFFER_DESC& _Buffer
 	else 
 	{
 		BufferInfo.Usage = D3D11_USAGE_DYNAMIC;                                // 고로 다이나믹으로 결정된다.
-	}
+	}                                                                          // CreateBuffer 2번 인자가 널에 다이나믹이라면, 상수 버퍼가 시시각각으로 변경될 수 있다는 뜻
 
 	// 상속받은 Buffer에 CreateBuffer()의 내용 저장
+	// 어떤 형태로 값을 만들 지 정하지 않았다 (2번 인자가 널포인터로 전달됨), 이러면 나중에 형태를 바꿀 수 있음(ChangeData 가능(04.18))
 	if (S_OK != GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, nullptr, &Buffer))
 	{
 		MsgAssert("버텍스 버퍼 생성에 실패했습니다.");
 	}
 }
 
+// VSSetConstantBuffers 활용, 어떤 슬롯(BindPoint)인지 구분 필요
 void GameEngineConstantBuffer::VSSetting(UINT _Slot)
 {
+	// 1번 인자 : 몇 번 슬롯? BindPoint
+	// 2번 인자 : 몇 개냐, 여러 개 가능하지만 우선 1
+	// 3번 인자 : ID3D11Buffer 전달
 	GameEngineDevice::GetContext()->VSSetConstantBuffers(_Slot, 1, &Buffer);
 }
+
+// PSSetConstantBuffers 활용, 어떤 슬롯(BindPoint)인지 구분 필요
 void GameEngineConstantBuffer::PSSetting(UINT _Slot)
 {
 	GameEngineDevice::GetContext()->PSSetConstantBuffers(_Slot, 1, &Buffer);

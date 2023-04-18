@@ -30,6 +30,7 @@ public:
 	}
 
 protected:
+	// Pipe가 세팅된 랜더러 Render
 	void Render(float _Delta) override;
 
 private:
