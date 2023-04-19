@@ -46,3 +46,10 @@ void GameEngineTexture::CreateRenderTargetView()
 		return;
 	}
 }
+
+// 경로를 받은 뒤 리소스를 로드한다.
+void GameEngineTexture::ResLoad(const std::string_view& _Path)
+{
+	// GameEnginePath NewPath = 
+
+}

@@ -21,16 +21,33 @@ public:
 	GameEngineTexture& operator=(const GameEngineTexture& _Other) = delete;
 	GameEngineTexture& operator=(GameEngineTexture&& _Other) noexcept = delete;
 
-	// Resource에 Texture 추가
-	static void Create(const std::string_view& _Name, const std::string_view& _Path)
+	// 경로를 찾아서 로드(밑에 함수로 이동)
+	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path)
 	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		GameEnginePath NewPath(_Path);
+		return Load(_Path, NewPath.GetFileName());
 	}
 
-	static void Create(const std::string_view& _Name, ID3D11Texture2D* _Value)
+	// 로드한 리소스(이미지)를 저장하고 ResLoad(경로) 실시
+	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		NewTexture->ResLoad(_Path);
+		return NewTexture;
+	}
+
+	// Resource에 Texture 추가
+	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, const std::string_view& _Path)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		return NewTexture;
+	}
+
+	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, ID3D11Texture2D* _Value)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
 		NewTexture->ResCreate(_Value);
+		return NewTexture;
 	}
 
 	// RenderTarget 가져오기
@@ -45,11 +62,14 @@ private:
 	// HDC
 	ID3D11Texture2D* Texture2D = nullptr;
 
-	// 
+	// BackBuffer
 	ID3D11RenderTargetView* RenderTarget = nullptr;
 
 	// HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
 	void ResCreate(ID3D11Texture2D* _Value);
+
+	// 경로를 받은 뒤 리소스를 로드한다.
+	void ResLoad(const std::string_view& _Path);
 
 	void CreateRenderTargetView();
 

@@ -68,6 +68,16 @@ std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(std::vector<std::str
 	{
 		if (true == Entry.is_directory())
 		{
+			// 모든 파일 재귀로 로드
+			GameEngineDirectory ChildDir(Entry.path());
+
+			std::vector<GameEngineFile> ChildFiles = ChildDir.GetAllFile(_Ext);
+
+			for (size_t i = 0; i < ChildFiles.size(); i++)
+			{
+				Files.push_back(ChildFiles[i]);
+			}
+
 			continue;
 		}
 
