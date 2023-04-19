@@ -1,7 +1,7 @@
 #pragma once
 
-#include "EngineEnum.h"
 #include "GameEngineShaderResHelper.h"
+#include "GameEngineEnum.h"
 
 // 설명 : 버퍼가 ID3D11Buffer를 공유하는 것 처럼, 셰이더는 ID3DBlob을 공유한다.
 class GameEngineShader

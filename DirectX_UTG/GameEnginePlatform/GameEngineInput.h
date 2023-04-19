@@ -57,6 +57,24 @@ public:
 		return IsAnyKeyValue;
 	}
 
+	// 마우스 위치 가져오기
+	static float4 GetMousePosition()
+	{
+		return MousePos;
+	}
+
+	// 마우스 방향 가져오기
+	static float4 GetMouseDirection()
+	{
+		return MouseDirection;
+	}
+
+	// 마우스 방향 가져오기(노말라이즈)
+	static float4 GetMouseDirectionNormal()
+	{
+		return MouseDirection.NormalizeReturn();
+	}
+
 protected:
 
 private:
@@ -67,6 +85,10 @@ private:
 	//      PlayerJump       A
 	static std::map<std::string, GameEngineKey> Keys;
 	static bool IsAnyKeyValue;
+
+	static float4 MousePos;
+	static float4 PrevMousePos;
+	static float4 MouseDirection;
 
 	static void IsAnyKeyOn()
 	{

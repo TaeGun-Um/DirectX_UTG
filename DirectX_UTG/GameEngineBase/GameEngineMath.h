@@ -667,7 +667,15 @@ public:
 		DirectMatrix = DirectX::XMMatrixLookToLH(_EyePos, _EyeDir, _EyeUp);
 	}
 
-	// 프로젝션 행렬, DirectX : XMMatrixPerspectiveFovLH()
+	// 직교투영, DirectX : XMMatrixOrthographicLH
+	void OrthographicLH(float _ScreenWidth, float _ScreenHeight, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixOrthographicLH(_ScreenWidth, _ScreenHeight, _NearZ, _FarZ);
+	}
+
+	// 원근투영, 프로젝션 행렬, DirectX : XMMatrixPerspectiveFovLH()
 	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
 	{
 		Identity();

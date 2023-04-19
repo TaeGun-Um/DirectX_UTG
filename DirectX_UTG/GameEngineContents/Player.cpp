@@ -82,12 +82,10 @@ void Player::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("PlayerScaleY+"))
 	{
-		TestColor.x += _DeltaTime;
 		GetTransform()->AddLocalScale({ 0.0f, ScaleSpeed * _DeltaTime, 0.0f });
 	}
 	if (true == GameEngineInput::IsPress("PlayerScaleY-"))
 	{
-		TestColor.x -= _DeltaTime;
 		GetTransform()->AddLocalScale({ 0.0f, -ScaleSpeed * _DeltaTime, 0.0f });
 	}
 	if (true == GameEngineInput::IsPress("PlayerScaleZ+"))
@@ -106,7 +104,6 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
-
 }
 
 void Player::Start()
@@ -142,10 +139,11 @@ void Player::Start()
 	Render0 = CreateComponent<GameEngineRenderer>();
 	Render0->SetPipeLine("2DTexture");
 	Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	// Render0->GetShaderResHelper().SetConstantBufferLink("TransformData", TestColor);
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-
 }
 
 // 이건 디버깅용도나 

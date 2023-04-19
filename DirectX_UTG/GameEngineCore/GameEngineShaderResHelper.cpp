@@ -59,7 +59,7 @@ void GameEngineShaderResHelper::Setting()
 }
 
 // 이름이 링크인 이유는, 복사된 랜더러의 ResHelper 내에 초기값이 적용(빨간색에 배경!)됐다고 해도, 이후에 값을 변경하면 변경되기 때문에 링크라고 지었습니다.
-void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, size_t _Size)
+void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 

@@ -167,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="EngineEnum.h" />
     <ClInclude Include="GameEngineActor.h">
       <SubType>
       </SubType>
@@ -200,6 +199,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineEnum.h" />
     <ClInclude Include="GameEngineIndexBuffer.h">
       <SubType>
       </SubType>

@@ -38,8 +38,8 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name)
 	// "TransformData" 이 이름으로 고정하고, 해당 상수 버퍼는 무조건 WorldViewProjectionMatrix가 적용되도록 함
 	if (true == ShaderResHelper.IsConstantBuffer("TransformData"))
 	{
-		const float4x4& World = GetTransform()->GetWorldViewProjectionMatrixRef();
-		ShaderResHelper.SetConstantBufferLink("TransformData", World);
+		const TransformData& Data = GetTransform()->GetTransDataRef();
+		ShaderResHelper.SetConstantBufferLink("TransformData", Data);
 	}
 }
 

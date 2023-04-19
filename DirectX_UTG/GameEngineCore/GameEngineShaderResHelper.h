@@ -19,7 +19,7 @@ class GameEngineConstantBufferSetter : public GameEngineShaderResources
 public:
 	std::shared_ptr<GameEngineConstantBuffer> Res; // 상수 버퍼 리소스 집합
 	const void* CPUData;
-	size_t CPUDataSize;
+	UINT CPUDataSize;
 
 	// 상수 버퍼는 모든 쉐이더에서 사용하기 때문에, 구분을 위한 switch 실시
 	void Setting() override;
@@ -69,7 +69,7 @@ public:
 		SetConstantBufferLink(_Name, reinterpret_cast<const void*>(&_Data), sizeof(DataType));
 	}
 
-	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, size_t _Size);
+	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size);
 
 	// ConstantBuffer를 순회하며 필요로 하는 GameEngineShaderResHelper를 복사
 	void Copy(const GameEngineShaderResHelper& _ResHelper);

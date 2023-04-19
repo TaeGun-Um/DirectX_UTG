@@ -4,6 +4,48 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineObjectBase.h"
 
+// 일단, 프리카메라모드 시 이런 구조체를 선언하고 값을 저장한 뒤 불러오는 형식을 쓰면 편하다
+struct TransformData
+{
+	// 로컬 크자(쿼)이
+	float4 LocalScale;
+	float4 LocalRotation;
+	Quaternion LocalQuaternion; // XMQuaternionIdentity() = 항등쿼터니온 생성
+	float4 LocalPosition;
+
+	// 월드 크자(쿼)이
+	float4 WorldScale;
+	float4 WorldRotation;
+	Quaternion WorldQuaternion;
+	float4 WorldPosition;
+
+	float4x4 LocalScaleMatrix;               // 로컬 크기 행렬
+	float4x4 LocalRotationMatrix;            // 로컬 회전 행렬
+	float4x4 LocalPositionMatrix;            // 로컬 이동 행렬
+
+	float4x4 LocalWorldMatrix;               // 로컬월드 행렬
+	float4x4 WorldMatrix;                    // 월드 행렬
+
+	float4x4 View;                           // 뷰행렬
+	float4x4 Projection;                     // 프로젝션 행렬
+	float4x4 ViewPort;                       // 뷰포트 행렬
+	float4x4 WorldViewProjectionMatrix;      // 뷰행렬 * 프로젝션행렬
+	
+public:
+	// 빈번하게 값을 변경할 수 있기 때문에 초기화는 생성자에서 실시
+	TransformData()
+	{
+		LocalScale = float4::One;
+		LocalRotation = float4::Null;
+		LocalQuaternion = float4::Null;
+		LocalPosition = float4::Zero;
+		WorldScale = float4::One;
+		WorldRotation = float4::Null;
+		WorldQuaternion = float4::Null;
+		WorldPosition = float4::Zero;
+	}
+};
+
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
 class GameEngineTransform : public GameEngineObjectBase
 {
@@ -21,15 +63,15 @@ public:
 	// 월드 크기 지정
 	void SetWorldScale(const float4& _Value)
 	{
-		WorldScale = _Value;
+		TransData.WorldScale = _Value;
 
 		if (nullptr == Parent)
 		{
-			LocalScale = WorldScale;
+			TransData.LocalScale = TransData.WorldScale;
 		}
 		else
 		{
-			LocalScale = WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
+			TransData.LocalScale = TransData.WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
 		}
 
 		TransformUpdate();
@@ -44,16 +86,16 @@ public:
 			int a = 0;
 		}
 
-		WorldRotation = _Value;
+		TransData.WorldRotation = _Value;
 
 		if (nullptr == Parent)
 		{
-			LocalRotation = WorldRotation;
+			TransData.LocalRotation = TransData.WorldRotation;
 		}
 		else
 		{
 			float4 Rot = Parent->GetWorldRotation();
-			LocalRotation = WorldRotation - Parent->GetWorldRotation();
+			TransData.LocalRotation = TransData.WorldRotation - Parent->GetWorldRotation();
 		}
 
 		TransformUpdate();
@@ -63,15 +105,15 @@ public:
 	// 월드 이동 지정
 	void SetWorldPosition(const float4& _Value)
 	{
-		WorldPosition = _Value;
+		TransData.WorldPosition = _Value;
 
 		if (nullptr == Parent)
 		{
-			LocalPosition = WorldPosition;
+			TransData.LocalPosition = TransData.WorldPosition;
 		}
 		else
 		{
-			LocalPosition = WorldPosition * Parent->GetWorldMatrixRef().InverseReturn();
+			TransData.LocalPosition = TransData.WorldPosition * Parent->GetWorldMatrixRef().InverseReturn();
 		}
 
 		TransformUpdate();
@@ -81,33 +123,33 @@ public:
 	// 월드 크기 행렬 리턴
 	float4 GetWorldScale()
 	{
-		return WorldScale;
+		return TransData.WorldScale;
 	}
 
 	// 월드 회전 행렬 리턴
 	float4 GetWorldRotation()
 	{
-		return WorldRotation;
+		return TransData.WorldRotation;
 	}
 
 	// 월드 이동 행렬 리턴
 	float4 GetWorldPosition()
 	{
-		return WorldPosition;
+		return TransData.WorldPosition;
 	}
 
 	// 로컬 크기 지정
 	void SetLocalScale(const float4& _Value)
 	{
-		LocalScale = _Value;
+		TransData.LocalScale = _Value;
 
 		if (nullptr == Parent)
 		{
-			WorldScale = LocalScale;
+			TransData.WorldScale = TransData.LocalScale;
 		}
 		else
 		{
-			WorldScale = LocalScale * Parent->GetWorldMatrixRef();
+			TransData.WorldScale = TransData.LocalScale * Parent->GetWorldMatrixRef();
 		}
 
 		TransformUpdate();
@@ -117,15 +159,15 @@ public:
 	// 로컬 회전 지정
 	void SetLocalRotation(const float4& _Value)
 	{
-		LocalRotation = _Value;
+		TransData.LocalRotation = _Value;
 
 		if (nullptr == Parent)
 		{
-			WorldRotation = LocalRotation;
+			TransData.WorldRotation = TransData.LocalRotation;
 		}
 		else
 		{
-			WorldRotation = LocalRotation + Parent->GetWorldRotation();
+			TransData.WorldRotation = TransData.LocalRotation + Parent->GetWorldRotation();
 		}
 
 		TransformUpdate();
@@ -135,15 +177,15 @@ public:
 	// 로컬 이동 지정
 	void SetLocalPosition(const float4& _Value)
 	{
-		LocalPosition = _Value;
+		TransData.LocalPosition = _Value;
 
 		if (nullptr == Parent)
 		{
-			WorldPosition = LocalPosition;
+			TransData.WorldPosition = TransData.LocalPosition;
 		}
 		else
 		{
-			WorldPosition = LocalPosition * Parent->GetWorldMatrixRef();
+			TransData.WorldPosition = TransData.LocalPosition * Parent->GetWorldMatrixRef();
 		}
 
 		TransformUpdate();
@@ -153,124 +195,172 @@ public:
 	// 로컬 크기 행렬 리턴
 	float4 GetLocalScale()
 	{
-		return LocalScale;
+		return TransData.LocalScale;
 	}
 
 	// 로컬 회전 행렬 리턴
 	float4 GetLocalRotation()
 	{
-		return LocalRotation;
+		return TransData.LocalRotation;
 	}
 
 	// 로컬 이동 행렬 리턴
 	float4 GetLocalPosition()
 	{
-		return LocalPosition;
+		return TransData.LocalPosition;
 	}
 
 	// 월드 행렬 리턴
 	const float4x4 GetWorldMatrix()
 	{
-		return WorldMatrix;
+		return TransData.WorldMatrix;
 	}
 
 	// 월드 행렬 리턴(래퍼런스)
 	const float4x4& GetWorldMatrixRef()
 	{
-		return WorldMatrix;
+		return TransData.WorldMatrix;
 	}
 
 	// 로컬월드 행렬 리턴
 	float4x4 GetLocalWorldMatrix()
 	{
-		return LocalWorldMatrix;
+		return TransData.LocalWorldMatrix;
 	}
 
 	// 로컬월드 행렬 리턴(래퍼런스)
 	const float4x4& GetLocalWorldMatrixRef()
 	{
-		return LocalWorldMatrix;
+		return TransData.LocalWorldMatrix;
 	}
 
 	// 로컬 크기 Add
 	void AddLocalScale(const float4& _Value)
 	{
-		SetLocalScale(LocalScale + _Value);
+		SetLocalScale(TransData.LocalScale + _Value);
 	}
 
 	// 로컬 회전 Add
 	void AddLocalRotation(const float4& _Value)
 	{
-		SetLocalRotation(LocalRotation + _Value);
+		SetLocalRotation(TransData.LocalRotation + _Value);
 	}
 
 	// 로컬 이동 Add
 	void AddLocalPosition(const float4& _Value)
 	{
-		SetLocalPosition(LocalPosition + _Value);
+		SetLocalPosition(TransData.LocalPosition + _Value);
 	}
 
-	// 월드에서 자신이 바라보는 방향 월드 단위기저벡터 리턴
+	// 월드 크기 Add
+	void AddWorldScale(const float4& _Value)
+	{
+		SetWorldScale(TransData.WorldScale + _Value);
+	}
+
+	// 월드 회전 Add
+	void AddWorldRotation(const float4& _Value)
+	{
+		SetWorldRotation(TransData.WorldRotation + _Value);
+	}
+
+	// 월드 이동 Add
+	void AddWorldPosition(const float4& _Value)
+	{
+		SetWorldPosition(TransData.WorldPosition + _Value);
+	}
+
+	// 월드에서 자신이 바라보는 방향 단위기저벡터 리턴
 	float4 GetWorldForwardVector()
 	{
-		return WorldMatrix.ArrVector[2].NormalizeReturn();
+		return TransData.WorldMatrix.ArrVector[2].NormalizeReturn();
 	}
 
-	// 월드에서 자신의 위로 향하는 월드 단위기저벡터 리턴
+	// 월드에서 자신의 뒤 방향 단위기저벡터 리턴
+	float4 GetWorldBackVector()
+	{
+		return -GetWorldForwardVector();
+	}
+
+	// 월드에서 자신의 위로 향하는 단위기저벡터 리턴
 	float4 GetWorldUpVector()
 	{
-		return WorldMatrix.ArrVector[1].NormalizeReturn();
+		return TransData.WorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	// 월드에서 자신의 아래로로 향하는 단위기저벡터 리턴
+	float4 GetWorldDownVector()
+	{
+		return -GetWorldUpVector();
 	}
 
 	// 월드에서 자신의 오른쪽 방향 단위기저벡터 리턴
 	float4 GetWorldRightVector()
 	{
-		return WorldMatrix.ArrVector[0].NormalizeReturn();
+		return TransData.WorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	// 월드에서 자신의 왼쪽 방향 단위기저벡터 리턴
+	float4 GetWorldLeftVector()
+	{
+		return -GetWorldRightVector();
 	}
 
 	// 로컬에서 자신이 바라보는 방향 월드 단위기저벡터 리턴
 	float4 GetLocalForwardVector()
 	{
-		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
+		return TransData.LocalWorldMatrix.ArrVector[2].NormalizeReturn();
 	}
 
 	// 로컬에서 자신의 위로 향하는 월드 단위기저벡터 리턴
 	float4 GetLocalUpVector()
 	{
-		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
+		return TransData.LocalWorldMatrix.ArrVector[1].NormalizeReturn();
 	}
 
 	// 로컬에서 자신의 오른쪽 방향 단위기저벡터 리턴
 	float4 GetLocalRightVector()
 	{
-		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
+		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
 
 	// 월드 프로젝션 행렬 리턴
 	const float4x4 GetWorldViewProjectionMatrix()
 	{
-		return WorldViewProjectionMatrix;
+		return TransData.WorldViewProjectionMatrix;
 	}
 
 	// 월드 프로젝션 행렬 리턴(래퍼런스)
 	const float4x4& GetWorldViewProjectionMatrixRef()
 	{
-		return WorldViewProjectionMatrix;
+		return TransData.WorldViewProjectionMatrix;
 	}
 
 	// 카메라 행렬(뷰, 프로젝션) 적용
 	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
-		View = _View;
-		Projection = _Projection;
-		WorldViewProjectionMatrix = WorldMatrix * View * Projection;
+		TransData.View = _View;
+		TransData.Projection = _Projection;
+		TransData.WorldViewProjectionMatrix = TransData.WorldMatrix * TransData.View * TransData.Projection;
 	}
 
 	// 카메라 행렬(뷰포트) 적용
 	inline const void SetViewPort(const float4x4& _ViewPort)
 	{
-		ViewPort = _ViewPort;
-		WorldViewProjectionMatrix *= ViewPort;
+		TransData.ViewPort = _ViewPort;
+		TransData.WorldViewProjectionMatrix *= TransData.ViewPort;
+	}
+
+	// Transform 데이터를 레퍼런스로 리턴
+	const TransformData& GetTransDataRef()
+	{
+		return TransData;
+	}
+
+	// Transform 데이터 세팅
+	void SetTransformData(const TransformData& _Data)
+	{
+		TransData = _Data;
 	}
 
 	// 부모 설정
@@ -293,29 +383,7 @@ private:
 	// 행렬 곱이 실시되면 무조건 행렬 데이터가 최신화됨
 	void TransformUpdate();
 
-	// 로컬 크자(쿼)이
-	float4 LocalScale = float4::One;
-	float4 LocalRotation = float4::Null;
-	Quaternion LocalQuaternion = DirectX::XMQuaternionIdentity(); // XMQuaternionIdentity() = 항등쿼터니온 생성
-	float4 LocalPosition = float4::Zero;
-
-	// 월드 크자(쿼)이
-	float4 WorldScale = float4::One;
-	float4 WorldRotation = float4::Null;
-	Quaternion WorldQuaternion = DirectX::XMQuaternionIdentity();
-	float4 WorldPosition = float4::Zero;
-
-	float4x4 LocalScaleMatrix;               // 로컬 크기 행렬
-	float4x4 LocalRotationMatrix;            // 로컬 회전 행렬
-	float4x4 LocalPositionMatrix;            // 로컬 이동 행렬
-
-	float4x4 LocalWorldMatrix;               // 로컬월드 행렬
-	float4x4 WorldMatrix;                    // 월드 행렬 (SRT)
-
-	float4x4 View;                           // 뷰행렬
-	float4x4 Projection;                     // 프로젝션 행렬
-	float4x4 ViewPort;                       // 뷰포트 행렬
-	float4x4 WorldViewProjectionMatrix;      // 뷰행렬 * 프로젝션행렬
+	TransformData TransData;
 
 	GameEngineTransform* Parent = nullptr;   // weak_ptr 구조
 	std::list<GameEngineTransform*> Child;   // 부모자식관계를 결정한다.
