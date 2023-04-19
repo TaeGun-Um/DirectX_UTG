@@ -1,5 +1,9 @@
 #pragma once
+
 #include "GameEngineResource.h"
+#include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
+
+#pragma comment(lib, "DirectXTex.lib")
 
 // 설명 : WinAPI에서 GameEngineImage와 동일한 구조 (이름만 GameEngineTexture일 뿐)
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
