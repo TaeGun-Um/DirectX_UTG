@@ -3,12 +3,11 @@
 #include "GameEngineResource.h"
 #include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
 
-#pragma comment(lib, "DirectXTex.lib")
-
 // 설명 : WinAPI에서 GameEngineImage와 동일한 구조 (이름만 GameEngineTexture일 뿐)
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
 {
 	friend GameEngineDevice;
+	friend class GameEngineTextureSetter;
 
 public:
 	// constrcuter destructer
@@ -53,17 +52,19 @@ public:
 	// RenderTarget 가져오기
 	ID3D11RenderTargetView* GetRTV()
 	{
-		return RenderTarget;
+		return RTV;
 	}
 
 protected:
 
 private:
-	// HDC
-	ID3D11Texture2D* Texture2D = nullptr;
+	
+	ID3D11Texture2D* Texture2D = nullptr;    // HDC
+	ID3D11RenderTargetView* RTV = nullptr;   // BackBuffer
+	ID3D11ShaderResourceView* SRV = nullptr; //
 
-	// BackBuffer
-	ID3D11RenderTargetView* RenderTarget = nullptr;
+	DirectX::TexMetadata Data;               // LoadFromWICFile()에 텍스쳐 정보 담을 곳
+	DirectX::ScratchImage Image;             // LoadFromWICFile() 후 로드된 정보가 여기 담김
 
 	// HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
 	void ResCreate(ID3D11Texture2D* _Value);
@@ -73,5 +74,7 @@ private:
 
 	void CreateRenderTargetView();
 
+	void VSSetting(UINT _Slot);
+	void PSSetting(UINT _Slot);
 };
 

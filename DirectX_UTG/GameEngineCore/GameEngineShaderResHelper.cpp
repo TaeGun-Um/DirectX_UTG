@@ -3,12 +3,23 @@
 #include "GameEngineShader.h"
 #include "GameEngineConstantBuffer.h"
 
-// ConstantBuffer를 순회하며 필요로 하는 GameEngineShaderResHelper를 복사
+// 쉐이더의 리소스 정보를 랜더러에 카피
 void GameEngineShaderResHelper::Copy(const GameEngineShaderResHelper& _ResHelper)
 {
-	for (const std::pair<std::string, GameEngineConstantBufferSetter>& Setter : _ResHelper.ConstantBuffer)
+	// 상수 버퍼 리소스 카피
+	for (const std::pair<std::string, GameEngineConstantBufferSetter>& Setter : _ResHelper.ConstantBufferSetters)
 	{
-		ConstantBuffer.insert(Setter);
+		ConstantBufferSetters.insert(Setter);
+	}
+	// 텍스쳐 리소스 카피
+	for (const std::pair<std::string, GameEngineTextureSetter>& Setter : _ResHelper.TextureSetters)
+	{
+		TextureSetters.insert(Setter);
+	}
+	// 샘플러 리소스 카피
+	for (const std::pair<std::string, GameEngineSamplerSetter>& Setter : _ResHelper.SamplerSetters)
+	{
+		SamplerSetters.insert(Setter);
 	}
 }
 
@@ -43,18 +54,99 @@ void GameEngineConstantBufferSetter::Setting()
 
 }
 
+// 텍스쳐 세팅을 ParentShader로 구분하고, Type에 맞는 쉐이더 세팅 실시
+// 텍스쳐는 이미 있는 것을 사용하기 때문에, ChangeData를 실시하지 않는다.
+void GameEngineTextureSetter::Setting()
+{
+	ShaderType Type = ParentShader->GetType();
+
+	switch (Type)
+	{
+	case ShaderType::None:   // 부모(쉐이더)가 아무것도 아닐 경우 (오류)
+	{
+		MsgAssert("어떤 쉐이더에 세팅될지 알수없는 상수버퍼 입니다.");
+		break;
+	}
+	case ShaderType::Vertex: // 부모(쉐이더)가 버텍스일 경우
+	{
+		Res->VSSetting(BindPoint);
+		break;
+	}
+	case ShaderType::Pixel:  // 부모(쉐이더)가 픽셀일 경우
+	{
+		Res->PSSetting(BindPoint);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+// 샘플러 세팅을 ParentShader로 구분하고, Type에 맞는 쉐이더 세팅 실시
+// 샘플러는 이미 있는 것을 사용하기 때문에, ChangeData를 실시하지 않는다.
+void GameEngineSamplerSetter::Setting()
+{
+	ShaderType Type = ParentShader->GetType();
+
+	switch (Type)
+	{
+	case ShaderType::None:   // 부모(쉐이더)가 아무것도 아닐 경우 (오류)
+	{
+		MsgAssert("어떤 쉐이더에 세팅될지 알수없는 상수버퍼 입니다.");
+		break;
+	}
+	case ShaderType::Vertex: // 부모(쉐이더)가 버텍스일 경우
+	{
+		Res->VSSetting(BindPoint);
+		break;
+	}
+	case ShaderType::Pixel:  // 부모(쉐이더)가 픽셀일 경우
+	{
+		Res->PSSetting(BindPoint);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 // ~Setter는 세팅된 리소스(상수 버퍼, 텍스쳐 등)를 가지고 있다.
 // 여기서 상수 버퍼는 문제가 조금 있는데, 모든 쉐이더에서 사용하기 때문이다.
 // 이를 구분하기 위해, 멀티맵에서 어떤 쉐이더인지 구분하고, 그에 따라 Setting이 되도록 switch문 실시
 void GameEngineShaderResHelper::Setting()
 {
-	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator StartIter = ConstantBuffer.begin();
-	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator EndIter = ConstantBuffer.end();
-
-	for (; StartIter != EndIter; ++StartIter)
+	// 쉐이더 상수 버퍼 세팅
 	{
-		GameEngineConstantBufferSetter& Setter = StartIter->second;
-		Setter.Setting();
+		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator StartIter = ConstantBufferSetters.begin();
+		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator EndIter = ConstantBufferSetters.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			GameEngineConstantBufferSetter& Setter = StartIter->second;
+			Setter.Setting();
+		}
+	}
+	// 쉐이더 텍스쳐 세팅
+	{
+		std::multimap<std::string, GameEngineTextureSetter>::iterator StartIter = TextureSetters.begin();
+		std::multimap<std::string, GameEngineTextureSetter>::iterator EndIter = TextureSetters.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			GameEngineTextureSetter& Setter = StartIter->second;
+			Setter.Setting();
+		}
+	}
+	// 쉐이더 샘플러 세팅
+	{
+		std::multimap<std::string, GameEngineSamplerSetter>::iterator StartIter = SamplerSetters.begin();
+		std::multimap<std::string, GameEngineSamplerSetter>::iterator EndIter = SamplerSetters.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			GameEngineSamplerSetter& Setter = StartIter->second;
+			Setter.Setting();
+		}
 	}
 }
 
@@ -63,16 +155,16 @@ void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _N
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
-	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBuffer.find(UpperName);
+	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBufferSetters.find(UpperName);
 
-	if (ConstantBuffer.end() == FindIter)
+	if (ConstantBufferSetters.end() == FindIter)
 	{
 		MsgAssert("존재하지 않는 상수버퍼를 세팅하려고 했습니다." + UpperName);
 		return;
 	}
 
-	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator NameStartIter = ConstantBuffer.lower_bound(UpperName); // 같은 이름 중(Key 중) 가장 앞에 있는 것
-	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator NameEndIter = ConstantBuffer.upper_bound(UpperName);   // 같은 이름 중(Key 중) 가장 뒤에 있는 것
+	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator NameStartIter = ConstantBufferSetters.lower_bound(UpperName); // 같은 이름 중(Key 중) 가장 앞에 있는 것
+	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator NameEndIter = ConstantBufferSetters.upper_bound(UpperName);   // 같은 이름 중(Key 중) 가장 뒤에 있는 것
 
 	for (; NameStartIter != NameEndIter; ++NameStartIter)
 	{

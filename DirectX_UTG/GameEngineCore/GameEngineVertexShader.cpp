@@ -27,7 +27,9 @@ void GameEngineVertexShader::ShaderLoad(const std::string_view& _Path ,const std
 	Flag = D3D10_SHADER_DEBUG;
 
 #endif
-	// 상수버퍼 할때 이옵션이 관련이 있다. 나중에 상수 버퍼할 때 알려달라고 얘기
+	// 기본적으로 쉐이더의 상수 버퍼에 값을 넣으면 우리의 생각에서 전치된 상태로 값이 들어간다.
+	// 오른쪽에서 왼쪽으로 채웠는데, 쉐이더는 위쪽에서 아래로 값을 넣는다는 것.
+	// 이를 해결하기 위해 D3DCOMPILE_PACK_MATRIX_ROW_MAJOR 을 적용해준다.
 	Flag |= D3DCOMPILE_PACK_MATRIX_ROW_MAJOR;
 
 	// ID3DBlob 선언 필요, 에러발생 시 해당 포인터에 에러 메세지가 전달됨(하단의 if 구현부 확인)

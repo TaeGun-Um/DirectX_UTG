@@ -22,7 +22,8 @@ public:
 	GameEnginePath& operator=(GameEnginePath&& _Other) noexcept = delete;
 
 	std::string GetFileName() const;
-	std::string GetPathToString() const;
+	std::string GetFullPath() const;
+	std::string GetExtension() const;
 
 	void MoveParent();
 

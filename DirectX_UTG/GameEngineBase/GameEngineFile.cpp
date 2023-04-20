@@ -34,7 +34,7 @@ void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 {
 	FILE* FilePtr = nullptr;                                // C스타일 파일 저장 형식으로 진행할 예정
 
-	std::string PathString = Path.GetPathToString();        // FileName 지정
+	std::string PathString = Path.GetFullPath();            // FileName 지정
 	std::string Text = "wb";                                // 어떤 형식으로 작업을 진행
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());    // 1. FilePtr이 들어가면 값이 바뀌어서 나온다 2. FileName 전달 3. 작업 진행 방식
@@ -62,7 +62,7 @@ void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 void GameEngineFile::SaveText(const std::string_view& _View)
 {
 	FILE* FilePtr = nullptr;
-	std::string PathString = Path.GetPathToString();
+	std::string PathString = Path.GetFullPath();
 	std::string Text = "wt";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
@@ -85,7 +85,7 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 {
 	FILE* FilePtr = nullptr;
 
-	std::string PathString = Path.GetPathToString();
+	std::string PathString = Path.GetFullPath();
 	std::string Text = "rb";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());

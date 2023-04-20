@@ -46,7 +46,7 @@ struct Input
     // 앞 == 뒤에 있는게 어떤 역할을 가졌는지에 대한 변수
     // 뒤 == 역할
     float4 Pos : POSITION;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 // void GameEngineVertexBuffer::Setting() 에서
@@ -60,7 +60,7 @@ struct OutPut
     // SV_Position == 레스터라이져한테 w로 나눈 후 뷰포트를 곱하고 픽셀 건져낼 때 쓸 position 정보를 본인이 보낸 것이라고 알려주는 것(누굴 가지고 픽셀 건지기 할지 모르니 알려주는 것)
     // COLOR == 최초로 COLOR를 입력하면 COLOR[n]이 생성된다. 이건 구조체 내부의 COLOR가 COLOR0, COLOR1, COLOR2, ... 로 여러 개 선언될 수 있기 때문
     float4 Pos : SV_Position;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 // 외부에서 쉐이더를 컴파일할 때, EntryPount를 원하는 경우가 있다.
@@ -69,6 +69,12 @@ struct OutPut
 // 상수버퍼를 추가하면 b0 -> b1 -> b2 이런 식
 // 기본적인 *(곱하기)는 같은 자료형만 가능하게 해뒀기 때문에
 // 다른 형태의 자료형을 곱하려면 mul(뮬)을 이용해야 한다.
+
+// Mesh는 지정된 크기 만큼에서 픽셀을 건진다.
+// 건진 픽셀을 쉐이더에게 전달하여 여기 부분을 적용해달라고 함
+// 원래 이미지보다 Mesh가 클 경우, 이미지는 그 만큼 확대되는데, 어떻게 픽셀을 채우느냐
+// Mesh와 이미지의 비율을 0~1로 맞춘다(러프함)
+// 이것을 UV 좌표계라고 한다. 이걸 해주는게 샘플러(Sampler)입니다.
 OutPut Texture_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
@@ -76,7 +82,7 @@ OutPut Texture_VS(Input _Value)
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     // OutPutValue.Pos = _Value.Pos;
-    OutPutValue.Color = _Value.Color;
+    OutPutValue.UV = _Value.UV;
 
     // OutPutValue.Pos *= 월드뷰프로젝션;
     
@@ -117,7 +123,14 @@ cbuffer OutPixelColor : register(b0)
     float4 OutColor;
 }
 
+Texture2D DiffuseTex : register(t0);
+SamplerState CLAMPSAMPLER : register(s0); // 옵션은 이렇게, 스테이트는 저렇게 이런 식으로 정보를 전달할 수 있는 것이 바로 샘플러이다.
+
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    return OutColor;
+    // 스위즐링 표현법
+    // float4를 float2로 할 수 있음 : float4.xy == float2
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    
+    return Color;
 }

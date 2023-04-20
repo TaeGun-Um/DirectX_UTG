@@ -38,5 +38,5 @@ public:
 
 public:
 	float4 POSITION;
-	float4 COLOR;
+	float4 UV;
 };

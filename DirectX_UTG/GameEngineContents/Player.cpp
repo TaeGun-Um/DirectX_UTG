@@ -138,7 +138,7 @@ void Player::Start()
 	// 나는 스케일을 1로 고정해 놓는게 좋다.
 	Render0 = CreateComponent<GameEngineRenderer>();
 	Render0->SetPipeLine("2DTexture");
-	Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	//Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 	// Render0->GetShaderResHelper().SetConstantBufferLink("TransformData", TestColor);

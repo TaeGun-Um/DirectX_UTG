@@ -32,10 +32,16 @@ public:
 		Path = _Value;
 	}
 
-	// 리소스를 상속받은 클래스의 Path 리턴
+	// 리소스를 상속받은 클래스의 Path 리턴(String_view)
 	std::string_view GetPath()
 	{
 		return Path.c_str();
+	}
+
+	// 리소스를 상속받은 클래스의 Path 리턴(String)
+	std::string GetNameToString()
+	{
+		return Name;
 	}
 
 	// 리소스를 상속받은 클래스의 Name을 설정
