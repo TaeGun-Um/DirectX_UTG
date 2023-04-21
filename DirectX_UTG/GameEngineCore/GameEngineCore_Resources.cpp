@@ -4,6 +4,7 @@
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
 #include "GameEngineResource.h"
+#include "GameEngineShaderResHelper.h"
 
 #include "GameEngineMesh.h"
 #include "GameEngineTexture.h"
@@ -36,6 +37,7 @@ void GameEngineCore::CoreResourcesInit()
 	// VertexLayOut 생성
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	// 버텍스 버퍼의 내용과 인풋 레이아웃의 내용이 더 중요하다.
 	// 인풋 레이아웃을 만들 때, 만든 내용은 넣어줘야 한다.
@@ -46,8 +48,6 @@ void GameEngineCore::CoreResourcesInit()
 	// 샘플러 생성
 	// 샘플러는 Vertex 생성 전에 해야해서 여기서 로드 실시
 	{
-		// 이론은 내일 설명(0420)
-
 		D3D11_SAMPLER_DESC SamperData = {};
 
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -60,6 +60,21 @@ void GameEngineCore::CoreResourcesInit()
 		SamperData.MaxLOD = FLT_MAX;
 
 		GameEngineSampler::Create("CLAMPSAMPLER", SamperData);
+	}
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
+
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("WRAPSAMPLER", SamperData);
 	}
 
 	// Rect 생성

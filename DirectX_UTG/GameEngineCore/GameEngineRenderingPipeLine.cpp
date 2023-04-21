@@ -66,10 +66,6 @@ void GameEngineRenderingPipeLine::VertexShader()
 // 정점에 따라 어떤 순서로 그릴 것인지 판단, InputAssembler1을 담당하는 클래스와 인터페이스가 매우 흡사하다.
 void GameEngineRenderingPipeLine::InputAssembler2()
 {
-	// Topology 셋팅을 위한 IASetPrimitiveTopology() 호출
-	// TOPOLOGY == D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST == 삼각형으로 그려라. 애초에 우리의 인덱스도 삼각형으로 그리게 설정되어 있음
-	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
-
 	if (nullptr == IndexBufferPtr)
 	{
 		MsgAssert("인덱스 버퍼가 존재하지 않아서 인풋 어셈블러2 과정을 실행할 수 없습니다.");
@@ -78,6 +74,10 @@ void GameEngineRenderingPipeLine::InputAssembler2()
 
 	// GameEngineIndexBuffer::Setting() 실시, GetContext()->IASetIndexBuffer()
 	IndexBufferPtr->Setting();
+
+	// Topology 셋팅을 위한 IASetPrimitiveTopology() 호출
+	// TOPOLOGY == D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST == 삼각형으로 그려라. 애초에 우리의 인덱스도 삼각형으로 그리게 설정되어 있음
+	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
 }
 
 // ------------------------- 화면 출력에 관련된 중요한 기능은 아님 -----------------------------
@@ -193,9 +193,7 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 	}
 }
 
-// 매쉬 + 머터리얼, Renderer는 자신이 가진 GameEngineRenderingPipeLine Pipe 변수로 부터 해당 함수를 호출할 예정
-// 랜더라고 하는 부분은 랜더링 파이프라인을 한바뀌 돌리는 것이다.
-void GameEngineRenderingPipeLine::Render()
+void GameEngineRenderingPipeLine::RenderingPipeLineSetting()
 {
 	// 메쉬    <= 외형이 어떻게 보일것인가.
 	//            픽셀건져내기할 범위를 지정하는 Rasterizer
@@ -203,7 +201,6 @@ void GameEngineRenderingPipeLine::Render()
 
 	// 머티리얼 <= 색깔이 어떻게 나올것인가?
 	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
-
 	InputAssembler1();
 	VertexShader();
 	InputAssembler2();
@@ -214,7 +211,12 @@ void GameEngineRenderingPipeLine::Render()
 	Rasterizer();
 	PixelShader();
 	OutputMerger();
+}
 
+// 매쉬 + 머터리얼, Renderer는 자신이 가진 GameEngineRenderingPipeLine Pipe 변수로 부터 해당 함수를 호출할 예정
+// 랜더라고 하는 부분은 랜더링 파이프라인을 한바뀌 돌리는 것이다.
+void GameEngineRenderingPipeLine::Render()
+{
 	// 위의 세팅이 모두 끝났다면 Draw 실시
 	// DrawIndexed()는 인덱스버퍼 세팅이 됐을 때만 그리겠다는 뜻이다.
 	// 우리의 인터페이스는 세팅을 안할 생각이 없기 때문이 이것으로만 Draw를 실시할 것이다.

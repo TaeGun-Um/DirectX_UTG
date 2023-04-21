@@ -96,6 +96,9 @@ public:
 	}
 
 	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size);
+	
+	// 텍스쳐 지정해주는 함수
+	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
 
 	// 쉐이더의 리소스 정보를 랜더러에 카피
 	void Copy(const GameEngineShaderResHelper& _ResHelper);

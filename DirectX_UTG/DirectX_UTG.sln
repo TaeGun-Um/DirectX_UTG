@@ -41,22 +41,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineContents", "GameE
 		{AF63769E-71C7-4B4D-B9DB-06CC7D262E69} = {AF63769E-71C7-4B4D-B9DB-06CC7D262E69}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. DOC", "0. DOC", "{7E1B77B6-48E3-4822-B2D0-AF89770DF7CE}"
-	ProjectSection(SolutionItems) = preProject
-		3D 함수.txt = 3D 함수.txt
-		GameEngineObject.txt = GameEngineObject.txt
-		GameEngineRenderingPipeLine.txt = GameEngineRenderingPipeLine.txt
-		GameEngineSerializer.txt = GameEngineSerializer.txt
-		GameEngineShader.txt = GameEngineShader.txt
-		GameEngineShader와 GameEnigneRenderer의 관계(ResHelper).txt = GameEngineShader와 GameEnigneRenderer의 관계(ResHelper).txt
-		Modal.txt = Modal.txt
-		New연산이 느린 이유.txt = New연산이 느린 이유.txt
-		수학.txt = 수학.txt
-		출력 디렉토리 설정.txt = 출력 디렉토리 설정.txt
-		쿼터니온.txt = 쿼터니온.txt
-		클래스의 결합도와 응집도.txt = 클래스의 결합도와 응집도.txt
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{E33348D8-5FD5-40B8-AEBC-CF4D1F75132F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "Shader\Shader.vcxproj", "{58CB4FD6-E31F-4D3B-ADB0-2E9903C1833A}"

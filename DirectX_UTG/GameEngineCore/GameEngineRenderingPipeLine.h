@@ -37,6 +37,8 @@ public:
 		FILL_MODE = _Value;
 	}
 
+	// Render에서 두 함수 호출
+	void RenderingPipeLineSetting();
 	void Render();
 
 protected:

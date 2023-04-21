@@ -39,4 +39,5 @@ public:
 public:
 	float4 POSITION;
 	float4 UV;
+	float4 NORMAL;
 };

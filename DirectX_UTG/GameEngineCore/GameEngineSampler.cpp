@@ -7,6 +7,11 @@ GameEngineSampler::GameEngineSampler()
 
 GameEngineSampler::~GameEngineSampler()
 {
+	if (nullptr != State)
+	{
+		State->Release();
+		State = nullptr;
+	}
 }
 
 // 샘플러의 Create는 래스터라이저와 굉장히 유사하다.

@@ -16,6 +16,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GameEngineCore::Start(hInstance, CupheadCore::GameStart, CupheadCore::GameEnd, { 0, 0 });
 }
 
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 // 
 // 
 // 
