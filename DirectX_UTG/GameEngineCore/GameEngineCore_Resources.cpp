@@ -114,17 +114,11 @@ void GameEngineCore::CoreResourcesInit()
 	// 블랜드 세팅
 	{
 		D3D11_BLEND_DESC Desc = { 0, };
-
-		// 자동으로 알파부분을 제거해서 출력해주는 건데
-		// 졸라느립니다.
 		Desc.AlphaToCoverageEnable = false;
-		// 블랜드를 여러개 넣을거냐
-		// TRUE면 블랜드를 여러개 넣습니다.
-		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
 		Desc.IndependentBlendEnable = false;
-
 		Desc.RenderTarget[0].BlendEnable = true;
 		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
 		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
@@ -132,6 +126,16 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
 		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+
+		// 1번 인자 : 자동으로 알파 부분을 제거해서 출력해주는 것이다. 사용 시 연산이 굉장히 느려서 사용 안함. False
+		// 2번 인자 : 블랜드를 여러 개 넣을 것인지 정하는 것. 랜더 타겟이 여러 개일 경우, true로 하면 랜더 타겟 하나 당 블랜드를 하나씩 만들면서 넣어줄 수도 있다.
+		//            false일 경우, 하나의 블랜드만 사용한다는 뜻. 이 옵션을 선택하면 설정해줘야 하는 것이 있다. (3번부터 10번까지)
+		// 3번 : 2번 세팅에서 몇 번 블랜드로 할 지 정하는 것, 우리는 SV0의 블랜드를 사용할 것이다 라는 뜻
+		// 4번 : ?
+		// 5번 : 더할 것인지, 뺄 것인지 정하는 것. max와 min도 있다
+		// 6번 : 필터를 뭐로 할 것인지 정한다. ALPHA는 알파로 한다는 뜻. 알파로 설정할 경우, 알파도 3개의 float으로 나뉜다. (1, 1, 1, A => 1, 1, 1, 1, 1, 1)
+		// 7번 : 1 - 알파, 자신의 위에 존재하는 알파(덮는 알파)가 진할 경우 옆어지게 만드는 것
+		// 8, 9, 10번 : 8 ~ 10번은 RGB 설정(5 ~ 7번)과 같이 한다.
 
 		GameEngineBlend::Create("AlphaBlend", Desc);
 	}

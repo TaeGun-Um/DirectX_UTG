@@ -14,6 +14,9 @@ class GameEngineObject :
 	public GameEngineObjectBase,
 	public GameEngineNameObject,
 	public std::enable_shared_from_this<GameEngineObject> // 침습형 ptr
+	// shared_ptr은 래퍼런스 카운트를 자신이 가지고 있기 때문에, new 연산이 발생하게 된다.
+	// 상속을 사용하는 경우, 부모가 레퍼런스 카운트를 지니고 있다면 new 연산을 줄일 수 있다.
+	// 이때 활용하는 것이 std::enable_shared_from_this
 {
 	friend class GameEngineLevel;
 
