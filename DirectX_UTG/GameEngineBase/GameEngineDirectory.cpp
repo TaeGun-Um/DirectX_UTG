@@ -29,7 +29,6 @@ bool GameEngineDirectory::Move(const std::string_view& _String)
 
 GameEnginePath GameEngineDirectory::GetPlusFileName(const std::string_view& _String)
 {
-
 	std::string PathString = Path.GetFullPath();
 	PathString += "\\";
 	PathString += _String;

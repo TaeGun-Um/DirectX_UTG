@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
@@ -25,6 +26,15 @@ void Player::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("PlayerSpeedBoost"))
 	{
 		Speed = 500.0f;
+	}
+
+	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
+	{
+		Render0->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
+	{
+		Render0->GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
@@ -134,10 +144,15 @@ void Player::Start()
 		GameEngineInput::CreateKey("PlayerSpeedBoost", VK_LSHIFT);
 	}
 
-	Render0 = CreateComponent<GameEngineRenderer>();
-	Render0->SetPipeLine("2DTexture");
-	//Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
+	Render0 = CreateComponent<GameEngineSpriteRenderer>();
+	Render0->SetTexture("Axeman_Idle_001.png");
 	Render0->GetTransform()->SetLocalScale({ 500.0f, 500.0f , 500.0f });
+
+	//Render1 = CreateComponent<GameEngineRenderer>();
+	//Render1->SetPipeLine("2DTexture");
+	//Render1->GetTransform()->SetLocalPosition({ 200.0f, 0.0f , 0.0f });
+	//Render1->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	// Render0->GetShaderResHelper().SetConstantBufferLink("TransformData", TestColor);
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 }

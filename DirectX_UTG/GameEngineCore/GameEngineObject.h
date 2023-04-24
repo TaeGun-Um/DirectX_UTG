@@ -10,7 +10,10 @@
 // 소멸자를 순수가상함수를 만드는 이유? => 추상화 할만한게 딱히 없어서.
 
 // 설명 : 다중상속 클래스, 기하구조(Transform) 상속을 위한 클래스
-class GameEngineObject : public GameEngineObjectBase, public GameEngineNameObject
+class GameEngineObject :
+	public GameEngineObjectBase,
+	public GameEngineNameObject,
+	public std::enable_shared_from_this<GameEngineObject> // 침습형 ptr
 {
 	friend class GameEngineLevel;
 
@@ -29,6 +32,13 @@ public:
 	GameEngineTransform* GetTransform()
 	{
 		return &Transform;
+	}
+
+	// shared_ptr 리턴
+	template<typename PtrType>
+	std::shared_ptr<PtrType> Shared_This_dynamic_pointer()
+	{
+		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}
 
 private:

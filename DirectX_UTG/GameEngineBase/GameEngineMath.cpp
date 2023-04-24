@@ -68,17 +68,34 @@ float4 float4::QuaternionToEulerDeg()
 // 쿼터니온을 오일러 각도로 변환하여 리턴(Radian)
 float4 float4::QuaternionToEulerRad()
 {
-	float sqw = w * w;
-	float sqx = x * x;
-	float sqy = y * y;
-	float sqz = z * z;
+	float4 result;
 
-	// 인터넷에 있던 어떤 식을 가져왔습니다.
-	float AngleX = asinf(2.0f * (w * x - y * z));
-	float AngleY = atan2f(2.0f * (x * z - w * y), (-sqx - sqy + sqz + sqw));
-	float AngleZ = atan2f(2.0f * (x * y - w * z), (-sqx + sqy - sqz + sqw));
+	float sinrCosp = 2.0f * (w * z + x * y);
+	float cosrCosp = 1.0f - 2.0f * (z * z + x * x);
+	result.z = atan2f(sinrCosp, cosrCosp);
 
-	return float4(AngleX, AngleY, AngleZ);
+	float pitchTest = w * x - y * z;
+	float asinThreshold = 0.4999995f;
+	float sinp = 2.0f * pitchTest;
+
+	if (pitchTest < -asinThreshold)
+	{
+		result.x = -(0.5f * GameEngineMath::PIE);
+	}
+	else if (pitchTest > asinThreshold)
+	{
+		result.x = (0.5f * GameEngineMath::PIE);
+	}
+	else
+	{
+		result.x = asinf(sinp);
+	}
+
+	float sinyCosp = 2.0f * (w * y + x * z);
+	float cosyCosp = 1.0f - 2.0f * (x * x + y * y);
+	result.y = atan2f(sinyCosp, cosyCosp);
+
+	return result;
 }
 
 // 쿼터니온을 행렬로 변환하여 리턴

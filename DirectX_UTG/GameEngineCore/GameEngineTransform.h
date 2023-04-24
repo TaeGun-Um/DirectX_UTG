@@ -377,6 +377,37 @@ public:
 		}
 	}
 
+	// 스케일을 -로 변경하면 좌우가 반전된다.
+	void SetLocalFlipScaleX()
+	{
+		TransData.LocalScale.x = -TransData.LocalScale.x;
+		SetLocalScale(TransData.LocalScale);
+	}
+
+	// 왼쪽으로 플립
+	void SetLocalNegativeScaleX()
+	{
+		if (0 < TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
+	// 오른쪽으로 플립
+	void SetLocalPositiveScaleX()
+	{
+		if (0 > TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
 protected:
 
 private:
