@@ -16,11 +16,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GameEngineCore::Start(hInstance, CupheadCore::GameStart, CupheadCore::GameEnd, { 0, 0 });
 }
 
-// 
-// 
-// 
-// 
-// 
+// 숙제 : 연산의 ADD를 MAX로 바꾸면 됨
 // 
 // 
 // 

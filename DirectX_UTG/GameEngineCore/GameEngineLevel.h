@@ -70,5 +70,7 @@ private:
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 
+	void ActorUpdate(float _DeltaTime);
+	void ActorRender(float _DeltaTime);
 };
 

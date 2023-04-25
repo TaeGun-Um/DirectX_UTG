@@ -59,9 +59,11 @@ void GameEngineCore::EngineUpdate()
 	GameEngineSound::SoundUpdate();               // FMOD Sound 업데이트
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);   // Level의 TimeEvent 변동 값 업데이트
-	MainLevel->Update(TimeDeltaTime);             // Level의 Actor 변동 값 업데이트
+	MainLevel->Update(TimeDeltaTime);             
+	MainLevel->ActorUpdate(TimeDeltaTime);        // Level의 Actor 변동 값 업데이트
 	GameEngineDevice::RenderStart();              // 백버퍼 클리어
-	MainLevel->Render(TimeDeltaTime);             // Render를 실시며 HDC를 활용하여 이미지 수정
+	MainLevel->Render(TimeDeltaTime);             
+	MainLevel->ActorRender(TimeDeltaTime);        // Render를 실시며 HDC를 활용하여 이미지 수정
 	GameEngineDevice::RenderEnd();                // 백버퍼에 이미지 랜더
 }
 

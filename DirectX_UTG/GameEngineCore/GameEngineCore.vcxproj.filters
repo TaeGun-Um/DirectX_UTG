@@ -58,6 +58,9 @@
     <Filter Include="Object\Rendering\Component\2D">
       <UniqueIdentifier>{18994234-f25f-4a72-865b-b4fc77ce69da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Movie">
+      <UniqueIdentifier>{f7a07f59-68ba-4eb5-8d8a-83a51469033b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -159,6 +162,12 @@
     <ClInclude Include="GameEngineSpriteRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineVideo.h">
+      <Filter>Resources\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDepthState.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -256,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="GameEngineSpriteRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVideo.cpp">
+      <Filter>Resources\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDepthState.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

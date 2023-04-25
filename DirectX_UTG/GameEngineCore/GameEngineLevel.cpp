@@ -17,7 +17,7 @@ void GameEngineLevel::Start()
 }
 
 // 액터의 정보 갱신
-void GameEngineLevel::Update(float _DeltaTime)
+void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
 	if (true == MainCamera->IsFreeCamera())
 	{
@@ -38,7 +38,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 		}
 	}
 }
-void GameEngineLevel::Render(float _DeltaTime)
+void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	// 랜더링파이프라인 뷰포트 설정을 위한 Setting 호출
 	GetMainCamera()->Setting();
@@ -58,7 +58,15 @@ void GameEngineLevel::Render(float _DeltaTime)
 	}
 }
 
-void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
+void GameEngineLevel::Update(float _DeltaTime)
+{
+}
+
+void GameEngineLevel::Render(float _DeltaTime)
+{
+}
+
+void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)
 {
 	_Actor->Level = this;              // 액터의 레벨은 해당 레벨이 된다.
 	_Actor->SetOrder(_Order);          // CreateActor에서 지정한 Order가 복사된다.

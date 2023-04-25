@@ -32,19 +32,31 @@ public:
 	// 상속한 Object 랜더상태 On
 	void On()
 	{
-		ActiveValue = true;
+		UpdateValue = true;
 	}
 
 	// 상속한 Object의 랜더상태 Off
 	void Off()
 	{
-		ActiveValue = false;
+		UpdateValue = false;
 	}
 
 	// 상속한 Object를 Death 처리
 	void Death()
 	{
 		DeathValue = true;
+	}
+
+	// 액터가 죽었는지 체크, 부모자식간의 관계를 파악하기 위한 virtual
+	virtual bool IsDeath()
+	{
+		return DeathValue;
+	}
+
+	// 업데이트가 on인지 체크, 부모자식간의 관계를 파악하기 위한 virtual
+	virtual bool IsUpdate()
+	{
+		return UpdateValue;
 	}
 
 	// 상속한 Object의 디버그밸류 On
@@ -62,7 +74,7 @@ public:
 protected:
 
 private:
-	bool ActiveValue = true; // 켜졌다 꺼졌다
+	bool UpdateValue = true; // 켜졌다 꺼졌다
 	bool DeathValue = false; // 죽었다 살았다
 	bool DebugValue = false; // 디버그밸류
 	int Order = 0;           // Object의 오더

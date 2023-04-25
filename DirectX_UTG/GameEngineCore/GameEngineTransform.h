@@ -7,23 +7,29 @@
 // 일단, 프리카메라모드 시 이런 구조체를 선언하고 값을 저장한 뒤 불러오는 형식을 쓰면 편하다
 struct TransformData
 {
+	// 단순 계산을 위한 행렬
+	float4 Scale;
+	float4 Rotation;
+	float4 Quaternion;
+	float4 Position;
+
 	// 로컬 크자(쿼)이
 	float4 LocalScale;
 	float4 LocalRotation;
-	Quaternion LocalQuaternion; // XMQuaternionIdentity() = 항등쿼터니온 생성
+	float4 LocalQuaternion; // XMQuaternionIdentity() = 항등쿼터니온 생성
 	float4 LocalPosition;
 
 	// 월드 크자(쿼)이
 	float4 WorldScale;
 	float4 WorldRotation;
-	Quaternion WorldQuaternion;
+	float4 WorldQuaternion;
 	float4 WorldPosition;
 
-	float4x4 LocalScaleMatrix;               // 로컬 크기 행렬
-	float4x4 LocalRotationMatrix;            // 로컬 회전 행렬
-	float4x4 LocalPositionMatrix;            // 로컬 이동 행렬
+	float4x4 ScaleMatrix;                    // 로컬 크기 행렬
+	float4x4 RotationMatrix;                 // 로컬 회전 행렬
+	float4x4 PositionMatrix;                 // 로컬 이동 행렬
 
-	float4x4 LocalWorldMatrix;               // 로컬월드 행렬
+	float4x4 LocalWorldMatrix;               // 로컬의 월드 행렬
 	float4x4 WorldMatrix;                    // 월드 행렬
 
 	float4x4 View;                           // 뷰행렬
@@ -35,14 +41,10 @@ public:
 	// 빈번하게 값을 변경할 수 있기 때문에 초기화는 생성자에서 실시
 	TransformData()
 	{
-		LocalScale = float4::One;
-		LocalRotation = float4::Null;
-		LocalQuaternion = float4::Null;
-		LocalPosition = float4::Zero;
-		WorldScale = float4::One;
-		WorldRotation = float4::Null;
-		WorldQuaternion = float4::Null;
-		WorldPosition = float4::Zero;
+		Scale = float4::One;
+		Rotation = float4::Null;
+		Quaternion = float4::Null;
+		Position = float4::Zero;
 	}
 };
 
@@ -63,16 +65,8 @@ public:
 	// 월드 크기 지정
 	void SetWorldScale(const float4& _Value)
 	{
-		TransData.WorldScale = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.LocalScale = TransData.WorldScale;
-		}
-		else
-		{
-			TransData.LocalScale = TransData.WorldScale * Parent->GetWorldMatrixRef().InverseReturn();
-		}
+		AbsoluteScale = true;
+		TransData.Scale = _Value;
 
 		TransformUpdate();
 		CalChild();
@@ -81,22 +75,8 @@ public:
 	// 월드 위치 지정
 	void SetWorldRotation(const float4& _Value)
 	{
-		if (true == IsDebug())
-		{
-			int a = 0;
-		}
-
-		TransData.WorldRotation = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.LocalRotation = TransData.WorldRotation;
-		}
-		else
-		{
-			float4 Rot = Parent->GetWorldRotation();
-			TransData.LocalRotation = TransData.WorldRotation - Parent->GetWorldRotation();
-		}
+		AbsoluteRotation = true;
+		TransData.Rotation = _Value;
 
 		TransformUpdate();
 		CalChild();
@@ -105,52 +85,18 @@ public:
 	// 월드 이동 지정
 	void SetWorldPosition(const float4& _Value)
 	{
-		TransData.WorldPosition = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.LocalPosition = TransData.WorldPosition;
-		}
-		else
-		{
-			TransData.LocalPosition = TransData.WorldPosition * Parent->GetWorldMatrixRef().InverseReturn();
-		}
+		AbsolutePosition = true;
+		TransData.Position = _Value;
 
 		TransformUpdate();
 		CalChild();
 	}
 
-	// 월드 크기 행렬 리턴
-	float4 GetWorldScale()
-	{
-		return TransData.WorldScale;
-	}
-
-	// 월드 회전 행렬 리턴
-	float4 GetWorldRotation()
-	{
-		return TransData.WorldRotation;
-	}
-
-	// 월드 이동 행렬 리턴
-	float4 GetWorldPosition()
-	{
-		return TransData.WorldPosition;
-	}
-
 	// 로컬 크기 지정
 	void SetLocalScale(const float4& _Value)
 	{
-		TransData.LocalScale = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.WorldScale = TransData.LocalScale;
-		}
-		else
-		{
-			TransData.WorldScale = TransData.LocalScale * Parent->GetWorldMatrixRef();
-		}
+		AbsoluteScale = false;
+		TransData.Scale = _Value;
 
 		TransformUpdate();
 		CalChild();
@@ -159,16 +105,8 @@ public:
 	// 로컬 회전 지정
 	void SetLocalRotation(const float4& _Value)
 	{
-		TransData.LocalRotation = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.WorldRotation = TransData.LocalRotation;
-		}
-		else
-		{
-			TransData.WorldRotation = TransData.LocalRotation + Parent->GetWorldRotation();
-		}
+		AbsoluteRotation = false;
+		TransData.Rotation = _Value;
 
 		TransformUpdate();
 		CalChild();
@@ -177,38 +115,19 @@ public:
 	// 로컬 이동 지정
 	void SetLocalPosition(const float4& _Value)
 	{
-		TransData.LocalPosition = _Value;
-
-		if (nullptr == Parent)
-		{
-			TransData.WorldPosition = TransData.LocalPosition;
-		}
-		else
-		{
-			TransData.WorldPosition = TransData.LocalPosition * Parent->GetWorldMatrixRef();
-		}
+		AbsolutePosition = false;
+		TransData.Position = _Value;
 
 		TransformUpdate();
 		CalChild();
 	}
 
-	// 로컬 크기 행렬 리턴
-	float4 GetLocalScale()
-	{
-		return TransData.LocalScale;
-	}
-
-	// 로컬 회전 행렬 리턴
-	float4 GetLocalRotation()
-	{
-		return TransData.LocalRotation;
-	}
-
-	// 로컬 이동 행렬 리턴
-	float4 GetLocalPosition()
-	{
-		return TransData.LocalPosition;
-	}
+	float4 GetWorldScale();    // 월드 크기 행렬 리턴
+	float4 GetWorldRotation(); // 월드 회전 행렬 리턴
+	float4 GetWorldPosition(); // 월드 이동 행렬 리턴
+	float4 GetLocalScale();    // 로컬 크기 행렬 리턴
+	float4 GetLocalRotation(); // 로컬 회전 행렬 리턴
+	float4 GetLocalPosition(); // 로컬 이동 행렬 리턴
 
 	// 월드 행렬 리턴
 	const float4x4 GetWorldMatrix()
@@ -237,37 +156,37 @@ public:
 	// 로컬 크기 Add
 	void AddLocalScale(const float4& _Value)
 	{
-		SetLocalScale(TransData.LocalScale + _Value);
+		SetLocalScale(TransData.Scale + _Value);
 	}
 
 	// 로컬 회전 Add
 	void AddLocalRotation(const float4& _Value)
 	{
-		SetLocalRotation(TransData.LocalRotation + _Value);
+		SetLocalRotation(TransData.Rotation + _Value);
 	}
 
 	// 로컬 이동 Add
 	void AddLocalPosition(const float4& _Value)
 	{
-		SetLocalPosition(TransData.LocalPosition + _Value);
+		SetLocalPosition(TransData.Position + _Value);
 	}
 
 	// 월드 크기 Add
 	void AddWorldScale(const float4& _Value)
 	{
-		SetWorldScale(TransData.WorldScale + _Value);
+		SetWorldScale(TransData.Scale + _Value);
 	}
 
 	// 월드 회전 Add
 	void AddWorldRotation(const float4& _Value)
 	{
-		SetWorldRotation(TransData.WorldRotation + _Value);
+		SetWorldRotation(TransData.Rotation + _Value);
 	}
 
 	// 월드 이동 Add
 	void AddWorldPosition(const float4& _Value)
 	{
-		SetWorldPosition(TransData.WorldPosition + _Value);
+		SetWorldPosition(TransData.Position + _Value);
 	}
 
 	// 월드에서 자신이 바라보는 방향 단위기저벡터 리턴
@@ -363,19 +282,8 @@ public:
 		TransData = _Data;
 	}
 
-	// 부모 설정
-	void SetParent(GameEngineTransform* _Parent);
-
-	// 부모의 영향을 자식에게 적용
-	void CalChild()
-	{
-		for (GameEngineTransform* ChildTrans : Child)
-		{
-			ChildTrans->SetLocalScale(ChildTrans->GetLocalScale());
-			ChildTrans->SetLocalRotation(ChildTrans->GetLocalRotation());
-			ChildTrans->SetLocalPosition(ChildTrans->GetLocalPosition());
-		}
-	}
+	void SetParent(GameEngineTransform* _Parent); // 부모 설정
+	void CalChild();                              // 부모의 영향을 자식에게 적용
 
 	// 스케일을 -로 변경하면 좌우가 반전된다.
 	void SetLocalFlipScaleX()
@@ -415,6 +323,10 @@ private:
 	void TransformUpdate();
 
 	TransformData TransData;
+
+	bool AbsoluteScale = false;
+	bool AbsoluteRotation = false;
+	bool AbsolutePosition = false;
 
 	GameEngineTransform* Parent = nullptr;   // weak_ptr 구조
 	std::list<GameEngineTransform*> Child;   // 부모자식관계를 결정한다.

@@ -17,17 +17,24 @@
 // 이런 식으로 쓰면 내가 쓰겠다고 명시하는 것이다.
 cbuffer TransformData : register(b0)
 {
+    float4 Scale;
+    float4 Rotation;
+    float4 Quaternion;
+    float4 Position;
+
     float4 LocalScale;
     float4 LocalRotation;
     float4 LocalQuaternion;
     float4 LocalPosition;
+
     float4 WorldScale;
     float4 WorldRotation;
     float4 WorldQuaternion;
     float4 WorldPosition;
-    float4x4 LocalScaleMatrix;
-    float4x4 LocalRotationMatrix;
-    float4x4 LocalPositionMatrix;
+
+    float4x4 ScaleMatrix;
+    float4x4 RotationMatrix;
+    float4x4 PositionMatrix;
     float4x4 LocalWorldMatrix;
     float4x4 WorldMatrix;
     float4x4 View;

@@ -11,6 +11,7 @@
 #include "GameEngineMesh.h"
 #include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
+#include "GameEngineDepthState.h"
 #include "GameEngineRasterizer.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEnginePixelShader.h"
@@ -138,6 +139,34 @@ void GameEngineCore::CoreResourcesInit()
 		// 8, 9, 10번 : 8 ~ 10번은 RGB 설정(5 ~ 7번)과 같이 한다.
 
 		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	// Depth 세팅
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+
+		// 깊이버퍼는 랜더타겟에 그려지기 전, 랜더 타겟과 똑같은 크기의 텍스쳐를 하나 만든다.
+		// 텍스쳐의 한 픽셀마다 0~1까지 float으로 표현된다. 기본 세팅이면 1인 상태로 생성된다.
+		// 0~1의 값인 이유는 레스터라이저에서 w 나누기 시 생성되는 값을 활용하기 때문이다.
+		// 이제 특정 이미지를 텍스쳐에 그리려고 할 때, 그려지는 이미지와 깊이버퍼 텍스쳐간에 값을 비교한다.
+		// 우리의 엔진 구조는 값이 작을 수록(0에 가까워 질수록) 가까이에 있는 사물이다. 이것이 적용되도록 세팅할 예정
+		// 만약 그려지는 이미지의 값이 0.9라면, 해당 픽셀이 존재하는 부분은 1에서 0.9로 교체된다.
+		// 다음으로 그려지는 이미지의 값이 0.5인데, 만약 0.9가 입력된 부분과 겹칠 경우, 0.9는 0.5로 교체된다.
+		// 이후 적용된 값에 따라 이미지가 그려진다. 이게 Depth이다.
+
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
+		
+		// 1번 : 깊이 버퍼를 쓸것인지 말것인지 정하는 것. WinAPI처럼 안쓰고 RenderOrder로 할 수 있지만, 3D 처럼 하길 원하니 true
+		// 2번 : 새롭게 그려지는 것이 깊이 테스트를 통과하려면, 기존에 그려진 것보다 작아야하는지 커야하는지 설정. 우리는 작은것 기준으로 한다 (Less Equal)
+		// 3번 : 이용해본적이 없어서 설명 x
+		// 4번 : Depth는 한 픽셀에 0~1을 float으로 표현한다. 이때, 3byte만 활용해도 충분하기 때문에, 나머지 1byte는 int 자료형으로 활용한다.
+		//       이럴 경우 0 ~ 255까지의 수를 넣을 수 있는데, 이 값이 바로 스탠실이다.
+		//       스탠실 값을 활용할 경우 픽셀 쉐이더에서 if 스탠실 값이 230 라면~ 이런 식으로 특정 로직에 활용할 수 있다.
+
+		GameEngineDepthState::Create("EngineDepth", Desc);
 	}
 
 	// Box 생성
