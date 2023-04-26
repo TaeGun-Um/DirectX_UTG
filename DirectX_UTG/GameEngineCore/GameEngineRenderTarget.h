@@ -33,11 +33,15 @@ public:
 	// GameEngineDevice::RenderStart() 에서 Clear() 실시
 	void Setting() override;
 
+	// 깊이버퍼 텍스쳐 생성
+	void CreateDepthTexture();
+
 protected:
 
 private:
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };     // 백버퍼를 Clear하기 위한 색 지정
 	std::shared_ptr<GameEngineTexture> Texture;    // RenderTarget을 생성한 Texture
+	std::shared_ptr<GameEngineTexture> DepthTexture;
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 

@@ -115,6 +115,7 @@ void GameEngineCore::CoreResourcesInit()
 	// 블랜드 세팅
 	{
 		D3D11_BLEND_DESC Desc = { 0, };
+
 		Desc.AlphaToCoverageEnable = false;
 		Desc.IndependentBlendEnable = false;
 		Desc.RenderTarget[0].BlendEnable = true;
@@ -267,7 +268,8 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
-			Pipe->SetBlend("AlphaBlend");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
 		}
 	}
 }
@@ -278,6 +280,7 @@ void GameEngineCore::CoreResourcesEnd()
 	GameEngineMesh::ResourcesClear();
 	GameEngineBlend::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
+	GameEngineDepthState::ResourcesClear();
 	GameEngineRasterizer::ResourcesClear();
 	GameEngineIndexBuffer::ResourcesClear();
 	GameEnginePixelShader::ResourcesClear();

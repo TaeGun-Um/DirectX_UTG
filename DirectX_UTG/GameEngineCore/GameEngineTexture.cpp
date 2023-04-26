@@ -14,6 +14,12 @@ GameEngineTexture::GameEngineTexture()
 // Texture와 RenderTarget은 동적할당이기 때문에, 소멸자 호출 시 Release를 실시해야 한다.
 GameEngineTexture::~GameEngineTexture()
 {
+	if (nullptr != DSV)
+	{
+		DSV->Release();
+		DSV = nullptr;
+	}
+
 	if (nullptr != SRV)
 	{
 		SRV->Release();
@@ -37,6 +43,7 @@ GameEngineTexture::~GameEngineTexture()
 void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
+	Texture2D->GetDesc(&Desc);
 	CreateRenderTargetView();
 }
 
@@ -45,7 +52,7 @@ void GameEngineTexture::CreateRenderTargetView()
 {
 	if (nullptr == Texture2D)
 	{
-		MsgAssert("텍스처가 존재하지 않는 랜더타겟을 만들 수는 없습니다.");
+		MsgAssert("텍스처가 존재하지 않는 랜더타겟뷰을 만들 수는 없습니다.");
 		return;
 	}
 
@@ -54,7 +61,27 @@ void GameEngineTexture::CreateRenderTargetView()
 
 	if (S_OK != Result)
 	{
-		MsgAssert("랜더타겟 생성에 실패했습니다.");
+		MsgAssert("랜더타겟뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
+void GameEngineTexture::CreateDepthStencilView()
+{
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처가 존재하지 않는데 뎁스 스텐실 뷰 만들 수는 없습니다.");
+		return;
+	}
+
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D, nullptr, &DSV);
+	// 1번 : 구조체
+	// 2번 : 텍스쳐 만들 때 특별히 넣어줄 것이 있는가? 없으니 null
+	// 3번 : 정보를 받을 구조체, ID3D11DepthStencilView
+
+	if (S_OK != Result)
+	{
+		MsgAssert("뎁스 스텐실 뷰 생성에 실패했습니다.");
 		return;
 	}
 }
@@ -98,6 +125,9 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다." + std::string(_Path.data()));
 	}
 
+	// 텍스쳐 너비와 높이 멤버변수에 저장
+	Desc.Width = static_cast<UINT>(Data.width);
+	Desc.Height = static_cast<UINT>(Data.height);
 }
 
 // CreateShaderResourceView()로 SRV에 값을 전달받은 후, 해당 값으로 VSSetShaderResources(), PSSetShaderResources() 실시
@@ -111,4 +141,21 @@ void GameEngineTexture::PSSetting(UINT _Slot)
 {
 	// 0번 슬롯에 SRV로 넣겠다.
 	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &SRV);
+}
+
+void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
+{
+	Desc = _Value;
+
+	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL == Desc.BindFlags)
+	{
+		CreateDepthStencilView();
+	}
+
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처 생성에 실패했습니다.");
+	}
 }

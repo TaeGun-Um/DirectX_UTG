@@ -2,6 +2,7 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
+#include "GameEngineVideo.h"
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -19,6 +20,20 @@ void GameEngineLevel::Start()
 // 액터의 정보 갱신
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
+	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
+	{
+		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+
+		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
+		{
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
+			Actor->AccLiveTime(_DeltaTime);
+		}
+	}
+
 	if (true == MainCamera->IsFreeCamera())
 	{
 		MainCamera->Update(_DeltaTime);
@@ -33,6 +48,12 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 		// 추후에 적용하겠다.
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
+
+			Actor->AccLiveTime(_DeltaTime);
 			Actor->Update(_DeltaTime);
 			Actor->ComponentsUpdate(_DeltaTime);
 		}
@@ -73,4 +94,13 @@ void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Or
 	_Actor->Start();                   // 액터의 정보 업데이트
 
 	Actors[_Order].push_back(_Actor);  // Level이 관리하고 있는 액터를 관리하는 리스트에 들어간다.
+}
+
+void GameEngineLevel::LevelChangeStart()
+{
+
+}
+void GameEngineLevel::LevelChangeEnd()
+{
+
 }

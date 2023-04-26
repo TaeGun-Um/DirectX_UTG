@@ -2,6 +2,8 @@
 #include "GameEngineVideo.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 
+GameEngineVideo* GameEngineVideo::CurVideo = nullptr;
+
 GameEngineVideo::GameEngineVideo()
 {
 
@@ -11,8 +13,6 @@ GameEngineVideo::~GameEngineVideo()
 {
 	Release();
 }
-
-
 
 void GameEngineVideo::ResLoad(const std::string_view& _Path)
 {
@@ -32,7 +32,6 @@ void GameEngineVideo::ResLoad(const std::string_view& _Path)
 		return;
 	}
 
-
 	//동영상 리소스 불러오기(.avi만 가능합니다)
 	std::wstring UnicodePath = GameEngineString::AnsiToUniCode(_Path.data());
 	Result = GraphBuilderPtr->RenderFile(UnicodePath.c_str(), nullptr);
@@ -49,7 +48,6 @@ void GameEngineVideo::ResLoad(const std::string_view& _Path)
 		return;
 	}
 
-
 	//첫번째 인자들은 모두 라이브러리에 있는 전역변수입니다
 	GraphBuilderPtr->QueryInterface(IID_IMediaControl, reinterpret_cast<void**>(&Controller));
 	GraphBuilderPtr->QueryInterface(IID_IMediaEventEx, reinterpret_cast<void**>(&Eventer));
@@ -60,7 +58,6 @@ void GameEngineVideo::ResLoad(const std::string_view& _Path)
 	GraphBuilderPtr->QueryInterface(IID_IBasicVideo, reinterpret_cast<void**>(&BasicVideoPtr));
 
 	GraphBuilderPtr->QueryInterface(IID_IBasicAudio, reinterpret_cast<void**>(&BasicAudioPtr));
-
 
 	//이벤트 알림을 처리할 창을 등록합니다.
 	Eventer->SetNotifyWindow(
@@ -96,11 +93,31 @@ void GameEngineVideo::ResLoad(const std::string_view& _Path)
 	CurState = VideoState::Init;
 }
 
+GameEngineVideo::VideoState GameEngineVideo::GetCurState()
+{
+	if (nullptr == CurVideo)
+	{
+		return GameEngineVideo::VideoState::UNKNOWN;
+	}
 
+	if (true == CurVideo->IsFinished())
+	{
+		CurVideo = nullptr;
+		return GameEngineVideo::VideoState::Stop;
+	}
 
+	return GameEngineVideo::VideoState::Running;
+}
 
 void GameEngineVideo::Play()
 {
+	if (nullptr != CurVideo)
+	{
+		return;
+	}
+
+	CurVideo = this;
+
 	if (VideoState::Stop == CurState)
 	{
 		MsgAssert("이미 종료된 비디오 클립입니다");

@@ -49,10 +49,36 @@ public:
 		return NewTexture;
 	}
 
+	// (0426) 깊이버퍼 텍스쳐 생성
+	static std::shared_ptr<GameEngineTexture> Create(const D3D11_TEXTURE2D_DESC& _Value)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
+		NewTexture->ResCreate(_Value);
+		return NewTexture;
+	}
+
 	// RenderTarget 가져오기
 	ID3D11RenderTargetView* GetRTV()
 	{
 		return RTV;
+	}
+
+	// 깊이버퍼 텍스쳐 가져오기
+	ID3D11DepthStencilView* GetDSV()
+	{
+		return DSV;
+	}
+
+	// D3D11_TEXTURE2D_DESC의 너비 가져오기
+	unsigned int GetWidth()
+	{
+		return Desc.Width;
+	}
+
+	// D3D11_TEXTURE2D_DESC의 깊이 가져오기
+	unsigned int GetHeight()
+	{
+		return Desc.Height;
 	}
 
 protected:
@@ -61,18 +87,22 @@ private:
 	
 	ID3D11Texture2D* Texture2D = nullptr;    // HDC
 	ID3D11RenderTargetView* RTV = nullptr;   // BackBuffer
-	ID3D11ShaderResourceView* SRV = nullptr; //
+	ID3D11ShaderResourceView* SRV = nullptr; // 쉐이더리소스뷰
+	ID3D11DepthStencilView* DSV = nullptr;   // 댑스스탠실뷰
 
+	D3D11_TEXTURE2D_DESC Desc;               // 텍스쳐 구조체
 	DirectX::TexMetadata Data;               // LoadFromWICFile()에 텍스쳐 정보 담을 곳
 	DirectX::ScratchImage Image;             // LoadFromWICFile() 후 로드된 정보가 여기 담김
 
 	// HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
 	void ResCreate(ID3D11Texture2D* _Value);
+	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
 
 	// 경로를 받은 뒤 리소스를 로드한다.
 	void ResLoad(const std::string_view& _Path);
 
 	void CreateRenderTargetView();
+	void CreateDepthStencilView();
 
 	void VSSetting(UINT _Slot);
 	void PSSetting(UINT _Slot);

@@ -192,6 +192,9 @@ void GameEngineDevice::CreateSwapChain()
 	// 이걸 RenderTarget이 그려주는 것이다.
 
 	// 요약 : 생성된 Window로 부터 HWND를 얻어옴 -> 이걸로 SwapChain을 만듬 -> SwapChain이 Texture를 만듬 -> Texture가 그림 그릴 권한인 RenderTarget을 만듬
+
+	// 댑스용 깊이 버퍼 텍스쳐 생성
+	BackBufferTarget->CreateDepthTexture();
 }
 
 // 백버퍼 클리어

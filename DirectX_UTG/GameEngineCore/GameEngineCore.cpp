@@ -7,6 +7,7 @@
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
 #include "GameEngineDevice.h"
+#include "GameEngineVideo.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -43,7 +44,20 @@ void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
 	{
+		if (nullptr != MainLevel)
+		{
+			MainLevel->LevelChangeEnd();
+		}
+
 		MainLevel = NextLevel;
+
+		if (nullptr != MainLevel)
+		{
+			MainLevel->LevelChangeStart();
+		}
+
+		NextLevel = nullptr;
+		GameEngineTime::GlobalTime.Reset();
 	}
 
 	if (nullptr == MainLevel)
@@ -53,7 +67,12 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	// 델타타임 체크
-	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck(); 
+	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+
+	if (TimeDeltaTime > 1 / 30.0f)
+	{
+		TimeDeltaTime = 1 / 30.0f;
+	}
 
 	GameEngineInput::Update(TimeDeltaTime);       // 할당 후 변동된 Key 값 업데이트
 	GameEngineSound::SoundUpdate();               // FMOD Sound 업데이트
@@ -62,9 +81,15 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->Update(TimeDeltaTime);             
 	MainLevel->ActorUpdate(TimeDeltaTime);        // Level의 Actor 변동 값 업데이트
 	GameEngineDevice::RenderStart();              // 백버퍼 클리어
-	MainLevel->Render(TimeDeltaTime);             
-	MainLevel->ActorRender(TimeDeltaTime);        // Render를 실시며 HDC를 활용하여 이미지 수정
-	GameEngineDevice::RenderEnd();                // 백버퍼에 이미지 랜더
+
+	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
+
+	if (State != GameEngineVideo::VideoState::Running)
+	{
+		MainLevel->Render(TimeDeltaTime);
+		MainLevel->ActorRender(TimeDeltaTime);    // Render를 실시며 HDC를 활용하여 이미지 수정
+		GameEngineDevice::RenderEnd();            // 백버퍼에 이미지 랜더
+	}
 }
 
 // Core의 종료 구간 (Level(map) clear, 할당된 shared_ptr 명시적 해제, DirectX 명시적 해제(Release))

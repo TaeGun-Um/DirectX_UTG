@@ -62,6 +62,9 @@ protected:
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);
 
+	virtual void LevelChangeStart();
+	virtual void LevelChangeEnd();
+
 private:
 	std::shared_ptr<GameEngineCamera> MainCamera;                       // 메인 카메라, 레벨 생성 시 생성자에서 생성됨
 	std::shared_ptr<GameEngineCamera> UICamera;                         // UI 카메라, 아직 안만듬

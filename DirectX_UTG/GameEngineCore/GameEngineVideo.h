@@ -7,6 +7,16 @@
 class GameEngineVideo : public GameEngineResource<GameEngineVideo>
 {
 public:
+
+	enum class VideoState
+	{
+		Init,
+		Running,
+		Stop,
+
+		UNKNOWN,
+	};
+
 	GameEngineVideo();
 	~GameEngineVideo() override;
 
@@ -33,19 +43,13 @@ public:
 	void Stop();
 	bool IsFinished();
 
+	static VideoState GetCurState();
 
 protected:
 
 
 private:
-	enum class VideoState
-	{
-		Init,
-		Running,
-		Stop,
-
-		UNKNOWN,
-	};
+	static GameEngineVideo* CurVideo;
 
 	VideoState CurState = VideoState::UNKNOWN;
 

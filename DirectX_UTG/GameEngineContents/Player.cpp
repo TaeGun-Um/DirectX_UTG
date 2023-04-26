@@ -125,6 +125,11 @@ void Player::Update(float _DeltaTime)
 
 	float4 GetLocalPosition = Render0->GetTransform()->GetLocalPosition();
 	float4 GetWorldPosition = Render0->GetTransform()->GetWorldPosition();
+
+	if (5.0f <= Render0->GetLiveTime())
+	{
+		Render0->Off();
+	}
 }
 
 void Player::Start()
@@ -156,16 +161,16 @@ void Player::Start()
 	}
 
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->SetTexture("AAAA.png");
+	Render0->SetTexture("Axeman_Idle_001.png");
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 
 	Render1 = CreateComponent<GameEngineSpriteRenderer>();
-	Render1->SetTexture("AAAA.png");
+	Render1->SetTexture("Axeman_Idle_001.png");
 	Render1->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 	Render1->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
 
 	Render2 = CreateComponent<GameEngineSpriteRenderer>();
-	Render2->SetTexture("AAAA.png");
+	Render2->SetTexture("Axeman_Idle_001.png");
 	Render2->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
 

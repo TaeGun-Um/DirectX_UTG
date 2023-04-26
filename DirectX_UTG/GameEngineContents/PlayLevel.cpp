@@ -17,21 +17,21 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Start()
 {
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
+	//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
 
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineVideo::Load(File[i].GetFullPath());
-		}
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineVideo::Load(File[i].GetFullPath());
+	//	}
 
-		Video = GameEngineVideo::Find("TestVideo.avi");
-		Video->Play();
-	}
+	//	Video = GameEngineVideo::Find("TestVideo.avi");
+	//	Video->Play();
+	//}
 
 	{
 		GameEngineDirectory NewDir;
@@ -55,9 +55,9 @@ void PlayLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 	{
-		//std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
-		//Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
-		//Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
+		std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
+		Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
+		Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
 	}
 
 	{
@@ -69,4 +69,16 @@ void PlayLevel::Start()
 void PlayLevel::Update(float _DeltaTime)
 {
 
+}
+
+void PlayLevel::LevelChangeStart()
+{
+	GameEngineLevel::LevelChangeStart();
+	int a = 0;
+}
+
+void PlayLevel::LevelChangeEnd()
+{
+	GameEngineLevel::LevelChangeEnd();
+	int a = 0;
 }
