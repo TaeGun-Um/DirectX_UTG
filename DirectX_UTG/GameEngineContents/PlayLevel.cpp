@@ -17,21 +17,21 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::Start()
 {
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("ContentResources");
-	//	NewDir.Move("ContentResources");
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
 
-	//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
 
-	//	for (size_t i = 0; i < File.size(); i++)
-	//	{
-	//		GameEngineVideo::Load(File[i].GetFullPath());
-	//	}
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineVideo::Load(File[i].GetFullPath());
+		}
 
-	//	Video = GameEngineVideo::Find("TestVideo.avi");
-	//	Video->Play();
-	//}
+		Video = GameEngineVideo::Find("TestVideo.avi");
+		Video->Play();
+	}
 
 	{
 		GameEngineDirectory NewDir;
