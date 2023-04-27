@@ -4,34 +4,198 @@
     <Filter Include="Levels">
       <UniqueIdentifier>{d554d10a-497e-401b-a0f0-7bdaf61db99e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{b2c2db1a-b4d3-4a06-9798-23b3f39d9343}</UniqueIdentifier>
+    <Filter Include="ContentsCore">
+      <UniqueIdentifier>{cc419df3-0d29-4704-8a6e-f5149bbc8fa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\0. TestLevel">
+      <UniqueIdentifier>{d19c7044-25bf-4eff-8dff-cb13bacb743a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\0. TestLevel\Object">
+      <UniqueIdentifier>{76a6fed1-8291-4b18-809c-0aae6541cff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\1. Opening">
+      <UniqueIdentifier>{4b2fb859-1d6a-4ae6-a8f4-e5d1997ef5ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\2. WaitingRoom">
+      <UniqueIdentifier>{b5ee03b0-2604-4641-aea5-af2bcfa036a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\3. Tutorial">
+      <UniqueIdentifier>{cd3dc88a-9d0d-494d-ab35-d68fc535e0a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\4. Overworld">
+      <UniqueIdentifier>{67c6bc3f-0136-4032-97e9-05eb939e7a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses">
+      <UniqueIdentifier>{92385931-12a7-4507-8a38-d6657c7745b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\6. Ending">
+      <UniqueIdentifier>{ba783da9-e9fa-48b3-bb30-dde71ed33a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\1. Frog">
+      <UniqueIdentifier>{9989d97e-bf18-4904-bc56-004a0d0a4f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\2. Dragon">
+      <UniqueIdentifier>{0d1555ee-358d-4911-8dd3-0bae1ca73334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\3. Mouse">
+      <UniqueIdentifier>{0f786398-dfd7-44ac-b3da-3b90fa51c7a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\1. Opening\First">
+      <UniqueIdentifier>{a876f79d-1a20-4548-8b5c-bf5b58dbdaa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\1. Opening\Second">
+      <UniqueIdentifier>{48d23fcc-8947-40e9-a7ab-81f6204d8081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\1. Opening\Second\Object">
+      <UniqueIdentifier>{f54db745-e43a-4d95-95d2-f7114a73b39d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\1. Opening\First\Object">
+      <UniqueIdentifier>{b7a0fb1c-62d1-4e3c-aca5-56148a9fe484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\2. WaitingRoom\Object">
+      <UniqueIdentifier>{4b4e5e8e-fd08-49f2-a608-d8dd07b93640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\3. Tutorial\Object">
+      <UniqueIdentifier>{04bc1d61-db7a-49ec-9992-3bf52634aa0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\4. Overworld\Object">
+      <UniqueIdentifier>{85efa3d7-738b-4f7b-a67b-b424a1982442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\6. Ending\Object">
+      <UniqueIdentifier>{73663cf1-6b07-4b8e-932e-7197ba5ed23f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\1. Frog\Object">
+      <UniqueIdentifier>{b75af7ea-2efd-41b6-802a-c70ce2eb5d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\2. Dragon\Object">
+      <UniqueIdentifier>{a4a89eed-3770-4400-8eb9-412efe2149f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\3. Mouse\Object">
+      <UniqueIdentifier>{25c4d219-d532-4b46-9017-4eed3b75779f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CupheadCore.h" />
-    <ClInclude Include="PlayLevel.h">
+    <ClInclude Include="TestObject.h">
+      <Filter>Levels\0. TestLevel\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CupheadCore.h">
+      <Filter>ContentsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecompileHeader.h">
+      <Filter>ContentsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Second_OpeningLevel.h">
+      <Filter>Levels\1. Opening\Second</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitingRoomLevel.h">
+      <Filter>Levels\2. WaitingRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialLevel.h">
+      <Filter>Levels\3. Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldLevel.h">
+      <Filter>Levels\4. Overworld</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <Filter>Levels\6. Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="FrogLevel.h">
+      <Filter>Levels\5. Bosses\1. Frog</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonLevel.h">
+      <Filter>Levels\5. Bosses\2. Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseLevel.h">
+      <Filter>Levels\5. Bosses\3. Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels\0. TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="MDHR_Logo.h">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Title_Background.h">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="First_OpeningLevel.h">
+      <Filter>Levels\1. Opening\First</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen_FX.h">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="BookRender.h">
+      <Filter>Levels\1. Opening\Second\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutorial_BackLayer.h">
+      <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDataBase.h">
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="TestObject.h">
-      <Filter>Object</Filter>
+      <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CupheadCore.cpp" />
-    <ClCompile Include="PlayLevel.cpp">
+    <ClCompile Include="TestObject.cpp">
+      <Filter>Levels\0. TestLevel\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CupheadCore.cpp">
+      <Filter>ContentsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp">
+      <Filter>ContentsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="First_OpeningLevel.cpp">
+      <Filter>Levels\1. Opening\First</Filter>
+    </ClCompile>
+    <ClCompile Include="Second_OpeningLevel.cpp">
+      <Filter>Levels\1. Opening\Second</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitingRoomLevel.cpp">
+      <Filter>Levels\2. WaitingRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialLevel.cpp">
+      <Filter>Levels\3. Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="OverworldLevel.cpp">
+      <Filter>Levels\4. Overworld</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <Filter>Levels\6. Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="FrogLevel.cpp">
+      <Filter>Levels\5. Bosses\1. Frog</Filter>
+    </ClCompile>
+    <ClCompile Include="DragonLevel.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseLevel.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels\0. TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="MDHR_Logo.cpp">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Title_Background.cpp">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen_FX.cpp">
+      <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="BookRender.cpp">
+      <Filter>Levels\1. Opening\Second\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial_BackLayer.cpp">
+      <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDataBase.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="PrecompileHeader.cpp" />
-    <ClCompile Include="TestObject.cpp">
-      <Filter>Object</Filter>
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

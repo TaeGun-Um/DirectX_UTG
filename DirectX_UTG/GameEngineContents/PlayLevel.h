@@ -3,18 +3,18 @@
 #include <GameEngineCore\GameEngineLevel.h>
 
 // Ό³Έν :
-class PlayLevel : public GameEngineLevel
+class TestLevel : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
-	PlayLevel();
-	~PlayLevel();
+	TestLevel();
+	~TestLevel();
 
 	// delete Function
-	PlayLevel(const PlayLevel& _Other) = delete;
-	PlayLevel(PlayLevel&& _Other) noexcept = delete;
-	PlayLevel& operator=(const PlayLevel& _Other) = delete;
-	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
+	TestLevel(const TestLevel& _Other) = delete;
+	TestLevel(TestLevel&& _Other) noexcept = delete;
+	TestLevel& operator=(const TestLevel& _Other) = delete;
+	TestLevel& operator=(TestLevel&& _Other) noexcept = delete;
 
 	std::shared_ptr<class GameEngineVideo> Video;
 

@@ -167,7 +167,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BookRender.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CupheadCore.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DragonLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="First_OpeningLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FrogLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MDHR_Logo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MouseLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="OverworldLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -175,18 +207,78 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PlayLevel.h">
+    <ClInclude Include="PlayerDataBase.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="Screen_FX.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Second_OpeningLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TestObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Title_Background.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TutorialLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Tutorial_BackLayer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="WaitingRoomLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BookRender.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="CupheadCore.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DragonLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="First_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FrogLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MDHR_Logo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MouseLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="OverworldLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -194,7 +286,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
+    <ClCompile Include="PlayerDataBase.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -204,7 +296,35 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Screen_FX.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Second_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TestObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Title_Background.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TutorialLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Tutorial_BackLayer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WaitingRoomLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

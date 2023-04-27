@@ -1,21 +1,21 @@
 #include "PrecompileHeader.h"
-#include "PlayLevel.h"
+#include "TestLevel.h"
 #include "Player.h"
 #include "TestObject.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
 
-PlayLevel::PlayLevel()
+TestLevel::TestLevel()
 {
 }
 
-PlayLevel::~PlayLevel()
+TestLevel::~TestLevel()
 {
 }
 
 
-void PlayLevel::Start()
+void TestLevel::Start()
 {
 	//{
 	//	GameEngineDirectory NewDir;
@@ -66,18 +66,18 @@ void PlayLevel::Start()
 
 }
 
-void PlayLevel::Update(float _DeltaTime)
+void TestLevel::Update(float _DeltaTime)
 {
 
 }
 
-void PlayLevel::LevelChangeStart()
+void TestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 	int a = 0;
 }
 
-void PlayLevel::LevelChangeEnd()
+void TestLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
 	int a = 0;

@@ -1,8 +1,9 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+
+#include "PlayerDataBase.h"
 
 // Ό³Έν :
-class Player : public GameEngineActor
+class Player : public PlayerDataBase
 {
 public:
 	// constrcuter destructer
@@ -17,16 +18,49 @@ public:
 
 protected:
 	void Start();
-	void Update(float _Delta) override;
-	void Render(float _Delta) override;
-
-	float4 TestColor;
+	void Update(float _DeltaTime) override;
 
 private:
-	float Angle = 0.0f;
-	std::shared_ptr<class GameEngineSpriteRenderer> Render0;
-	std::shared_ptr<class GameEngineSpriteRenderer> Render1;
-	std::shared_ptr<class GameEngineSpriteRenderer> Render2;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
 
+	void IdleStart() override;
+	void IdleUpdate() override;
+	void IdleEnd() override;
+
+	void MoveStart() override;
+	void MoveUpdate() override;
+	void MoveEnd() override;
+
+	void DashStart() override;
+	void DashUpdate() override;
+	void DashEnd() override;
+
+	void DuckStart() override;
+	void DuckUpdate() override;
+	void DuckEnd() override;
+
+	void JumpStart() override;
+	void JumpUpdate() override;
+	void JumpEnd() override;
+
+	void SlapStart() override;
+	void SlapUpdate() override;
+	void SlapEnd() override;
+
+	void AttackStart() override;
+	void AttackUpdate() override;
+	void AttackEnd() override;
+
+	void RunAttackStart() override;
+	void RunAttackUpdate() override;
+	void RunAttackEnd() override;
+
+	void EXAttackStart() override;
+	void EXAttackUpdate() override;
+	void EXAttackEnd() override;
+
+	void HoldingStart() override;
+	void HoldingUpdate() override;
+	void HoldingEnd() override;
 };
 
