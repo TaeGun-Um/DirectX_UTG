@@ -14,7 +14,7 @@ MDHR_Logo::~MDHR_Logo()
 void MDHR_Logo::Start()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetTexture("MDHR_Logo.png");
+	RenderPtr->SetTexture("tile000.png");
 	RenderPtr->GetTransform()->SetLocalScale({1280, 720, 1});
 }
 void MDHR_Logo::Update(float _DeltaTime)
