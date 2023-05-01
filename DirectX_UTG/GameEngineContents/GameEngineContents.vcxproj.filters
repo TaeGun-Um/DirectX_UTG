@@ -135,6 +135,9 @@
     <ClInclude Include="Player.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="Tutorial_Map.h">
+      <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -196,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial_Map.cpp">
+      <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
