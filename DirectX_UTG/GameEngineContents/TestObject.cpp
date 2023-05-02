@@ -81,14 +81,14 @@ void TestObject::Update(float _DeltaTime)
 		Speed = 500.0f;
 	}
 
-	//if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
-	//{
-	//	Render0->GetTransform()->SetLocalNegativeScaleX();
-	//}
-	//else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
-	//{
-	//	Render0->GetTransform()->SetLocalPositiveScaleX();
-	//}
+	if (true == GameEngineInput::IsDown("PlayerMoveLeft"))
+	{
+		Render0->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else if (true == GameEngineInput::IsDown("PlayerMoveRight"))
+	{
+		Render0->GetTransform()->SetLocalPositiveScaleX();
+	}
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
 	{

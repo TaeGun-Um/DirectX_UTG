@@ -16,7 +16,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GameEngineCore::Start(hInstance, CupheadCore::GameStart, CupheadCore::GameEnd, { 0, 0 });
 }
 
+// Get2D Actor, GetPixel Position 만들어라
 // 
+// IMGUI == 다이렉트에서 지원하는 라이브러리
 // 
 // 
 // 

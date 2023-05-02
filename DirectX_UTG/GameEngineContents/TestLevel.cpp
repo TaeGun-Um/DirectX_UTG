@@ -19,10 +19,6 @@ TestLevel::~TestLevel()
 void TestLevel::Start()
 {
 	// 키 로드 (임시)
-	if (false == GameEngineInput::IsKey("Action"))
-	{
-		
-	}
 
 	//{
 	//	GameEngineDirectory NewDir;
@@ -75,10 +71,10 @@ void TestLevel::Start()
 
 void TestLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsPress("Action"))
-	{
-		GameEngineCore::ChangeLevel("First_OpeningLevel");
-	}
+	//if (true == GameEngineInput::IsPress("Action"))
+	//{
+	//	GameEngineCore::ChangeLevel("First_OpeningLevel");
+	//}
 }
 
 void TestLevel::LevelChangeStart()
