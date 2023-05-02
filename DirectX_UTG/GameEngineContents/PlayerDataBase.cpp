@@ -96,7 +96,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Tutori
 {
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 130, 173, 1 });
+	RenderPtr->GetTransform()->SetLocalScale({ 140, 187, 1 });
 
 	return RenderPtr;
 }
