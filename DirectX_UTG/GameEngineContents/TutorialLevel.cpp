@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "Tutorial_BackGround.h"
 #include "Tutorial_BackLayer.h"
 #include "Tutorial_Map.h"
 #include "Player.h"
@@ -57,19 +58,21 @@ void TutorialLevel::Start()
 	}
 
 	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
 	// CreateActor
 	// Background, Map
 	{
-		std::shared_ptr<Tutorial_BackLayer> Object1 = CreateActor<Tutorial_BackLayer>("Tutorial_BackLayer");
-		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>("Tutorial_Map");
+		std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>(-10);
+		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
+		std::shared_ptr<Tutorial_BackGround> Object1 = CreateActor<Tutorial_BackGround>(-100);
+		
 		Object2->GetTransform()->AddWorldPosition({ 2500, 100 });
 	}
 	// Character
 	{
-		std::shared_ptr<Player> Object3 = CreateActor<Player>("Player");
+		std::shared_ptr<Player> Object3 = CreateActor<Player>(1);
 	}
 }
 void TutorialLevel::Update(float _DeltaTime)

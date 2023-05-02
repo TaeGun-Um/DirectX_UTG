@@ -30,6 +30,12 @@ public:
 
 	static void RenderEnd();
 
+	// 비디오용
+	static void VidioRenderStart();
+
+	// 비디오용
+	static void VidioRenderEnd();
+
 	static ID3D11Device* GetDevice()
 	{
 		return Device;

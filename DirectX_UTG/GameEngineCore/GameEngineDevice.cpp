@@ -21,6 +21,19 @@ GameEngineDevice::~GameEngineDevice()
 {
 }
 
+// 비디오용
+void GameEngineDevice::VidioRenderStart()
+{
+	BackBufferTarget->Clear();
+	BackBufferTarget->Reset();
+}
+
+// 비디오용
+void GameEngineDevice::VidioRenderEnd()
+{
+	HRESULT Result = SwapChain->Present(0, 0);
+}
+
 // GDI+, DXGI를 확인하면 DrawTexture가 존재한다.
 // DC를 얻어오고, 경로를 채워주고.. 자동으로 실시해준다.
 // 근데 일반 프로그래머가 이런 세세한 기능을 신경쓰긴 힘들고 어렵다.

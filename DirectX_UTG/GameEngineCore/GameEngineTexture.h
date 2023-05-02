@@ -3,6 +3,48 @@
 #include "GameEngineResource.h"
 #include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
 
+// GetPixel용 클래스
+class GameEnginePixelColor
+{
+public:
+	static GameEnginePixelColor Black;
+
+	union
+	{
+		struct
+		{
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
+		};
+
+		unsigned char ColorChar[4];
+		int Color;
+	};
+
+	bool operator==(GameEnginePixelColor _Color)
+	{
+		return Color == _Color.Color;
+	}
+
+	float4 Tofloat4()
+	{
+
+	}
+
+	GameEnginePixelColor()
+	{
+
+	}
+
+	GameEnginePixelColor(char _r, char _g, char _b, char _a)
+		: r(_r), g(_g), b(_b), a(_a)
+	{
+
+	}
+};
+
 // 설명 : WinAPI에서 GameEngineImage와 동일한 구조 (이름만 GameEngineTexture일 뿐)
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
 {
@@ -70,16 +112,19 @@ public:
 	}
 
 	// D3D11_TEXTURE2D_DESC의 너비 가져오기
-	unsigned int GetWidth()
+	int GetWidth()
 	{
 		return Desc.Width;
 	}
 
 	// D3D11_TEXTURE2D_DESC의 깊이 가져오기
-	unsigned int GetHeight()
+	int GetHeight()
 	{
 		return Desc.Height;
 	}
+
+	// 픽셀 충돌용
+	GameEnginePixelColor GetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor = GameEnginePixelColor::Black);
 
 protected:
 

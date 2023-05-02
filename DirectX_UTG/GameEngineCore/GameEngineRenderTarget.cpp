@@ -58,6 +58,13 @@ void GameEngineRenderTarget::Setting()
 	// 3. 댑스
 }
 
+void GameEngineRenderTarget::Reset()
+{
+	ID3D11RenderTargetView* RTV[8] = { nullptr };
+
+	GameEngineDevice::GetContext()->OMSetRenderTargets(8, RTV, nullptr);
+}
+
 // 깊이버퍼 텍스쳐 생성
 void GameEngineRenderTarget::CreateDepthTexture()
 {

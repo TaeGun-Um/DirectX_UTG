@@ -29,11 +29,11 @@ void CupheadCore::GameStart()
 
 	ContentsResourcesCreate();
 
-	GameEngineCore::CreateLevel<TestLevel>();
+	//GameEngineCore::CreateLevel<TestLevel>();
 	//GameEngineCore::CreateLevel<First_OpeningLevel>();
-	//GameEngineCore::CreateLevel<TutorialLevel>();
+	GameEngineCore::CreateLevel<TutorialLevel>();
 
-	GameEngineCore::ChangeLevel("TestLevel");
+	GameEngineCore::ChangeLevel("TutorialLevel");
 }
 
 void CupheadCore::GameEnd()

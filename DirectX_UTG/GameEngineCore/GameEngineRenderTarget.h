@@ -36,6 +36,8 @@ public:
 	// 깊이버퍼 텍스쳐 생성
 	void CreateDepthTexture();
 
+	void Reset();
+
 protected:
 
 private:

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "TestLevel.h"
 #include "TestObject.h"
+#include "Obj.h"
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -57,14 +58,14 @@ void TestLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
-	//{
-	//	std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
-	//	Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
-	//	Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
-	//}
+	{
+		std::shared_ptr<TestObject> Object = CreateActor<TestObject>();
+	}
 
 	{
-		std::shared_ptr<TestObject> Object = CreateActor<TestObject>("TestObject");
+		std::shared_ptr<Obj> Object = CreateActor<Obj>();
+		Object->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
+		Object->GetTransform()->SetLocalPosition({ 0, 0, 100.0f });
 	}
 
 }

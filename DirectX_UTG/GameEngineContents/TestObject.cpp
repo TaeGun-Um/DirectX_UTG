@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineVideo.h>
 
 TestObject::TestObject()
 {
@@ -70,6 +71,10 @@ void TestObject::Start()
 
 void TestObject::Update(float _DeltaTime)
 {
+	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
+
+	GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
+
 	float RotSpeed = 180.0f;
 
 	float Speed = 200.0f;

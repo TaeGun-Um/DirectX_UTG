@@ -26,6 +26,11 @@ void Player::Start()
 void Player::Update(float _DeltaTime)
 {
 	PlayerMove(_DeltaTime);
+
+	// colmap
+	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("Tutorial_ColMap_Legacy.png");
+
+	GameEnginePixelColor Pixel = Ptr->GetPixel(910, 467);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
