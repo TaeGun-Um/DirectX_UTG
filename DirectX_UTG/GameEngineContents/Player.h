@@ -6,6 +6,8 @@
 class Player : public PlayerDataBase
 {
 public:
+	static Player* MainPlayer;
+
 	// constrcuter destructer
 	Player();
 	~Player();

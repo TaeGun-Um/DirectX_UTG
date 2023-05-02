@@ -16,6 +16,11 @@ public:
 	GameEngineCamera& operator=(const GameEngineCamera& _Other) = delete;
 	GameEngineCamera& operator=(GameEngineCamera&& _Other) noexcept = delete;
 
+	// 뷰포트 세팅
+	void Setting();
+
+	void Update(float _DeltaTime) override;
+
 	// 카메라 뷰행렬 리턴
 	inline float4x4 GetView()
 	{
@@ -34,8 +39,6 @@ public:
 		return ViewPort;
 	}
 
-	void Setting();
-
 	// 카메라가 어떤 타입인지 설정(원근 or 직교)
 	void SetProjectionType(CameraType _Type)
 	{
@@ -46,8 +49,6 @@ public:
 	{
 		return FreeCamera;
 	}
-
-	void Update(float _DeltaTime) override;
 
 protected:
 	void Start() override;

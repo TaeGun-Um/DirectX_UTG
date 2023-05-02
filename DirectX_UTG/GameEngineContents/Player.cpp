@@ -3,8 +3,11 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+Player* Player::MainPlayer = nullptr;
+
 Player::Player() 
 {
+	MainPlayer = this;
 }
 
 Player::~Player() 
@@ -13,13 +16,16 @@ Player::~Player()
 
 void Player::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	/*RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });*/
+
+	RenderPtr = AnimationCreate_Tutorial();
+	SetCameraFollowType(CameraFollowType::Field);
 }
 void Player::Update(float _DeltaTime)
 {
-
+	PlayerMove(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

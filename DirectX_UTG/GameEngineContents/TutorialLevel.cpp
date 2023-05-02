@@ -65,7 +65,7 @@ void TutorialLevel::Start()
 	{
 		std::shared_ptr<Tutorial_BackLayer> Object1 = CreateActor<Tutorial_BackLayer>("Tutorial_BackLayer");
 		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>("Tutorial_Map");
-		Object2->GetTransform()->AddWorldPosition({ 3500, 200 });
+		Object2->GetTransform()->AddWorldPosition({ 2500, 100 });
 	}
 	// Character
 	{

@@ -16,23 +16,55 @@ public:
 	PlayerDataBase& operator=(const PlayerDataBase& _Other) = delete;
 	PlayerDataBase& operator=(PlayerDataBase&& _Other) noexcept = delete;
 
+	// 무기 체인지(추후)
 	void SwapWeapon()
 	{
 		WeaponType = !WeaponType;
 	}
 
+	// 플레이어로 부터의 카메라 이동 값 리턴
+	float4 GetCameraMoveDistance()
+	{
+		return MoveDistance;
+	}
+
 protected:
-	void Start();
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override {}
+	void Start() {}
+	void Update(float _DeltaTime) {}
+	void Render(float _DeltaTime) {}
+
+	enum class CameraFollowType
+	{
+		Normal,
+		Field,
+		Overworld,
+		None
+	};
+
+	void SetCameraFollowType(CameraFollowType _Type);
+	void MoveCamera(float _DeltaTime);
+	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Tutorial();
+	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
+	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
+	void PlayerMove(float _DeltaTime);
 
 private:
 	// Status
 	int HP = 5;
 	int EXGauge = 0;
 	int EXStack = 0;
-	float MoveSpeed = 500.0f;
+	float MoveSpeed = 330.0f;
 	bool WeaponType = true;   // true : Peashooter // false : Spread
+
+	// Camera
+	CameraFollowType CameraType = CameraFollowType::None;
+	float CameraMoveSpeed = 0.0f;
+	float CameraAccessTime = 0.0f;
+	float CameraFollowTime = 2.0f;
+
+	float4 TargetPosition = float4::Zero;
+	float4 PrevCameraPosition = float4::Zero;
+	float4 MoveDistance = float4::Zero;
 
 	// FSM
 	// alt + shift + .

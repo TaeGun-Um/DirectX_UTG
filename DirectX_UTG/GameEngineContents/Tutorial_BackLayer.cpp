@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
+
 Tutorial_BackLayer::Tutorial_BackLayer() 
 {
 }
@@ -23,5 +25,6 @@ void Tutorial_BackLayer::Start()
 }
 void Tutorial_BackLayer::Update(float _DeltaTime)
 {
-
+	float4 MinusDist = Player::MainPlayer->GetCameraMoveDistance();
+	GetTransform()->AddWorldPosition(MinusDist);
 }

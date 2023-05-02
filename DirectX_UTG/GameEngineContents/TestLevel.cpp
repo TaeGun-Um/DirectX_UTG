@@ -21,7 +21,7 @@ void TestLevel::Start()
 	// 키 로드 (임시)
 	if (false == GameEngineInput::IsKey("Action"))
 	{
-		GameEngineInput::CreateKey("Action", 'Z');
+		
 	}
 
 	//{
