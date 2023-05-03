@@ -142,7 +142,7 @@ void TestLevel::Start()
 		PlayerObject->GetTransform()->AddLocalPosition({ 240, -450 });
 
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
-		GUI->SetTargetTransform(PlayerObject->GetTransform());
+		GUI->SetTarget(PlayerObject->GetTransform());
 	}
 
 	/*std::shared_ptr<ImguiWindow> Window = GameEngineGUI::FindGUIWindowConvert<ImguiWindow>("ImguiWindow");
@@ -170,7 +170,7 @@ void TestLevel::Update(float _DeltaTime)
 	//	GameEngineCore::ChangeLevel("First_OpeningLevel");
 	//}
 
-	GUI->SetTargetTransform(PlayerObject->GetTransform());
+	//GUI->SetTarget(PlayerObject->GetTransform());
 }
 
 void TestLevel::LevelChangeStart()

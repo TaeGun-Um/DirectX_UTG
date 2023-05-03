@@ -18,15 +18,26 @@ public:
 	
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
-	void SetTargetTransform(GameEngineTransform* _Target)
-	{
-		TargetTransform = _Target;
-	}
+	void SetTarget(GameEngineTransform* _Target);
 
 protected:
 
 private:
 	GameEngineTransform* TargetTransform = nullptr;
+
+	bool IsWorldPostion = false;
+	bool IsWorldRotation = false;
+	bool IsWorldScale = false;
+
+	float Postion[4] = { 0, 0, 0, 1 };
+	float Rotation[4] = { 0, 0, 0, 1 };
+	float Scale[4] = { 1, 1, 1, 1 };
+
+	std::vector<std::function<void()>> CustomGuiFunctions;
+
+	void HelpMarker(const std::string_view& _Text);
+
+	static float4 ConvertFloat4(float _FloatArr[4]);
 
 };
 
