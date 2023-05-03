@@ -85,7 +85,6 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 	}
 		break;
 	}
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +148,13 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 		GetTransform()->AddLocalPosition({ -MoveSpeed * _DeltaTime, 0 });
 	}
 
+	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
+	{
+		GetTransform()->AddLocalPosition({ 0, 300.0f });
+		IsJump = true;
+		IsGravity = true;
+	}
+
 	MoveCamera(_DeltaTime);
 }
 
@@ -196,6 +202,7 @@ void PlayerDataBase::PixelCheck()
 	if (ColBlack == ColMapPixel)
 	{
 		IsGravity = false;
+		IsJump = false;
 
 		while (true)
 		{

@@ -77,6 +77,8 @@ private:
 	float4 MoveDistance = float4::Zero;
 
 	// FSM
+	bool IsJump = false;
+
 	// alt + shift + .
 	virtual void IdleStart() {}
 	virtual void IdleUpdate() {}
