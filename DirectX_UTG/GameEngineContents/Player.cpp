@@ -20,17 +20,15 @@ void Player::Start()
 	RenderPtr->SetTexture("Ground_Idle_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });*/
 
-	RenderPtr = AnimationCreate_Tutorial();
-	SetCameraFollowType(CameraFollowType::Field);
+	RenderPtr = AnimationCreate_Field();
+	SetCameraFollowType(CameraFollowType::Overworld);
+	SetMoveSpeed(330.0f);
 }
 void Player::Update(float _DeltaTime)
 {
 	PlayerMove(_DeltaTime);
 
-	// colmap
-	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("Tutorial_ColMap_Legacy.png");
-
-	GameEnginePixelColor Pixel = Ptr->GetPixel(910, 467);
+	PixelCheck();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

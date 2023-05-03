@@ -207,11 +207,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Overworld_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayerDataBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Player_Overworld.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -225,6 +233,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TestLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestLevel_Map.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -298,11 +310,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Overworld_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Player.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerDataBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Player_Overworld.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -321,6 +341,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestLevel_Map.cpp">
       <SubType>
       </SubType>
     </ClCompile>

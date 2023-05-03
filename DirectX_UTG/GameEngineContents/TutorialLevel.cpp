@@ -64,15 +64,15 @@ void TutorialLevel::Start()
 	// CreateActor
 	// Background, Map
 	{
-		std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>(-10);
-		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
-		std::shared_ptr<Tutorial_BackGround> Object1 = CreateActor<Tutorial_BackGround>(-100);
+		std::shared_ptr<Tutorial_BackLayer> Object0 = CreateActor<Tutorial_BackLayer>(-10);
+		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
+		std::shared_ptr<Tutorial_BackGround> Object2 = CreateActor<Tutorial_BackGround>(-100);
 		
-		Object2->GetTransform()->AddWorldPosition({ 2500, 100 });
+		Object1->GetTransform()->AddWorldPosition({ 2500, 100 });
 	}
 	// Character
 	{
-		std::shared_ptr<Player> Object3 = CreateActor<Player>(1);
+		std::shared_ptr<Player> Object = CreateActor<Player>(1);
 	}
 }
 void TutorialLevel::Update(float _DeltaTime)

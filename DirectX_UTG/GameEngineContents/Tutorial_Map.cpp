@@ -17,7 +17,6 @@ void Tutorial_Map::Start()
 	RenderPtr->SetTexture("Tutorial_Map.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 5760, 720, 1 }); // 8192, 1024
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 50 });
-
 }
 void Tutorial_Map::Update(float _DeltaTime)
 {

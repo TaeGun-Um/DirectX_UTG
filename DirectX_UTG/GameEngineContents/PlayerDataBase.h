@@ -28,6 +28,11 @@ public:
 		return MoveDistance;
 	}
 
+	void SetMoveSpeed(float _Value)
+	{
+		MoveSpeed = _Value;
+	}
+
 protected:
 	void Start() {}
 	void Update(float _DeltaTime) {}
@@ -43,10 +48,15 @@ protected:
 
 	void SetCameraFollowType(CameraFollowType _Type);
 	void MoveCamera(float _DeltaTime);
+	
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Tutorial();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
+	
 	void PlayerMove(float _DeltaTime);
+	void PlayerMove_Overworld(float _DeltaTime);
+	void PixelCheck();
+
 
 private:
 	// Status

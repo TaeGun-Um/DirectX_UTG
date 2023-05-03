@@ -144,6 +144,15 @@
     <ClInclude Include="Tutorial_BackGround.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Overworld_Map.h">
+      <Filter>Levels\4. Overworld\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Overworld.h">
+      <Filter>Levels\4. Overworld\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel_Map.h">
+      <Filter>Levels\0. TestLevel\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -214,6 +223,15 @@
     </ClCompile>
     <ClCompile Include="Tutorial_BackGround.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Overworld_Map.cpp">
+      <Filter>Levels\4. Overworld\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_Overworld.cpp">
+      <Filter>Levels\4. Overworld\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel_Map.cpp">
+      <Filter>Levels\0. TestLevel\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
