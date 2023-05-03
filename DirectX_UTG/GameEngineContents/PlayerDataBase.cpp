@@ -130,12 +130,24 @@ bool IsGravity = true;
 
 void PlayerDataBase::PlayerMove(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
+	{
+		// GetTransform()->AddLocalPosition({ 0, 300.0f });
+		MoveDirect.y += 5.0f;
+		IsJump = true;
+		IsGravity = true;
+	}
+
 	// 임시 중력
 	{
 		if (true == IsGravity)
 		{
-			Gravity.y += -100.0f * _DeltaTime;
-			GetTransform()->AddLocalPosition(Gravity * _DeltaTime);
+			MoveDirect.y += -10.0f * _DeltaTime;
+			GetTransform()->AddLocalPosition(MoveDirect);
+		}
+		else
+		{
+			MoveDirect.y = 0;
 		}
 	}
 
@@ -146,13 +158,6 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		GetTransform()->AddLocalPosition({ -MoveSpeed * _DeltaTime, 0 });
-	}
-
-	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
-	{
-		GetTransform()->AddLocalPosition({ 0, 300.0f });
-		IsJump = true;
-		IsGravity = true;
 	}
 
 	MoveCamera(_DeltaTime);

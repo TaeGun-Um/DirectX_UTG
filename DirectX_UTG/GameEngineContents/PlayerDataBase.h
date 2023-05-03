@@ -77,6 +77,7 @@ private:
 	float4 MoveDistance = float4::Zero;
 
 	// FSM
+	float4 MoveDirect = float4::Zero;
 	bool IsJump = false;
 
 	// alt + shift + .
