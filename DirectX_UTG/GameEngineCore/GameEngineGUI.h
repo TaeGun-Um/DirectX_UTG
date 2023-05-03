@@ -17,7 +17,6 @@ private:
 	void Begin()
 	{
 		std::string_view View = GetName();
-
 		ImGui::Begin(View.data());
 	}
 	void End()
@@ -30,7 +29,7 @@ public:
 	virtual void OnGUI(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime) = 0;
 };
 
-// 설명 :
+// 설명 : IMGUI를 수월하게 사용할 수 있도록 도와주는 클래스
 class GameEngineGUI
 {
 public:
@@ -44,12 +43,16 @@ public:
 	GameEngineGUI& operator=(const GameEngineGUI& _Other) = delete;
 	GameEngineGUI& operator=(GameEngineGUI&& _Other) noexcept = delete;
 
+	// IMGUI 이니셜라이즈
 	static void Initialize();
 
+	// 생성된 IMGUI Render
 	static void Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime);
 
+	// IMGUI 릴리즈
 	static void Release();
 
+	// IMGUI 생성
 	template<typename WindowType>
 	static std::shared_ptr<GameEngineGUIWindow> GUIWindowCreate(const std::string_view& _Name)
 	{
@@ -69,6 +72,7 @@ public:
 		return WindowPtr;
 	}
 
+	// IMGUI 찾기(템플릿)
 	template<typename ConvertType>
 	static std::shared_ptr<ConvertType> FindGUIWindowConvert(const std::string_view& _Name)
 	{
@@ -77,6 +81,7 @@ public:
 		return std::dynamic_pointer_cast<ConvertType>(Window);
 	}
 
+	// IMGUI 찾기
 	static std::shared_ptr<GameEngineGUIWindow> FindGUIWindow(const std::string_view& _Name)
 	{
 		std::string UpperString = GameEngineString::ToUpper(_Name);
@@ -94,6 +99,6 @@ public:
 protected:
 
 private:
-	static std::map<std::string, std::shared_ptr<GameEngineGUIWindow>> AllWindow;
+	static std::map<std::string, std::shared_ptr<GameEngineGUIWindow>> AllWindow; // 생성된 모든 IMGUI 저장
 };
 

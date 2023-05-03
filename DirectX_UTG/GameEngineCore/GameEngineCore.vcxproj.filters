@@ -67,9 +67,6 @@
     <Filter Include="UI\ImGui">
       <UniqueIdentifier>{6c5dc63f-07ac-49c9-b586-b1366e1a77a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\SubWindow">
-      <UniqueIdentifier>{ced683d7-326f-493a-8420-3b72f7b4d846}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -201,9 +198,6 @@
     <ClInclude Include="imgui_internal.h">
       <Filter>UI\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineCoreWindow.h">
-      <Filter>UI\SubWindow</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineGUI.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -331,9 +325,6 @@
     </ClCompile>
     <ClCompile Include="imgui_tables.cpp">
       <Filter>UI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineCoreWindow.cpp">
-      <Filter>UI\SubWindow</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineGUI.cpp">
       <Filter>UI</Filter>

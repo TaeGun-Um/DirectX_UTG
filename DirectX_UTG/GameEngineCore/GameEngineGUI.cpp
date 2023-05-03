@@ -18,6 +18,7 @@ GameEngineGUI::~GameEngineGUI()
 {
 }
 
+// IMGUI 이니셜라이즈
 void GameEngineGUI::Initialize()
 {
     // Setup Dear ImGui context
@@ -74,6 +75,7 @@ void GameEngineGUI::Initialize()
     //IM_ASSERT(font != nullptr);
 }
 
+// 생성된 IMGUI Render
 void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime)
 {
     // Start the Dear ImGui frame
@@ -81,12 +83,13 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+    // 저장된 IMGUI를 순회하면서 Update 적용
     for (const std::pair<std::string, std::shared_ptr<GameEngineGUIWindow>>& WindowPair : AllWindow)
     {
         std::shared_ptr<GameEngineGUIWindow> WindowPtr = WindowPair.second;
 
         WindowPtr->Begin();
-        WindowPtr->OnGUI(Level, _DeltaTime);
+        WindowPtr->OnGUI(Level, _DeltaTime); // 자신이 생성한 IMGUI 기능 업데이트
         WindowPtr->End();
     }
 
@@ -104,6 +107,7 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
     }
 }
 
+// IMGUI 릴리즈
 void GameEngineGUI::Release()
 {
     ImGui_ImplDX11_Shutdown();

@@ -6,12 +6,14 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
-#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "TestObject.h"
 #include "Obj.h"
 #include "TestLevel_Map.h"
 #include "Player.h"
+
+//#include "ImguiWindow.h"
+#include "TransformGUI.h"
 
 TestLevel::TestLevel()
 {
@@ -132,7 +134,18 @@ void TestLevel::Start()
 	}
 	// Character
 
-	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+	//GameEngineGUI::GUIWindowCreate<ImguiWindow>("ImguiWindow");
+	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
+
+	{
+		PlayerObject = CreateActor<Player>(1);
+		PlayerObject->GetTransform()->AddLocalPosition({ 240, -450 });
+
+		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		GUI->SetTargetTransform(PlayerObject->GetTransform());
+	}
+
+	/*std::shared_ptr<ImguiWindow> Window = GameEngineGUI::FindGUIWindowConvert<ImguiWindow>("ImguiWindow");
 
 	{
 		if (nullptr == Window)
@@ -140,10 +153,8 @@ void TestLevel::Start()
 			MsgAssert("윈도우 테스트 코드 미작동");
 		}
 
-		Window->Test = std::bind(&TestLevel::PlayerCreate, this);
-
-		// std::shared_ptr<Player> Object = CreateActor<Player>(0);
-	}
+		Window->Test2 = std::bind(&TestLevel::PlayerCreate, this);
+	}*/
 
 	{
 		/*std::shared_ptr<Player> Object = CreateActor<Player>(1);
@@ -158,6 +169,8 @@ void TestLevel::Update(float _DeltaTime)
 	//{
 	//	GameEngineCore::ChangeLevel("First_OpeningLevel");
 	//}
+
+	GUI->SetTargetTransform(PlayerObject->GetTransform());
 }
 
 void TestLevel::LevelChangeStart()

@@ -73,6 +73,9 @@
     <Filter Include="Levels\5. Bosses\3. Mouse\Object">
       <UniqueIdentifier>{25c4d219-d532-4b46-9017-4eed3b75779f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{f0f1587d-3a5e-4df7-9146-37af5c974623}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestObject.h">
@@ -153,6 +156,12 @@
     <ClInclude Include="TestLevel_Map.h">
       <Filter>Levels\0. TestLevel\Object</Filter>
     </ClInclude>
+    <ClInclude Include="ImguiWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformGUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -232,6 +241,12 @@
     </ClCompile>
     <ClCompile Include="TestLevel_Map.cpp">
       <Filter>Levels\0. TestLevel\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformGUI.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

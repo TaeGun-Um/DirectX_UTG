@@ -28,4 +28,6 @@ protected:
 private:
 	void PlayerCreate();
 
+	std::shared_ptr<class Player> PlayerObject = nullptr;
+	std::shared_ptr<class TransformGUI> GUI = nullptr;
 };
