@@ -2,6 +2,7 @@
 #include "CupheadCore.h"
 
 #include <GameEngineCore\GameEngineCore.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "TestLevel.h"
 #include "First_OpeningLevel.h"
@@ -26,6 +27,8 @@ CupheadCore::~CupheadCore()
 void CupheadCore::GameStart()
 {
 	new int(); // ½Å·ÚÀÇ ¸¯
+
+	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 
 	ContentsResourcesCreate();
 

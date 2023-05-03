@@ -26,5 +26,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	void PlayerCreate();
 
 };

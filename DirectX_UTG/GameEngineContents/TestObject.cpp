@@ -47,24 +47,7 @@ void TestObject::Start()
 
 
 	Render0 = CreateComponent<GameEngineSpriteRenderer>();
-	Render0->SetTexture("Axeman_Idle_001.png");
-	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
-
-	Render1 = CreateComponent<GameEngineSpriteRenderer>();
-	Render1->SetTexture("Axeman_Idle_001.png");
-	Render1->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
-	Render1->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
-
-	Render2 = CreateComponent<GameEngineSpriteRenderer>();
-	Render2->SetTexture("Axeman_Idle_001.png");
-	Render2->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
-	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
-
-	//Render1 = CreateComponent<GameEngineRenderer>();
-	//Render1->SetPipeLine("2DTexture");
-	//Render1->GetTransform()->SetLocalPosition({ 200.0f, 0.0f , 0.0f });
-	//Render1->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
-	// Render0->GetShaderResHelper().SetConstantBufferLink("TransformData", TestColor);
+	Render0->SetScaleToTexture("Axeman_Idle_001.png");
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 }

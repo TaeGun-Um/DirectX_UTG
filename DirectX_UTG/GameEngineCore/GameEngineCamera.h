@@ -20,6 +20,7 @@ public:
 	void Setting();
 
 	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
 
 	// 카메라 뷰행렬 리턴
 	inline float4x4 GetView()

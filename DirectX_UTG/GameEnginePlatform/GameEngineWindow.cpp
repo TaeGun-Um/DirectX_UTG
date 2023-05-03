@@ -7,6 +7,7 @@
 
 // LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM)
 
+std::function<LRESULT(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)> GameEngineWindow::UserMessageFunction;
 HWND GameEngineWindow::HWnd = nullptr;
 HDC GameEngineWindow::WindowBackBufferHdc = nullptr;
 float4 GameEngineWindow::WindowSize = {800, 600};
@@ -15,34 +16,20 @@ float4 GameEngineWindow::ScreenSize = { 800, 600 };
 GameEngineImage* GameEngineWindow::BackBufferImage = nullptr;
 GameEngineImage* GameEngineWindow::DoubleBufferImage = nullptr;
 bool GameEngineWindow::IsWindowUpdate = true;
-
-
+WNDCLASSEX GameEngineWindow::wcex;
 
 LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
+    if (nullptr != UserMessageFunction)
+    {
+        if (0 != UserMessageFunction(_hWnd, _message, _wParam, _lParam))
+        {
+            return true;
+        }
+    }
+
     switch (_message)
     {
-    case WM_MOUSEMOVE:
-    {
-        int a = 0;
-        break;
-    }
-        // 내 윈도우가 선택되었다.
-    case WM_SETFOCUS:
-    {
-        int a = 0;
-        break;
-    }
-    case WM_ACTIVATE:
-    {
-        int a = 0;
-        break;
-    }
-    case WM_KILLFOCUS:
-    {
-        int a = 0;
-        break;
-    }
     case WM_KEYDOWN:
     {
         GameEngineInput::IsAnyKeyOn();
@@ -51,7 +38,7 @@ LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WP
     case WM_DESTROY:
     {
         // Message함수가 0을 리턴하게 만들어라.
-        PostQuitMessage(0);
+        // PostQuitMessage(0);
         IsWindowUpdate = false;
         break;
     }
@@ -68,13 +55,10 @@ GameEngineWindow::GameEngineWindow()
 
 GameEngineWindow::~GameEngineWindow() 
 {
-    
 }
 
 void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos)
 {
-    WNDCLASSEX wcex;
-
     wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -142,14 +126,14 @@ int GameEngineWindow::WindowLoop(std::function<void()> _Start, std::function<voi
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-
             // 메세지가 있을때도 게임을 실행합니다.
             if (nullptr != _Loop)
             {
                 _Loop();
             }
+
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
 
             GameEngineInput::IsAnyKeyOff();
             continue;
@@ -216,4 +200,9 @@ float4 GameEngineWindow::GetMousePosition()
     ScreenToClient(HWnd, PointPtr);
 
     return { static_cast<float>(MoniterPoint.x),static_cast<float>(MoniterPoint.y) };
+}
+
+void GameEngineWindow::Release()
+{
+    ::UnregisterClassA(wcex.lpszClassName, wcex.hInstance);
 }

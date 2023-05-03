@@ -188,8 +188,8 @@ void PlayerDataBase::PixelCheck()
 	float PosfX = GetTransform()->GetLocalPosition().x;
 	float PosFY = GetTransform()->GetLocalPosition().y;
 
-	int PlayerPosX = static_cast<float>(PosfX);
-	int PlayerPosY = static_cast<float>(PosFY);
+	int PlayerPosX = static_cast<int>(PosfX);
+	int PlayerPosY = static_cast<int>(PosFY);
 
 	GameEnginePixelColor Default(static_cast<char>(10), static_cast<char>(10), static_cast<char>(10), static_cast<char>(255));
 	GameEnginePixelColor ColBlack(static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(255));
@@ -211,8 +211,8 @@ void PlayerDataBase::PixelCheck()
 			PosfX = GetTransform()->GetLocalPosition().x;
 			PosFY = GetTransform()->GetLocalPosition().y;
 
-			PlayerPosX = static_cast<float>(PosfX);
-			PlayerPosY = static_cast<float>(PosFY);
+			PlayerPosX = static_cast<int>(PosfX);
+			PlayerPosY = static_cast<int>(PosFY);
 
 			GameEnginePixelColor GravityPixel = ColMap->GetPixel(PlayerPosX, -PlayerPosY, Default);
 

@@ -130,7 +130,10 @@ void GameEngineCamera::Update(float _DeltaTime)
 		}
 
 	}
+}
 
+void GameEngineCamera::Render(float _DeltaTime)
+{
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
 	float4 EyeUp = GetTransform()->GetLocalUpVector();

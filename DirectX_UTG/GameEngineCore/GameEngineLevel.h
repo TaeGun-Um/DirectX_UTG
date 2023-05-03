@@ -57,6 +57,12 @@ public:
 		return MainCamera;
 	}
 
+	// (05.03)GUI에게 전달할 다이나믹캐스트 레벨포인터
+	std::shared_ptr<GameEngineLevel> GetSharedThis()
+	{
+		return Shared_This_dynamic_pointer<GameEngineLevel>();
+	}
+
 protected:
 	virtual void Start() = 0;
 	void Update(float _DeltaTime);

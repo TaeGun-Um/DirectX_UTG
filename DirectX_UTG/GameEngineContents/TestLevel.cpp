@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineVideo.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "TestObject.h"
 #include "Obj.h"
@@ -20,6 +21,11 @@ TestLevel::~TestLevel()
 {
 }
 
+void TestLevel::PlayerCreate()
+{
+	std::shared_ptr<Player> Object = CreateActor<Player>(1);
+	Object->GetTransform()->AddLocalPosition({ 240, -450 });
+}
 
 void TestLevel::Start()
 {
@@ -125,9 +131,23 @@ void TestLevel::Start()
 		
 	}
 	// Character
+
+	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+
 	{
-		std::shared_ptr<Player> Object = CreateActor<Player>(1);
-		Object->GetTransform()->AddLocalPosition({ 240, -450 });
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+
+		Window->Test = std::bind(&TestLevel::PlayerCreate, this);
+
+		// std::shared_ptr<Player> Object = CreateActor<Player>(0);
+	}
+
+	{
+		/*std::shared_ptr<Player> Object = CreateActor<Player>(1);
+		Object->GetTransform()->AddLocalPosition({ 240, -450 });*/
 	}
 
 }
