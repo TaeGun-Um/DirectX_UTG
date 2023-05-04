@@ -2,6 +2,20 @@
 
 #include "PlayerDataBase.h"
 
+enum class PlayerState
+{
+	Idle,
+	Move,
+	Dash,
+	Duck,
+	Jump,
+	Slap,
+	Attack,
+	RunAttack,
+	EXAttack,
+	Holding
+};
+
 // 설명 :
 class Player : public PlayerDataBase
 {
@@ -24,6 +38,13 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+
+	PlayerState StateValue = PlayerState::Idle;
+	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
+
+	void DirectCheck();
+	void ChangeState(PlayerState _StateValue);
+	void UpdateState(float _DeltaTime);
 
 	void IdleStart() override;
 	void IdleUpdate() override;

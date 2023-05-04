@@ -159,25 +159,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 
 void PlayerDataBase::PlayerMove(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
-	{
-		MoveDirect.y = 5.0f;
-		IsJump = true;
-		IsGravity = true;
-	}
-
-	// 임시 중력
-	{
-		if (true == IsGravity)
-		{
-			MoveDirect.y += -10.0f * _DeltaTime;
-			GetTransform()->AddLocalPosition(MoveDirect);
-		}
-		else
-		{
-			MoveDirect.y = 0;
-		}
-	}
+	PlayerJump(_DeltaTime);
 
 	float MoveDis = MoveSpeed * _DeltaTime;
 
@@ -191,6 +173,26 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 	}
 
 	MoveCamera(_DeltaTime);
+}
+
+void PlayerDataBase::PlayerJump(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
+	{
+		MoveDirect.y = 5.0f;
+		IsJump = true;
+		IsGravity = true;
+	}
+
+	if (true == IsGravity)
+	{
+		MoveDirect.y += -10.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect);
+	}
+	else
+	{
+		MoveDirect.y = 0;
+	}
 }
 
 void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)

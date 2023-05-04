@@ -65,6 +65,7 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
 	
 	void PlayerMove(float _DeltaTime);
+	void PlayerJump(float _DeltaTime);
 	void PlayerMove_Overworld(float _DeltaTime);
 	void PixelCheck();
 
