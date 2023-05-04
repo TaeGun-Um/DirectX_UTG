@@ -21,7 +21,7 @@ void Player::Start()
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });*/
 
 	RenderPtr = AnimationCreate_Field();
-	SetCameraFollowType(CameraFollowType::Overworld);
+	SetCameraFollowType(CameraFollowType::Field);
 	SetMoveSpeed(330.0f);
 }
 void Player::Update(float _DeltaTime)

@@ -26,8 +26,8 @@ void PixelCollision::SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap
 	Height = _ColMap->GetHeight();
 	Width = _ColMap->GetWidth();
 
-	Half_Height = static_cast<float>(Height / 2);
-	Half_Width = static_cast<float>(Width / 2);
+	Height_Half = static_cast<float>(Height / 2);
+	Width_Half = static_cast<float>(Width / 2);
 }
 
 GameEnginePixelColor PixelCollision::PixelCheck(float4 _Value)
@@ -43,15 +43,15 @@ GameEnginePixelColor PixelCollision::PixelCheck(float4 _Value)
 	{
 	case PixelCollision::Coordinate::Origin:
 	{
-		int ColCheckX = static_cast<int>(_Value.x + Half_Width);
-		int ColCheckY = static_cast<int>(_Value.y - Half_Height);
+		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
+		int ColCheckY = static_cast<int>(_Value.y - Height_Half);
 
 		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
 	}
 		break;
 	case PixelCollision::Coordinate::Custom:
 	{
-		int ColCheckX = static_cast<int>(_Value.x + Half_Width);
+		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
 		int ColCheckY = static_cast<int>(_Value.y - Height);
 
 		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);

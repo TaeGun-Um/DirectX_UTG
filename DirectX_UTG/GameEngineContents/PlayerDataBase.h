@@ -39,6 +39,9 @@ public:
 	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
 	{
 		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+
+		ColMapHegiht_Half = PixelCollisionCheck.GetColMapHeight_Half();
+		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
 	}
 
 protected:
@@ -80,11 +83,23 @@ private:
 	CameraFollowType CameraType = CameraFollowType::None;
 	float CameraMoveSpeed = 0.0f;
 	float CameraAccessTime = 0.0f;
-	float CameraFollowTime = 2.0f;
+	//float CameraFollowTime = 2.0f;
+
+	float CameraWidthPivot = 0.0f;
+	float CameraHegihtPivot = 0.0f;
+	float CameraWidth_Half = 640.0f;
+	float CameraHegiht_Half = 360.0f;
+	float ColMapWidth_Half = 0.0f;
+	float ColMapHegiht_Half = 0.0f;
+
+	bool LeftEnd = false;
+	bool RightEnd = false;
 
 	float4 TargetPosition = float4::Zero;
 	float4 PrevCameraPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
+
+	void CameraPivotCheck(float _CameraPosX, float _CameraPosY);
 
 	// FSM
 	float4 MoveDirect = float4::Zero;

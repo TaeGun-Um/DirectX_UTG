@@ -31,6 +31,16 @@ public:
 		return BlackColor == _Pixel;
 	}
 
+	float GetColMapHeight_Half()
+	{
+		return Height_Half;
+	}
+
+	float GetColMapWidth_Half()
+	{
+		return Width_Half;
+	}
+
 protected:
 
 private:
@@ -41,8 +51,8 @@ private:
 	int Height = 0;
 	int Width = 0;
 
-	float Half_Height = 0.0f;
-	float Half_Width = 0.0f;
+	float Height_Half = 0.0f;
+	float Width_Half = 0.0f;
 
 };
 

@@ -120,22 +120,22 @@ void TestLevel::Start()
 		}
 	}
 
-	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
-	GetMainCamera()->GetTransform()->AddLocalPosition({ 240, -450 });
-
 	// ColMap
 	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("TestLevel_Map.png");
 	int PlayMapHeight = PlayMap->GetHeight();
 	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
+
+	// 카메라 세팅
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
+	//GetMainCamera()->GetTransform()->AddLocalPosition({ 0, PlayMapHeight_Half });
 
 	// CreateActor
 	// Background, Map
 	{
 		std::shared_ptr<TestLevel_Map> Object = CreateActor<TestLevel_Map>(-100);
 		// Object->GetTransform()->AddLocalPosition({2000/2, -720/2});
-		Object->GetTransform()->AddLocalPosition({ 0, PlayMapHeight_Half });
+		//Object->GetTransform()->AddLocalPosition({ 0, PlayMapHeight_Half });
 	}
 	// Character
 
@@ -143,9 +143,9 @@ void TestLevel::Start()
 
 	{
 		PlayerObject = CreateActor<Player>(1);
-		PlayerObject->GetTransform()->AddLocalPosition({ 0, PlayMapHeight_Half });
+		//PlayerObject->GetTransform()->AddLocalPosition({ 0, 0 });
 
-		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Origin);
 		
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
