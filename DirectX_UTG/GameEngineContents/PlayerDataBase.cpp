@@ -128,7 +128,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Tutori
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 140, 187, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 5 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 82, 5 });
 
 	return RenderPtr;
 }
@@ -138,7 +138,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Field(
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 5 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90, 5 });
 
 	return RenderPtr;
 }
@@ -157,13 +157,10 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 ///////////////////////////////////////////                        MOVE                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool IsGravity = true;
-
 void PlayerDataBase::PlayerMove(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
 	{
-		// GetTransform()->AddLocalPosition({ 0, 300.0f });
 		MoveDirect.y += 5.0f;
 		IsJump = true;
 		IsGravity = true;
@@ -182,13 +179,15 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 		}
 	}
 
+	float MoveDis = MoveSpeed * _DeltaTime;
+
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
-		GetTransform()->AddLocalPosition({ MoveSpeed * _DeltaTime, 0 });
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
 	}
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetTransform()->AddLocalPosition({ -MoveSpeed * _DeltaTime, 0 });
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 
 	MoveCamera(_DeltaTime);
@@ -196,21 +195,23 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 
 void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
 {
+	float MoveDis = MoveSpeed * _DeltaTime;
+
 	if (true == GameEngineInput::IsPress("MoveUp"))
 	{
-		GetTransform()->AddLocalPosition({ 0, MoveSpeed * _DeltaTime });
+		GetTransform()->AddLocalPosition({ 0, MoveDis });
 	}
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
-		GetTransform()->AddLocalPosition({ 0, -MoveSpeed * _DeltaTime });
+		GetTransform()->AddLocalPosition({ 0, -MoveDis });
 	}
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
-		GetTransform()->AddLocalPosition({ MoveSpeed * _DeltaTime, 0 });
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
 	}
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetTransform()->AddLocalPosition({ -MoveSpeed * _DeltaTime, 0 });
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 
 	MoveCamera(_DeltaTime);
@@ -218,26 +219,6 @@ void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
 
 void PlayerDataBase::PixelCheck()
 {
-	// colmap
-	//std::shared_ptr<GameEngineTexture> ColMap = GameEngineTexture::Find("TestLevel_Map.png");
-
-	//float PosfX = GetTransform()->GetLocalPosition().x;
-	//float PosFY = GetTransform()->GetLocalPosition().y;
-
-	//int PlayerPosX = static_cast<int>(PosfX);
-	//int PlayerPosY = static_cast<int>(PosFY);
-
-	//GameEnginePixelColor Default(static_cast<char>(10), static_cast<char>(10), static_cast<char>(10), static_cast<char>(255));
-	//GameEnginePixelColor ColBlack(static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(255));
-
-	//// ¸Ê Å©±â {2000 / 2, -720 / 2}
-	//// 
-
-	//int ColX = PlayerPosX + (2000 / 2);
-	//int ColY = PlayerPosY - (720 / 2);
-
-	//GameEnginePixelColor ColMapPixel = ColMap->GetPixel(ColX, -ColY, Default);
-
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 
 	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
@@ -252,9 +233,6 @@ void PlayerDataBase::PixelCheck()
 			GetTransform()->AddLocalPosition({ 0, 1 });
 
 			PlayerPos = GetTransform()->GetLocalPosition();
-
-			int PlayerPosX = static_cast<int>(GetTransform()->GetLocalPosition().x);
-			int PlayerPosY = static_cast<int>(GetTransform()->GetLocalPosition().y);
 
 			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
 

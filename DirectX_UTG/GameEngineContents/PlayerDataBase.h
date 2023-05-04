@@ -103,6 +103,7 @@ private:
 
 	// FSM
 	float4 MoveDirect = float4::Zero;
+	bool IsGravity = true;
 	bool IsJump = false;
 
 	// alt + shift + .
