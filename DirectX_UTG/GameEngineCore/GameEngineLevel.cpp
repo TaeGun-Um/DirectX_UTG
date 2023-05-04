@@ -81,13 +81,37 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 }
 
-void GameEngineLevel::Update(float _DeltaTime)
+void GameEngineLevel::ActorRelease()
 {
+	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+
+	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
+	{
+		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+
+		std::list<std::shared_ptr<GameEngineActor>>::iterator Start = ActorList.begin();
+		std::list<std::shared_ptr<GameEngineActor>>::iterator End = ActorList.end();
+
+		for (; Start != End; )
+		{
+			std::shared_ptr<GameEngineActor> RelaseActor = (*Start);
+
+			if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
+			{
+				++Start;
+				continue;
+			}
+
+			RelaseActor->Release();
+			Start = ActorList.erase(Start);
+		}
+	}
+
 }
 
-void GameEngineLevel::Render(float _DeltaTime)
-{
-}
+void GameEngineLevel::Update(float _DeltaTime) {}
+
+void GameEngineLevel::Render(float _DeltaTime) {}
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)
 {

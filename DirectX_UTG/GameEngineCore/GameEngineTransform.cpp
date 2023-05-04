@@ -65,19 +65,55 @@ void GameEngineTransform::TransformUpdate()
 	}
 
 	// 마지막으로 세팅된 값에서 Local, World 행렬 값 추출 후 저장
+	WorldDecompose();
+	LocalDecompose();
+}
+
+// 로컬 디컴포즈
+void GameEngineTransform::LocalDecompose()
+{
 	TransData.LocalWorldMatrix.Decompose(TransData.LocalScale, TransData.LocalQuaternion, TransData.LocalPosition);
 	TransData.LocalRotation = TransData.LocalQuaternion.QuaternionToEulerDeg();
 
+}
+
+// 월드 디컴포즈
+void GameEngineTransform::WorldDecompose()
+{
 	TransData.WorldMatrix.Decompose(TransData.WorldScale, TransData.WorldQuaternion, TransData.WorldPosition);
 	TransData.WorldRotation = TransData.WorldQuaternion.QuaternionToEulerDeg();
+
+}
+
+void GameEngineTransform::AbsoluteReset()
+{
+	AbsoluteScale = false;
+	AbsoluteRotation = false;
+	AbsolutePosition = false;
 }
 
 // 부모 설정
 void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 {
+	if (IsDebug())
+	{
+		int a = 0;
+	}
+
 	Parent = _Parent;
-	Parent->Child.push_back(this);
+
+	TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+
+	LocalDecompose();
+
+	TransData.Position = TransData.LocalPosition;
+	TransData.Rotation = TransData.LocalRotation;
+	TransData.Scale = TransData.LocalScale;
+
 	TransformUpdate();
+	AbsoluteReset();
+
+	Parent->Child.push_back(this);
 }
 
 // 자식 계산

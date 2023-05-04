@@ -99,6 +99,12 @@ public:
 		return NewTexture;
 	}
 
+	// ShaderResourceView 가져오기
+	ID3D11ShaderResourceView* GetSRV()
+	{
+		return SRV;
+	}
+
 	// RenderTarget 가져오기
 	ID3D11RenderTargetView* GetRTV()
 	{

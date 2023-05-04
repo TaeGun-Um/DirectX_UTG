@@ -93,6 +93,8 @@ void GameEngineCore::EngineUpdate()
 		MainLevel->ActorRender(TimeDeltaTime);    // Render를 실시며 HDC를 활용하여 이미지 수정
 		GameEngineDevice::RenderEnd();            // 백버퍼에 이미지 랜더
 	}
+
+	MainLevel->ActorRelease(); // 릴리즈구조
 }
 
 // Core의 종료 구간 (Level(map) clear, 할당된 shared_ptr 명시적 해제, DirectX 명시적 해제(Release))
