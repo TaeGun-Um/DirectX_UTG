@@ -179,15 +179,15 @@ void PlayerDataBase::PlayerJump(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
 	{
-		MoveDirect.y = 5.0f;
+		MoveDirect.y = 500.0f;
 		IsJump = true;
 		IsGravity = true;
 	}
 
 	if (true == IsGravity)
 	{
-		MoveDirect.y += -10.0f * _DeltaTime;
-		GetTransform()->AddLocalPosition(MoveDirect);
+		MoveDirect.y += -1000.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
 	else
 	{
