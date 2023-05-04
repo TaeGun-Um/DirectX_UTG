@@ -191,10 +191,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="ImguiWindow.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="MDHR_Logo.h">
       <SubType>
       </SubType>
@@ -212,6 +208,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Overworld_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PixelCollision.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -302,10 +302,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="ImguiWindow.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="MDHR_Logo.cpp">
       <SubType>
       </SubType>
@@ -323,6 +319,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Overworld_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PixelCollision.cpp">
       <SubType>
       </SubType>
     </ClCompile>

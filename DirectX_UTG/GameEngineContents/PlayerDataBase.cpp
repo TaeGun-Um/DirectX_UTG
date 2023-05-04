@@ -125,7 +125,6 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 ///////////////////////////////////////////                        MOVE                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float4 Gravity = float4::Zero; // 지워라
 bool IsGravity = true;
 
 void PlayerDataBase::PlayerMove(float _DeltaTime)
@@ -188,23 +187,30 @@ void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
 void PlayerDataBase::PixelCheck()
 {
 	// colmap
-	std::shared_ptr<GameEngineTexture> ColMap = GameEngineTexture::Find("TestLevel_Map.png");
+	//std::shared_ptr<GameEngineTexture> ColMap = GameEngineTexture::Find("TestLevel_Map.png");
 
-	float PosfX = GetTransform()->GetLocalPosition().x;
-	float PosFY = GetTransform()->GetLocalPosition().y;
+	//float PosfX = GetTransform()->GetLocalPosition().x;
+	//float PosFY = GetTransform()->GetLocalPosition().y;
 
-	int PlayerPosX = static_cast<int>(PosfX);
-	int PlayerPosY = static_cast<int>(PosFY);
+	//int PlayerPosX = static_cast<int>(PosfX);
+	//int PlayerPosY = static_cast<int>(PosFY);
 
-	GameEnginePixelColor Default(static_cast<char>(10), static_cast<char>(10), static_cast<char>(10), static_cast<char>(255));
-	GameEnginePixelColor ColBlack(static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(255));
+	//GameEnginePixelColor Default(static_cast<char>(10), static_cast<char>(10), static_cast<char>(10), static_cast<char>(255));
+	//GameEnginePixelColor ColBlack(static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(255));
 
-	// 240, -450
-	// 
+	//// 맵 크기 {2000 / 2, -720 / 2}
+	//// 
 
-	GameEnginePixelColor ColMapPixel = ColMap->GetPixel(PlayerPosX, -PlayerPosY, Default);
+	//int ColX = PlayerPosX + (2000 / 2);
+	//int ColY = PlayerPosY - (720 / 2);
 
-	if (ColBlack == ColMapPixel)
+	//GameEnginePixelColor ColMapPixel = ColMap->GetPixel(ColX, -ColY, Default);
+
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
 	{
 		IsGravity = false;
 		IsJump = false;
@@ -213,15 +219,14 @@ void PlayerDataBase::PixelCheck()
 		{
 			GetTransform()->AddLocalPosition({ 0, 1 });
 
-			PosfX = GetTransform()->GetLocalPosition().x;
-			PosFY = GetTransform()->GetLocalPosition().y;
+			PlayerPos = GetTransform()->GetLocalPosition();
 
-			PlayerPosX = static_cast<int>(PosfX);
-			PlayerPosY = static_cast<int>(PosFY);
+			int PlayerPosX = static_cast<int>(GetTransform()->GetLocalPosition().x);
+			int PlayerPosY = static_cast<int>(GetTransform()->GetLocalPosition().y);
 
-			GameEnginePixelColor GravityPixel = ColMap->GetPixel(PlayerPosX, -PlayerPosY, Default);
+			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
 
-			if (ColBlack != GravityPixel)
+			if (false == PixelCollisionCheck.IsBlack(GravityPixel))
 			{
 				break;
 			}

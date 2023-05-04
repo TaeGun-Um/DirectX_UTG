@@ -156,12 +156,10 @@
     <ClInclude Include="TestLevel_Map.h">
       <Filter>Levels\0. TestLevel\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiWindow.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="TransformGUI.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="PixelCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -242,11 +240,9 @@
     <ClCompile Include="TestLevel_Map.cpp">
       <Filter>Levels\0. TestLevel\Object</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiWindow.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
     <ClCompile Include="TransformGUI.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="PixelCollision.cpp" />
   </ItemGroup>
 </Project>

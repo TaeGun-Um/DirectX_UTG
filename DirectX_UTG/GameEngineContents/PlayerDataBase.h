@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PixelCollision.h"
+
 // 설명 :
 class PlayerDataBase : public GameEngineActor
 {
@@ -33,6 +35,12 @@ public:
 		MoveSpeed = _Value;
 	}
 
+	// 픽셀 충돌 설정
+	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
+	{
+		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+	}
+
 protected:
 	void Start() {}
 	void Update(float _DeltaTime) {}
@@ -57,7 +65,6 @@ protected:
 	void PlayerMove_Overworld(float _DeltaTime);
 	void PixelCheck();
 
-
 private:
 	// Status
 	int HP = 5;
@@ -65,6 +72,9 @@ private:
 	int EXStack = 0;
 	float MoveSpeed = 330.0f;
 	bool WeaponType = true;   // true : Peashooter // false : Spread
+
+	// Pixel
+	PixelCollision PixelCollisionCheck;
 
 	// Camera
 	CameraFollowType CameraType = CameraFollowType::None;

@@ -14,8 +14,6 @@
 #include "MouseLevel.h"
 #include "EndingLevel.h"
 
-#include "ImguiWindow.h"
-
 CupheadCore::CupheadCore()
 {
 }
