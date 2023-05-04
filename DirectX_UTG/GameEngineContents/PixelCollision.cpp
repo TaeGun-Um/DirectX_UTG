@@ -30,7 +30,7 @@ void PixelCollision::SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap
 	Width_Half = static_cast<float>(Width / 2);
 }
 
-GameEnginePixelColor PixelCollision::PixelCheck(float4 _Value)
+GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 {
 	if (nullptr == ColMap)
 	{

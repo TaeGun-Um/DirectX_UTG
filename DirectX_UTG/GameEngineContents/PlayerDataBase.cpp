@@ -161,7 +161,7 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
 	{
-		MoveDirect.y += 5.0f;
+		MoveDirect.y = 5.0f;
 		IsJump = true;
 		IsGravity = true;
 	}

@@ -24,7 +24,7 @@ public:
 
 	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, Coordinate _Pivot);
 
-	GameEnginePixelColor PixelCheck(float4 _Value);
+	GameEnginePixelColor PixelCheck(const float4& _Value);
 
 	bool IsBlack(GameEnginePixelColor _Pixel)
 	{
