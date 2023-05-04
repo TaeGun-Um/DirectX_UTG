@@ -127,7 +127,7 @@ void TestLevel::Start()
 	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
 
-	float4 PlayMapPosition = { PlayMapWidth_Half, PlayMapHeight_Half };
+	float4 PlayMapPosition = { PlayMapWidth_Half, PlayMapHeight_Half, 1 };
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
@@ -139,7 +139,7 @@ void TestLevel::Start()
 	{
 		std::shared_ptr<TestLevel_Map> Object = CreateActor<TestLevel_Map>(-100);
 		// Object->GetTransform()->AddLocalPosition({2000/2, -720/2});
-		Object->GetTransform()->AddLocalPosition(PlayMapPosition);
+		Object->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
 	// Character
 
@@ -148,7 +148,7 @@ void TestLevel::Start()
 	{
 		PlayerObject = CreateActor<Player>(1);
 		//PlayerObject->GetTransform()->AddLocalPosition({ 0, 0 });
-		PlayerObject->GetTransform()->AddLocalPosition(PlayMapPosition);
+		PlayerObject->GetTransform()->SetLocalPosition(PlayMapPosition);
 
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		

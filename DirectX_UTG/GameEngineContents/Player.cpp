@@ -39,12 +39,16 @@ void Player::DirectCheck()
 	if (true == GameEngineInput::IsDown("MoveRight"))
 	{
 		Directbool = true;
-		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		//RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalPositiveScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	}
 	else if (true == GameEngineInput::IsDown("MoveLeft"))
 	{
 		Directbool = false;
-		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+		//RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 10, 90 });
 	}
 }
 

@@ -128,7 +128,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Tutori
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 140, 187, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 82, 5 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 82 });
 
 	return RenderPtr;
 }
@@ -138,7 +138,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Field(
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Ground_Idle_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90, 5 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 
 	return RenderPtr;
 }
@@ -148,7 +148,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Idle.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 49, 96, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 5 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 
 	return RenderPtr;
 }
@@ -163,13 +163,25 @@ void PlayerDataBase::PlayerMove(float _DeltaTime)
 
 	float MoveDis = MoveSpeed * _DeltaTime;
 
-	if (true == GameEngineInput::IsPress("MoveRight"))
+	if (true == GameEngineInput::IsPress("Hold"))
 	{
-		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		IsHold = true;
 	}
-	if (true == GameEngineInput::IsPress("MoveLeft"))
+	else
 	{
-		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		IsHold = false;
+	}
+
+	if (false == IsHold)
+	{
+		if (true == GameEngineInput::IsPress("MoveRight"))
+		{
+			GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		}
+		if (true == GameEngineInput::IsPress("MoveLeft"))
+		{
+			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		}
 	}
 
 	MoveCamera(_DeltaTime);

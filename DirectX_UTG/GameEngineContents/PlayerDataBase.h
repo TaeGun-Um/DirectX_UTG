@@ -106,6 +106,7 @@ private:
 	float4 MoveDirect = float4::Zero;
 	bool IsGravity = true;
 	bool IsJump = false;
+	bool IsHold = false;
 
 	// alt + shift + .
 	virtual void IdleStart() {}

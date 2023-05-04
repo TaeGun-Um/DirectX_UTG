@@ -165,8 +165,8 @@ void TestObject::Update(float _DeltaTime)
 	float4 GetLocalPosition = Render0->GetTransform()->GetLocalPosition();
 	float4 GetWorldPosition = Render0->GetTransform()->GetWorldPosition();
 
-	if (5.0f <= Render0->GetLiveTime())
-	{
-		Render0->Off();
-	}
+	//if (5.0f <= Render0->GetLiveTime())
+	//{
+	//	Render0->Off();
+	//}
 }
