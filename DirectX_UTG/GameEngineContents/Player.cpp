@@ -4,6 +4,14 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Peashooter.h"
+#include "Peashooter_EX.h"
+#include "Spread.h"
+#include "Spread_EX.h"
+#include "EXDust.h"
+#include "MoveDust.h"
+#include "LandDust.h"
+
 Player* Player::MainPlayer = nullptr;
 
 Player::Player() 
@@ -96,6 +104,10 @@ void Player::Update(float _DeltaTime)
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // 플레이어 위치 보정 함수(최초 레벨 init 시 실시)
 void Player::PositionCorrection()
 {
@@ -109,11 +121,13 @@ void Player::PositionCorrection()
 
 	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
 
+	// 현재 위치의 Pixel이 Black이라면 이후 PixelCheck에서 연산 실시
 	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
 	{
 		IsCorrection = true;
 	}
 
+	// 현재 위치의 Pixel이 Black이 아니라면 위치를 밑으로 이동
 	if (false == PixelCollisionCheck.IsBlack(ColMapPixel))
 	{
 		while (true)
@@ -132,6 +146,31 @@ void Player::PositionCorrection()
 		}
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     CreateActor                       /////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 기본 공격
+void Player::CreatePeashooter() {}
+
+// 기본 EX 공격
+void Player::CreatePeashooter_EX() {}
+
+// 2번 공격
+void Player::CreateSpread() {}
+
+// 2번 EX 공격 
+void Player::CreateSpread_EX() {}
+
+// EX 공격 시 Dust 생성
+void Player::CreateEXDust() {}
+
+// 움직일 때 Dust 생성
+void Player::CreateMoveDust() {}
+
+// 점프나 Fall 후 Land시 Dust 생성
+void Player::CreateLandDust() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
@@ -421,6 +460,7 @@ void Player::JumpStart()
 	RenderPtr->SetTexture("Ground_Jump_002.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
+	// 점프력
 	if (false == IsJump)
 	{
 		MoveDirect.y = 900.0f;
@@ -431,6 +471,7 @@ void Player::JumpUpdate(float _DeltaTime)
 {
 	JumpTime += _DeltaTime;
 
+	// 점프 시 이동
 	float MoveDis = MoveSpeed * _DeltaTime;
 
 	if (true == GameEngineInput::IsPress("MoveRight"))
@@ -442,6 +483,7 @@ void Player::JumpUpdate(float _DeltaTime)
 		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 
+	// 점프
 	if (true == GameEngineInput::IsPress("Jump") && 0.01f <= JumpTime)
 	{
 		if (0.15f >= JumpTime)

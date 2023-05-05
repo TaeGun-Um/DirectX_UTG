@@ -209,79 +209,29 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 ///////////////////////////////////////////                        MOVE                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//void PlayerDataBase::PlayerJump(float _DeltaTime)
-//{
-//	if (true == GameEngineInput::IsDown("Jump") && false == IsJump)
-//	{
-//		MoveDirect.y = 500.0f;
-//		IsJump = true;
-//		IsGravity = true;
-//	}
-//
-//	if (true == IsGravity)
-//	{
-//		MoveDirect.y += -1000.0f * _DeltaTime;
-//		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
-//	}
-//	else
-//	{
-//		MoveDirect.y = 0;
-//	}
-//}
-//
-//void PlayerDataBase::PlayerMove(float _DeltaTime)
-//{
-//	PlayerJump(_DeltaTime);
-//
-//	float MoveDis = MoveSpeed * _DeltaTime;
-//
-//	if (true == GameEngineInput::IsPress("Hold"))
-//	{
-//		IsHold = true;
-//	}
-//	else
-//	{
-//		IsHold = false;
-//	}
-//
-//	if (false == IsHold)
-//	{
-//		if (true == GameEngineInput::IsPress("MoveRight"))
-//		{
-//			GetTransform()->AddLocalPosition({ MoveDis, 0 });
-//		}
-//		if (true == GameEngineInput::IsPress("MoveLeft"))
-//		{
-//			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
-//		}
-//	}
-//
-//	MoveCamera(_DeltaTime);
-//}
-//
-//void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
-//{
-//	float MoveDis = MoveSpeed * _DeltaTime;
-//
-//	if (true == GameEngineInput::IsPress("MoveUp"))
-//	{
-//		GetTransform()->AddLocalPosition({ 0, MoveDis });
-//	}
-//	if (true == GameEngineInput::IsPress("MoveDown"))
-//	{
-//		GetTransform()->AddLocalPosition({ 0, -MoveDis });
-//	}
-//	if (true == GameEngineInput::IsPress("MoveRight"))
-//	{
-//		GetTransform()->AddLocalPosition({ MoveDis, 0 });
-//	}
-//	if (true == GameEngineInput::IsPress("MoveLeft"))
-//	{
-//		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
-//	}
-//
-//	MoveCamera(_DeltaTime);
-//}
+void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
+{
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveUp"))
+	{
+		GetTransform()->AddLocalPosition({ 0, MoveDis });
+	}
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		GetTransform()->AddLocalPosition({ 0, -MoveDis });
+	}
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	MoveCamera(_DeltaTime);
+}
 
 void PlayerDataBase::PixelCheck(float _DeltaTime)
 {

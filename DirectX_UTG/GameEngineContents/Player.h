@@ -62,11 +62,20 @@ private:
 
 	void PositionCorrection();
 
+	// FSM
 	PlayerState StateValue = PlayerState::Idle;
 	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
+
+	void CreatePeashooter();
+	void CreatePeashooter_EX();
+	void CreateSpread();
+	void CreateSpread_EX();
+	void CreateEXDust();
+	void CreateMoveDust();
+	void CreateLandDust();
 
 	void DirectCheck();
 	void ChangeState(PlayerState _StateValue);

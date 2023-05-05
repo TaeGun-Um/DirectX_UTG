@@ -45,9 +45,9 @@ public:
 	}
 
 protected:
-	void Start() {}
-	void Update(float _DeltaTime) {}
-	void Render(float _DeltaTime) {}
+	void Start() override {}
+	void Update(float _DeltaTime) override {}
+	void Render(float _DeltaTime) override {}
 
 	enum class CameraFollowType
 	{

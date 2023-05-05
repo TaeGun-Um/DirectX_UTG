@@ -76,6 +76,18 @@
     <Filter Include="IMGUI">
       <UniqueIdentifier>{f0f1587d-3a5e-4df7-9146-37af5c974623}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\7. Player">
+      <UniqueIdentifier>{f18f04fb-7a34-4832-9735-9cc620fc0e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\7. Player\PlayerEffect">
+      <UniqueIdentifier>{2ff768d8-bc8a-4703-b77d-b8de2c7179ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\7. Player\PlayerEffect\Attack">
+      <UniqueIdentifier>{19bd4cc4-b5b8-4ccd-a6ac-36a5a06b0bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\7. Player\PlayerEffect\Dust">
+      <UniqueIdentifier>{6a16e610-ac08-4126-a4c3-bee679670fca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestObject.h">
@@ -132,12 +144,6 @@
     <ClInclude Include="Tutorial_BackLayer.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerDataBase.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="Tutorial_Map.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
@@ -162,6 +168,33 @@
     <ClInclude Include="PixelCollision.h" />
     <ClInclude Include="Tutorial_ColMap.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Levels\7. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDataBase.h">
+      <Filter>Levels\7. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Peashooter.h">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Spread.h">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Spread_EX.h">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Peashooter_EX.h">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDust.h">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+    </ClInclude>
+    <ClInclude Include="LandDust.h">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+    </ClInclude>
+    <ClInclude Include="EXDust.h">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,12 +252,6 @@
     <ClCompile Include="Tutorial_BackLayer.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerDataBase.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="Tutorial_Map.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
@@ -249,6 +276,33 @@
     <ClCompile Include="PixelCollision.cpp" />
     <ClCompile Include="Tutorial_ColMap.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Levels\7. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDataBase.cpp">
+      <Filter>Levels\7. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Peashooter.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Spread.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Spread_EX.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Peashooter_EX.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDust.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+    </ClCompile>
+    <ClCompile Include="LandDust.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+    </ClCompile>
+    <ClCompile Include="EXDust.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

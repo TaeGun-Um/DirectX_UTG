@@ -183,6 +183,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EXDust.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="First_OpeningLevel.h">
       <SubType>
       </SubType>
@@ -191,11 +195,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LandDust.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MDHR_Logo.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="MouseLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MoveDust.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -208,6 +220,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Overworld_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Peashooter.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Peashooter_EX.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -233,6 +253,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Second_OpeningLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Spread.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Spread_EX.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -298,6 +326,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="EXDust.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="First_OpeningLevel.cpp">
       <SubType>
       </SubType>
@@ -306,11 +338,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LandDust.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MDHR_Logo.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="MouseLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MoveDust.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -323,6 +363,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Overworld_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Peashooter.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Peashooter_EX.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -353,6 +401,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Second_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Spread.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Spread_EX.cpp">
       <SubType>
       </SubType>
     </ClCompile>
