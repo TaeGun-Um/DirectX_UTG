@@ -86,18 +86,18 @@ void TutorialLevel::Start()
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 300, PlayMapHeight_Half - 100, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
 	// Background, Map
 	{
 		std::shared_ptr<Tutorial_BackLayer> Object0 = CreateActor<Tutorial_BackLayer>(-10);
-		Object0->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half - 100, 1 });
+		Object0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
 		std::shared_ptr<Tutorial_BackGround> Object1 = CreateActor<Tutorial_BackGround>(-100);
-		Object1->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half - 100, 1 });
+		Object1->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 
 		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
-		Object2->GetTransform()->SetLocalPosition(PlayMapPosition);
+		Object2->GetTransform()->SetLocalPosition(PlayMapPosition + float4{0, 0, 50});
 
 		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
 		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);

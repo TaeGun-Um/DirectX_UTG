@@ -139,7 +139,7 @@ void Player::PositionCorrection()
 
 void Player::DirectCheck()
 {
-	if (true == GameEngineInput::IsDown("MoveRight"))
+	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
 		GetTransform()->SetLocalPositiveScaleX();
@@ -155,7 +155,7 @@ void Player::DirectCheck()
 		}
 	}
 	
-	if (true == GameEngineInput::IsDown("MoveLeft"))
+	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		Directbool = false;
 		GetTransform()->SetLocalNegativeScaleX();
@@ -304,18 +304,19 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
 		ChangeState(PlayerState::Duck);
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("MoveRight"))
-	{
-		ChangeState(PlayerState::Move);
-		return;
-	}
-	else if (true == GameEngineInput::IsPress("MoveLeft"))
+	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		ChangeState(PlayerState::Move);
 		return;
@@ -362,6 +363,12 @@ void Player::MoveUpdate(float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 		}
+	}
+
+	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
 	}
 
 	if (false == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
