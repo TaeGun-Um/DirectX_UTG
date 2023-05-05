@@ -85,7 +85,7 @@
     <Filter Include="Levels\7. Player\PlayerEffect\Attack">
       <UniqueIdentifier>{19bd4cc4-b5b8-4ccd-a6ac-36a5a06b0bb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Levels\7. Player\PlayerEffect\Dust">
+    <Filter Include="Levels\7. Player\PlayerEffect\SFX">
       <UniqueIdentifier>{6a16e610-ac08-4126-a4c3-bee679670fca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -188,13 +188,16 @@
       <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
     </ClInclude>
     <ClInclude Include="MoveDust.h">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
     <ClInclude Include="LandDust.h">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
     <ClInclude Include="EXDust.h">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="ParryEffect.h">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -296,13 +299,16 @@
       <Filter>Levels\7. Player\PlayerEffect\Attack</Filter>
     </ClCompile>
     <ClCompile Include="MoveDust.cpp">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
     <ClCompile Include="LandDust.cpp">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
     <ClCompile Include="EXDust.cpp">
-      <Filter>Levels\7. Player\PlayerEffect\Dust</Filter>
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="ParryEffect.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

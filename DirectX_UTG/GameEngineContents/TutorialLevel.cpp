@@ -58,6 +58,41 @@ void TutorialLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
+	// 플레이어 SFX 리소스 로드
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("CH_Attack");
+		NewDir.Move("CHAt_Ground");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	// 플레이어 SFX 리소스 로드
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("CH_SFX");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
 	// 디버그용 이미지 로드
 	{
 		
@@ -91,13 +126,15 @@ void TutorialLevel::Start()
 	// CreateActor
 	// Background, Map
 	{
-		std::shared_ptr<Tutorial_BackLayer> Object0 = CreateActor<Tutorial_BackLayer>(-10);
-		Object0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
-		std::shared_ptr<Tutorial_BackGround> Object1 = CreateActor<Tutorial_BackGround>(-100);
-		Object1->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 
-		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
-		Object2->GetTransform()->SetLocalPosition(PlayMapPosition + float4{0, 0, 50});
+		std::shared_ptr<Tutorial_BackGround> Object0 = CreateActor<Tutorial_BackGround>(-100);
+		Object0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
+
+		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
+		Object1->GetTransform()->SetLocalPosition(PlayMapPosition + float4{0, 0, 50});
+
+		std::shared_ptr<Tutorial_BackLayer> Object2 = CreateActor<Tutorial_BackLayer>(-10);
+		Object2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
 
 		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
 		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);

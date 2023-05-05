@@ -13,7 +13,8 @@ LandDust::~LandDust()
 
 void LandDust::Start()
 {
-
+	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	RenderPtr->SetScaleToTexture("Ground_JumpDust_005.png");
 }
 void LandDust::Update(float _DeltaTime)
 {

@@ -76,6 +76,7 @@ private:
 	void CreateEXDust();
 	void CreateMoveDust();
 	void CreateLandDust();
+	void CreateParryEffect();
 
 	void DirectCheck();
 	void ChangeState(PlayerState _StateValue);

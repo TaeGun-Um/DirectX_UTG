@@ -13,7 +13,8 @@ MoveDust::~MoveDust()
 
 void MoveDust::Start()
 {
-
+	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	RenderPtr->SetScaleToTexture("Temporary_MoveDust.png");
 }
 void MoveDust::Update(float _DeltaTime)
 {

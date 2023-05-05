@@ -11,6 +11,7 @@
 #include "EXDust.h"
 #include "MoveDust.h"
 #include "LandDust.h"
+#include "ParryEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -171,6 +172,9 @@ void Player::CreateMoveDust() {}
 
 // 점프나 Fall 후 Land시 Dust 생성
 void Player::CreateLandDust() {}
+
+// Parry시 생성되는 Effect
+void Player::CreateParryEffect() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////

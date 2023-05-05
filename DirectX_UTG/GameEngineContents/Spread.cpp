@@ -13,7 +13,8 @@ Spread::~Spread()
 
 void Spread::Start()
 {
-
+	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	RenderPtr->SetScaleToTexture("Temporary_Spread.png");
 }
 void Spread::Update(float _DeltaTime)
 {
