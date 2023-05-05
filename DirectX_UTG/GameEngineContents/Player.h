@@ -58,6 +58,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr6 = nullptr;
 
 	bool IsDebugRender = false;
+	bool IsCorrection = false;
+
+	void PositionCorrection();
 
 	PlayerState StateValue = PlayerState::Idle;
 	bool Directbool = true; // true == 오른쪽 // false == 왼쪽

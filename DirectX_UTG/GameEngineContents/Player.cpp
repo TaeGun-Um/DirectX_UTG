@@ -58,10 +58,21 @@ void Player::Start()
 }
 void Player::Update(float _DeltaTime)
 {
+	if (false == IsCorrection)
+	{
+		PositionCorrection();
+		return;
+	}
+
 	MoveCamera(_DeltaTime);
 	DirectCheck();
 	UpdateState(_DeltaTime);
 	PixelCheck(_DeltaTime);
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		int a = 0;
+	}
 
 	if (true == IsDebugRender)
 	{
@@ -82,6 +93,43 @@ void Player::Update(float _DeltaTime)
 		DebugRenderPtr4->Off();
 		DebugRenderPtr5->Off();
 		DebugRenderPtr6->Off();
+	}
+}
+
+// 플레이어 위치 보정 함수(최초 레벨 init 시 실시)
+void Player::PositionCorrection()
+{
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+
+	if (0 >= PlayerPos.y)
+	{
+		MsgAssert("플레이어의 위치는 y = 0 위로 세팅해야 합니다. 비정상적인 플레이어 위치입니다.");
+		return;
+	}
+
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
+	{
+		IsCorrection = true;
+	}
+
+	if (false == PixelCollisionCheck.IsBlack(ColMapPixel))
+	{
+		while (true)
+		{
+			GetTransform()->AddLocalPosition({ 0, -1 });
+
+			PlayerPos = GetTransform()->GetLocalPosition();
+
+			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+			if (true == PixelCollisionCheck.IsBlack(GravityPixel))
+			{
+				IsCorrection = true;
+				break;
+			}
+		}
 	}
 }
 
