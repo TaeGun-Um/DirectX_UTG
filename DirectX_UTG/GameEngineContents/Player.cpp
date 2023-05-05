@@ -492,7 +492,7 @@ void Player::JumpUpdate(float _DeltaTime)
 	{
 		if (0.15f >= JumpTime)
 		{
-			MoveDirect.y += 2000.0f * _DeltaTime;
+			MoveDirect.y += 2200.0f * _DeltaTime;
 		}
 	}
 
