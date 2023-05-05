@@ -9,6 +9,7 @@
 #include "Tutorial_BackGround.h"
 #include "Tutorial_BackLayer.h"
 #include "Tutorial_Map.h"
+#include "Tutorial_ColMap.h"
 #include "Player.h"
 
 #include "TransformGUI.h"
@@ -97,6 +98,9 @@ void TutorialLevel::Start()
 
 		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
 		Object2->GetTransform()->SetLocalPosition(PlayMapPosition);
+
+		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
+		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
 	// Character
 	{
@@ -109,8 +113,11 @@ void TutorialLevel::Start()
 	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
+
 		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
+		GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
+		GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
 	}
 }
 
@@ -122,6 +129,15 @@ void TutorialLevel::PlayerDebugRenderOn()
 void TutorialLevel::PlayerDebugRenderOff()
 {
 	PlayerObject->PlayerDebugRenderOff();
+}
+
+void TutorialLevel::TutorialColMapOn()
+{
+	ThisColMap->ColMapDebugRenderOn();
+}
+void TutorialLevel::TutorialColMapOff()
+{
+	ThisColMap->ColMapDebugRenderOff();
 }
 
 void TutorialLevel::Update(float _DeltaTime)

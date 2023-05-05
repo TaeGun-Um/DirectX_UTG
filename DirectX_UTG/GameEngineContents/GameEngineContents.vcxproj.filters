@@ -160,6 +160,9 @@
       <Filter>IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="PixelCollision.h" />
+    <ClInclude Include="Tutorial_ColMap.h">
+      <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -244,5 +247,8 @@
       <Filter>IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="PixelCollision.cpp" />
+    <ClCompile Include="Tutorial_ColMap.cpp">
+      <Filter>Levels\3. Tutorial\Object</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

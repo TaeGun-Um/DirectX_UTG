@@ -23,9 +23,12 @@ protected:
 
 private:
 	std::shared_ptr<class Player> PlayerObject = nullptr;
+	std::shared_ptr<class Tutorial_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
+	void TutorialColMapOn();
+	void TutorialColMapOff();
 };
 

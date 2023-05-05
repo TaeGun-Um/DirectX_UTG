@@ -23,6 +23,9 @@ public:
 	std::function<void()> PlayerDebugRenderOn;
 	std::function<void()> PlayerDebugRenderOff;
 
+	std::function<void()> ColMapRenderOn;
+	std::function<void()> ColMapRenderOff;
+
 protected:
 
 private:
@@ -33,6 +36,7 @@ private:
 	bool IsWorldScale = false;
 
 	bool IsPlayerDebugDot = false;
+	bool IsColMapRender = false;
 
 	float Postion[4] = { 0, 0, 0, 1 };
 	float Rotation[4] = { 0, 0, 0, 1 };
