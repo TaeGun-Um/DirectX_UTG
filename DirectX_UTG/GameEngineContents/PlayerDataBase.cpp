@@ -283,7 +283,7 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 //	MoveCamera(_DeltaTime);
 //}
 
-void PlayerDataBase::PixelCheck()
+void PlayerDataBase::PixelCheck(float _DeltaTime)
 {
 	// 바닥 체크
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
@@ -292,7 +292,6 @@ void PlayerDataBase::PixelCheck()
 
 	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
 	{
-		IsGravity = false;
 		IsJump = false;
 
 		while (true)
@@ -311,9 +310,23 @@ void PlayerDataBase::PixelCheck()
 	}
 
 	// 벽 체크
-	float4 LeftWallCheck = PlayerPos + float4{-50, 50};
-	float4 RightWallCheck = PlayerPos + float4{ 50, 50 };
+	float4 LeftWallCheckPos = PlayerPos + float4{-40, 10};
+	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
 	
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	float MoveDis = ( MoveSpeed + 200.0f ) * _DeltaTime;
+
+	if (true == PixelCollisionCheck.IsBlack(LeftWallPixel))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == PixelCollisionCheck.IsBlack(RightWallPixel))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

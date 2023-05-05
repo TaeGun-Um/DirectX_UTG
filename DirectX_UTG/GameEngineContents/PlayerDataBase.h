@@ -64,17 +64,17 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
 	
-	void PlayerMove(float _DeltaTime);
-	void PlayerJump(float _DeltaTime);
+	//void PlayerMove(float _DeltaTime);
+	//void PlayerJump(float _DeltaTime);
 	void PlayerMove_Overworld(float _DeltaTime);
-	void PixelCheck();
+	void PixelCheck(float _DeltaTime);
 
 private:
 	// Status
 	int HP = 5;
 	int EXGauge = 0;
 	int EXStack = 0;
-	float MoveSpeed = 330.0f;
+	float MoveSpeed = 400.0f;
 	bool WeaponType = true;   // true : Peashooter // false : Spread
 
 	// Pixel
@@ -109,7 +109,6 @@ private:
 
 	// FSM
 	float4 MoveDirect = float4::Zero;
-	bool IsGravity = true;
 	bool IsJump = false;
 	bool IsHold = false;
 

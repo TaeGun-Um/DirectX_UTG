@@ -19,7 +19,7 @@ void Player::Start()
 {
 	RenderPtr = AnimationCreate_Tutorial();
 	SetCameraFollowType(CameraFollowType::Field);
-	SetMoveSpeed(330.0f);
+	SetMoveSpeed(380.0f);
 	ChangeState(PlayerState::Idle);
 
 	// ÇÈ¼¿Ã¼Å© µð¹ö±ë¿ë ´å
@@ -40,6 +40,13 @@ void Player::Start()
 		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
 		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
 
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
+		//DebugRenderPtr3->Off();
+		//DebugRenderPtr4->Off();
+		//DebugRenderPtr5->Off();
+		//DebugRenderPtr6->Off();
+
 		DebugRenderPtr0->Off();
 		DebugRenderPtr1->Off();
 		DebugRenderPtr2->Off();
@@ -54,7 +61,7 @@ void Player::Update(float _DeltaTime)
 	MoveCamera(_DeltaTime);
 	DirectCheck();
 	UpdateState(_DeltaTime);
-	PixelCheck();
+	PixelCheck(_DeltaTime);
 
 	if (true == IsDebugRender)
 	{
@@ -89,6 +96,15 @@ void Player::DirectCheck()
 		Directbool = true;
 		GetTransform()->SetLocalPositiveScaleX();
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+		
+		{
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
+			//DebugRenderPtr3->Off();
+			//DebugRenderPtr4->Off();
+			//DebugRenderPtr5->Off();
+			//DebugRenderPtr6->Off();
+		}
 	}
 	
 	if (true == GameEngineInput::IsDown("MoveLeft"))
@@ -96,6 +112,15 @@ void Player::DirectCheck()
 		Directbool = false;
 		GetTransform()->SetLocalNegativeScaleX();
 		RenderPtr->GetTransform()->SetLocalPosition({ 10, 90 });
+
+		{
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
+			//DebugRenderPtr3->Off();
+			//DebugRenderPtr4->Off();
+			//DebugRenderPtr5->Off();
+			//DebugRenderPtr6->Off();
+		}
 	}
 }
 
@@ -343,13 +368,14 @@ void Player::JumpStart()
 
 	if (false == IsJump)
 	{
-		MoveDirect.y = 500.0f;
+		MoveDirect.y = 900.0f;
 		IsJump = true;
-		IsGravity = true;
 	}
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
+	JumpTime += _DeltaTime;
+
 	float MoveDis = MoveSpeed * _DeltaTime;
 
 	if (true == GameEngineInput::IsPress("MoveRight"))
@@ -361,12 +387,20 @@ void Player::JumpUpdate(float _DeltaTime)
 		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 
-	if (true == IsJump)
+	if (true == GameEngineInput::IsPress("Jump") && 0.01f <= JumpTime)
 	{
-		MoveDirect.y += -1000.0f * _DeltaTime;
+		if (0.15f >= JumpTime)
+		{
+			MoveDirect.y += 2000.0f * _DeltaTime;
+		}
+	}
+
+	if (true == IsJump && 0.01f <= JumpTime)
+	{
+		MoveDirect.y += -3000.0f * _DeltaTime;
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
-	else
+	else if (false == IsJump && 0.01f <= JumpTime)
 	{
 		MoveDirect.y = 0;
 	}
@@ -379,6 +413,7 @@ void Player::JumpUpdate(float _DeltaTime)
 }
 void Player::JumpEnd()
 {
+	JumpTime = 0.0f;
 }
 
 void Player::SlapStart()

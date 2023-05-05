@@ -62,6 +62,7 @@ private:
 	PlayerState StateValue = PlayerState::Idle;
 	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
 
+	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
 
 	void DirectCheck();
