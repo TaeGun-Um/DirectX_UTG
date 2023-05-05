@@ -23,7 +23,7 @@ TutorialLevel::~TutorialLevel()
 
 void TutorialLevel::Start()
 {
-	// 리소스 로드
+	// 레벨 리소스 로드
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -39,7 +39,7 @@ void TutorialLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-	// 임시 플레이어 이미지 로드
+	// 플레이어 리소스 로드
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -49,7 +49,23 @@ void TutorialLevel::Start()
 		NewDir.Move("CupHead");
 		NewDir.Move("CH_Action");
 		NewDir.Move("CHAc_Ground");
-		NewDir.Move("CHAc_Ground_Idle");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	// 디버그용 이미지 로드
+	{
+		
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("DebugImage");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -93,8 +109,21 @@ void TutorialLevel::Start()
 	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
+		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
+		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
 	}
 }
+
+void TutorialLevel::PlayerDebugRenderOn()
+{
+	PlayerObject->PlayerDebugRenderOn();
+}
+
+void TutorialLevel::PlayerDebugRenderOff()
+{
+	PlayerObject->PlayerDebugRenderOff();
+}
+
 void TutorialLevel::Update(float _DeltaTime)
 {
 

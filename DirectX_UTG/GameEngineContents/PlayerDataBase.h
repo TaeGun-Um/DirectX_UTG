@@ -115,44 +115,44 @@ private:
 
 	// alt + shift + .
 	virtual void IdleStart() {}
-	virtual void IdleUpdate() {}
+	virtual void IdleUpdate(float _DeltaTime) {}
 	virtual void IdleEnd() {}
 
 	virtual void MoveStart() {}
-	virtual void MoveUpdate() {}
+	virtual void MoveUpdate(float _DeltaTime) {}
 	virtual void MoveEnd() {}
 
-	virtual void DashStart() {}
-	virtual void DashUpdate() {}
-	virtual void DashEnd() {}
+	//virtual void DashStart() {}
+	//virtual void DashUpdate() {}
+	//virtual void DashEnd() {}
 
-	virtual void DuckStart() {}
-	virtual void DuckUpdate() {}
-	virtual void DuckEnd() {}
+	//virtual void DuckStart() {}
+	//virtual void DuckUpdate() {}
+	//virtual void DuckEnd() {}
 
-	virtual void JumpStart() {}
-	virtual void JumpUpdate() {}
-	virtual void JumpEnd() {}
+	//virtual void JumpStart() {}
+	//virtual void JumpUpdate() {}
+	//virtual void JumpEnd() {}
 
-	virtual void SlapStart() {}
-	virtual void SlapUpdate() {}
-	virtual void SlapEnd() {}
+	//virtual void SlapStart() {}
+	//virtual void SlapUpdate() {}
+	//virtual void SlapEnd() {}
 
-	virtual void AttackStart() {}
-	virtual void AttackUpdate() {}
-	virtual void AttackEnd() {}
+	//virtual void AttackStart() {}
+	//virtual void AttackUpdate() {}
+	//virtual void AttackEnd() {}
 
-	virtual void RunAttackStart() {}
-	virtual void RunAttackUpdate() {}
-	virtual void RunAttackEnd() {}
+	//virtual void RunAttackStart() {}
+	//virtual void RunAttackUpdate() {}
+	//virtual void RunAttackEnd() {}
 
-	virtual void EXAttackStart() {}
-	virtual void EXAttackUpdate() {}
-	virtual void EXAttackEnd() {}
+	//virtual void EXAttackStart() {}
+	//virtual void EXAttackUpdate() {}
+	//virtual void EXAttackEnd() {}
 
-	virtual void HoldingStart() {}
-	virtual void HoldingUpdate() {}
-	virtual void HoldingEnd() {}
+	//virtual void HoldingStart() {}
+	//virtual void HoldingUpdate() {}
+	//virtual void HoldingEnd() {}
 
 };
 

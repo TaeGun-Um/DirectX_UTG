@@ -16,7 +16,7 @@ enum class PlayerState
 	Holding
 };
 
-// 설명 :
+// 설명 : Field 플레이어
 class Player : public PlayerDataBase
 {
 public:
@@ -32,58 +32,80 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void PlayerDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void PlayerDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr2 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr5 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr6 = nullptr;
+
+	bool IsDebugRender = false;
 
 	PlayerState StateValue = PlayerState::Idle;
 	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
+
+	float DuckTime = 0.0f;
 
 	void DirectCheck();
 	void ChangeState(PlayerState _StateValue);
 	void UpdateState(float _DeltaTime);
 
 	void IdleStart() override;
-	void IdleUpdate() override;
+	void IdleUpdate(float _DeltaTime) override;
 	void IdleEnd() override;
 
 	void MoveStart() override;
-	void MoveUpdate() override;
+	void MoveUpdate(float _DeltaTime) override;
 	void MoveEnd() override;
 
-	void DashStart() override;
-	void DashUpdate() override;
-	void DashEnd() override;
+	void DashStart();
+	void DashUpdate(float _DeltaTime);
+	void DashEnd();
 
-	void DuckStart() override;
-	void DuckUpdate() override;
-	void DuckEnd() override;
+	void DuckStart();
+	void DuckUpdate(float _DeltaTime);
+	void DuckEnd();
 
-	void JumpStart() override;
-	void JumpUpdate() override;
-	void JumpEnd() override;
+	void JumpStart();
+	void JumpUpdate(float _DeltaTime);
+	void JumpEnd();
 
-	void SlapStart() override;
-	void SlapUpdate() override;
-	void SlapEnd() override;
+	void SlapStart();
+	void SlapUpdate(float _DeltaTime);
+	void SlapEnd();
 
-	void AttackStart() override;
-	void AttackUpdate() override;
-	void AttackEnd() override;
+	void AttackStart();
+	void AttackUpdate(float _DeltaTime);
+	void AttackEnd();
 
-	void RunAttackStart() override;
-	void RunAttackUpdate() override;
-	void RunAttackEnd() override;
+	void RunAttackStart();
+	void RunAttackUpdate(float _DeltaTime);
+	void RunAttackEnd();
 
-	void EXAttackStart() override;
-	void EXAttackUpdate() override;
-	void EXAttackEnd() override;
+	void EXAttackStart();
+	void EXAttackUpdate(float _DeltaTime);
+	void EXAttackEnd();
 
-	void HoldingStart() override;
-	void HoldingUpdate() override;
-	void HoldingEnd() override;
+	void HoldingStart();
+	void HoldingUpdate(float _DeltaTime);
+	void HoldingEnd();
 };
 

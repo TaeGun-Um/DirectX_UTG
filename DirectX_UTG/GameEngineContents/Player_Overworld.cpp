@@ -36,41 +36,9 @@ void Player_Overworld::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Player_Overworld::IdleStart() {}
-void Player_Overworld::IdleUpdate() {}
+void Player_Overworld::IdleUpdate(float _DeltaTime) {}
 void Player_Overworld::IdleEnd() {}
 
 void Player_Overworld::MoveStart() {}
-void Player_Overworld::MoveUpdate() {}
+void Player_Overworld::MoveUpdate(float _DeltaTime) {}
 void Player_Overworld::MoveEnd() {}
-
-void Player_Overworld::DashStart() {}
-void Player_Overworld::DashUpdate() {}
-void Player_Overworld::DashEnd() {}
-
-void Player_Overworld::DuckStart() {}
-void Player_Overworld::DuckUpdate() {}
-void Player_Overworld::DuckEnd() {}
-
-void Player_Overworld::JumpStart() {}
-void Player_Overworld::JumpUpdate() {}
-void Player_Overworld::JumpEnd() {}
-
-void Player_Overworld::SlapStart() {}
-void Player_Overworld::SlapUpdate() {}
-void Player_Overworld::SlapEnd() {}
-
-void Player_Overworld::AttackStart() {}
-void Player_Overworld::AttackUpdate() {}
-void Player_Overworld::AttackEnd() {}
-
-void Player_Overworld::RunAttackStart() {}
-void Player_Overworld::RunAttackUpdate() {}
-void Player_Overworld::RunAttackEnd() {}
-
-void Player_Overworld::EXAttackStart() {}
-void Player_Overworld::EXAttackUpdate() {}
-void Player_Overworld::EXAttackEnd() {}
-
-void Player_Overworld::HoldingStart() {}
-void Player_Overworld::HoldingUpdate() {}
-void Player_Overworld::HoldingEnd() {}

@@ -21,13 +21,61 @@ void Player::Start()
 	SetCameraFollowType(CameraFollowType::Field);
 	SetMoveSpeed(330.0f);
 	ChangeState(PlayerState::Idle);
+
+	// ÇÈ¼¿Ã¼Å© µð¹ö±ë¿ë ´å
+	{
+		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
+
+		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr1->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr2->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr3->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr4->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
+
+		DebugRenderPtr0->Off();
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+	}
 }
 void Player::Update(float _DeltaTime)
 {
+	MoveCamera(_DeltaTime);
 	DirectCheck();
-	PlayerMove(_DeltaTime);
 	UpdateState(_DeltaTime);
 	PixelCheck();
+
+	if (true == IsDebugRender)
+	{
+		DebugRenderPtr0->On();
+		DebugRenderPtr1->On();
+		DebugRenderPtr2->On();
+		DebugRenderPtr3->On();
+		DebugRenderPtr4->On();
+		DebugRenderPtr5->On();
+		DebugRenderPtr6->On();
+	}
+	else
+	{
+		DebugRenderPtr0->Off();
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,14 +87,13 @@ void Player::DirectCheck()
 	if (true == GameEngineInput::IsDown("MoveRight"))
 	{
 		Directbool = true;
-		//RenderPtr->GetTransform()->SetLocalPositiveScaleX();
 		GetTransform()->SetLocalPositiveScaleX();
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	}
-	else if (true == GameEngineInput::IsDown("MoveLeft"))
+	
+	if (true == GameEngineInput::IsDown("MoveLeft"))
 	{
 		Directbool = false;
-		//RenderPtr->GetTransform()->SetLocalNegativeScaleX();
 		GetTransform()->SetLocalNegativeScaleX();
 		RenderPtr->GetTransform()->SetLocalPosition({ 10, 90 });
 	}
@@ -137,34 +184,34 @@ void Player::UpdateState(float _DeltaTime)
 	switch (StateValue)
 	{
 	case PlayerState::Idle:
-		IdleUpdate();
+		IdleUpdate(_DeltaTime);
 		break;
 	case PlayerState::Move:
-		MoveUpdate();
+		MoveUpdate(_DeltaTime);
 		break;
 	case PlayerState::Dash:
-		DashUpdate();
+		DashUpdate(_DeltaTime);
 		break;
 	case PlayerState::Duck:
-		DuckUpdate();
+		DuckUpdate(_DeltaTime);
 		break;
 	case PlayerState::Jump:
-		JumpUpdate();
+		JumpUpdate(_DeltaTime);
 		break;
 	case PlayerState::Slap:
-		SlapUpdate();
+		SlapUpdate(_DeltaTime);
 		break;
 	case PlayerState::Attack:
-		AttackUpdate();
+		AttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::RunAttack:
-		RunAttackUpdate();
+		RunAttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::EXAttack:
-		EXAttackUpdate();
+		EXAttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::Holding:
-		HoldingUpdate();
+		HoldingUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -173,9 +220,39 @@ void Player::UpdateState(float _DeltaTime)
 
 void Player::IdleStart()
 {
+	RenderPtr->SetTexture("Ground_Idle_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
-void Player::IdleUpdate()
+void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		ChangeState(PlayerState::Holding);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::Duck);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+	else if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 }
 void Player::IdleEnd()
 {
@@ -183,9 +260,42 @@ void Player::IdleEnd()
 
 void Player::MoveStart()
 {
+	RenderPtr->SetTexture("Run_Normal_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
-void Player::MoveUpdate()
+void Player::MoveUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		ChangeState(PlayerState::Holding);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (false == IsHold)
+	{
+		float MoveDis = MoveSpeed * _DeltaTime;
+
+		if (true == GameEngineInput::IsPress("MoveRight"))
+		{
+			GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		}
+		if (true == GameEngineInput::IsPress("MoveLeft"))
+		{
+			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		}
+	}
+
+	if (false == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::MoveEnd()
 {
@@ -194,7 +304,7 @@ void Player::MoveEnd()
 void Player::DashStart()
 {
 }
-void Player::DashUpdate()
+void Player::DashUpdate(float _DeltaTime)
 {
 }
 void Player::DashEnd()
@@ -203,19 +313,69 @@ void Player::DashEnd()
 
 void Player::DuckStart()
 {
+	RenderPtr->SetTexture("Ground_Duck_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 }
-void Player::DuckUpdate()
+void Player::DuckUpdate(float _DeltaTime)
 {
+	DuckTime += _DeltaTime;
+
+	if (DuckTime >= 0.2f)
+	{
+		RenderPtr->SetTexture("Ground_Duck_008.png");
+	}
+
+	if (false == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::DuckEnd()
 {
+	DuckTime = 0.0f;
 }
 	 
 void Player::JumpStart()
 {
+	RenderPtr->SetTexture("Ground_Jump_002.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
+
+	if (false == IsJump)
+	{
+		MoveDirect.y = 500.0f;
+		IsJump = true;
+		IsGravity = true;
+	}
 }
-void Player::JumpUpdate()
+void Player::JumpUpdate(float _DeltaTime)
 {
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	if (true == IsJump)
+	{
+		MoveDirect.y += -1000.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+	}
+	else
+	{
+		MoveDirect.y = 0;
+	}
+
+	if (false == IsJump)
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::JumpEnd()
 {
@@ -224,7 +384,7 @@ void Player::JumpEnd()
 void Player::SlapStart()
 {
 }
-void Player::SlapUpdate()
+void Player::SlapUpdate(float _DeltaTime)
 {
 }
 void Player::SlapEnd()
@@ -234,7 +394,7 @@ void Player::SlapEnd()
 void Player::AttackStart()
 {
 }
-void Player::AttackUpdate()
+void Player::AttackUpdate(float _DeltaTime)
 {
 }
 void Player::AttackEnd()
@@ -244,7 +404,7 @@ void Player::AttackEnd()
 void Player::RunAttackStart()
 {
 }
-void Player::RunAttackUpdate()
+void Player::RunAttackUpdate(float _DeltaTime)
 {
 }
 void Player::RunAttackEnd()
@@ -254,7 +414,7 @@ void Player::RunAttackEnd()
 void Player::EXAttackStart()
 {
 }
-void Player::EXAttackUpdate()
+void Player::EXAttackUpdate(float _DeltaTime)
 {
 }
 void Player::EXAttackEnd()
@@ -263,9 +423,29 @@ void Player::EXAttackEnd()
 
 void Player::HoldingStart()
 {
+	RenderPtr->SetTexture("Normal_Straight_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
-void Player::HoldingUpdate()
+void Player::HoldingUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		IsHold = true;
+
+		if (true == GameEngineInput::IsDown("Jump"))
+		{
+			IsHold = false;
+			ChangeState(PlayerState::Jump);
+		}
+
+		return;
+	}
+	else
+	{
+		IsHold = false;
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::HoldingEnd()
 {

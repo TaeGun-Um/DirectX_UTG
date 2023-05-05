@@ -20,6 +20,9 @@ public:
 
 	void SetTarget(GameEngineTransform* _Target);
 
+	std::function<void()> PlayerDebugRenderOn;
+	std::function<void()> PlayerDebugRenderOff;
+
 protected:
 
 private:
@@ -28,6 +31,8 @@ private:
 	bool IsWorldPostion = false;
 	bool IsWorldRotation = false;
 	bool IsWorldScale = false;
+
+	bool IsPlayerDebugDot = false;
 
 	float Postion[4] = { 0, 0, 0, 1 };
 	float Rotation[4] = { 0, 0, 0, 1 };
