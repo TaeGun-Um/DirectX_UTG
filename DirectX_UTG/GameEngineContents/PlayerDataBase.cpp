@@ -30,30 +30,71 @@ void PlayerDataBase::SetCameraFollowType(CameraFollowType _Type)
 	CameraType = _Type;
 }
 
-void PlayerDataBase::CameraPivotCheck(float _CameraPosX, float _CameraPosY)
+void PlayerDataBase::FieldCameraPivotCheck()
 {
-	CameraHegihtPivot = ColMapHegiht_Half - CameraHegiht_Half;
-	CameraWidthPivot = ColMapWidth_Half - CameraWidth_Half;
+	CameraXEnd = ColMapWidth_Half - CameraWidth_Half;
+	CameraYEnd = ColMapHegiht_Half - CameraHegiht_Half;
 
-	float CameraWidthPivotMinus = -CameraWidthPivot;
+	// 현재 위치에서 카메라의 이동 가능 영역 필요
+	float XLeftEnd = ColMapWidth_Half - CameraXEnd;
+	float XRightEnd = ColMapWidth_Half + CameraXEnd;
 
-	if (_CameraPosX <= CameraWidthPivotMinus)
+	if (XLeftEnd >= TargetPosition.x)
 	{
-		LeftEnd = true;
+		if (1 == LeftCount)
+		{
+			LeftCount = 0;
+			IsLeftEndPosition = true;
+
+			float4 EndPos = { XLeftEnd, TargetPosition.y, TargetPosition.z };
+
+			CameraEndPosition = EndPos;
+		}
 	}
 	else
 	{
-		LeftEnd = false;
+		LeftCount = 1;
+		IsLeftEndPosition = false;
 	}
 
-	//if (_CameraPosX >= CameraWidthPivot)
-	//{
-	//	RightEnd = true;
-	//}
-	//else
-	//{
-	//	RightEnd = false;
-	//}
+	if (XRightEnd <= TargetPosition.x)
+	{
+		if (1 == RightCount)
+		{
+			RightCount = 0;
+			IsRightEndPosition = true;
+
+			float4 EndPos = { XRightEnd, TargetPosition.y, TargetPosition.z };
+
+			CameraEndPosition = EndPos;
+		}
+	}
+	else
+	{
+		RightCount = 1;
+		IsRightEndPosition = false;
+	}
+}
+
+void PlayerDataBase::OverwolrdCameraPivotCheck()
+{
+	CameraXEnd = ColMapWidth_Half - CameraWidth_Half;
+	CameraYEnd = ColMapHegiht_Half - CameraHegiht_Half;
+
+	// 현재 위치에서 카메라의 이동 가능 영역 필요
+	float XLeftEnd = ColMapWidth_Half - CameraXEnd;
+	float XRightEnd = ColMapWidth_Half + CameraXEnd;
+	float YUpEnd = ColMapHegiht_Half + CameraYEnd;
+	float YDownEnd = ColMapHegiht_Half - CameraYEnd;
+
+	if (XLeftEnd >= TargetPosition.x)
+	{
+	}
+
+	if (XRightEnd <= TargetPosition.x)
+	{
+	}
+
 }
 
 void PlayerDataBase::MoveCamera(float _DeltaTime)
@@ -81,13 +122,24 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		float CameraPosY = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition().y;
 
 		PrevCameraPosition = { CameraPosX, CameraPosY };
+		float4 Movedir = float4::Zero;
+		FieldCameraPivotCheck();
 
-		float4 Movedir = (TargetPosition - PrevCameraPosition);
+		if (true == IsLeftEndPosition)
+		{
+			Movedir = (CameraEndPosition - PrevCameraPosition);
+		}
+		else if (true == IsRightEndPosition)
+		{
+			Movedir = (CameraEndPosition - PrevCameraPosition);
+		}
+		else
+		{
+			Movedir = (TargetPosition - PrevCameraPosition);
+		}
 
 		MoveDistance = Movedir * 2.0f * _DeltaTime;
 		MoveDistance.y = 0.0f;
-
-		CameraPivotCheck(CameraPosX, CameraPosY);
 
 		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(MoveDistance);
 	}
@@ -101,11 +153,11 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 
 		PrevCameraPosition = { CameraPosX, CameraPosY };
 
+		OverwolrdCameraPivotCheck();
+
 		float4 Movedir = (TargetPosition - PrevCameraPosition);
 
 		MoveDistance = Movedir * 4.5f * _DeltaTime;
-
-		CameraPivotCheck(CameraPosX, CameraPosY);
 
 		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(MoveDistance);
 	}

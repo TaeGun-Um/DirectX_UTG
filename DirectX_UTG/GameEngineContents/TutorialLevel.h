@@ -22,6 +22,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class Player> PlayerObject = nullptr;
+	std::shared_ptr<class TransformGUI> GUI = nullptr;
 
 };
 

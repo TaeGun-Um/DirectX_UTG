@@ -11,6 +11,8 @@
 #include "Tutorial_Map.h"
 #include "Player.h"
 
+#include "TransformGUI.h"
+
 TutorialLevel::TutorialLevel() 
 {
 }
@@ -57,22 +59,40 @@ void TutorialLevel::Start()
 		}
 	}
 
+	// ColMap
+	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("Tutorial_ColMap.png");
+	int PlayMapWidth = PlayMap->GetWidth();
+	int PlayMapHeight = PlayMap->GetHeight();
+	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
+	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
+	float4 PlayMapPosition = { PlayMapWidth_Half, PlayMapHeight_Half, 1 };
+
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 300, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
 	// Background, Map
 	{
 		std::shared_ptr<Tutorial_BackLayer> Object0 = CreateActor<Tutorial_BackLayer>(-10);
-		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
-		std::shared_ptr<Tutorial_BackGround> Object2 = CreateActor<Tutorial_BackGround>(-100);
-		
-		Object1->GetTransform()->AddWorldPosition({ 2500, 100 });
+		Object0->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half - 100, 1 });
+		std::shared_ptr<Tutorial_BackGround> Object1 = CreateActor<Tutorial_BackGround>(-100);
+		Object1->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half - 100, 1 });
+
+		std::shared_ptr<Tutorial_Map> Object2 = CreateActor<Tutorial_Map>(-50);
+		Object2->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
 	// Character
 	{
-		std::shared_ptr<Player> Object = CreateActor<Player>(1);
+		PlayerObject = CreateActor<Player>(1);
+		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1});
+		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+	}
+
+	// GUI
+	{
+		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		GUI->SetTarget(PlayerObject->GetTransform());
 	}
 }
 void TutorialLevel::Update(float _DeltaTime)

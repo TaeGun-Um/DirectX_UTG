@@ -17,7 +17,7 @@ Player::~Player()
 
 void Player::Start()
 {
-	RenderPtr = AnimationCreate_Field();
+	RenderPtr = AnimationCreate_Tutorial();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetMoveSpeed(330.0f);
 	ChangeState(PlayerState::Idle);

@@ -18,7 +18,8 @@ public:
 
 	enum class Coordinate
 	{
-		Origin,
+		WindowOrigin,
+		DirectOrigin,
 		Custom
 	};
 
@@ -44,7 +45,7 @@ public:
 protected:
 
 private:
-	Coordinate Pivot = Coordinate::Origin;
+	Coordinate Pivot = Coordinate::WindowOrigin;
 	GameEnginePixelColor DebugColor;
 	GameEnginePixelColor BlackColor;
 	std::shared_ptr<class GameEngineTexture> ColMap = nullptr;

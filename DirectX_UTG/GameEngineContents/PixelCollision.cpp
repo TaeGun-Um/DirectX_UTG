@@ -41,7 +41,7 @@ GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 
 	switch (Pivot)
 	{
-	case PixelCollision::Coordinate::Origin:
+	case PixelCollision::Coordinate::WindowOrigin:
 	{
 		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
 		int ColCheckY = static_cast<int>(_Value.y - Height_Half);
@@ -49,12 +49,16 @@ GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
 	}
 		break;
-	case PixelCollision::Coordinate::Custom:
+	case PixelCollision::Coordinate::DirectOrigin:
 	{
 		// ¡ﬂæ”, Y∏∏ 0
-		//int ColCheckX = static_cast<int>(_Value.x + Width_Half);
-		//int ColCheckY = static_cast<int>(_Value.y - Height);
+		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
+		int ColCheckY = static_cast<int>(_Value.y - Height);
 
+		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
+	}
+	case PixelCollision::Coordinate::Custom:
+	{
 		// øﬁ¬ «œ¥‹¿Ã 0, 0
 		int ColCheckX = static_cast<int>(_Value.x);
 		int ColCheckY = static_cast<int>(_Value.y - Height);

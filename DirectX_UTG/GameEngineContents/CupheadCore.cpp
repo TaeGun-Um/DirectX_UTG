@@ -2,6 +2,7 @@
 #include "CupheadCore.h"
 
 #include <GameEngineCore\GameEngineCore.h>
+#include <GameEngineCore/GameEngineGUI.h>
 
 #include "TestLevel.h"
 #include "First_OpeningLevel.h"
@@ -13,6 +14,8 @@
 #include "DragonLevel.h"
 #include "MouseLevel.h"
 #include "EndingLevel.h"
+
+#include "TransformGUI.h"
 
 CupheadCore::CupheadCore()
 {
@@ -26,16 +29,16 @@ void CupheadCore::GameStart()
 {
 	new int(); // ½Å·ÚÀÇ ¸¯
 
-	//GameEngineGUI::GUIWindowCreate<ImguiWindow>("ImguiWindow");
+	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
 
 	ContentsResourcesCreate();
 
-	GameEngineCore::CreateLevel<TestLevel>();
+	//GameEngineCore::CreateLevel<TestLevel>();
 	//GameEngineCore::CreateLevel<First_OpeningLevel>();
-	//GameEngineCore::CreateLevel<TutorialLevel>();
-	GameEngineCore::CreateLevel<OverworldLevel>();
+	GameEngineCore::CreateLevel<TutorialLevel>();
+	//GameEngineCore::CreateLevel<OverworldLevel>();
 
-	GameEngineCore::ChangeLevel("TestLevel");
+	GameEngineCore::ChangeLevel("TutorialLevel");
 }
 
 void CupheadCore::GameEnd()

@@ -51,10 +51,10 @@ protected:
 
 	enum class CameraFollowType
 	{
-		Normal,
-		Field,
-		Overworld,
-		None
+		Normal,     // Player의 위치가 곧 Camera의 위치
+		Field,      // Player의 x 이동만 따라감
+		Overworld,  // Player의 x, y 이동을 따라감
+		None        // 미설정시 assert
 	};
 
 	void SetCameraFollowType(CameraFollowType _Type);
@@ -84,23 +84,28 @@ private:
 	CameraFollowType CameraType = CameraFollowType::None;
 	float CameraMoveSpeed = 0.0f;
 	float CameraAccessTime = 0.0f;
-	//float CameraFollowTime = 2.0f;
 
-	float CameraWidthPivot = 0.0f;
-	float CameraHegihtPivot = 0.0f;
 	float CameraWidth_Half = 640.0f;
 	float CameraHegiht_Half = 360.0f;
 	float ColMapWidth_Half = 0.0f;
 	float ColMapHegiht_Half = 0.0f;
 
-	bool LeftEnd = false;
-	bool RightEnd = false;
+	float CameraXEnd = 0.0f;
+	float CameraYEnd = 0.0f;
+
+	bool IsLeftEndPosition = false;
+	bool IsRightEndPosition = false;
+
+	int LeftCount = 1;
+	int RightCount = 1;
 
 	float4 TargetPosition = float4::Zero;
 	float4 PrevCameraPosition = float4::Zero;
+	float4 CameraEndPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
 
-	void CameraPivotCheck(float _CameraPosX, float _CameraPosY);
+	void FieldCameraPivotCheck();
+	void OverwolrdCameraPivotCheck();
 
 	// FSM
 	float4 MoveDirect = float4::Zero;

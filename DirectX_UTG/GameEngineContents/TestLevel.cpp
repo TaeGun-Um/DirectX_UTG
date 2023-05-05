@@ -132,7 +132,6 @@ void TestLevel::Start()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -620.0f });
-	// GetMainCamera()->GetTransform()->AddLocalPosition({ 0, PlayMapHeight_Half });
 
 	// CreateActor
 	// Background, Map
@@ -148,7 +147,7 @@ void TestLevel::Start()
 	{
 		PlayerObject = CreateActor<Player>(1);
 		//PlayerObject->GetTransform()->AddLocalPosition({ 0, 0 });
-		PlayerObject->GetTransform()->SetLocalPosition(PlayMapPosition);
+		PlayerObject->GetTransform()->SetLocalPosition(PlayMapPosition + float4{-500, 0});
 
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		
