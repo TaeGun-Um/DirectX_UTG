@@ -156,9 +156,6 @@
     <ClInclude Include="Overworld_Map.h">
       <Filter>Levels\4. Overworld\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Overworld.h">
-      <Filter>Levels\4. Overworld\Object</Filter>
-    </ClInclude>
     <ClInclude Include="TestLevel_Map.h">
       <Filter>Levels\0. TestLevel\Object</Filter>
     </ClInclude>
@@ -198,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="ParryEffect.h">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Overworld.h">
+      <Filter>Levels\7. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,9 +267,6 @@
     <ClCompile Include="Overworld_Map.cpp">
       <Filter>Levels\4. Overworld\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Player_Overworld.cpp">
-      <Filter>Levels\4. Overworld\Object</Filter>
-    </ClCompile>
     <ClCompile Include="TestLevel_Map.cpp">
       <Filter>Levels\0. TestLevel\Object</Filter>
     </ClCompile>
@@ -309,6 +306,9 @@
     </ClCompile>
     <ClCompile Include="ParryEffect.cpp">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_Overworld.cpp">
+      <Filter>Levels\7. Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

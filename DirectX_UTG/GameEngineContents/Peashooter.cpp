@@ -18,5 +18,21 @@ void Peashooter::Start()
 }
 void Peashooter::Update(float _DeltaTime)
 {
+	float MoveDist = MoveSpeed * _DeltaTime;
 
+	if (true == Direction) // Right
+	{
+		GetTransform()->AddLocalPosition({ MoveDist, 0 });
+	}
+	else				   // Left
+	{
+		GetTransform()->AddLocalPosition({ -MoveDist, 0 });
+	}
+
+	float4 BulletPos = GetTransform()->GetLocalPosition();
+
+	if (abs(InitPlayerXPosition + 1000.0f) <= abs(BulletPos.x))
+	{
+		Death();
+	}
 }

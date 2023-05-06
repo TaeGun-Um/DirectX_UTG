@@ -26,7 +26,7 @@ Player::~Player()
 
 void Player::Start()
 {
-	RenderPtr = AnimationCreate_Tutorial();
+	RenderPtr = AnimationCreate_Field();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetMoveSpeed(380.0f);
 	ChangeState(PlayerState::Idle);
@@ -49,10 +49,10 @@ void Player::Start()
 		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
 		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
 
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
-		//DebugRenderPtr3->Off();
-		//DebugRenderPtr4->Off();
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
 		//DebugRenderPtr5->Off();
 		//DebugRenderPtr6->Off();
 
@@ -67,37 +67,6 @@ void Player::Start()
 }
 void Player::Update(float _DeltaTime)
 {
-	//float4 LocalScale = RenderPtr->GetTransform()->GetLocalScale();
-
-	//if (true == GameEngineInput::IsDown("MoveRight"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({10, 0, 0});
-	//	LocalScale = RenderPtr->GetTransform()->GetLocalScale();
-	//}
-	//if (true == GameEngineInput::IsDown("MoveLeft"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({ -10, 0, 0 });
-	//	LocalScale = RenderPtr->GetTransform()->GetLocalScale();
-	//}
-	//if (true == GameEngineInput::IsDown("MoveUp"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 10, 0 });
-	//}
-	//if (true == GameEngineInput::IsDown("MoveDown"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({ 0, -10, 0 });
-	//}
-	//if (true == GameEngineInput::IsDown("Attack"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 0, 1 });
-	//}
-	//if (true == GameEngineInput::IsDown("Jump"))
-	//{
-	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 0, -1 });
-	//}
-
-	//return;
-
 	if (false == IsCorrection)
 	{
 		PositionCorrection();
@@ -107,6 +76,7 @@ void Player::Update(float _DeltaTime)
 	MoveCamera(_DeltaTime);
 	DirectCheck();
 	UpdateState(_DeltaTime);
+	ProjectileCreate(_DeltaTime);
 	PixelCheck(_DeltaTime);
 
 	if (true == GameEngineInput::IsDown("Dash"))
@@ -183,14 +153,54 @@ void Player::PositionCorrection()
 ///////////////////////////////////////////                     CreateActor                       /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Player::ProjectileCreate(float _DeltaTime)
+{
+	ProjectileCreateTime += _DeltaTime;
+
+	if (true == GameEngineInput::IsDown("WeaponSwap"))
+	{
+		// true : Peashooter // false : Spread
+		WeaponType = !WeaponType;
+		bool Check = WeaponType;
+		ProjectileCreateTime = 0.0f;
+	}
+
+	if (true == WeaponType && 0.1f <= ProjectileCreateTime
+		&& GameEngineInput::IsPress("Attack"))
+	{
+		ProjectileCreateTime = 0.0f;
+		CreatePeashooter();
+	}
+	else
+	{
+		// CreateSpread();
+	}
+}
+
 // 기본 공격
-void Player::CreatePeashooter() {}
+void Player::CreatePeashooter()
+{
+	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+
+	Projectile->SetPlayerPosition(PlayerPosition);
+	Projectile->SetPlayerDirection(Directbool);
+}
 
 // 기본 EX 공격
 void Player::CreatePeashooter_EX() {}
 
 // 2번 공격
-void Player::CreateSpread() {}
+void Player::CreateSpread()
+{
+	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+
+	Projectile->SetPlayerPosition(PlayerPosition);
+	Projectile->SetPlayerDirection(Directbool);
+}
 
 // 2번 EX 공격 
 void Player::CreateSpread_EX() {}
@@ -213,6 +223,11 @@ void Player::CreateParryEffect() {}
 
 void Player::DirectCheck()
 {
+	if (true == IsDash)
+	{
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
@@ -222,8 +237,8 @@ void Player::DirectCheck()
 		{
 			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
 			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
-			//DebugRenderPtr3->Off();
-			//DebugRenderPtr4->Off();
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -40, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
 			//DebugRenderPtr5->Off();
 			//DebugRenderPtr6->Off();
 		}
@@ -238,10 +253,62 @@ void Player::DirectCheck()
 		{
 			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
 			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
-			//DebugRenderPtr3->Off();
-			//DebugRenderPtr4->Off();
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
 			//DebugRenderPtr5->Off();
 			//DebugRenderPtr6->Off();
+		}
+	}
+
+	AttackDirectCheck();
+}
+
+void Player::AttackDirectCheck()
+{
+	if (true == Directbool)
+	{
+		if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight"))
+		{
+			ADValue = AttackDirection::Right_DiagonalUp;
+		}
+		else if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsPress("MoveRight"))
+		{
+			ADValue = AttackDirection::Right_DiagonalDown;
+		}
+		else if (true == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Right_Up;
+		}
+		else if (true == GameEngineInput::IsPress("MoveRight"))
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+		else if (true == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Right_Down;
+		}
+	}
+	else
+	{
+		if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveLeft"))
+		{
+			ADValue = AttackDirection::Left_DiagonalUp;
+		}
+		else if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsPress("MoveLeft"))
+		{
+			ADValue = AttackDirection::Left_DiagonalDown;
+		}
+		else if (true == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Left_Up;
+		}
+		else if (true == GameEngineInput::IsPress("MoveLeft"))
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
+		else if (true == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Left_Down;
 		}
 	}
 }
@@ -255,6 +322,9 @@ void Player::ChangeState(PlayerState _StateValue)
 
 	switch (NextState)
 	{
+	case PlayerState::Fall:
+		FallStart();
+		break;
 	case PlayerState::Idle:
 		IdleStart();
 		break;
@@ -263,6 +333,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Dash:
 		DashStart();
+		break;
+	case PlayerState::DuckReady:
+		DuckReadyStart();
 		break;
 	case PlayerState::Duck:
 		DuckStart();
@@ -273,11 +346,17 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Slap:
 		SlapStart();
 		break;
+	case PlayerState::AttackReady:
+		AttackReadyStart();
+		break;
 	case PlayerState::Attack:
 		AttackStart();
 		break;
 	case PlayerState::RunAttack:
 		RunAttackStart();
+		break;
+	case PlayerState::DuckAttack:
+		DuckAttackStart();
 		break;
 	case PlayerState::EXAttack:
 		EXAttackStart();
@@ -285,12 +364,18 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Holding:
 		HoldingStart();
 		break;
+	case PlayerState::HoldingAttack:
+		HoldingAttackStart();
+		break;
 	default:
 		break;
 	}
 
 	switch (PrevState)
 	{
+	case PlayerState::Fall:
+		FallEnd();
+		break;
 	case PlayerState::Idle:
 		IdleEnd();
 		break;
@@ -299,6 +384,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Dash:
 		DashEnd();
+		break;
+	case PlayerState::DuckReady:
+		DuckReadyEnd();
 		break;
 	case PlayerState::Duck:
 		DuckEnd();
@@ -309,17 +397,26 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Slap:
 		SlapEnd();
 		break;
+	case PlayerState::AttackReady:
+		AttackReadyEnd();
+		break;
 	case PlayerState::Attack:
 		AttackEnd();
 		break;
 	case PlayerState::RunAttack:
 		RunAttackEnd();
 		break;
+	case PlayerState::DuckAttack:
+		DuckAttackEnd();
+		break;
 	case PlayerState::EXAttack:
 		EXAttackEnd();
 		break;
 	case PlayerState::Holding:
 		HoldingEnd();
+		break;
+	case PlayerState::HoldingAttack:
+		HoldingAttackEnd();
 		break;
 	default:
 		break;
@@ -330,6 +427,9 @@ void Player::UpdateState(float _DeltaTime)
 {
 	switch (StateValue)
 	{
+	case PlayerState::Fall:
+		FallUpdate(_DeltaTime);
+		break;
 	case PlayerState::Idle:
 		IdleUpdate(_DeltaTime);
 		break;
@@ -338,6 +438,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::Dash:
 		DashUpdate(_DeltaTime);
+		break;
+	case PlayerState::DuckReady:
+		DuckReadyUpdate(_DeltaTime);
 		break;
 	case PlayerState::Duck:
 		DuckUpdate(_DeltaTime);
@@ -348,11 +451,17 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::Slap:
 		SlapUpdate(_DeltaTime);
 		break;
+	case PlayerState::AttackReady:
+		AttackReadyUpdate(_DeltaTime);
+		break;
 	case PlayerState::Attack:
 		AttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::RunAttack:
 		RunAttackUpdate(_DeltaTime);
+		break;
+	case PlayerState::DuckAttack:
+		DuckAttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::EXAttack:
 		EXAttackUpdate(_DeltaTime);
@@ -360,9 +469,60 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::Holding:
 		HoldingUpdate(_DeltaTime);
 		break;
+	case PlayerState::HoldingAttack:
+		HoldingAttackUpdate(_DeltaTime);
+		break;
 	default:
 		break;
 	}
+}
+
+void Player::FallStart()
+{
+	RenderPtr->SetTexture("Ground_Jump_002.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
+}
+void Player::FallUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Dash") && true == AirDash) // AirDash true는 PixelCheck에서 진행
+	{
+		AirDash = false;
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	// 낙하 시 이동
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	if (true == IsFall)
+	{
+		MoveDirect.y += -3000.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+	}
+	else if (false == IsFall)
+	{
+		MoveDirect.y = 0;
+	}
+
+	if (false == IsFall)
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+void Player::FallEnd()
+{
+	MoveDirect = float4::Zero;
+	// IsFall의 false는 PixelCheck에서 실시
 }
 
 void Player::IdleStart()
@@ -372,9 +532,39 @@ void Player::IdleStart()
 }
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		ChangeState(PlayerState::Holding);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveUp"))
+	{
+		ChangeState(PlayerState::AttackReady);
 		return;
 	}
 
@@ -386,19 +576,13 @@ void Player::IdleUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
-		ChangeState(PlayerState::Duck);
+		ChangeState(PlayerState::DuckReady);
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		ChangeState(PlayerState::Move);
-		return;
-	}
-
-	if (true == GameEngineInput::IsDown("Jump"))
-	{
-		ChangeState(PlayerState::Jump);
 		return;
 	}
 }
@@ -413,6 +597,18 @@ void Player::MoveStart()
 }
 void Player::MoveUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		ChangeState(PlayerState::Holding);
@@ -439,9 +635,15 @@ void Player::MoveUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+	if (true == GameEngineInput::IsPress("Attack"))
 	{
-		ChangeState(PlayerState::Idle);
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::DuckReady);
 		return;
 	}
 
@@ -457,26 +659,143 @@ void Player::MoveEnd()
 
 void Player::DashStart()
 {
+	if (true == IsFall)
+	{
+		RenderPtr->SetTexture("Dash_Air_008.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
+	}
+	else
+	{
+		RenderPtr->SetTexture("Dash_Ground_008.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
+	}
+
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -100, 0 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -10, 0 });
+	}
+	
+	IsDash = true;
 }
 void Player::DashUpdate(float _DeltaTime)
 {
+	DashTime += _DeltaTime;
+
+	float MoveDis = (MoveSpeed * 2) * _DeltaTime;
+
+	if (true == Directbool && 0.4f >= DashTime) // 오른쪽
+	{
+		AirDash = false;
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		return;
+	}
+	else if (false == Directbool && 0.4f >= DashTime)
+	{
+		AirDash = false;
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		return;
+	}
+
+	if (true == IsFall && 0.4f <= DashTime)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (0.4f <= DashTime)
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::DashEnd()
 {
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ 100, 0 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ 10, 0 });
+	}
+
+	DashTime = 0.0f;
+	IsDash = false;
 }
 
-void Player::DuckStart()
+void Player::DuckReadyStart()
 {
 	RenderPtr->SetTexture("Ground_Duck_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 }
-void Player::DuckUpdate(float _DeltaTime)
+void Player::DuckReadyUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
 	DuckTime += _DeltaTime;
 
-	if (DuckTime >= 0.2f)
+	if (DuckTime >= 0.05f)
 	{
-		RenderPtr->SetTexture("Ground_Duck_008.png");
+		if (true == GameEngineInput::IsPress("Attack"))
+		{
+			ChangeState(PlayerState::DuckAttack);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Duck);
+			return;
+		}
+	}
+}
+void Player::DuckReadyEnd()
+{
+	DuckTime = 0.0f;
+}
+
+void Player::DuckStart()
+{
+	RenderPtr->SetTexture("Ground_Duck_008.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
+}
+void Player::DuckUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::DuckAttack);
+		return;
 	}
 
 	if (false == GameEngineInput::IsPress("MoveDown"))
@@ -487,7 +806,6 @@ void Player::DuckUpdate(float _DeltaTime)
 }
 void Player::DuckEnd()
 {
-	DuckTime = 0.0f;
 }
 	 
 void Player::JumpStart()
@@ -504,6 +822,13 @@ void Player::JumpStart()
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Dash") && true == AirDash)  // AirDash true는 PixelCheck에서 진행
+	{
+		AirDash = false;
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
 	JumpTime += _DeltaTime;
 
 	// 점프 시 이동
@@ -545,7 +870,9 @@ void Player::JumpUpdate(float _DeltaTime)
 }
 void Player::JumpEnd()
 {
+	MoveDirect = float4::Zero;
 	JumpTime = 0.0f;
+	// IsJump의 false는 PixelCheck에서 실시
 }
 
 void Player::SlapStart()
@@ -558,11 +885,148 @@ void Player::SlapEnd()
 {
 }
 
+// MoveUp 전용 FSM
+void Player::AttackReadyStart()
+{
+	RenderPtr->SetTexture("Normal_Up_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+}
+void Player::AttackReadyUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		ChangeState(PlayerState::Holding);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("MoveUp"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+}
+void Player::AttackReadyEnd()
+{
+
+}
+
 void Player::AttackStart()
 {
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		ChangeState(PlayerState::HoldingAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	switch (ADValue)
+	{
+	case Player::AttackDirection::Right_Up:
+	{
+		RenderPtr->SetTexture("Shoot_Up_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Right_Front:
+	{
+		RenderPtr->SetTexture("Shoot_Straight_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Left_Up:
+	{
+		RenderPtr->SetTexture("Shoot_Up_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Left_Front:
+	{
+		RenderPtr->SetTexture("Shoot_Straight_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	}
+	break;
+	default:
+		break;
+	}
+	
+	// 방향키 안누르면 Front로 고정
+	if (true == Directbool)
+	{
+		if (false == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+	}
+	else
+	{
+		if (false == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
+	}
+
+	if (true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
+		|| true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::DuckReady);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::AttackEnd()
 {
@@ -573,9 +1037,149 @@ void Player::RunAttackStart()
 }
 void Player::RunAttackUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		ChangeState(PlayerState::HoldingAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	switch (ADValue)
+	{
+	case Player::AttackDirection::Right_DiagonalUp:
+	{
+		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Right_Front:
+	{
+		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Left_DiagonalUp:
+	{
+		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+	}
+	break;
+	case Player::AttackDirection::Left_Front:
+	{
+		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
+		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+	}
+	break;
+	default:
+		break;
+	}
+
+	// 방향키 안누르면 Front로 고정
+	if (true == Directbool)
+	{
+		if (false == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+	}
+	else
+	{
+		if (false == GameEngineInput::IsPress("MoveUp"))
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
+	}
+
+	if (false == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::DuckReady);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
 }
 void Player::RunAttackEnd()
 {
+}
+
+void Player::DuckAttackStart()
+{
+	RenderPtr->SetTexture("Ground_DuckShoot_001.png");
+	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
+
+	IsDuckAttack = true;
+}
+void Player::DuckAttackUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::Dash);
+		return;
+	}
+
+	// Duck은 위치 고정
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
+
+	if (false == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Duck);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("MoveDown"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+}
+void Player::DuckAttackEnd()
+{
+	IsDuckAttack = false;
 }
 	
 void Player::EXAttackStart()
@@ -590,8 +1194,7 @@ void Player::EXAttackEnd()
 
 void Player::HoldingStart()
 {
-	RenderPtr->SetTexture("Normal_Straight_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+
 }
 void Player::HoldingUpdate(float _DeltaTime)
 {
@@ -599,21 +1202,208 @@ void Player::HoldingUpdate(float _DeltaTime)
 	{
 		IsHold = true;
 
-		if (true == GameEngineInput::IsDown("Jump"))
+		if (true == GameEngineInput::IsDown("Dash"))
 		{
-			IsHold = false;
-			ChangeState(PlayerState::Jump);
+			ChangeState(PlayerState::Dash);
+			return;
 		}
 
-		return;
+		if (true == GameEngineInput::IsDown("Jump"))
+		{
+			ChangeState(PlayerState::Jump);
+			return;
+		}
+
+		if (true == GameEngineInput::IsPress("Attack"))
+		{
+			ChangeState(PlayerState::HoldingAttack);
+			return;
+		}
+
+		switch (ADValue)
+		{
+		case Player::AttackDirection::Right_Up:
+		{
+			RenderPtr->SetTexture("Normal_Up_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Right_DiagonalUp:
+		{
+			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Right_Front:
+		{
+			RenderPtr->SetTexture("Normal_Straight_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Right_DiagonalDown:
+		{
+			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Right_Down:
+		{
+			RenderPtr->SetTexture("Normal_Down_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Left_Up:
+		{
+			RenderPtr->SetTexture("Normal_Up_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Left_DiagonalUp:
+		{
+			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Left_Front:
+		{
+			RenderPtr->SetTexture("Normal_Straight_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Left_DiagonalDown:
+		{
+			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		case Player::AttackDirection::Left_Down:
+		{
+			RenderPtr->SetTexture("Normal_Down_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
-		IsHold = false;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 }
 void Player::HoldingEnd()
 {
+	IsHold = false;
+}
+
+void Player::HoldingAttackStart()
+{
+
+}
+void Player::HoldingAttackUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsPress("Hold"))
+	{
+		IsHold = true;
+
+		if (true == GameEngineInput::IsDown("Dash"))
+		{
+			ChangeState(PlayerState::Dash);
+			return;
+		}
+
+		if (true == GameEngineInput::IsDown("Jump"))
+		{
+			ChangeState(PlayerState::Jump);
+			return;
+		}
+
+		if (false == GameEngineInput::IsPress("Hold"))
+		{
+			ChangeState(PlayerState::Attack);
+			return;
+		}
+
+		if (false == GameEngineInput::IsPress("Attack"))
+		{
+			ChangeState(PlayerState::Holding);
+			return;
+		}
+
+		switch (ADValue)
+		{
+		case Player::AttackDirection::Right_Up:
+		{
+			RenderPtr->SetTexture("Shoot_Up_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Right_DiagonalUp:
+		{
+			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Right_Front:
+		{
+			RenderPtr->SetTexture("Shoot_Straight_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Right_DiagonalDown:
+		{
+			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Right_Down:
+		{
+			RenderPtr->SetTexture("Shoot_Down_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Left_Up:
+		{
+			RenderPtr->SetTexture("Shoot_Up_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Left_DiagonalUp:
+		{
+			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Left_Front:
+		{
+			RenderPtr->SetTexture("Shoot_Straight_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Left_DiagonalDown:
+		{
+			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		case Player::AttackDirection::Left_Down:
+		{
+			RenderPtr->SetTexture("Shoot_Down_001.png");
+			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		}
+		break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+void Player::HoldingAttackEnd()
+{
+	IsHold = false;
 }

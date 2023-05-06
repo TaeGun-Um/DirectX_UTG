@@ -22,5 +22,10 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
+	float4 InitPlayerPosition = float4::Zero;
+	float InitPlayerXPosition = 0.0f;
+	float MoveSpeed = 450.0f;
+	bool Direction = true;   // true == Right // false == Left
+
 };
 

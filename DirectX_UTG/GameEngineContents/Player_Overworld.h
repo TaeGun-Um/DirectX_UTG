@@ -25,6 +25,8 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
 
+	void PlayerMove_Overworld(float _DeltaTime);
+
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;
 	void IdleEnd() override;

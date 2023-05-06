@@ -14,6 +14,18 @@ public:
 	Peashooter& operator=(const Peashooter& _Other) = delete;
 	Peashooter& operator=(Peashooter&& _Other) noexcept = delete;
 
+	void SetPlayerPosition(float4 _PlayerPosition)
+	{
+		GetTransform()->SetLocalPosition(_PlayerPosition);
+		InitPlayerPosition = _PlayerPosition;
+		InitPlayerXPosition = _PlayerPosition.x;
+	}
+
+	void SetPlayerDirection(bool _Direction)
+	{
+		Direction = _Direction;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -22,5 +34,9 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
+	float4 InitPlayerPosition = float4::Zero;
+	float InitPlayerXPosition = 0.0f;
+	float MoveSpeed = 1200.0f;
+	bool Direction = true;   // true == Right // false == Left
 };
 

@@ -18,6 +18,7 @@ PlayerDataBase::PlayerDataBase()
 		GameEngineInput::CreateKey("Jump", 'X');
 		GameEngineInput::CreateKey("Hold", 'C');
 		GameEngineInput::CreateKey("Dash", VK_SHIFT);
+		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
 	}
 }
 
@@ -175,16 +176,6 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 ///////////////////////////////////////////                     ANIMATION                       ///////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Tutorial()
-{
-	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetTexture("Ground_Idle_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 140, 187, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 82 });
-
-	return RenderPtr;
-}
-
 std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Field()
 {
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -209,35 +200,29 @@ std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overwo
 ///////////////////////////////////////////                        MOVE                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlayerDataBase::PlayerMove_Overworld(float _DeltaTime)
-{
-	float MoveDis = MoveSpeed * _DeltaTime;
-
-	if (true == GameEngineInput::IsPress("MoveUp"))
-	{
-		GetTransform()->AddLocalPosition({ 0, MoveDis });
-	}
-	if (true == GameEngineInput::IsPress("MoveDown"))
-	{
-		GetTransform()->AddLocalPosition({ 0, -MoveDis });
-	}
-	if (true == GameEngineInput::IsPress("MoveRight"))
-	{
-		GetTransform()->AddLocalPosition({ MoveDis, 0 });
-	}
-	if (true == GameEngineInput::IsPress("MoveLeft"))
-	{
-		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
-	}
-
-	MoveCamera(_DeltaTime);
-}
-
 void PlayerDataBase::PixelCheck(float _DeltaTime)
 {
-	// 바닥 체크
+	// 낙하 체크
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	float4 LeftFallPos = PlayerPos + float4{ -40, -2 };
+	float4 RightFallPos = PlayerPos + float4{ 25, -2 };
 
+	GameEnginePixelColor LeftFallMapPixel = PixelCollisionCheck.PixelCheck(LeftFallPos);
+	GameEnginePixelColor RightFallMapPixel = PixelCollisionCheck.PixelCheck(RightFallPos);
+
+	// Fall 체크 픽셀 모두 Black이 아니라면 Fall 상태로 진입
+	if (false == PixelCollisionCheck.IsBlack(LeftFallMapPixel) && false == PixelCollisionCheck.IsBlack(RightFallMapPixel))
+	{
+		IsFall = true;
+	}
+
+	// Fall 체크 픽셀 모두 Black인 경우에만 AirDash 가능
+	if (true == PixelCollisionCheck.IsBlack(LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(RightFallMapPixel))
+	{
+		AirDash = true;
+	}
+
+	// 바닥 체크
 	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
 
 	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
@@ -254,6 +239,7 @@ void PlayerDataBase::PixelCheck(float _DeltaTime)
 
 			if (false == PixelCollisionCheck.IsBlack(GravityPixel))
 			{
+				IsFall = false;
 				break;
 			}
 		}
@@ -266,17 +252,31 @@ void PlayerDataBase::PixelCheck(float _DeltaTime)
 	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
 	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
 
-	float MoveDis = ( MoveSpeed + 200.0f ) * _DeltaTime;
+	float DashFalseDist = ( MoveSpeed + 200.0f ) * _DeltaTime;
+	float DashTureDist = ((MoveSpeed * 2) + 200.0f) * _DeltaTime;
 
-	if (true == PixelCollisionCheck.IsBlack(LeftWallPixel))
+	if (true == IsDash)
 	{
-		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		if (true == PixelCollisionCheck.IsBlack(LeftWallPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashTureDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(RightWallPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
+		}
 	}
-	if (true == PixelCollisionCheck.IsBlack(RightWallPixel))
+	else
 	{
-		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		if (true == PixelCollisionCheck.IsBlack(LeftWallPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashFalseDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(RightWallPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashFalseDist, 0 });
+		}
 	}
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

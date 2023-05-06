@@ -4,16 +4,21 @@
 
 enum class PlayerState
 {
+	Fall,
 	Idle,
 	Move,
 	Dash,
+	DuckReady,
 	Duck,
 	Jump,
 	Slap,
+	AttackReady,
 	Attack,
 	RunAttack,
+	DuckAttack,
 	EXAttack,
-	Holding
+	Holding,
+	HoldingAttack,
 };
 
 // 설명 : Field 플레이어
@@ -68,7 +73,28 @@ private:
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
+	float DashTime = 0.0f;
+	float ProjectileCreateTime = 0.0f;
 
+	enum class AttackDirection
+	{
+		//Right
+		Right_Up,           // 0
+		Right_DiagonalUp,   // 1
+		Right_Front,        // 2
+		Right_DiagonalDown, // 3
+		Right_Down,         // 4
+		//Left
+		Left_Up,            // 5
+		Left_DiagonalUp,    // 6
+		Left_Front,			// 7
+		Left_DiagonalDown,	// 8
+		Left_Down,			// 9
+	};
+
+	AttackDirection ADValue = AttackDirection::Right_Front;
+
+	void ProjectileCreate(float _DeltaTime);
 	void CreatePeashooter();
 	void CreatePeashooter_EX();
 	void CreateSpread();
@@ -79,8 +105,13 @@ private:
 	void CreateParryEffect();
 
 	void DirectCheck();
+	void AttackDirectCheck();
 	void ChangeState(PlayerState _StateValue);
 	void UpdateState(float _DeltaTime);
+
+	void FallStart();
+	void FallUpdate(float _DeltaTime);
+	void FallEnd();
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;
@@ -94,6 +125,10 @@ private:
 	void DashUpdate(float _DeltaTime);
 	void DashEnd();
 
+	void DuckReadyStart();
+	void DuckReadyUpdate(float _DeltaTime);
+	void DuckReadyEnd();
+
 	void DuckStart();
 	void DuckUpdate(float _DeltaTime);
 	void DuckEnd();
@@ -106,6 +141,10 @@ private:
 	void SlapUpdate(float _DeltaTime);
 	void SlapEnd();
 
+	void AttackReadyStart();
+	void AttackReadyUpdate(float _DeltaTime);
+	void AttackReadyEnd();
+
 	void AttackStart();
 	void AttackUpdate(float _DeltaTime);
 	void AttackEnd();
@@ -114,6 +153,10 @@ private:
 	void RunAttackUpdate(float _DeltaTime);
 	void RunAttackEnd();
 
+	void DuckAttackStart();
+	void DuckAttackUpdate(float _DeltaTime);
+	void DuckAttackEnd();
+
 	void EXAttackStart();
 	void EXAttackUpdate(float _DeltaTime);
 	void EXAttackEnd();
@@ -121,5 +164,9 @@ private:
 	void HoldingStart();
 	void HoldingUpdate(float _DeltaTime);
 	void HoldingEnd();
+
+	void HoldingAttackStart();
+	void HoldingAttackUpdate(float _DeltaTime);
+	void HoldingAttackEnd();
 };
 

@@ -60,21 +60,18 @@ protected:
 	void SetCameraFollowType(CameraFollowType _Type);
 	void MoveCamera(float _DeltaTime);
 	
-	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Tutorial();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
 	
-	//void PlayerMove(float _DeltaTime);
-	//void PlayerJump(float _DeltaTime);
-	void PlayerMove_Overworld(float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
+
+	float MoveSpeed = 400.0f;
 
 private:
 	// Status
 	int HP = 5;
 	int EXGauge = 0;
 	int EXStack = 0;
-	float MoveSpeed = 400.0f;
 	bool WeaponType = true;   // true : Peashooter // false : Spread
 
 	// Pixel
@@ -110,7 +107,13 @@ private:
 	// FSM
 	float4 MoveDirect = float4::Zero;
 	bool IsJump = false;
+	bool IsFall = false;
+	bool IsDash = false;
+	bool AirDash = false;
 	bool IsHold = false;
+	bool IsDuckAttack = false;
+
+	float ActivateDashTime = 0.0f;
 
 	// alt + shift + .
 	virtual void IdleStart() {}
