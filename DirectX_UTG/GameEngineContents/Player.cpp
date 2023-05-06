@@ -67,6 +67,37 @@ void Player::Start()
 }
 void Player::Update(float _DeltaTime)
 {
+	//float4 LocalScale = RenderPtr->GetTransform()->GetLocalScale();
+
+	//if (true == GameEngineInput::IsDown("MoveRight"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({10, 0, 0});
+	//	LocalScale = RenderPtr->GetTransform()->GetLocalScale();
+	//}
+	//if (true == GameEngineInput::IsDown("MoveLeft"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({ -10, 0, 0 });
+	//	LocalScale = RenderPtr->GetTransform()->GetLocalScale();
+	//}
+	//if (true == GameEngineInput::IsDown("MoveUp"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 10, 0 });
+	//}
+	//if (true == GameEngineInput::IsDown("MoveDown"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({ 0, -10, 0 });
+	//}
+	//if (true == GameEngineInput::IsDown("Attack"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 0, 1 });
+	//}
+	//if (true == GameEngineInput::IsDown("Jump"))
+	//{
+	//	RenderPtr->GetTransform()->AddLocalScale({ 0, 0, -1 });
+	//}
+
+	//return;
+
 	if (false == IsCorrection)
 	{
 		PositionCorrection();
