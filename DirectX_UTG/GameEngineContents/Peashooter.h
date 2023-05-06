@@ -21,9 +21,14 @@ public:
 		InitPlayerXPosition = _PlayerPosition.x;
 	}
 
-	void SetPlayerDirection(bool _Direction)
+	void SetDirection(bool _Direction)
 	{
 		Direction = _Direction;
+
+		if (false == _Direction)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
 	}
 
 protected:

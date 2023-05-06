@@ -159,20 +159,21 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("WeaponSwap"))
 	{
-		// true : Peashooter // false : Spread
 		WeaponType = !WeaponType;
 		bool Check = WeaponType;
 		ProjectileCreateTime = 0.0f;
 	}
 
-	if (true == WeaponType && 0.1f <= ProjectileCreateTime
-		&& GameEngineInput::IsPress("Attack"))
+	// WeaponType = true : Peashooter
+	// WeaponType = false : Spread
+	if (0.1f <= ProjectileCreateTime && true == WeaponType && false == IsDash && GameEngineInput::IsPress("Attack"))
 	{
 		ProjectileCreateTime = 0.0f;
 		CreatePeashooter();
 	}
-	else
+	else if (0.1f <= ProjectileCreateTime && false == WeaponType && false == IsDash && GameEngineInput::IsPress("Attack"))
 	{
+		ProjectileCreateTime = 0.0f;
 		// CreateSpread();
 	}
 }
@@ -185,7 +186,7 @@ void Player::CreatePeashooter()
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
 	Projectile->SetPlayerPosition(PlayerPosition);
-	Projectile->SetPlayerDirection(Directbool);
+	Projectile->SetDirection(Directbool);
 }
 
 // 기본 EX 공격
@@ -199,7 +200,7 @@ void Player::CreateSpread()
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
 	Projectile->SetPlayerPosition(PlayerPosition);
-	Projectile->SetPlayerDirection(Directbool);
+	Projectile->SetDirection(Directbool);
 }
 
 // 2번 EX 공격 
@@ -893,6 +894,12 @@ void Player::AttackReadyStart()
 }
 void Player::AttackReadyUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
 		ChangeState(PlayerState::Dash);
@@ -939,6 +946,12 @@ void Player::AttackStart()
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
 		ChangeState(PlayerState::Dash);
@@ -1037,6 +1050,12 @@ void Player::RunAttackStart()
 }
 void Player::RunAttackUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
 		ChangeState(PlayerState::Dash);
