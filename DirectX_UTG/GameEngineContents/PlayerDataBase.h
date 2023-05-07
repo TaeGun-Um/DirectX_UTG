@@ -104,16 +104,11 @@ private:
 	void FieldCameraPivotCheck();
 	void OverwolrdCameraPivotCheck();
 
-	// FSM
-	float4 MoveDirect = float4::Zero;
+	// FSM(+Pixel Check ¿ë bool°ª)
 	bool IsJump = false;
 	bool IsFall = false;
 	bool IsDash = false;
 	bool AirDash = false;
-	bool IsHold = false;
-	bool IsDuckAttack = false;
-
-	float ActivateDashTime = 0.0f;
 
 	// alt + shift + .
 	virtual void IdleStart() {}

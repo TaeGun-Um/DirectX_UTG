@@ -28,6 +28,9 @@ void Peashooter::MoveDirection(float _DeltaTime)
 {
 	float MoveDist = MoveSpeed * _DeltaTime;
 
+	float4 MoveDist4 = float4::Zero;
+	float4 Correction = float4::Zero;
+
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
@@ -37,7 +40,10 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	break;
 	case AttackDirection::Right_DiagonalUp:
 	{
-		GetTransform()->AddLocalPosition({ MoveDist / 2, MoveDist / 2 });
+		MoveDist4 = { MoveDist, MoveDist };
+		Correction = MoveDist4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 	}
 	break;
 	case AttackDirection::Right_Front:
@@ -47,7 +53,10 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	break;
 	case AttackDirection::Right_DiagonalDown:
 	{
-		GetTransform()->AddLocalPosition({ (MoveDist / 2), -(MoveDist / 2) });
+		MoveDist4 = { MoveDist , -MoveDist };
+		Correction = MoveDist4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 	}
 	break;
 	case AttackDirection::Right_Down:
@@ -62,7 +71,10 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-		GetTransform()->AddLocalPosition({ -(MoveDist / 2), (MoveDist / 2) });
+		MoveDist4 = { -MoveDist, MoveDist };
+		Correction = MoveDist4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 	}
 	break;
 	case AttackDirection::Left_Front:
@@ -72,7 +84,10 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	break;
 	case AttackDirection::Left_DiagonalDown:
 	{
-		GetTransform()->AddLocalPosition({ -(MoveDist / 2), -(MoveDist / 2) });
+		MoveDist4 = { -MoveDist, -MoveDist };
+		Correction = MoveDist4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 	}
 	break;
 	case AttackDirection::Left_Down:
@@ -87,10 +102,15 @@ void Peashooter::MoveDirection(float _DeltaTime)
 
 void Peashooter::DeathCheck()
 {
-	float4 BulletPos = GetTransform()->GetLocalPosition();
+	//float4 BulletPos = GetTransform()->GetLocalPosition();
 
-	if (abs(InitPlayerXPosition + 1000.0f) <= abs(BulletPos.x))
+	//if (abs(InitPlayerXPosition + 1000.0f) <= abs(BulletPos.x))
+	//{
+	//	Death();
+	//}
+
+	if (0.2f <= GetLiveTime())
 	{
-		Death();
+		Off();
 	}
 }

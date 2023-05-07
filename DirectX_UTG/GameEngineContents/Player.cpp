@@ -1061,6 +1061,7 @@ void Player::AttackReadyUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
+		IsAttackReady = true;
 		ChangeState(PlayerState::Attack);
 		return;
 	}
@@ -1072,14 +1073,19 @@ void Player::AttackReadyEnd()
 
 void Player::AttackStart()
 {
-	if (true == Directbool)
+	if (false == IsAttackReady)
 	{
-		ADValue = AttackDirection::Right_Front;
+		if (true == Directbool)
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+		else
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
 	}
-	else
-	{
-		ADValue = AttackDirection::Left_Front;
-	}
+
+	IsAttackReady = false;
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
