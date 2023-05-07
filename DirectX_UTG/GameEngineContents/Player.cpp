@@ -177,10 +177,9 @@ void Player::ProjectileCreate(float _DeltaTime)
 		else if (false == WeaponType)
 		{
 			ProjectileCreateTime = 0.0f;
-			// CreateSpread();
+			CreateSpread();
 		}
 	}
-
 }
 
 // 기본 공격
@@ -260,9 +259,7 @@ void Player::CreatePeashooter()
 
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
-	Projectile->SetADValue(ADValue);
 	Projectile->SetDirection(Directbool);
-
 }
 
 // 기본 EX 공격
@@ -271,12 +268,174 @@ void Player::CreatePeashooter_EX() {}
 // 2번 공격
 void Player::CreateSpread()
 {
-	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>(1);
+	std::shared_ptr<Spread> Projectile0 = GetLevel()->CreateActor<Spread>(1);
+	std::shared_ptr<Spread> Projectile1 = GetLevel()->CreateActor<Spread>(1);
+	std::shared_ptr<Spread> Projectile2 = GetLevel()->CreateActor<Spread>(1);
+	std::shared_ptr<Spread> Projectile3 = GetLevel()->CreateActor<Spread>(1);
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
-	Projectile->SetStartPosition(PlayerPosition);
-	Projectile->SetDirection(Directbool);
+	float4 ProjectilePosition0 = PlayerPosition;
+	float4 ProjectilePosition1 = PlayerPosition;
+	float4 ProjectilePosition2 = PlayerPosition;
+	float4 ProjectilePosition3 = PlayerPosition;
+
+	float4 ProjectileRotation0 = float4::Zero;
+	float4 ProjectileRotation1 = float4::Zero;
+	float4 ProjectileRotation2 = float4::Zero;
+	float4 ProjectileRotation3 = float4::Zero;
+
+	// 기본 로테이션은 Right_Front 기준
+	ProjectileRotation0 += float4{ 0, 0, 330 };
+	ProjectileRotation1 += float4{ 0, 0, 350 };
+	ProjectileRotation2 += float4{ 0, 0, 10 };
+	ProjectileRotation3 += float4{ 0, 0, 40 };
+
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		ProjectilePosition0 += float4{ 15, 160 };
+		ProjectilePosition1 += float4{ 15, 160 };
+		ProjectilePosition2 += float4{ 15, 160 };
+		ProjectilePosition3 += float4{ 15, 160 };
+
+		ProjectileRotation0 += float4{ 0, 0, 90 }; 
+		ProjectileRotation1 += float4{ 0, 0, 90 };
+		ProjectileRotation2 += float4{ 0, 0, 90 };
+		ProjectileRotation3 += float4{ 0, 0, 90 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		ProjectilePosition0 += float4{ 60, 120 };
+		ProjectilePosition1 += float4{ 60, 120 };
+		ProjectilePosition2 += float4{ 60, 120 };
+		ProjectilePosition3 += float4{ 60, 120 };
+
+		ProjectileRotation0 += float4{ 0, 0, 45 };
+		ProjectileRotation1 += float4{ 0, 0, 45 };
+		ProjectileRotation2 += float4{ 0, 0, 45 };
+		ProjectileRotation3 += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		ProjectilePosition0 += float4{ 70, 70 };
+		ProjectilePosition1 += float4{ 70, 70 };
+		ProjectilePosition2 += float4{ 70, 70 };
+		ProjectilePosition3 += float4{ 70, 70 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		ProjectilePosition0 += float4{ 60, 30 };
+		ProjectilePosition1 += float4{ 60, 30 };
+		ProjectilePosition2 += float4{ 60, 30 };
+		ProjectilePosition3 += float4{ 60, 30 };
+
+		ProjectileRotation0 += float4{ 0, 0, 315 };
+		ProjectileRotation1 += float4{ 0, 0, 315 };
+		ProjectileRotation2 += float4{ 0, 0, 315 };
+		ProjectileRotation3 += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		ProjectilePosition0 += float4{ 20, -10 };
+		ProjectilePosition1 += float4{ 20, -10 };
+		ProjectilePosition2 += float4{ 20, -10 };
+		ProjectilePosition3 += float4{ 20, -10 };
+
+		ProjectileRotation0 += float4{ 0, 0, 270 };
+		ProjectileRotation1 += float4{ 0, 0, 270 };
+		ProjectileRotation2 += float4{ 0, 0, 270 };
+		ProjectileRotation3 += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		ProjectilePosition0 += float4{ -30, 160 };
+		ProjectilePosition1 += float4{ -30, 160 };
+		ProjectilePosition2 += float4{ -30, 160 };
+		ProjectilePosition3 += float4{ -30, 160 };
+
+		ProjectileRotation0 += float4{ 0, 0, 270 };
+		ProjectileRotation1 += float4{ 0, 0, 270 };
+		ProjectileRotation2 += float4{ 0, 0, 270 };
+		ProjectileRotation3 += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		ProjectilePosition0 += float4{ -70, 120 };
+		ProjectilePosition1 += float4{ -70, 120 };
+		ProjectilePosition2 += float4{ -70, 120 };
+		ProjectilePosition3 += float4{ -70, 120 };
+
+		ProjectileRotation0 += float4{ 0, 0, 315 };
+		ProjectileRotation1 += float4{ 0, 0, 315 };
+		ProjectileRotation2 += float4{ 0, 0, 315 };
+		ProjectileRotation3 += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		ProjectilePosition0 += float4{ -70, 70 };
+		ProjectilePosition1 += float4{ -70, 70 };
+		ProjectilePosition2 += float4{ -70, 70 };
+		ProjectilePosition3 += float4{ -70, 70 };
+
+		ProjectileRotation0 += float4{ 0, 0, 0 };
+		ProjectileRotation1 += float4{ 0, 0, 0 };
+		ProjectileRotation2 += float4{ 0, 0, 0 };
+		ProjectileRotation3 += float4{ 0, 0, 0 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		ProjectilePosition0 += float4{ -70, 30 };
+		ProjectilePosition1 += float4{ -70, 30 };
+		ProjectilePosition2 += float4{ -70, 30 };
+		ProjectilePosition3 += float4{ -70, 30 };
+
+		ProjectileRotation0 += float4{ 0, 0, 45 };
+		ProjectileRotation1 += float4{ 0, 0, 45 };
+		ProjectileRotation2 += float4{ 0, 0, 45 };
+		ProjectileRotation3 += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		ProjectilePosition0 += float4{ -30, -10 };
+		ProjectilePosition1 += float4{ -30, -10 };
+		ProjectilePosition2 += float4{ -30, -10 };
+		ProjectilePosition3 += float4{ -30, -10 };
+
+		ProjectileRotation0 += float4{ 0, 0, 90 };
+		ProjectileRotation1 += float4{ 0, 0, 90 };
+		ProjectileRotation2 += float4{ 0, 0, 90 };
+		ProjectileRotation3 += float4{ 0, 0, 90 };
+	}
+	break;
+	default:
+		break;
+	}
+
+	Projectile0->SetStartPosition(ProjectilePosition0);
+	Projectile1->SetStartPosition(ProjectilePosition1);
+	Projectile2->SetStartPosition(ProjectilePosition2);
+	Projectile3->SetStartPosition(ProjectilePosition3);
+
+	Projectile0->SetProjectileRotation(ProjectileRotation0);
+	Projectile1->SetProjectileRotation(ProjectileRotation1);
+	Projectile2->SetProjectileRotation(ProjectileRotation2);
+	Projectile3->SetProjectileRotation(ProjectileRotation3);
+
+	Projectile0->SetDirection(Directbool);
+	Projectile1->SetDirection(Directbool);
+	Projectile2->SetDirection(Directbool);
+	Projectile3->SetDirection(Directbool);
 }
 
 // 2번 EX 공격 

@@ -14,6 +14,24 @@ public:
 	Spread& operator=(const Spread& _Other) = delete;
 	Spread& operator=(Spread&& _Other) noexcept = delete;
 
+	void SetStartPosition(float4 _PlayerPosition)
+	{
+		GetTransform()->SetLocalPosition(_PlayerPosition);
+	}
+
+	void SetProjectileRotation(float4 _Rotation)
+	{
+		GetTransform()->SetLocalRotation(_Rotation);
+	}
+
+	void SetDirection(bool _Direction)
+	{
+		if (false == _Direction)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -22,10 +40,10 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
-	float4 InitPlayerPosition = float4::Zero;
-	float InitPlayerXPosition = 0.0f;
-	float MoveSpeed = 450.0f;
-	bool Direction = true;   // true == Right // false == Left
+	float MoveSpeed = 1200.0f;
+
+	void MoveDirection(float _DeltaTime);
+	void DeathCheck();
 
 };
 

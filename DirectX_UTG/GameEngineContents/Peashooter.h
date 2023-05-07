@@ -19,8 +19,6 @@ public:
 	void SetStartPosition(float4 _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
-		InitPlayerPosition = _PlayerPosition;
-		InitPlayerXPosition = _PlayerPosition.x;
 	}
 
 	void SetProjectileRotation(float4 _Rotation)
@@ -30,17 +28,10 @@ public:
 
 	void SetDirection(bool _Direction)
 	{
-		Direction = _Direction;
-
 		if (false == _Direction)
 		{
 			GetTransform()->SetLocalNegativeScaleX();
 		}
-	}
-
-	void SetADValue(AttackDirection _ADValue)
-	{
-		ADValue = _ADValue;
 	}
 
 protected:
@@ -51,14 +42,9 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
-	float4 InitPlayerPosition = float4::Zero;
-	float InitPlayerXPosition = 0.0f;
 	float MoveSpeed = 1200.0f;
-	bool Direction = true;   // true == Right // false == Left
 
 	void MoveDirection(float _DeltaTime);
 	void DeathCheck();
-
-	AttackDirection ADValue = AttackDirection::Right_Front;
 };
 
