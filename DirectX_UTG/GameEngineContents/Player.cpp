@@ -190,57 +190,68 @@ void Player::CreatePeashooter()
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 ProjectilePosition = PlayerPosition;
+	float4 ProjectileRotation = float4::Zero;
 
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
 	{
 		ProjectilePosition += float4{ 10, 100 };
+		ProjectileRotation += float4{ 0, 0, 90 };
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 45 };
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
 		ProjectilePosition += float4{ 60, 70 };
+		ProjectileRotation += float4{ 0, 0, 0 };
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 315 };
 	}
 	break;
 	case AttackDirection::Right_Down:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 270 };
 	}
 	break;
 	case AttackDirection::Left_Up:
 	{
 		ProjectilePosition += float4{ -10, 100 };
+		ProjectileRotation += float4{ 0, 0, 270 };
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 315 };
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		ProjectilePosition += float4{ -70, 70 };
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 0 };
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 45 };
 	}
 	break;
 	case AttackDirection::Left_Down:
 	{
-
+		ProjectilePosition += float4{ 50, 100 };
+		ProjectileRotation += float4{ 0, 0, 90 };
 	}
 	break;
 	default:
@@ -248,6 +259,7 @@ void Player::CreatePeashooter()
 	}
 
 	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetADValue(ADValue);
 	Projectile->SetDirection(Directbool);
 

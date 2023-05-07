@@ -23,6 +23,11 @@ public:
 		InitPlayerXPosition = _PlayerPosition.x;
 	}
 
+	void SetProjectileRotation(float4 _Rotation)
+	{
+		GetTransform()->SetLocalRotation(_Rotation);
+	}
+
 	void SetDirection(bool _Direction)
 	{
 		Direction = _Direction;
