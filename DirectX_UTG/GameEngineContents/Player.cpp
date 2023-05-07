@@ -1072,6 +1072,14 @@ void Player::AttackReadyEnd()
 
 void Player::AttackStart()
 {
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
@@ -1443,15 +1451,6 @@ void Player::HoldingUpdate(float _DeltaTime)
 void Player::HoldingEnd()
 {
 	IsHold = false;
-
-	if (true == Directbool)
-	{
-		ADValue = AttackDirection::Right_Front;
-	}
-	else
-	{
-		ADValue = AttackDirection::Left_Front;
-	}
 }
 
 void Player::HoldingAttackStart()
@@ -1563,13 +1562,4 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 void Player::HoldingAttackEnd()
 {
 	IsHold = false;
-
-	if (true == Directbool)
-	{
-		ADValue = AttackDirection::Right_Front;
-	}
-	else
-	{
-		ADValue = AttackDirection::Left_Front;
-	}
 }
