@@ -199,6 +199,7 @@
     <ClInclude Include="Player_Overworld.h">
       <Filter>Levels\7. Player</Filter>
     </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">

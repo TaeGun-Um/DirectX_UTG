@@ -24,6 +24,11 @@ enum class PlayerState
 // 설명 : Field 플레이어
 class Player : public PlayerDataBase
 {
+	friend class Peashooter;
+	friend class Peashooter_EX;
+	friend class Spread;
+	friend class Spread_EX;
+
 public:
 	static Player* MainPlayer;
 
@@ -75,22 +80,6 @@ private:
 	float DuckTime = 0.0f;
 	float DashTime = 0.0f;
 	float ProjectileCreateTime = 0.0f;
-
-	enum class AttackDirection
-	{
-		//Right
-		Right_Up,           // 0
-		Right_DiagonalUp,   // 1
-		Right_Front,        // 2
-		Right_DiagonalDown, // 3
-		Right_Down,         // 4
-		//Left
-		Left_Up,            // 5
-		Left_DiagonalUp,    // 6
-		Left_Front,			// 7
-		Left_DiagonalDown,	// 8
-		Left_Down,			// 9
-	};
 
 	AttackDirection ADValue = AttackDirection::Right_Front;
 

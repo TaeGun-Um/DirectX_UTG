@@ -166,16 +166,21 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	// WeaponType = true : Peashooter
 	// WeaponType = false : Spread
-	if (0.1f <= ProjectileCreateTime && true == WeaponType && false == IsDash && GameEngineInput::IsPress("Attack"))
+
+	if (0.15f <= ProjectileCreateTime && false == IsDash && GameEngineInput::IsPress("Attack"))
 	{
-		ProjectileCreateTime = 0.0f;
-		CreatePeashooter();
+		if (true == WeaponType)
+		{
+			ProjectileCreateTime = 0.0f;
+			CreatePeashooter();
+		}
+		else if (false == WeaponType)
+		{
+			ProjectileCreateTime = 0.0f;
+			// CreateSpread();
+		}
 	}
-	else if (0.1f <= ProjectileCreateTime && false == WeaponType && false == IsDash && GameEngineInput::IsPress("Attack"))
-	{
-		ProjectileCreateTime = 0.0f;
-		// CreateSpread();
-	}
+
 }
 
 // 기본 공격
@@ -184,9 +189,68 @@ void Player::CreatePeashooter()
 	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>(1);
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 ProjectilePosition = PlayerPosition;
 
-	Projectile->SetPlayerPosition(PlayerPosition);
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		ProjectilePosition += float4{ 10, 100 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		ProjectilePosition += float4{ 60, 70 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		ProjectilePosition += float4{ -10, 100 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		ProjectilePosition += float4{ -70, 70 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+
+	}
+	break;
+	default:
+		break;
+	}
+
+	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetADValue(ADValue);
 	Projectile->SetDirection(Directbool);
+
 }
 
 // 기본 EX 공격
@@ -199,7 +263,7 @@ void Player::CreateSpread()
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
-	Projectile->SetPlayerPosition(PlayerPosition);
+	Projectile->SetStartPosition(PlayerPosition);
 	Projectile->SetDirection(Directbool);
 }
 
@@ -972,25 +1036,25 @@ void Player::AttackUpdate(float _DeltaTime)
 
 	switch (ADValue)
 	{
-	case Player::AttackDirection::Right_Up:
+	case AttackDirection::Right_Up:
 	{
 		RenderPtr->SetTexture("Shoot_Up_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Right_Front:
+	case AttackDirection::Right_Front:
 	{
 		RenderPtr->SetTexture("Shoot_Straight_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Left_Up:
+	case AttackDirection::Left_Up:
 	{
 		RenderPtr->SetTexture("Shoot_Up_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Left_Front:
+	case AttackDirection::Left_Front:
 	{
 		RenderPtr->SetTexture("Shoot_Straight_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
@@ -1087,25 +1151,25 @@ void Player::RunAttackUpdate(float _DeltaTime)
 
 	switch (ADValue)
 	{
-	case Player::AttackDirection::Right_DiagonalUp:
+	case AttackDirection::Right_DiagonalUp:
 	{
 		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Right_Front:
+	case AttackDirection::Right_Front:
 	{
 		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Left_DiagonalUp:
+	case AttackDirection::Left_DiagonalUp:
 	{
 		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 	}
 	break;
-	case Player::AttackDirection::Left_Front:
+	case AttackDirection::Left_Front:
 	{
 		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
@@ -1241,61 +1305,61 @@ void Player::HoldingUpdate(float _DeltaTime)
 
 		switch (ADValue)
 		{
-		case Player::AttackDirection::Right_Up:
+		case AttackDirection::Right_Up:
 		{
 			RenderPtr->SetTexture("Normal_Up_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Right_DiagonalUp:
+		case AttackDirection::Right_DiagonalUp:
 		{
 			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Right_Front:
+		case AttackDirection::Right_Front:
 		{
 			RenderPtr->SetTexture("Normal_Straight_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Right_DiagonalDown:
+		case AttackDirection::Right_DiagonalDown:
 		{
 			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Right_Down:
+		case AttackDirection::Right_Down:
 		{
 			RenderPtr->SetTexture("Normal_Down_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Left_Up:
+		case AttackDirection::Left_Up:
 		{
 			RenderPtr->SetTexture("Normal_Up_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Left_DiagonalUp:
+		case AttackDirection::Left_DiagonalUp:
 		{
 			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Left_Front:
+		case AttackDirection::Left_Front:
 		{
 			RenderPtr->SetTexture("Normal_Straight_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Left_DiagonalDown:
+		case AttackDirection::Left_DiagonalDown:
 		{
 			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 			break;
-		case Player::AttackDirection::Left_Down:
+		case AttackDirection::Left_Down:
 		{
 			RenderPtr->SetTexture("Normal_Down_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
@@ -1314,6 +1378,15 @@ void Player::HoldingUpdate(float _DeltaTime)
 void Player::HoldingEnd()
 {
 	IsHold = false;
+
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 
 void Player::HoldingAttackStart()
@@ -1352,61 +1425,61 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 
 		switch (ADValue)
 		{
-		case Player::AttackDirection::Right_Up:
+		case AttackDirection::Right_Up:
 		{
 			RenderPtr->SetTexture("Shoot_Up_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Right_DiagonalUp:
+		case AttackDirection::Right_DiagonalUp:
 		{
 			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Right_Front:
+		case AttackDirection::Right_Front:
 		{
 			RenderPtr->SetTexture("Shoot_Straight_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Right_DiagonalDown:
+		case AttackDirection::Right_DiagonalDown:
 		{
 			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Right_Down:
+		case AttackDirection::Right_Down:
 		{
 			RenderPtr->SetTexture("Shoot_Down_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Left_Up:
+		case AttackDirection::Left_Up:
 		{
 			RenderPtr->SetTexture("Shoot_Up_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Left_DiagonalUp:
+		case AttackDirection::Left_DiagonalUp:
 		{
 			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Left_Front:
+		case AttackDirection::Left_Front:
 		{
 			RenderPtr->SetTexture("Shoot_Straight_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Left_DiagonalDown:
+		case AttackDirection::Left_DiagonalDown:
 		{
 			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 		}
 		break;
-		case Player::AttackDirection::Left_Down:
+		case AttackDirection::Left_Down:
 		{
 			RenderPtr->SetTexture("Shoot_Down_001.png");
 			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
@@ -1425,4 +1498,13 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 void Player::HoldingAttackEnd()
 {
 	IsHold = false;
+
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }

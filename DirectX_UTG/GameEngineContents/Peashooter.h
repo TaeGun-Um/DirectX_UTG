@@ -1,5 +1,7 @@
 #pragma once
 
+class Player;
+
 // Ό³Έν :
 class Peashooter : public GameEngineActor
 {
@@ -14,7 +16,7 @@ public:
 	Peashooter& operator=(const Peashooter& _Other) = delete;
 	Peashooter& operator=(Peashooter&& _Other) noexcept = delete;
 
-	void SetPlayerPosition(float4 _PlayerPosition)
+	void SetStartPosition(float4 _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 		InitPlayerPosition = _PlayerPosition;
@@ -31,6 +33,11 @@ public:
 		}
 	}
 
+	void SetADValue(AttackDirection _ADValue)
+	{
+		ADValue = _ADValue;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -43,5 +50,10 @@ private:
 	float InitPlayerXPosition = 0.0f;
 	float MoveSpeed = 1200.0f;
 	bool Direction = true;   // true == Right // false == Left
+
+	void MoveDirection(float _DeltaTime);
+	void DeathCheck();
+
+	AttackDirection ADValue = AttackDirection::Right_Front;
 };
 
