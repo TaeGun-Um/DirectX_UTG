@@ -14,12 +14,12 @@ public:
 	Spread& operator=(const Spread& _Other) = delete;
 	Spread& operator=(Spread&& _Other) noexcept = delete;
 
-	void SetStartPosition(float4 _PlayerPosition)
+	void SetStartPosition(const float4& _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 	}
 
-	void SetProjectileRotation(float4 _Rotation)
+	void SetProjectileRotation(const float4& _Rotation)
 	{
 		GetTransform()->SetLocalRotation(_Rotation);
 	}
@@ -30,6 +30,11 @@ public:
 		{
 			GetTransform()->SetLocalNegativeScaleX();
 		}
+	}
+
+	void SetMoveSpeed(float _MoveSpeed)
+	{
+		MoveSpeed = _MoveSpeed;
 	}
 
 protected:

@@ -289,7 +289,7 @@ void Player::CreateSpread()
 	ProjectileRotation0 += float4{ 0, 0, 330 };
 	ProjectileRotation1 += float4{ 0, 0, 350 };
 	ProjectileRotation2 += float4{ 0, 0, 10 };
-	ProjectileRotation3 += float4{ 0, 0, 40 };
+	ProjectileRotation3 += float4{ 0, 0, 30 };
 
 	switch (ADValue)
 	{
@@ -436,6 +436,11 @@ void Player::CreateSpread()
 	Projectile1->SetDirection(Directbool);
 	Projectile2->SetDirection(Directbool);
 	Projectile3->SetDirection(Directbool);
+
+	Projectile0->SetMoveSpeed(1400);
+	Projectile1->SetMoveSpeed(1200);
+	Projectile2->SetMoveSpeed(1200);
+	Projectile3->SetMoveSpeed(1400);
 }
 
 // 2¹ø EX °ø°Ý 

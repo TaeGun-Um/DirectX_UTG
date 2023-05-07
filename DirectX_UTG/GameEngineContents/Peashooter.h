@@ -16,12 +16,12 @@ public:
 	Peashooter& operator=(const Peashooter& _Other) = delete;
 	Peashooter& operator=(Peashooter&& _Other) noexcept = delete;
 
-	void SetStartPosition(float4 _PlayerPosition)
+	void SetStartPosition(const float4& _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 	}
 
-	void SetProjectileRotation(float4 _Rotation)
+	void SetProjectileRotation(const float4& _Rotation)
 	{
 		GetTransform()->SetLocalRotation(_Rotation);
 	}
