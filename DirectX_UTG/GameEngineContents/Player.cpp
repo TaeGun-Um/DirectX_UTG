@@ -796,9 +796,27 @@ void Player::DuckReadyStart()
 {
 	RenderPtr->SetTexture("Ground_Duck_001.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
+
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 void Player::DuckReadyUpdate(float _DeltaTime)
 {
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
+
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::Jump);
@@ -836,15 +854,42 @@ void Player::DuckReadyUpdate(float _DeltaTime)
 void Player::DuckReadyEnd()
 {
 	DuckTime = 0.0f;
+
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 
 void Player::DuckStart()
 {
 	RenderPtr->SetTexture("Ground_Duck_008.png");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
+
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 void Player::DuckUpdate(float _DeltaTime)
 {
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
+
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::Jump);
@@ -871,6 +916,14 @@ void Player::DuckUpdate(float _DeltaTime)
 }
 void Player::DuckEnd()
 {
+	if (true == Directbool)
+	{
+		ADValue = AttackDirection::Right_Front;
+	}
+	else
+	{
+		ADValue = AttackDirection::Left_Front;
+	}
 }
 	 
 void Player::JumpStart()
