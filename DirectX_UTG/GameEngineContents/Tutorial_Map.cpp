@@ -15,7 +15,7 @@ void Tutorial_Map::Start()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	RenderPtr->SetTexture("Tutorial_Map.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 5760, 720, 1 }); // 8192, 1024
+	RenderPtr->GetTransform()->SetLocalScale({ 6188, 720, 1 }); // 8192, 1024
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 1 });
 }
 void Tutorial_Map::Update(float _DeltaTime)
