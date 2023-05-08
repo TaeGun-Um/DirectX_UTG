@@ -37,6 +37,6 @@ void Peashooter::DeathCheck()
 {
 	if (0.2f <= GetLiveTime())
 	{
-		Off();
+		Death();
 	}
 }

@@ -37,6 +37,6 @@ void Spread::DeathCheck()
 {
 	if (0.2f <= GetLiveTime())
 	{
-		Off();
+		Death();
 	}
 }

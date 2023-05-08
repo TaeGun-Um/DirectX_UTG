@@ -50,6 +50,7 @@ private:
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component); // 컴포넌트 정보 init
 	void ComponentsUpdate(float _DeltaTime);                                   // 컴포넌트 정보 갱신
 	void ComponentsRender(float _DeltaTime);                                   // 컴포넌트 정보 갱신
+	void ComponentsRelease();												   // 컴포넌트 릴리즈
 
 };
 
