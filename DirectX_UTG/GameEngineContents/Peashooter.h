@@ -42,7 +42,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
-	float MoveSpeed = 1200.0f;
+	float MoveSpeed = 1300.0f;
 
 	void MoveDirection(float _DeltaTime);
 	void DeathCheck();

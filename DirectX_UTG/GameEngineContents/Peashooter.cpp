@@ -35,7 +35,7 @@ void Peashooter::MoveDirection(float _DeltaTime)
 
 void Peashooter::DeathCheck()
 {
-	if (0.2f <= GetLiveTime())
+	if (1.0f <= GetLiveTime())
 	{
 		Death();
 	}

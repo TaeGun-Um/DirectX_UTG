@@ -198,12 +198,12 @@ void Player::ProjectileCreate(float _DeltaTime)
 	{
 		WeaponType = !WeaponType;
 		bool Check = WeaponType;
-		ProjectileCreateTime = 0.0f;
+		ProjectileCreateTime = 0.06f;
 	}
 
 	// WeaponType = true : Peashooter
 	// WeaponType = false : Spread
-	if (0.15f <= ProjectileCreateTime && false == IsDash && GameEngineInput::IsPress("Attack"))
+	if (0.12f <= ProjectileCreateTime && false == IsDash && GameEngineInput::IsPress("Attack"))
 	{
 		if (true == WeaponType)
 		{
