@@ -63,7 +63,11 @@ protected:
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
 	
+	void AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel);
+	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
+	void BottomJump(float _DeltaTime);
+	void BottomJumpStateCheck();
 
 	float MoveSpeed = 400.0f;
 
@@ -108,7 +112,9 @@ private:
 	bool IsJump = false;
 	bool IsFall = false;
 	bool IsDash = false;
+	bool IsBottomJump = false;
 	bool AirDash = false;
+	bool BottomJumpAble = false;
 
 	// alt + shift + .
 	virtual void IdleStart() {}
@@ -118,38 +124,6 @@ private:
 	virtual void MoveStart() {}
 	virtual void MoveUpdate(float _DeltaTime) {}
 	virtual void MoveEnd() {}
-
-	//virtual void DashStart() {}
-	//virtual void DashUpdate() {}
-	//virtual void DashEnd() {}
-
-	//virtual void DuckStart() {}
-	//virtual void DuckUpdate() {}
-	//virtual void DuckEnd() {}
-
-	//virtual void JumpStart() {}
-	//virtual void JumpUpdate() {}
-	//virtual void JumpEnd() {}
-
-	//virtual void SlapStart() {}
-	//virtual void SlapUpdate() {}
-	//virtual void SlapEnd() {}
-
-	//virtual void AttackStart() {}
-	//virtual void AttackUpdate() {}
-	//virtual void AttackEnd() {}
-
-	//virtual void RunAttackStart() {}
-	//virtual void RunAttackUpdate() {}
-	//virtual void RunAttackEnd() {}
-
-	//virtual void EXAttackStart() {}
-	//virtual void EXAttackUpdate() {}
-	//virtual void EXAttackEnd() {}
-
-	//virtual void HoldingStart() {}
-	//virtual void HoldingUpdate() {}
-	//virtual void HoldingEnd() {}
 
 };
 

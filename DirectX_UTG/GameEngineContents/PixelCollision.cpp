@@ -16,9 +16,11 @@ void PixelCollision::SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap
 {
 	GameEnginePixelColor DC(static_cast<char>(123), static_cast<char>(123), static_cast<char>(123), static_cast<char>(123));
 	GameEnginePixelColor BC(static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(255));
+	GameEnginePixelColor BLC(static_cast<char>(0), static_cast<char>(0), static_cast<char>(255), static_cast<char>(255));
 	
 	DebugColor = DC;
 	BlackColor = BC;
+	BlueColor = BLC;
 
 	ColMap = _ColMap;
 	Pivot = _Pivot;

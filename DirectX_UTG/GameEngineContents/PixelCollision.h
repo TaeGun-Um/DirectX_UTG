@@ -32,6 +32,11 @@ public:
 		return BlackColor == _Pixel;
 	}
 
+	bool IsBlue(GameEnginePixelColor _Pixel)
+	{
+		return BlueColor == _Pixel;
+	}
+
 	float GetColMapHeight_Half()
 	{
 		return Height_Half;
@@ -48,6 +53,7 @@ private:
 	Coordinate Pivot = Coordinate::WindowOrigin;
 	GameEnginePixelColor DebugColor;
 	GameEnginePixelColor BlackColor;
+	GameEnginePixelColor BlueColor;
 	std::shared_ptr<class GameEngineTexture> ColMap = nullptr;
 	int Height = 0;
 	int Width = 0;

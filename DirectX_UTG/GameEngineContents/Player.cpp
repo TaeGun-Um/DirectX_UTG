@@ -77,11 +77,21 @@ void Player::Update(float _DeltaTime)
 	DirectCheck();
 	UpdateState(_DeltaTime);
 	ProjectileCreate(_DeltaTime);
-	PixelCheck(_DeltaTime);
 
-	if (true == GameEngineInput::IsDown("Dash"))
+	float4 PlayerPosCheck = GetTransform()->GetLocalPosition() + float4{0, -1};
+	GameEnginePixelColor BluePixelCheck = PixelCollisionCheck.PixelCheck(PlayerPosCheck);
+
+	if (true == IsBottomJump)
 	{
-		int a = 0;
+		BottomJumpStateCheck();
+	}
+	else if (false == PixelCollisionCheck.IsBlue(BluePixelCheck))
+	{
+		PixelCheck(_DeltaTime);
+	}
+	else
+	{
+		BottomJump(_DeltaTime);
 	}
 
 	if (true == IsDebugRender)
@@ -166,7 +176,6 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	// WeaponType = true : Peashooter
 	// WeaponType = false : Spread
-
 	if (0.15f <= ProjectileCreateTime && false == IsDash && GameEngineInput::IsPress("Attack"))
 	{
 		if (true == WeaponType)
@@ -779,6 +788,14 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
+	{
+		IsBottomJump = true;
+		IsFall = true;
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::Jump);
@@ -993,6 +1010,20 @@ void Player::DuckReadyUpdate(float _DeltaTime)
 		ADValue = AttackDirection::Left_Front;
 	}
 
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
+	{
+		IsBottomJump = true;
+		IsFall = true;
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::Jump);
@@ -1064,6 +1095,20 @@ void Player::DuckUpdate(float _DeltaTime)
 	else
 	{
 		ADValue = AttackDirection::Left_Front;
+	}
+
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
+	{
+		IsBottomJump = true;
+		IsFall = true;
+		ChangeState(PlayerState::Fall);
+		return;
 	}
 
 	if (true == GameEngineInput::IsDown("Jump"))
@@ -1469,6 +1514,20 @@ void Player::DuckAttackStart()
 }
 void Player::DuckAttackUpdate(float _DeltaTime)
 {
+	if (true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
+	{
+		IsBottomJump = true;
+		IsFall = true;
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(PlayerState::Jump);

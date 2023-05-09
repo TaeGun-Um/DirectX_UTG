@@ -100,7 +100,7 @@ void TestLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-	// 임시 플레이어 이미지 로드
+	// 플레이어 리소스 로드
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -110,7 +110,58 @@ void TestLevel::Start()
 		NewDir.Move("CupHead");
 		NewDir.Move("CH_Action");
 		NewDir.Move("CHAc_Ground");
-		NewDir.Move("CHAc_Ground_Idle");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	// 플레이어 SFX 리소스 로드
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("CH_Attack");
+		NewDir.Move("CHAt_Ground");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	// 플레이어 SFX 리소스 로드
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("CH_SFX");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	// 디버그용 이미지 로드
+	{
+
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("DebugImage");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -141,36 +192,33 @@ void TestLevel::Start()
 		Object->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
 	// Character
-
-	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
-
 	{
 		PlayerObject = CreateActor<Player>(1);
 		//PlayerObject->GetTransform()->AddLocalPosition({ 0, 0 });
 		PlayerObject->GetTransform()->SetLocalPosition(PlayMapPosition + float4{-500, 0});
 
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-		
+	}
+
+	// GUI
+	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
+
+		GUI->PlayerDebugRenderOn = std::bind(&TestLevel::PlayerDebugRenderOn, this);
+		GUI->PlayerDebugRenderOff = std::bind(&TestLevel::PlayerDebugRenderOff, this);
 	}
 
-	/*std::shared_ptr<ImguiWindow> Window = GameEngineGUI::FindGUIWindowConvert<ImguiWindow>("ImguiWindow");
+}
 
-	{
-		if (nullptr == Window)
-		{
-			MsgAssert("윈도우 테스트 코드 미작동");
-		}
+void TestLevel::PlayerDebugRenderOn()
+{
+	PlayerObject->PlayerDebugRenderOn();
+}
 
-		Window->Test2 = std::bind(&TestLevel::PlayerCreate, this);
-	}*/
-
-	{
-		/*std::shared_ptr<Player> Object = CreateActor<Player>(1);
-		Object->GetTransform()->AddLocalPosition({ 240, -450 });*/
-	}
-
+void TestLevel::PlayerDebugRenderOff()
+{
+	PlayerObject->PlayerDebugRenderOff();
 }
 
 void TestLevel::Update(float _DeltaTime)
