@@ -18,6 +18,7 @@ class GameEngineObject :
 	// 상속을 사용하는 경우, 부모가 레퍼런스 카운트를 지니고 있다면 new 연산을 줄일 수 있다.
 	// 이때 활용하는 것이 std::enable_shared_from_this
 {
+	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 
 public:
@@ -44,7 +45,35 @@ public:
 		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}
 
+	virtual void AccLiveTime(float _LiveTime)
+	{
+		LiveTime += _LiveTime;
+	}
+
+	void ResetLiveTime()
+	{
+		LiveTime = 0.0f;
+	}
+
+	float GetLiveTime()
+	{
+		return LiveTime;
+	}
+
+protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void Render(float _DeltaTime) {}
+	virtual void Release();
+
+	void PushChild(std::shared_ptr<GameEngineObject> _Child)
+	{
+		Childs.push_back(_Child);
+	}
+
 private:
+	float LiveTime = 0.0f;
 	GameEngineTransform Transform; // Object를 상속받은 클래스는 모두 Transform을 갖는다.
+	std::list<std::shared_ptr<GameEngineObject>> Childs;
 
 };

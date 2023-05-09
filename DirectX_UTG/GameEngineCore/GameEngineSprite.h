@@ -1,0 +1,35 @@
+#pragma once
+
+#include "GameEngineTexture.h"
+
+// 설명 : 스프라이트는 무조건 1개 이상의 이미지 정보가 들어있음
+// 이걸 만들때 그 텍스처가 로딩이 안되어있으면 텍스처의 로딩도 겸함
+class GameEngineSprite : public GameEngineResource<GameEngineSprite>
+{
+private:
+	class SpriteInfo
+	{
+		std::shared_ptr<GameEngineTexture> Sprite;
+		float4 CutData;
+	};
+
+public:
+	// constrcuter destructer
+	GameEngineSprite();
+	~GameEngineSprite();
+
+	// delete Function
+	GameEngineSprite(const GameEngineSprite& _Other) = delete;
+	GameEngineSprite(GameEngineSprite&& _Other) noexcept = delete;
+	GameEngineSprite& operator=(const GameEngineSprite& _Other) = delete;
+	GameEngineSprite& operator=(GameEngineSprite&& _Other) noexcept = delete;
+
+	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path);
+
+protected:
+
+private:
+	std::vector<SpriteInfo> Sprites;
+
+};
+

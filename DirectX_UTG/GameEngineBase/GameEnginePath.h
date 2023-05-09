@@ -33,6 +33,8 @@ public:
 
 	bool IsExistsToPlusString(const std::string_view& _String);
 
+	bool IsDirectory() const;
+
 	bool IsRoot();
 
 	bool Move(const std::string_view& _Path);

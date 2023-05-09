@@ -51,6 +51,9 @@ public:
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
 class GameEngineTransform : public GameEngineObjectBase
 {
+	friend class GameEngineObject;
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineTransform();
@@ -285,35 +288,52 @@ public:
 	void SetParent(GameEngineTransform* _Parent); // 부모 설정
 	void CalChild();                              // 부모의 영향을 자식에게 적용
 
-	// 스케일을 -로 변경하면 좌우가 반전된다.
-	void SetLocalFlipScaleX()
+	GameEngineTransform* GetParent()
 	{
-		TransData.LocalScale.x = -TransData.LocalScale.x;
-		SetLocalScale(TransData.LocalScale);
+		return Parent;
 	}
 
-	// 왼쪽으로 플립
-	void SetLocalNegativeScaleX()
-	{
-		if (0 < TransData.LocalScale.x)
-		{
-			SetLocalFlipScaleX();
-			return;
-		}
+	//// 스케일을 -로 변경하면 좌우가 반전된다.
+	//void SetLocalFlipScaleX()
+	//{
+	//	TransData.LocalScale.x = -TransData.LocalScale.x;
+	//	SetLocalScale(TransData.LocalScale);
+	//}
 
-		return;
-	}
+	//// 왼쪽으로 플립
+	//void SetLocalNegativeScaleX()
+	//{
+	//	if (0 < TransData.LocalScale.x)
+	//	{
+	//		SetLocalFlipScaleX();
+	//		return;
+	//	}
 
-	// 오른쪽으로 플립
+	//	return;
+	//}
+
+	//// 오른쪽으로 플립
+	//void SetLocalPositiveScaleX()
+	//{
+	//	if (0 > TransData.LocalScale.x)
+	//	{
+	//		SetLocalFlipScaleX();
+	//		return;
+	//	}
+
+	//	return;
+	//}
+
 	void SetLocalPositiveScaleX()
 	{
-		if (0 > TransData.LocalScale.x)
-		{
-			SetLocalFlipScaleX();
-			return;
-		}
+		TransData.Scale.x = abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
 
-		return;
+	void SetLocalNegativeScaleX()
+	{
+		TransData.Scale.x = -abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
 	}
 
 protected:
@@ -333,5 +353,19 @@ private:
 
 	GameEngineTransform* Parent = nullptr;   // weak_ptr 구조
 	std::list<GameEngineTransform*> Child;   // 부모자식관계를 결정한다.
+	GameEngineObject* Master = nullptr;
+
+	void AllAccTime(float _DeltaTime);
+	void AllUpdate(float _DeltaTime);
+	void AllRender(float _DeltaTime);
+	void AllRelease();
+	void ChildRelease();
+	void SetMaster(GameEngineObject* _Master);
+
+	GameEngineObject* GetMaster()
+	{
+		return Master;
+	}
+
 };
 

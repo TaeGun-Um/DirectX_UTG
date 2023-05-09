@@ -201,6 +201,9 @@
     <ClInclude Include="GameEngineGUI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineSprite.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineGUI.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSprite.cpp">
+      <Filter>Resources\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

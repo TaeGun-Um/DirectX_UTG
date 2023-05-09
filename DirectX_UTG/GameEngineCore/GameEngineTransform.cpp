@@ -168,4 +168,114 @@ float4 GameEngineTransform::GetWorldPosition()
 	return TransData.WorldPosition;
 }
 
+// 자식은 부모가 관리하게 되는 인터페이스
+void GameEngineTransform::SetMaster(GameEngineObject* _Master)
+{
+	Master = _Master;
+}
 
+void GameEngineTransform::AllAccTime(float _DeltaTime)
+{
+	if (nullptr == Master)
+	{
+		return;
+	}
+
+	if (false == Master->IsUpdate())
+	{
+		return;
+	}
+
+	Master->AccLiveTime(_DeltaTime);
+
+	for (GameEngineTransform* Trans : Child)
+	{
+		Trans->AllAccTime(_DeltaTime);
+	}
+}
+
+void GameEngineTransform::AllUpdate(float _DeltaTime)
+{
+
+	if (nullptr == Master)
+	{
+		return;
+	}
+
+	if (false == Master->IsUpdate())
+	{
+		return;
+	}
+
+	Master->Update(_DeltaTime);
+
+	for (GameEngineTransform* Trans : Child)
+	{
+		Trans->AllUpdate(_DeltaTime);
+	}
+}
+
+
+void GameEngineTransform::AllRender(float _DeltaTime)
+{
+	if (nullptr == Master)
+	{
+		return;
+	}
+
+	if (false == Master->IsUpdate())
+	{
+		return;
+	}
+
+	Master->Render(_DeltaTime);
+
+	for (GameEngineTransform* Trans : Child)
+	{
+		Trans->AllRender(_DeltaTime);
+	}
+}
+
+void GameEngineTransform::AllRelease()
+{
+	if (nullptr == Master)
+	{
+		return;
+	}
+
+	if (false == Master->IsUpdate())
+	{
+		return;
+	}
+
+	Master->Release();
+
+	for (GameEngineTransform* Trans : Child)
+	{
+		Trans->AllRelease();
+	}
+}
+
+void GameEngineTransform::ChildRelease()
+{
+	std::list<GameEngineTransform*>::iterator ReleaseStartIter = Child.begin();
+	std::list<GameEngineTransform*>::iterator ReleaseEndIter = Child.end();
+
+	for (; ReleaseStartIter != ReleaseEndIter; )
+	{
+		GameEngineTransform* Trans = *ReleaseStartIter;
+
+		if (nullptr == Trans->Master)
+		{
+			MsgAssert("몬가 잘못됨 도라에몽을 부르자.");
+		}
+
+		if (false == Trans->Master->IsDeath())
+		{
+			++ReleaseStartIter;
+			continue;
+		}
+
+		ReleaseStartIter = Child.erase(ReleaseStartIter);
+	}
+}

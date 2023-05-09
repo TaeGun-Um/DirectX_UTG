@@ -39,18 +39,10 @@ protected:
 	virtual void Update(float _DeltaTime) {}
 	virtual void Render(float _DeltaTime) {}
 
-	void AccLiveTime(float _LiveTime) override;
-
 private:
 	class GameEngineLevel* Level = nullptr;
 
-	//// 이걸 컴포넌트 구조라고 합니다.
-	std::list<std::shared_ptr<class GameEngineComponent>> ComponentsList;      // 생성한 컴포넌트들
-
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component); // 컴포넌트 정보 init
-	void ComponentsUpdate(float _DeltaTime);                                   // 컴포넌트 정보 갱신
-	void ComponentsRender(float _DeltaTime);                                   // 컴포넌트 정보 갱신
-	void ComponentsRelease();												   // 컴포넌트 릴리즈
 
 };
 
