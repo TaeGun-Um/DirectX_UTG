@@ -79,7 +79,7 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알, EX, Dust 생성
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
-	// 충돌함수 필요
+	// 충돌체 필요
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
 }
 
@@ -129,6 +129,7 @@ void Player::PositionCorrection()
 // 플레이어 GetPixel 연산 모음
 void Player::PixelCalculation(float _DeltaTime)
 {
+	// 위로 솓아오르는 점프 상태일 경우에만 BluePixel 통과 가능
 	if (true == IsJump && 0.0f <= MoveDirect.y)
 	{
 		BluePixelCheckAble = false;
@@ -143,7 +144,7 @@ void Player::PixelCalculation(float _DeltaTime)
 
 	if (true == IsBottomJump)
 	{
-		BottomJumpStateCheck();
+		BottomJumpStateCheck(); // 밑점프 상태일 경우 기존과 다른 픽셀충돌 연산 실시
 	}
 	else if (false == PixelCollisionCheck.IsBlue(BluePixelCheck))
 	{
@@ -515,8 +516,8 @@ void Player::DirectCheck()
 			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
 			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -40, -2 });
 			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
-			//DebugRenderPtr5->Off();
-			//DebugRenderPtr6->Off();
+			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
+			// DebugRenderPtr6->Off();
 		}
 	}
 	
@@ -531,8 +532,8 @@ void Player::DirectCheck()
 			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
 			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
 			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
-			//DebugRenderPtr5->Off();
-			//DebugRenderPtr6->Off();
+			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
+			// DebugRenderPtr6->Off();
 		}
 	}
 
@@ -753,6 +754,7 @@ void Player::UpdateState(float _DeltaTime)
 	}
 }
 
+// 낙하 상태 체크
 void Player::FallStart()
 {
 	RenderPtr->SetTexture("Ground_Jump_002.png");
@@ -801,6 +803,7 @@ void Player::FallEnd()
 	// IsFall의 false는 PixelCheck에서 실시
 }
 
+// Idle 상태 체크
 void Player::IdleStart()
 {
 	RenderPtr->SetTexture("Ground_Idle_001.png");
@@ -874,6 +877,7 @@ void Player::IdleEnd()
 {
 }
 
+// Move(Run) 상태 체크
 void Player::MoveStart()
 {
 	RenderPtr->SetTexture("Run_Normal_001.png");
@@ -941,6 +945,7 @@ void Player::MoveEnd()
 {
 }
 
+// Dash(Shift 입력) 상태 체크
 void Player::DashStart()
 {
 	if (true == IsFall)
@@ -1011,6 +1016,7 @@ void Player::DashEnd()
 	IsDash = false;
 }
 
+// Another -> Duck 전환 사이 상태 체크
 void Player::DuckReadyStart()
 {
 	RenderPtr->SetTexture("Ground_Duck_001.png");
@@ -1098,6 +1104,7 @@ void Player::DuckReadyEnd()
 	}
 }
 
+// Duck(Crounch) 상태 체크
 void Player::DuckStart()
 {
 	RenderPtr->SetTexture("Ground_Duck_008.png");
@@ -1172,7 +1179,8 @@ void Player::DuckEnd()
 		ADValue = AttackDirection::Left_Front;
 	}
 }
-	 
+
+// Jump 상태 체크
 void Player::JumpStart()
 {
 	RenderPtr->SetTexture("Ground_Jump_002.png");
@@ -1240,6 +1248,7 @@ void Player::JumpEnd()
 	// IsJump의 false는 PixelCheck에서 실시
 }
 
+// Parry(Slap) 상태 체크
 void Player::SlapStart()
 {
 }
@@ -1250,7 +1259,7 @@ void Player::SlapEnd()
 {
 }
 
-// MoveUp 전용 FSM
+// Idle에서 MoveUp 입력 시 상태 체크
 void Player::AttackReadyStart()
 {
 	RenderPtr->SetTexture("Normal_Up_001.png");
@@ -1306,6 +1315,7 @@ void Player::AttackReadyEnd()
 
 }
 
+// Idle에서 Attack 입력 시 상태 체크
 void Player::AttackStart()
 {
 	if (false == IsAttackReady)
@@ -1423,6 +1433,7 @@ void Player::AttackEnd()
 {
 }
 
+// Move(Run)에서 Attack 입력 시 상태 체크
 void Player::RunAttackStart()
 {
 }
@@ -1531,6 +1542,7 @@ void Player::RunAttackEnd()
 {
 }
 
+// Duck에서 Attack 입력 시 상태 체크
 void Player::DuckAttackStart()
 {
 	RenderPtr->SetTexture("Ground_DuckShoot_001.png");
@@ -1592,7 +1604,8 @@ void Player::DuckAttackEnd()
 {
 	IsDuckAttack = false;
 }
-	
+
+// EX Attack 상태 체크
 void Player::EXAttackStart()
 {
 }
@@ -1603,6 +1616,7 @@ void Player::EXAttackEnd()
 {
 }
 
+// Hold 입력 시 상태 체크
 void Player::HoldingStart()
 {
 
@@ -1708,6 +1722,7 @@ void Player::HoldingEnd()
 	IsHold = false;
 }
 
+// Hold 이후 Attack 입력 시 상태 체크
 void Player::HoldingAttackStart()
 {
 
