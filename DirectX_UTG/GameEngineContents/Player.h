@@ -71,6 +71,8 @@ private:
 	bool IsCorrection = false;
 
 	void PositionCorrection();
+	void PixelCalculation(float _DeltaTime);
+	void PlayerDebugRenderer();
 
 	// FSM
 	PlayerState StateValue = PlayerState::Idle;

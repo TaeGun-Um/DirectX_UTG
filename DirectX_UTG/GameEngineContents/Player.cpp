@@ -46,14 +46,14 @@ void Player::Start()
 		DebugRenderPtr2->SetScaleToTexture("RedDot.png");
 		DebugRenderPtr3->SetScaleToTexture("RedDot.png");
 		DebugRenderPtr4->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr5->SetScaleToTexture("GreenDot.png");
 		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
 
 		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
 		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
 		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
 		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
-		//DebugRenderPtr5->Off();
+		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
 		//DebugRenderPtr6->Off();
 
 		DebugRenderPtr0->Off();
@@ -69,51 +69,18 @@ void Player::Update(float _DeltaTime)
 {
 	if (false == IsCorrection)
 	{
-		PositionCorrection();
+		PositionCorrection();		// 최초 레벨 진입 시 위치 세팅
 		return;
 	}
 
-	MoveCamera(_DeltaTime);
-	DirectCheck();
-	UpdateState(_DeltaTime);
-	ProjectileCreate(_DeltaTime);
-
-	float4 PlayerPosCheck = GetTransform()->GetLocalPosition() + float4{0, -1};
-	GameEnginePixelColor BluePixelCheck = PixelCollisionCheck.PixelCheck(PlayerPosCheck);
-
-	if (true == IsBottomJump)
-	{
-		BottomJumpStateCheck();
-	}
-	else if (false == PixelCollisionCheck.IsBlue(BluePixelCheck))
-	{
-		PixelCheck(_DeltaTime);
-	}
-	else
-	{
-		BottomJump(_DeltaTime);
-	}
-
-	if (true == IsDebugRender)
-	{
-		DebugRenderPtr0->On();
-		DebugRenderPtr1->On();
-		DebugRenderPtr2->On();
-		DebugRenderPtr3->On();
-		DebugRenderPtr4->On();
-		DebugRenderPtr5->On();
-		DebugRenderPtr6->On();
-	}
-	else
-	{
-		DebugRenderPtr0->Off();
-		DebugRenderPtr1->Off();
-		DebugRenderPtr2->Off();
-		DebugRenderPtr3->Off();
-		DebugRenderPtr4->Off();
-		DebugRenderPtr5->Off();
-		DebugRenderPtr6->Off();
-	}
+	MoveCamera(_DeltaTime);         // 카메라 이동 연산
+	DirectCheck();				    // 플레이어 위치 판정
+	// 애니메이션 필요
+	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
+	ProjectileCreate(_DeltaTime);	// 총알, EX, Dust 생성
+	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
+	// 충돌함수 필요
+	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +123,65 @@ void Player::PositionCorrection()
 				break;
 			}
 		}
+	}
+}
+
+// 플레이어 GetPixel 연산 모음
+void Player::PixelCalculation(float _DeltaTime)
+{
+	if (true == IsJump && 0.0f <= MoveDirect.y)
+	{
+		BluePixelCheckAble = false;
+	}
+	else
+	{
+		BluePixelCheckAble = true;
+	}
+
+	float4 PlayerPosCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
+	GameEnginePixelColor BluePixelCheck = PixelCollisionCheck.PixelCheck(PlayerPosCheck);
+
+	if (true == IsBottomJump)
+	{
+		BottomJumpStateCheck();
+	}
+	else if (false == PixelCollisionCheck.IsBlue(BluePixelCheck))
+	{
+		PixelCheck(_DeltaTime);
+	}
+	else
+	{
+		if (false == BluePixelCheckAble)
+		{
+			return;
+		}
+
+		BottomJump(_DeltaTime);
+	}
+}
+
+// 플레이어 GetPixel 연산 모음
+void Player::PlayerDebugRenderer()
+{
+	if (true == IsDebugRender)
+	{
+		DebugRenderPtr0->On();
+		DebugRenderPtr1->On();
+		DebugRenderPtr2->On();
+		DebugRenderPtr3->On();
+		DebugRenderPtr4->On();
+		DebugRenderPtr5->On();
+		DebugRenderPtr6->On();
+	}
+	else
+	{
+		DebugRenderPtr0->Off();
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
 	}
 }
 

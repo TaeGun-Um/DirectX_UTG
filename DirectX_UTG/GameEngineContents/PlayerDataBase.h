@@ -115,6 +115,7 @@ private:
 	bool IsBottomJump = false;
 	bool AirDash = false;
 	bool BottomJumpAble = false;
+	bool BluePixelCheckAble = false;
 
 	// alt + shift + .
 	virtual void IdleStart() {}
