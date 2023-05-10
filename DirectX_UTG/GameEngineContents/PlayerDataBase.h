@@ -60,7 +60,6 @@ protected:
 	void SetCameraFollowType(CameraFollowType _Type);
 	void MoveCamera(float _DeltaTime);
 	
-	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Field();
 	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
 	
 	void AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel);

@@ -65,6 +65,11 @@ public:
 		DebugValue = true;
 	}
 
+	void DebugOff()
+	{
+		DebugValue = false;
+	}
+
 	// 상속한 Object의 디버그밸류가 On인지 확인
 	bool IsDebug()
 	{

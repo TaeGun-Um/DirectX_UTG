@@ -22,51 +22,56 @@ void GameEngineTransform::TransformUpdate()
 
 	TransData.LocalWorldMatrix = TransData.ScaleMatrix * TransData.RotationMatrix * TransData.PositionMatrix;
 
-
 	if (nullptr == Parent)
 	{
 		TransData.WorldMatrix = TransData.LocalWorldMatrix;
 	}
 	else // 차이
 	{
-		float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-		float4 PScale, PRotation, PPosition;
-		ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
-
-
-		if (true == AbsoluteScale)
-		{
-			// 부모쪽 행렬의 스케일을 1
-			PScale = float4::One;
-		}
-		if (true == AbsoluteRotation)
-		{
-			// 부모의 회전 
-			PRotation = float4::Zero;
-			PRotation.EulerDegToQuaternion();
-		}
-		if (true == AbsolutePosition)
-		{
-			PPosition = float4::Zero;
-		}
-
-		float4x4 MatScale, MatRot, MatPos;
-
-		//scale
-		MatScale.Scale(PScale);
-
-		//rot
-		MatRot = PRotation.QuaternionToRotationMatrix();
-
-		//pos
-		MatPos.Pos(PPosition);
-
-		TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
+		WorldCalculation();
 	}
 
 	// 마지막으로 세팅된 값에서 Local, World 행렬 값 추출 후 저장
 	WorldDecompose();
+
 	LocalDecompose();
+}
+
+void GameEngineTransform::WorldCalculation()
+{
+	float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
+	float4 PScale, PRotation, PPosition;
+	ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
+
+
+	if (true == AbsoluteScale)
+	{
+		// 부모쪽 행렬의 스케일을 1
+		PScale = float4::One;
+	}
+	if (true == AbsoluteRotation)
+	{
+		// 부모의 회전 
+		PRotation = float4::Zero;
+		PRotation.EulerDegToQuaternion();
+	}
+	if (true == AbsolutePosition)
+	{
+		PPosition = float4::Zero;
+	}
+
+	float4x4 MatScale, MatRot, MatPos;
+
+	//scale
+	MatScale.Scale(PScale);
+
+	//rot
+	MatRot = PRotation.QuaternionToRotationMatrix();
+
+	//pos
+	MatPos.Pos(PPosition);
+
+	TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
 }
 
 // 로컬 디컴포즈
@@ -100,6 +105,12 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 		int a = 0;
 	}
 
+	// 내가 원래 기존의 부모를 가지고 있다면
+	if (nullptr != Parent)
+	{
+		// 여기서 뭔가를 해서 
+	}
+
 	Parent = _Parent;
 
 	TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
@@ -121,20 +132,8 @@ void GameEngineTransform::CalChild()
 {
 	for (GameEngineTransform* ChildTrans : Child)
 	{
-		if (false == ChildTrans->AbsoluteScale)
-		{
-			ChildTrans->SetLocalScale(ChildTrans->GetLocalScale());
-		}
-
-		if (false == ChildTrans->AbsoluteRotation)
-		{
-			ChildTrans->SetLocalRotation(ChildTrans->GetLocalRotation());
-		}
-
-		if (false == ChildTrans->AbsolutePosition)
-		{
-			ChildTrans->SetLocalPosition(ChildTrans->GetLocalPosition());
-		}
+		ChildTrans->WorldCalculation();
+		ChildTrans->CalChild();
 	}
 }
 
@@ -196,7 +195,6 @@ void GameEngineTransform::AllAccTime(float _DeltaTime)
 
 void GameEngineTransform::AllUpdate(float _DeltaTime)
 {
-
 	if (nullptr == Master)
 	{
 		return;

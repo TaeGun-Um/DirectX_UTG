@@ -76,4 +76,8 @@ private:
 	GameEngineTransform Transform; // Object를 상속받은 클래스는 모두 Transform을 갖는다.
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
 
+	void AllAccTime(float _DeltaTime);
+	void AllUpdate(float _DeltaTime);
+	void AllRender(float _DeltaTime);
+	void AllRelease();
 };

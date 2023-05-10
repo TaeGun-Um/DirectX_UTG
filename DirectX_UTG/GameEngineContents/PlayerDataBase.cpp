@@ -176,16 +176,6 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 ///////////////////////////////////////////                     ANIMATION                       ///////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Field()
-{
-	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetTexture("Ground_Idle_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
-
-	return RenderPtr;
-}
-
 std::shared_ptr<GameEngineSpriteRenderer> PlayerDataBase::AnimationCreate_Overworld()
 {
 	std::shared_ptr<GameEngineSpriteRenderer> RenderPtr = CreateComponent<GameEngineSpriteRenderer>();

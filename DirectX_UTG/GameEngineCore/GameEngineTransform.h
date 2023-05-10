@@ -341,9 +341,11 @@ protected:
 private:
 	// 행렬 곱이 실시되면 무조건 행렬 데이터가 최신화됨
 	void TransformUpdate();
+	void AbsoluteReset();
+
 	void WorldDecompose();
 	void LocalDecompose();
-	void AbsoluteReset();
+	void WorldCalculation();
 
 	TransformData TransData;
 

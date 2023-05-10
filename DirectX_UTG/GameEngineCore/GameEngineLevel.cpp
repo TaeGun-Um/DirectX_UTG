@@ -78,13 +78,8 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			{
 				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
 
-				if (false == Actor->IsUpdate())
-				{
-					continue;
-				}
-				GameEngineTransform* Transform = Actor->GetTransform();
-				Transform->AllAccTime(_DeltaTime);
-				Transform->AllUpdate(_DeltaTime);
+				Actor->AllAccTime(_DeltaTime);
+				Actor->AllUpdate(_DeltaTime);
 			}
 		}
 	}
@@ -107,14 +102,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		for (; ActorStart != ActorEnd; ++ActorStart)
 		{
 			std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
-
-			if (false == Actor->IsUpdate())
-			{
-				continue;
-			}
-
-			GameEngineTransform* Transform = Actor->GetTransform();
-			Transform->AllRender(_DeltaTime);
+			Actor->AllRender(_DeltaTime);
 		}
 	}
 
@@ -140,8 +128,7 @@ void GameEngineLevel::ActorRelease()
 
 			if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
 			{
-				GameEngineTransform* Transform = RelaseActor->GetTransform();
-				Transform->AllRelease();
+				RelaseActor->AllRelease();
 				++ActorStart;
 				continue;
 			}

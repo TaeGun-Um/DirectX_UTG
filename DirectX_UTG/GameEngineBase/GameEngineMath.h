@@ -122,6 +122,14 @@ public:
 		DirectX::XMFLOAT3 DirectFloat3; // x, y, z
 		DirectX::XMFLOAT4 DirectFloat4; // x, y, z, w
 		DirectX::XMVECTOR DirectVector; // 
+
+		struct
+		{
+			float PosX;
+			float PosY;
+			float SizeX;
+			float SizeY;
+		};
 	};
 
 	float4()

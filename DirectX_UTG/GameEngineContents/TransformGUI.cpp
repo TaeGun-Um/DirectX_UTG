@@ -150,6 +150,8 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ColMapRenderOff();
 	}
 
+	ImGui::Text("Hi");
+
 	/*for (std::function<void()>& _CallbackRef : CustomGuiFunctions)
 	{
 		if (nullptr == _CallbackRef)

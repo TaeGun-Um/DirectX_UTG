@@ -70,6 +70,8 @@ private:
 	bool IsDebugRender = false;
 	bool IsCorrection = false;
 
+	void AnimationCreate();
+
 	void PositionCorrection();
 	void PixelCalculation(float _DeltaTime);
 	void PlayerDebugRenderer();
