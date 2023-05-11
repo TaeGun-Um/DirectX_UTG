@@ -44,11 +44,11 @@ void Player::Update(float _DeltaTime)
 	}
 
 	MoveCamera(_DeltaTime);         // 카메라 이동 연산
-	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알, EX, Dust 생성
 	// 충돌체 필요
+	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
 }
 
@@ -490,13 +490,31 @@ void Player::DirectCheck()
 
 	if (true == Directbool)
 	{
-		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalPositiveScaleX();
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+
+		{
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -40, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
+			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
+			// DebugRenderPtr6->Off();
+		}
 	}
 	else
 	{
-		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
-		RenderPtr->GetTransform()->SetLocalPosition({ -10, 90 });
+		GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
+
+		{
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
+			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
+			// DebugRenderPtr6->Off();
+		}
 	}
 
 	AttackDirectCheck();
@@ -926,17 +944,6 @@ void Player::MoveEnd()
 // Dash(Shift 입력) 상태 체크
 void Player::DashStart()
 {
-	if (true == Directbool)
-	{
-		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
-		RenderPtr->GetTransform()->AddLocalPosition({ -50, 0 });
-	}
-	else
-	{
-		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
-		RenderPtr->GetTransform()->AddLocalPosition({ 50, 0 });
-	}
-
 	if (true == IsFall)
 	{
 		RenderPtr->ChangeAnimation("AirDash");
@@ -948,19 +955,19 @@ void Player::DashStart()
 		RenderPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
 	}
 
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -70, 0 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -60, 0 });
+	}
+
 	IsDash = true;
 }
 void Player::DashUpdate(float _DeltaTime)
 {
-	if (true == Directbool)
-	{
-		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
-	}
-	else
-	{
-		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
-	}
-
 	DashTime += _DeltaTime;
 
 	float MoveDis = (MoveSpeed * 2) * _DeltaTime;
@@ -994,13 +1001,11 @@ void Player::DashEnd()
 {
 	if (true == Directbool)
 	{
-		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
-		RenderPtr->GetTransform()->AddLocalPosition({ 50, 0 });
+		RenderPtr->GetTransform()->AddLocalPosition({ 70, 0 });
 	}
 	else
 	{
-		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
-		RenderPtr->GetTransform()->AddLocalPosition({ -50, 0 });
+		RenderPtr->GetTransform()->AddLocalPosition({ 60, 0 });
 	}
 
 	DashTime = 0.0f;
