@@ -1684,62 +1684,139 @@ void Player::EXAttackUpdate(float _DeltaTime)
 	{
 	case AttackDirection::Right_Up:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Up", false);
+
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Up", false);
+		}
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Up", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
+		}
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Up", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Straight", false);
+		}
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
+		}
 	}
 	break;
 	case AttackDirection::Right_Down:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Down", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Down", false);
+		}
 	}
 	break;
 	case AttackDirection::Left_Up:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Up", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Up", false);
+		}
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
+		}
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Straight", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Straight", false);
+		}
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
+		}
 	}
 	break;
 	case AttackDirection::Left_Down:
 	{
-		RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
+		if (true == IsJump || true == IsFall)
+		{
+			RenderPtr->ChangeAnimation("AirEx_Down", false);
+		}
+		else
+		{
+			RenderPtr->ChangeAnimation("Ex_Down", false);
+		}
 	}
 	break;
 	default:
 		break;
 	}
 
-	//if ()
-	//{
-
-	//}
+	if (true == IsJump || true == IsFall)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+	else
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::EXAttackEnd()
 {
