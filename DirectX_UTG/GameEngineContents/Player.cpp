@@ -488,10 +488,12 @@ void Player::DirectCheck()
 	if (true == Directbool)
 	{
 		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	}
 	else
 	{
 		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ -10, 90 });
 	}
 
 	AttackDirectCheck();
