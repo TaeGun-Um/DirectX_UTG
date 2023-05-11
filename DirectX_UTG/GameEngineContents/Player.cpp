@@ -26,44 +26,15 @@ Player::~Player()
 
 void Player::Start()
 {
-	AnimationCreate();
+	PlayerInitialSetting();
+	DebugRendererSetting();
 	SetCameraFollowType(CameraFollowType::Field);
-	SetMoveSpeed(380.0f);
+	SetPlayerMoveSpeed(380.0f);
+	
+	//RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	RenderPtr->ChangeAnimation("Idle");
 	ChangeState(PlayerState::Idle);
-
-	// 픽셀체크 디버깅용 닷
-	{
-		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
-
-		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr1->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr2->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr3->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr4->SetScaleToTexture("RedDot.png");
-		DebugRenderPtr5->SetScaleToTexture("GreenDot.png");
-		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
-
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
-		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
-		//DebugRenderPtr6->Off();
-
-		DebugRenderPtr0->Off();
-		DebugRenderPtr1->Off();
-		DebugRenderPtr2->Off();
-		DebugRenderPtr3->Off();
-		DebugRenderPtr4->Off();
-		DebugRenderPtr5->Off();
-		DebugRenderPtr6->Off();
-	}
 }
 void Player::Update(float _DeltaTime)
 {
@@ -74,25 +45,13 @@ void Player::Update(float _DeltaTime)
 	}
 
 	MoveCamera(_DeltaTime);         // 카메라 이동 연산
-	DirectCheck();				    // 플레이어 위치 판정
 	// 애니메이션 필요
+	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
+	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알, EX, Dust 생성
-	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	// 충돌체 필요
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////                        Init                       /////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Player::AnimationCreate()
-{
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetTexture("Ground_Idle_001.png");
-	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -520,33 +479,19 @@ void Player::DirectCheck()
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
-		GetTransform()->SetLocalPositiveScaleX();
-		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
-		
-		{
-			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
-			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
-			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -40, -2 });
-			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
-			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
-			// DebugRenderPtr6->Off();
-		}
 	}
-	
-	if (true == GameEngineInput::IsPress("MoveLeft"))
+	else if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		Directbool = false;
-		GetTransform()->SetLocalNegativeScaleX();
-		RenderPtr->GetTransform()->SetLocalPosition({ 10, 90 });
+	}
 
-		{
-			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
-			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
-			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
-			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
-			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
-			// DebugRenderPtr6->Off();
-		}
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
 	}
 
 	AttackDirectCheck();
@@ -769,7 +714,7 @@ void Player::UpdateState(float _DeltaTime)
 // 낙하 상태 체크
 void Player::FallStart()
 {
-	RenderPtr->SetTexture("Ground_Jump_002.png");
+	RenderPtr->ChangeAnimation("Jump");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 }
 void Player::FallUpdate(float _DeltaTime)
@@ -779,6 +724,22 @@ void Player::FallUpdate(float _DeltaTime)
 		AirDash = false;
 		ChangeState(PlayerState::Dash);
 		return;
+	}
+
+	// 방향키 안누르면 Front로 고정
+	if (true == Directbool)
+	{
+		if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+	}
+	else
+	{
+		if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
 	}
 
 	// 낙하 시 이동
@@ -818,7 +779,7 @@ void Player::FallEnd()
 // Idle 상태 체크
 void Player::IdleStart()
 {
-	RenderPtr->SetTexture("Ground_Idle_001.png");
+	RenderPtr->ChangeAnimation("Idle");
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::IdleUpdate(float _DeltaTime)
@@ -892,7 +853,7 @@ void Player::IdleEnd()
 // Move(Run) 상태 체크
 void Player::MoveStart()
 {
-	RenderPtr->SetTexture("Run_Normal_001.png");
+	RenderPtr->ChangeAnimation("Move");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
 void Player::MoveUpdate(float _DeltaTime)
@@ -960,30 +921,39 @@ void Player::MoveEnd()
 // Dash(Shift 입력) 상태 체크
 void Player::DashStart()
 {
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+	}
+
 	if (true == IsFall)
 	{
-		RenderPtr->SetTexture("Dash_Air_008.png");
+		RenderPtr->ChangeAnimation("AirDash");
 		RenderPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
 	}
 	else
 	{
-		RenderPtr->SetTexture("Dash_Ground_008.png");
+		RenderPtr->ChangeAnimation("Dash");
 		RenderPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
 	}
 
-	if (true == Directbool)
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ -100, 0 });
-	}
-	else
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ -10, 0 });
-	}
-	
 	IsDash = true;
 }
 void Player::DashUpdate(float _DeltaTime)
 {
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+	}
+
 	DashTime += _DeltaTime;
 
 	float MoveDis = (MoveSpeed * 2) * _DeltaTime;
@@ -1017,11 +987,11 @@ void Player::DashEnd()
 {
 	if (true == Directbool)
 	{
-		RenderPtr->GetTransform()->AddLocalPosition({ 100, 0 });
+		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
 	}
 	else
 	{
-		RenderPtr->GetTransform()->AddLocalPosition({ 10, 0 });
+		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
 	}
 
 	DashTime = 0.0f;
@@ -1031,7 +1001,7 @@ void Player::DashEnd()
 // Another -> Duck 전환 사이 상태 체크
 void Player::DuckReadyStart()
 {
-	RenderPtr->SetTexture("Ground_Duck_001.png");
+	RenderPtr->ChangeAnimation("DuckReady");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 
 	if (true == Directbool)
@@ -1119,7 +1089,7 @@ void Player::DuckReadyEnd()
 // Duck(Crounch) 상태 체크
 void Player::DuckStart()
 {
-	RenderPtr->SetTexture("Ground_Duck_008.png");
+	RenderPtr->ChangeAnimation("Duck");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 
 	if (true == Directbool)
@@ -1195,7 +1165,7 @@ void Player::DuckEnd()
 // Jump 상태 체크
 void Player::JumpStart()
 {
-	RenderPtr->SetTexture("Ground_Jump_002.png");
+	RenderPtr->ChangeAnimation("Jump");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
 	// 점프력
@@ -1212,6 +1182,22 @@ void Player::JumpUpdate(float _DeltaTime)
 		AirDash = false;
 		ChangeState(PlayerState::Dash);
 		return;
+	}
+
+	// 방향키 안누르면 Front로 고정
+	if (true == Directbool)
+	{
+		if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Right_Front;
+		}
+	}
+	else
+	{
+		if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+		{
+			ADValue = AttackDirection::Left_Front;
+		}
 	}
 
 	JumpTime += _DeltaTime;
@@ -1274,7 +1260,7 @@ void Player::SlapEnd()
 // Idle에서 MoveUp 입력 시 상태 체크
 void Player::AttackReadyStart()
 {
-	RenderPtr->SetTexture("Normal_Up_001.png");
+	RenderPtr->ChangeAnimation("Hold_Normal_Up");
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::AttackReadyUpdate(float _DeltaTime)
@@ -1330,6 +1316,8 @@ void Player::AttackReadyEnd()
 // Idle에서 Attack 입력 시 상태 체크
 void Player::AttackStart()
 {
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+
 	if (false == IsAttackReady)
 	{
 		if (true == Directbool)
@@ -1374,26 +1362,22 @@ void Player::AttackUpdate(float _DeltaTime)
 	{
 	case AttackDirection::Right_Up:
 	{
-		RenderPtr->SetTexture("Shoot_Up_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		RenderPtr->ChangeAnimation("Hold_Shoot_Up", false);
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		RenderPtr->SetTexture("Shoot_Straight_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		RenderPtr->ChangeAnimation("Hold_Shoot_Straight", false);
 	}
 	break;
 	case AttackDirection::Left_Up:
 	{
-		RenderPtr->SetTexture("Shoot_Up_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		RenderPtr->ChangeAnimation("Hold_Shoot_Up", false);
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		RenderPtr->SetTexture("Shoot_Straight_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+		RenderPtr->ChangeAnimation("Hold_Shoot_Straight", false);
 	}
 	break;
 	default:
@@ -1448,6 +1432,7 @@ void Player::AttackEnd()
 // Move(Run)에서 Attack 입력 시 상태 체크
 void Player::RunAttackStart()
 {
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
 void Player::RunAttackUpdate(float _DeltaTime)
 {
@@ -1490,26 +1475,22 @@ void Player::RunAttackUpdate(float _DeltaTime)
 	{
 	case AttackDirection::Right_DiagonalUp:
 	{
-		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+		RenderPtr->ChangeAnimation("Move_Attak_DiagonalUp", false);
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+		RenderPtr->ChangeAnimation("Move_Attak_Straight", false);
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-		RenderPtr->SetTexture("Run_Shooting_DiagonalUp_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+		RenderPtr->ChangeAnimation("Move_Attak_DiagonalUp", false);
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		RenderPtr->SetTexture("Run_Shooting_Straight_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+		RenderPtr->ChangeAnimation("Move_Attak_Straight", false);
 	}
 	break;
 	default:
@@ -1557,7 +1538,7 @@ void Player::RunAttackEnd()
 // Duck에서 Attack 입력 시 상태 체크
 void Player::DuckAttackStart()
 {
-	RenderPtr->SetTexture("Ground_DuckShoot_001.png");
+	RenderPtr->ChangeAnimation("DuckAttack");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 
 	IsDuckAttack = true;
@@ -1631,7 +1612,7 @@ void Player::EXAttackEnd()
 // Hold 입력 시 상태 체크
 void Player::HoldingStart()
 {
-
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::HoldingUpdate(float _DeltaTime)
 {
@@ -1661,62 +1642,52 @@ void Player::HoldingUpdate(float _DeltaTime)
 		{
 		case AttackDirection::Right_Up:
 		{
-			RenderPtr->SetTexture("Normal_Up_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
 		}
 			break;
 		case AttackDirection::Right_DiagonalUp:
 		{
-			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
 		}
 			break;
 		case AttackDirection::Right_Front:
 		{
-			RenderPtr->SetTexture("Normal_Straight_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
 		}
 			break;
 		case AttackDirection::Right_DiagonalDown:
 		{
-			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
 		}
 			break;
 		case AttackDirection::Right_Down:
 		{
-			RenderPtr->SetTexture("Normal_Down_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
 		}
 			break;
 		case AttackDirection::Left_Up:
 		{
-			RenderPtr->SetTexture("Normal_Up_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
 		}
 			break;
 		case AttackDirection::Left_DiagonalUp:
 		{
-			RenderPtr->SetTexture("Normal_DiagonalUp_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
 		}
 			break;
 		case AttackDirection::Left_Front:
 		{
-			RenderPtr->SetTexture("Normal_Straight_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
 		}
 			break;
 		case AttackDirection::Left_DiagonalDown:
 		{
-			RenderPtr->SetTexture("Normal_DiagonalDown_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
 		}
 			break;
 		case AttackDirection::Left_Down:
 		{
-			RenderPtr->SetTexture("Normal_Down_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
 		}
 			break;
 		default:
@@ -1737,7 +1708,7 @@ void Player::HoldingEnd()
 // Hold 이후 Attack 입력 시 상태 체크
 void Player::HoldingAttackStart()
 {
-
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::HoldingAttackUpdate(float _DeltaTime)
 {
@@ -1773,62 +1744,52 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 		{
 		case AttackDirection::Right_Up:
 		{
-			RenderPtr->SetTexture("Shoot_Up_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Up", false);
 		}
 		break;
 		case AttackDirection::Right_DiagonalUp:
 		{
-			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_DiagonalUp", false);
 		}
 		break;
 		case AttackDirection::Right_Front:
 		{
-			RenderPtr->SetTexture("Shoot_Straight_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Straight", false);
 		}
 		break;
 		case AttackDirection::Right_DiagonalDown:
 		{
-			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_DiagonalDown", false);
 		}
 		break;
 		case AttackDirection::Right_Down:
 		{
-			RenderPtr->SetTexture("Shoot_Down_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Down", false);
 		}
 		break;
 		case AttackDirection::Left_Up:
 		{
-			RenderPtr->SetTexture("Shoot_Up_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Up", false);
 		}
 		break;
 		case AttackDirection::Left_DiagonalUp:
 		{
-			RenderPtr->SetTexture("Shoot_DiagonalUp_003.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_DiagonalUp", false);
 		}
 		break;
 		case AttackDirection::Left_Front:
 		{
-			RenderPtr->SetTexture("Shoot_Straight_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Straight", false);
 		}
 		break;
 		case AttackDirection::Left_DiagonalDown:
 		{
-			RenderPtr->SetTexture("Shoot_DiagonalDown_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_DiagonalDown", false);
 		}
 		break;
 		case AttackDirection::Left_Down:
 		{
-			RenderPtr->SetTexture("Shoot_Down_001.png");
-			RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+			RenderPtr->ChangeAnimation("Hold_Shoot_Down", false);
 		}
 		break;
 		default:
@@ -1844,4 +1805,210 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 void Player::HoldingAttackEnd()
 {
 	IsHold = false;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////             Init(Animation & Collision)            /////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::PlayerInitialSetting()
+{
+	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+
+	if (nullptr == GameEngineSprite::Find("Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Action");
+
+		// Idle
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Idle").GetFullPath());
+
+		// Move
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Move").GetFullPath());
+
+		// Jump & Parry(Slap)
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Jump").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Parry").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Parry_Pink").GetFullPath());
+
+		// Dash
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirDash").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dash").GetFullPath());
+
+		// Duck
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DuckReady").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Duck").GetFullPath());
+
+		// Hit & Death
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirHit").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hit").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Death").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost").GetFullPath());
+
+		// Hold
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Normal_DiagonalDown").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Normal_DiagonalUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Normal_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Normal_Straight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Normal_Up").GetFullPath());
+
+		// Attack(Move, Duck, Hold(==Idle))
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Move_Attak_DiagonalUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Move_Attak_Straight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DuckAttack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Shoot_DiagonalDown").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Shoot_DiagonalUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Shoot_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Shoot_Straight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Hold_Shoot_Up").GetFullPath());
+
+		// EX
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirEX_DiagonalDown").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirEX_DiagonalUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirEX_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirEX_Straight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirEX_Up").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_DiagonalDown").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_DiagonalUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_Straight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_Up").GetFullPath());
+
+		// Interaction & Intro
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ElderKettleInteraction").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Flex").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Regular").GetFullPath());
+	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Effect");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
+	// Idle
+	RenderPtr->CreateAnimation("Idle", "Idle", 0.1f);
+
+	// Move
+	RenderPtr->CreateAnimation("Move", "Move", 0.1f);
+
+	// Jump & Parry(Slap)
+	RenderPtr->CreateAnimation("Jump", "Jump", 0.1f);
+	RenderPtr->CreateAnimation("Parry", "Parry", 0.1f);
+	RenderPtr->CreateAnimation("Parry_Pink", "Parry_Pink", 0.1f);
+
+	// Dash
+	RenderPtr->CreateAnimation("AirDash", "AirDash", 0.1f);
+	RenderPtr->CreateAnimation("Dash", "Dash", 0.1f);
+
+	// Duck
+	RenderPtr->CreateAnimation("DuckReady", "DuckReady", 0.1f);
+	RenderPtr->CreateAnimation("Duck", "Duck", 0.1f);
+
+	// Hit & Death
+	RenderPtr->CreateAnimation("AirHit", "AirHit", 0.1f);
+	RenderPtr->CreateAnimation("Hit", "Hit", 0.1f);
+	RenderPtr->CreateAnimation("Death", "Death", 0.1f);
+	RenderPtr->CreateAnimation("Ghost", "Ghost", 0.1f);
+
+	// Hold
+	RenderPtr->CreateAnimation("Hold_Normal_DiagonalDown", "Hold_Normal_DiagonalDown", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Normal_DiagonalUp", "Hold_Normal_DiagonalUp", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Normal_Down", "Hold_Normal_Down", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Normal_Straight", "Hold_Normal_Straight", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Normal_Up", "Hold_Normal_Up", 0.1f);
+
+	// Attack(Move, Duck, Hold(==Idle))
+	RenderPtr->CreateAnimation("Move_Attak_DiagonalUp", "Move_Attak_DiagonalUp", 0.1f);
+	RenderPtr->CreateAnimation("Move_Attak_Straight", "Move_Attak_Straight", 0.1f);
+	RenderPtr->CreateAnimation("DuckAttack", "DuckAttack", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalDown", "Hold_Shoot_DiagonalDown", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalUp", "Hold_Shoot_DiagonalUp", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Down", "Hold_Shoot_Down", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Straight", "Hold_Shoot_Straight", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Up", "Hold_Shoot_Up", 0.1f);
+
+	// EX
+	RenderPtr->CreateAnimation("AirEX_DiagonalDown", "AirEX_DiagonalDown", 0.1f);
+	RenderPtr->CreateAnimation("AirEX_DiagonalUp", "AirEX_DiagonalUp", 0.1f);
+	RenderPtr->CreateAnimation("AirEX_Down", "AirEX_Down", 0.1f);
+	RenderPtr->CreateAnimation("AirEX_Straight", "AirEX_Straight", 0.1f);
+	RenderPtr->CreateAnimation("AirEX_Up", "AirEX_Up", 0.1f);
+	RenderPtr->CreateAnimation("Ex_DiagonalDown", "Ex_DiagonalDown", 0.1f);
+	RenderPtr->CreateAnimation("Ex_DiagonalUp", "Ex_DiagonalUp", 0.1f);
+	RenderPtr->CreateAnimation("Ex_Down", "Ex_Down", 0.1f);
+	RenderPtr->CreateAnimation("Ex_Straight", "Ex_Straight", 0.1f);
+	RenderPtr->CreateAnimation("Ex_Up", "Ex_Up", 0.1f);
+
+	// Interaction & Intro
+	RenderPtr->CreateAnimation("ElderKettleInteraction", "ElderKettleInteraction", 0.1f);
+	RenderPtr->CreateAnimation("Intro_Flex", "Intro_Flex", 0.1f);
+	RenderPtr->CreateAnimation("Intro_Regular", "Intro_Regular", 0.1f);
+}
+
+void Player::DebugRendererSetting()
+{
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("CupHead_Resource");
+	NewDir.Move("CupHead_Resource");
+	NewDir.Move("Image");
+	NewDir.Move("Character");
+	NewDir.Move("CupHead");
+	NewDir.Move("DebugImage");
+
+	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+
+	DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
+	DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
+
+	DebugRenderPtr0->SetScaleToTexture("RedDot.png");
+	DebugRenderPtr1->SetScaleToTexture("RedDot.png");
+	DebugRenderPtr2->SetScaleToTexture("RedDot.png");
+	DebugRenderPtr3->SetScaleToTexture("RedDot.png");
+	DebugRenderPtr4->SetScaleToTexture("RedDot.png");
+	DebugRenderPtr5->SetScaleToTexture("GreenDot.png");
+	DebugRenderPtr6->SetScaleToTexture("RedDot.png");   // 미사용
+
+	DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
+	DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
+	DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
+	DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
+	DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
+	//DebugRenderPtr6->Off();
+
+	DebugRenderPtr0->Off();
+	DebugRenderPtr1->Off();
+	DebugRenderPtr2->Off();
+	DebugRenderPtr3->Off();
+	DebugRenderPtr4->Off();
+	DebugRenderPtr5->Off();
+	DebugRenderPtr6->Off();
 }

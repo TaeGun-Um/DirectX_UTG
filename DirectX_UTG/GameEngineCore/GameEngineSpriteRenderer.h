@@ -52,8 +52,10 @@ public:
 	void SetFlipX();
 	void SetFlipY();
 
+	// 애니메이션이 존재하는지 확인
 	std::shared_ptr<AnimationInfo> FindAnimation(const std::string_view& _Name);
 
+	// 애니메이션 생성
 	std::shared_ptr<AnimationInfo> CreateAnimation(const std::string_view& _Name,
 		const std::string_view& _SpriteName,
 		float _FrameInter = 0.1f,
@@ -61,11 +63,13 @@ public:
 		int _End = -1,
 		bool _Loop = true);
 
+	// 애니메이션 변경(2번 인자의 Force를 바로 입력하기 위함)
 	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
 	{
 		ChangeAnimation(_Name, _Frame, _Force);
 	}
 
+	// 애니메이션 변경
 	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
 
 protected:

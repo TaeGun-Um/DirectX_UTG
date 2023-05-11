@@ -30,7 +30,8 @@ public:
 		return MoveDistance;
 	}
 
-	void SetMoveSpeed(float _Value)
+	// 플레이어 MoveSpeed 설정
+	void SetPlayerMoveSpeed(float _Value)
 	{
 		MoveSpeed = _Value;
 	}

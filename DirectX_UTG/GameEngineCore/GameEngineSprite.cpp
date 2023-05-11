@@ -9,6 +9,7 @@ GameEngineSprite::~GameEngineSprite()
 {
 }
 
+// 폴더 내 파일들을 프레임 애니메이션으로
 void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 {
 	GameEngineDirectory Dir = _Path;
@@ -40,10 +41,9 @@ void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 		Sprites[i].CutData.SizeX = 1.0f;
 		Sprites[i].CutData.SizeY = 1.0f;
 	}
-
-	return;
 }
 
+// 스프라이트 시트를 프레임 애니메이션으로(기존)
 void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 {
 	GameEnginePath NewPath(_Path);

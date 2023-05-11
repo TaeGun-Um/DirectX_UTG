@@ -16,7 +16,7 @@ void Player_Overworld::Start()
 {
 	RenderPtr = AnimationCreate_Overworld();
 	SetCameraFollowType(CameraFollowType::Overworld);
-	SetMoveSpeed(230.0f);
+	SetPlayerMoveSpeed(230.0f);
 }
 void Player_Overworld::Update(float _DeltaTime)
 {

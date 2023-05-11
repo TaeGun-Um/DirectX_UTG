@@ -17,7 +17,7 @@ bool AnimationInfo::IsEnd()
 void AnimationInfo::Reset()
 {
 	CurFrame = StartFrame;
-	CurTime = 0.0f;
+	CurTime = Inter;
 	IsEndValue = false;
 }
 
@@ -29,7 +29,7 @@ void AnimationInfo::Update(float _DeltaTime)
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
-		CurTime = Inter;
+		CurTime += Inter;
 
 		if (CurFrame > EndFrame)
 		{
@@ -97,6 +97,7 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 	GetTransform()->SetLocalScale(Scale);
 }
 
+// 애니메이션이 존재하는지 확인
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std::string_view& _Name)
 {
 	std::map<std::string, std::shared_ptr<AnimationInfo>>::iterator FindIter = Animations.find(_Name.data());
@@ -109,6 +110,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std
 	return FindIter->second;
 }
 
+// 애니메이션 생성
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const std::string_view& _Name,
 	const std::string_view& _SpriteName,
 	float _FrameInter /*= 0.1f*/,
@@ -152,7 +154,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const s
 	{
 		if (_End >= Sprite->GetSpriteCount())
 		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Name));
+			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 만들려고 했습니다." + std::string(_Name));
 			return nullptr;
 		}
 
@@ -171,7 +173,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const s
 	return NewAnimation;
 }
 
-
+// 애니메이션 변경
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);

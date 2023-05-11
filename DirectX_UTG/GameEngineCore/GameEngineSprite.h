@@ -24,6 +24,7 @@ public:
 	GameEngineSprite& operator=(const GameEngineSprite& _Other) = delete;
 	GameEngineSprite& operator=(GameEngineSprite&& _Other) noexcept = delete;
 
+	// 폴더 내 파일들을 프레임 애니메이션으로
 	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath = std::string(_Path);
@@ -33,6 +34,7 @@ public:
 		return NewTexture;
 	}
 
+	// 스프라이트 시트를 프레임 애니메이션으로(기존)
 	static std::shared_ptr<GameEngineSprite> LoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 	{
 		GameEnginePath NewPath = std::string(_Path);

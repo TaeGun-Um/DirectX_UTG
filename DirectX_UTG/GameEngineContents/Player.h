@@ -70,7 +70,8 @@ private:
 	bool IsDebugRender = false;
 	bool IsCorrection = false;
 
-	void AnimationCreate();
+	void PlayerInitialSetting();
+	void DebugRendererSetting();
 
 	void PositionCorrection();
 	void PixelCalculation(float _DeltaTime);
@@ -104,6 +105,7 @@ private:
 	void CreateParryEffect();
 
 	void DirectCheck();
+
 	void AttackDirectCheck();
 	void ChangeState(PlayerState _StateValue);
 	void UpdateState(float _DeltaTime);

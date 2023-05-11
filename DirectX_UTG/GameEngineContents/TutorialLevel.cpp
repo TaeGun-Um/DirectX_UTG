@@ -41,38 +41,26 @@ void TutorialLevel::Start()
 		}
 	}
 	// 플레이어 리소스 로드
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("Ground");
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("CupHead_Resource");
+	//	NewDir.Move("CupHead_Resource");
+	//	NewDir.Move("Image");
+	//	NewDir.Move("Character");
+	//	NewDir.Move("CupHead");
+	//	NewDir.Move("Ground");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+	//	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
+	//}
 	// 디버그용 이미지 로드
 	{
 		
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("DebugImage");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
 	}
 
 	// ColMap
