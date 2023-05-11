@@ -1206,6 +1206,12 @@ void Player::JumpUpdate(float _DeltaTime)
 		}
 	}
 
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::Slap);
+		return;
+	}
+
 	JumpTime += _DeltaTime;
 
 	// 점프 시 이동
@@ -1255,12 +1261,74 @@ void Player::JumpEnd()
 // Parry(Slap) 상태 체크
 void Player::SlapStart()
 {
+	RenderPtr->ChangeAnimation("Parry");
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
+	//if (true == GameEngineInput::IsDown("Dash") && true == AirDash)  // AirDash true는 PixelCheck에서 진행
+	//{
+	//	AirDash = false;
+	//	ChangeState(PlayerState::Dash);
+	//	return;
+	//}
+
+	// 방향키 안누르면 Front로 고정
+	//if (true == Directbool)
+	//{
+	//	if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+	//	{
+	//		ADValue = AttackDirection::Right_Front;
+	//	}
+	//}
+	//else
+	//{
+	//	if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
+	//	{
+	//		ADValue = AttackDirection::Left_Front;
+	//	}
+	//}
+
+	JumpTime += _DeltaTime;
+
+	// 점프 시 이동
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	if (true == IsJump && 0.01f <= JumpTime)
+	{
+		MoveDirect.y += -3000.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+	}
+	else if (false == IsJump && 0.01f <= JumpTime)
+	{
+		MoveDirect.y = 0;
+	}
+
+	if (false == IsJump)
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (true == RenderPtr->FindAnimation("Parry")->IsEnd())
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 }
 void Player::SlapEnd()
 {
+	MoveDirect = float4::Zero;
+	JumpTime = 0.0f;
 }
 
 // Idle에서 MoveUp 입력 시 상태 체크
