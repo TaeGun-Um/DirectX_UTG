@@ -1319,7 +1319,7 @@ void Player::SlapUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == RenderPtr->FindAnimation("Parry")->IsEnd())
+	if (true == RenderPtr->IsAnimationEnd())
 	{
 		IsSlap = false;
 		ChangeState(PlayerState::Jump);
@@ -1680,6 +1680,66 @@ void Player::EXAttackStart()
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Up", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalUp", false);
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Straight", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_DiagonalDown", false);
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		RenderPtr->ChangeAnimation("Hold_Normal_Down", false);
+	}
+	break;
+	default:
+		break;
+	}
+
+	//if ()
+	//{
+
+	//}
 }
 void Player::EXAttackEnd()
 {
