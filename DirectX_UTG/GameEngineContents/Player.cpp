@@ -31,7 +31,6 @@ void Player::Start()
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
 	
-	//RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	RenderPtr->ChangeAnimation("Idle");
 	ChangeState(PlayerState::Idle);
@@ -45,7 +44,6 @@ void Player::Update(float _DeltaTime)
 	}
 
 	MoveCamera(_DeltaTime);         // 카메라 이동 연산
-	// 애니메이션 필요
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
@@ -163,6 +161,11 @@ void Player::PlayerDebugRenderer()
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
+	if (true == IsDash || true == IsSlap)
+	{
+		return;
+	}
+
 	ProjectileCreateTime += _DeltaTime;
 
 	if (true == GameEngineInput::IsDown("WeaponSwap"))
@@ -174,7 +177,7 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	// WeaponType = true : Peashooter
 	// WeaponType = false : Spread
-	if (0.12f <= ProjectileCreateTime && false == IsDash && GameEngineInput::IsPress("Attack"))
+	if (0.12f <= ProjectileCreateTime && GameEngineInput::IsPress("Attack"))
 	{
 		if (true == WeaponType)
 		{
@@ -1175,7 +1178,7 @@ void Player::JumpStart()
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
 	// 점프력
-	if (false == IsJump)
+	if (false == IsJump && false == IsSlap)
 	{
 		MoveDirect.y = 900.0f;
 		IsJump = true;
@@ -1208,6 +1211,7 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
+		IsSlap = true;
 		ChangeState(PlayerState::Slap);
 		return;
 	}
@@ -1253,8 +1257,11 @@ void Player::JumpUpdate(float _DeltaTime)
 }
 void Player::JumpEnd()
 {
-	MoveDirect = float4::Zero;
-	JumpTime = 0.0f;
+	if (false == IsSlap)
+	{
+		MoveDirect = float4::Zero;
+		JumpTime = 0.0f;
+	}
 	// IsJump의 false는 PixelCheck에서 실시
 }
 
@@ -1266,29 +1273,6 @@ void Player::SlapStart()
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
-	//if (true == GameEngineInput::IsDown("Dash") && true == AirDash)  // AirDash true는 PixelCheck에서 진행
-	//{
-	//	AirDash = false;
-	//	ChangeState(PlayerState::Dash);
-	//	return;
-	//}
-
-	// 방향키 안누르면 Front로 고정
-	//if (true == Directbool)
-	//{
-	//	if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
-	//	{
-	//		ADValue = AttackDirection::Right_Front;
-	//	}
-	//}
-	//else
-	//{
-	//	if (false == GameEngineInput::IsPress("MoveUp") && false == GameEngineInput::IsPress("MoveDown"))
-	//	{
-	//		ADValue = AttackDirection::Left_Front;
-	//	}
-	//}
-
 	JumpTime += _DeltaTime;
 
 	// 점프 시 이동
@@ -1315,19 +1299,22 @@ void Player::SlapUpdate(float _DeltaTime)
 
 	if (false == IsJump)
 	{
+		IsSlap = false;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 
 	if (true == RenderPtr->FindAnimation("Parry")->IsEnd())
 	{
+		IsSlap = false;
 		ChangeState(PlayerState::Jump);
 		return;
 	}
 }
 void Player::SlapEnd()
 {
-	MoveDirect = float4::Zero;
+	// MoveDirect = float4::Zero;
+	
 	JumpTime = 0.0f;
 }
 
@@ -1979,63 +1966,63 @@ void Player::PlayerInitialSetting()
 	}
 
 	// Idle
-	RenderPtr->CreateAnimation("Idle", "Idle", 0.1f);
+	RenderPtr->CreateAnimation("Idle", "Idle", 0.07f);
 
 	// Move
-	RenderPtr->CreateAnimation("Move", "Move", 0.1f);
+	RenderPtr->CreateAnimation("Move", "Move", 0.05f);
 
 	// Jump & Parry(Slap)
-	RenderPtr->CreateAnimation("Jump", "Jump", 0.1f);
-	RenderPtr->CreateAnimation("Parry", "Parry", 0.1f);
-	RenderPtr->CreateAnimation("Parry_Pink", "Parry_Pink", 0.1f);
+	RenderPtr->CreateAnimation("Jump", "Jump", 0.05f);
+	RenderPtr->CreateAnimation("Parry", "Parry", 0.05f);
+	RenderPtr->CreateAnimation("Parry_Pink", "Parry_Pink", 0.05f);
 
 	// Dash
-	RenderPtr->CreateAnimation("AirDash", "AirDash", 0.1f);
-	RenderPtr->CreateAnimation("Dash", "Dash", 0.1f);
+	RenderPtr->CreateAnimation("AirDash", "AirDash", 0.05f);
+	RenderPtr->CreateAnimation("Dash", "Dash", 0.05f);
 
 	// Duck
-	RenderPtr->CreateAnimation("DuckReady", "DuckReady", 0.1f);
-	RenderPtr->CreateAnimation("Duck", "Duck", 0.1f);
+	RenderPtr->CreateAnimation("DuckReady", "DuckReady", 0.05f);
+	RenderPtr->CreateAnimation("Duck", "Duck", 0.07f);
 
 	// Hit & Death
-	RenderPtr->CreateAnimation("AirHit", "AirHit", 0.1f);
-	RenderPtr->CreateAnimation("Hit", "Hit", 0.1f);
-	RenderPtr->CreateAnimation("Death", "Death", 0.1f);
-	RenderPtr->CreateAnimation("Ghost", "Ghost", 0.1f);
+	RenderPtr->CreateAnimation("AirHit", "AirHit", 0.05f);
+	RenderPtr->CreateAnimation("Hit", "Hit", 0.05f);
+	RenderPtr->CreateAnimation("Death", "Death", 0.05f);
+	RenderPtr->CreateAnimation("Ghost", "Ghost", 0.05f);
 
 	// Hold
-	RenderPtr->CreateAnimation("Hold_Normal_DiagonalDown", "Hold_Normal_DiagonalDown", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Normal_DiagonalUp", "Hold_Normal_DiagonalUp", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Normal_Down", "Hold_Normal_Down", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Normal_Straight", "Hold_Normal_Straight", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Normal_Up", "Hold_Normal_Up", 0.1f);
+	RenderPtr->CreateAnimation("Hold_Normal_DiagonalDown", "Hold_Normal_DiagonalDown", 0.07f);
+	RenderPtr->CreateAnimation("Hold_Normal_DiagonalUp", "Hold_Normal_DiagonalUp", 0.07f);
+	RenderPtr->CreateAnimation("Hold_Normal_Down", "Hold_Normal_Down", 0.07f);
+	RenderPtr->CreateAnimation("Hold_Normal_Straight", "Hold_Normal_Straight", 0.07f);
+	RenderPtr->CreateAnimation("Hold_Normal_Up", "Hold_Normal_Up", 0.07f);
 
 	// Attack(Move, Duck, Hold(==Idle))
-	RenderPtr->CreateAnimation("Move_Attak_DiagonalUp", "Move_Attak_DiagonalUp", 0.1f);
-	RenderPtr->CreateAnimation("Move_Attak_Straight", "Move_Attak_Straight", 0.1f);
-	RenderPtr->CreateAnimation("DuckAttack", "DuckAttack", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalDown", "Hold_Shoot_DiagonalDown", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalUp", "Hold_Shoot_DiagonalUp", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Down", "Hold_Shoot_Down", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Straight", "Hold_Shoot_Straight", 0.1f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Up", "Hold_Shoot_Up", 0.1f);
+	RenderPtr->CreateAnimation("Move_Attak_DiagonalUp", "Move_Attak_DiagonalUp", 0.05f);
+	RenderPtr->CreateAnimation("Move_Attak_Straight", "Move_Attak_Straight", 0.05f);
+	RenderPtr->CreateAnimation("DuckAttack", "DuckAttack", 0.05f);
+	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalDown", "Hold_Shoot_DiagonalDown", 0.05f);
+	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalUp", "Hold_Shoot_DiagonalUp", 0.05f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Down", "Hold_Shoot_Down", 0.05f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Straight", "Hold_Shoot_Straight", 0.05f);
+	RenderPtr->CreateAnimation("Hold_Shoot_Up", "Hold_Shoot_Up", 0.05f);
 
 	// EX
-	RenderPtr->CreateAnimation("AirEX_DiagonalDown", "AirEX_DiagonalDown", 0.1f);
-	RenderPtr->CreateAnimation("AirEX_DiagonalUp", "AirEX_DiagonalUp", 0.1f);
-	RenderPtr->CreateAnimation("AirEX_Down", "AirEX_Down", 0.1f);
-	RenderPtr->CreateAnimation("AirEX_Straight", "AirEX_Straight", 0.1f);
-	RenderPtr->CreateAnimation("AirEX_Up", "AirEX_Up", 0.1f);
-	RenderPtr->CreateAnimation("Ex_DiagonalDown", "Ex_DiagonalDown", 0.1f);
-	RenderPtr->CreateAnimation("Ex_DiagonalUp", "Ex_DiagonalUp", 0.1f);
-	RenderPtr->CreateAnimation("Ex_Down", "Ex_Down", 0.1f);
-	RenderPtr->CreateAnimation("Ex_Straight", "Ex_Straight", 0.1f);
-	RenderPtr->CreateAnimation("Ex_Up", "Ex_Up", 0.1f);
+	RenderPtr->CreateAnimation("AirEX_DiagonalDown", "AirEX_DiagonalDown", 0.05f);
+	RenderPtr->CreateAnimation("AirEX_DiagonalUp", "AirEX_DiagonalUp", 0.05f);
+	RenderPtr->CreateAnimation("AirEX_Down", "AirEX_Down", 0.05f);
+	RenderPtr->CreateAnimation("AirEX_Straight", "AirEX_Straight", 0.05f);
+	RenderPtr->CreateAnimation("AirEX_Up", "AirEX_Up", 0.05f);
+	RenderPtr->CreateAnimation("Ex_DiagonalDown", "Ex_DiagonalDown", 0.05f);
+	RenderPtr->CreateAnimation("Ex_DiagonalUp", "Ex_DiagonalUp", 0.05f);
+	RenderPtr->CreateAnimation("Ex_Down", "Ex_Down", 0.05f);
+	RenderPtr->CreateAnimation("Ex_Straight", "Ex_Straight", 0.05f);
+	RenderPtr->CreateAnimation("Ex_Up", "Ex_Up", 0.05f);
 
 	// Interaction & Intro
-	RenderPtr->CreateAnimation("ElderKettleInteraction", "ElderKettleInteraction", 0.1f);
-	RenderPtr->CreateAnimation("Intro_Flex", "Intro_Flex", 0.1f);
-	RenderPtr->CreateAnimation("Intro_Regular", "Intro_Regular", 0.1f);
+	RenderPtr->CreateAnimation("ElderKettleInteraction", "ElderKettleInteraction", 0.07f);
+	RenderPtr->CreateAnimation("Intro_Flex", "Intro_Flex", 0.07f);
+	RenderPtr->CreateAnimation("Intro_Regular", "Intro_Regular", 0.07f);
 }
 
 void Player::DebugRendererSetting()

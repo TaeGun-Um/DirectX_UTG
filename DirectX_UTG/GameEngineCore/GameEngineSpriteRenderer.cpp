@@ -190,7 +190,6 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 	{
 		CurAnimation->CurFrame = _Frame;
 	}
-
 }
 
 void GameEngineSpriteRenderer::Render(float _Delta)
@@ -200,7 +199,6 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 		CurAnimation->Update(_Delta);
 
 		GetShaderResHelper().SetTexture("DiffuseTex", CurAnimation->CurFrameTexture());
-
 	}
 
 	GameEngineRenderer::Render(_Delta);
