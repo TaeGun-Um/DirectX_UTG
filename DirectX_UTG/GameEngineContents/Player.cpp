@@ -739,6 +739,8 @@ void Player::FallStart()
 {
 	RenderPtr->ChangeAnimation("Jump");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
+
+	IsJump = true;
 }
 void Player::FallUpdate(float _DeltaTime)
 {
@@ -1302,12 +1304,12 @@ void Player::SlapUpdate(float _DeltaTime)
 		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 
-	if (true == IsJump && 0.01f <= JumpTime)
+	if (true == IsJump)
 	{
 		MoveDirect.y += -3000.0f * _DeltaTime;
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
-	else if (false == IsJump && 0.01f <= JumpTime)
+	else if (false == IsJump)
 	{
 		MoveDirect.y = 0;
 	}
@@ -1315,6 +1317,8 @@ void Player::SlapUpdate(float _DeltaTime)
 	if (false == IsJump)
 	{
 		IsSlap = false;
+		MoveDirect.y = 0;
+		JumpTime = 0.0f;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
@@ -1328,9 +1332,7 @@ void Player::SlapUpdate(float _DeltaTime)
 }
 void Player::SlapEnd()
 {
-	// MoveDirect = float4::Zero;
-	
-	JumpTime = 0.0f;
+
 }
 
 // Idle에서 MoveUp 입력 시 상태 체크
