@@ -924,10 +924,12 @@ void Player::DashStart()
 	if (true == Directbool)
 	{
 		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		RenderPtr->GetTransform()->AddLocalPosition({ -50, 0 });
 	}
 	else
 	{
 		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->AddLocalPosition({ 50, 0 });
 	}
 
 	if (true == IsFall)
@@ -988,10 +990,12 @@ void Player::DashEnd()
 	if (true == Directbool)
 	{
 		RenderPtr->GetTransform()->SetLocalPositiveScaleX();
+		RenderPtr->GetTransform()->AddLocalPosition({ 50, 0 });
 	}
 	else
 	{
 		RenderPtr->GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->AddLocalPosition({ -50, 0 });
 	}
 
 	DashTime = 0.0f;
