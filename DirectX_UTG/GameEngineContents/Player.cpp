@@ -479,6 +479,11 @@ void Player::DirectCheck()
 		return;
 	}
 
+	if (true == IsEXAttack)
+	{
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
@@ -744,6 +749,12 @@ void Player::FallStart()
 }
 void Player::FallUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Dash") && true == AirDash) // AirDash true는 PixelCheck에서 진행
 	{
 		AirDash = false;
@@ -851,6 +862,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -929,6 +946,12 @@ void Player::MoveUpdate(float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 		}
+	}
+
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
 	}
 
 	if (true == GameEngineInput::IsPress("Attack"))
@@ -1041,6 +1064,12 @@ void Player::DuckReadyStart()
 }
 void Player::DuckReadyUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == Directbool)
 	{
 		ADValue = AttackDirection::Right_Front;
@@ -1102,14 +1131,14 @@ void Player::DuckReadyEnd()
 {
 	DuckTime = 0.0f;
 
-	if (true == Directbool)
-	{
-		ADValue = AttackDirection::Right_Front;
-	}
-	else
-	{
-		ADValue = AttackDirection::Left_Front;
-	}
+	//if (true == Directbool)
+	//{
+	//	ADValue = AttackDirection::Right_Front;
+	//}
+	//else
+	//{
+	//	ADValue = AttackDirection::Left_Front;
+	//}
 }
 
 // Duck(Crounch) 상태 체크
@@ -1129,6 +1158,12 @@ void Player::DuckStart()
 }
 void Player::DuckUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == Directbool)
 	{
 		ADValue = AttackDirection::Right_Front;
@@ -1178,14 +1213,14 @@ void Player::DuckUpdate(float _DeltaTime)
 }
 void Player::DuckEnd()
 {
-	if (true == Directbool)
-	{
-		ADValue = AttackDirection::Right_Front;
-	}
-	else
-	{
-		ADValue = AttackDirection::Left_Front;
-	}
+	//if (true == Directbool)
+	//{
+	//	ADValue = AttackDirection::Right_Front;
+	//}
+	//else
+	//{
+	//	ADValue = AttackDirection::Left_Front;
+	//}
 }
 
 // Jump 상태 체크
@@ -1203,6 +1238,12 @@ void Player::JumpStart()
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Dash") && true == AirDash)  // AirDash true는 PixelCheck에서 진행
 	{
 		AirDash = false;
@@ -1379,6 +1420,12 @@ void Player::AttackReadyUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		IsAttackReady = true;
@@ -1415,6 +1462,12 @@ void Player::AttackUpdate(float _DeltaTime)
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
 		return;
 	}
 
@@ -1517,6 +1570,12 @@ void Player::RunAttackUpdate(float _DeltaTime)
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
 		return;
 	}
 
@@ -1623,6 +1682,12 @@ void Player::DuckAttackStart()
 }
 void Player::DuckAttackUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("EX"))
+	{
+		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -1679,6 +1744,7 @@ void Player::DuckAttackEnd()
 // EX Attack 상태 체크
 void Player::EXAttackStart()
 {
+	IsEXAttack = true;
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
@@ -1701,7 +1767,7 @@ void Player::EXAttackUpdate(float _DeltaTime)
 	{
 		if (true == IsJump || true == IsFall)
 		{
-			RenderPtr->ChangeAnimation("AirEx_Up", false);
+			RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
 		}
 		else
 		{
@@ -1713,7 +1779,7 @@ void Player::EXAttackUpdate(float _DeltaTime)
 	{
 		if (true == IsJump || true == IsFall)
 		{
-			RenderPtr->ChangeAnimation("AirEx_Up", false);
+			RenderPtr->ChangeAnimation("AirEx_Straight", false);
 		}
 		else
 		{
@@ -1809,12 +1875,13 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		break;
 	}
 
-	if (true == IsJump || true == IsFall)
+	if (RenderPtr->IsAnimationEnd() && true == IsJump 
+		|| RenderPtr->IsAnimationEnd() && true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
 		return;
 	}
-	else
+	else if (RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::Idle);
 		return;
@@ -1822,6 +1889,7 @@ void Player::EXAttackUpdate(float _DeltaTime)
 }
 void Player::EXAttackEnd()
 {
+	IsEXAttack = false;
 }
 
 // Hold 입력 시 상태 체크
@@ -1834,6 +1902,12 @@ void Player::HoldingUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		IsHold = true;
+
+		if (true == GameEngineInput::IsDown("EX"))
+		{
+			ChangeState(PlayerState::EXAttack);
+			return;
+		}
 
 		if (true == GameEngineInput::IsDown("Dash"))
 		{
@@ -1930,6 +2004,12 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		IsHold = true;
+
+		if (true == GameEngineInput::IsDown("EX"))
+		{
+			ChangeState(PlayerState::EXAttack);
+			return;
+		}
 
 		if (true == GameEngineInput::IsDown("Dash"))
 		{
@@ -2161,11 +2241,11 @@ void Player::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
 
 	// EX
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_DiagonalUp", .SpriteName = "AirEX_DiagonalUp", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Down", .SpriteName = "AirEX_Down", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Straight", .SpriteName = "AirEX_Straight", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Up", .SpriteName = "AirEX_Up", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f });

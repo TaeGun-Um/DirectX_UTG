@@ -86,6 +86,7 @@ private:
 	bool IsDuckAttack = false;
 	bool IsAttackReady = false;
 	bool IsSlap = false;
+	bool IsEXAttack = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;

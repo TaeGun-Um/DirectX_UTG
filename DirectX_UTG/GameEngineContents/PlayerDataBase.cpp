@@ -17,6 +17,7 @@ PlayerDataBase::PlayerDataBase()
 		GameEngineInput::CreateKey("Attack", 'Z');
 		GameEngineInput::CreateKey("Jump", 'X');
 		GameEngineInput::CreateKey("Hold", 'C');
+		GameEngineInput::CreateKey("EX", 'V');
 		GameEngineInput::CreateKey("Dash", VK_SHIFT);
 		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
 	}
