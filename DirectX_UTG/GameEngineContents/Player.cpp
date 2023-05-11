@@ -1964,65 +1964,64 @@ void Player::PlayerInitialSetting()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-
 	// Idle
-	RenderPtr->CreateAnimation("Idle", "Idle", 0.07f);
+	RenderPtr->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "Idle", .FrameInter = 0.07f });
 
 	// Move
-	RenderPtr->CreateAnimation("Move", "Move", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "Move", .SpriteName = "Move", .FrameInter = 0.05f });
 
 	// Jump & Parry(Slap)
-	RenderPtr->CreateAnimation("Jump", "Jump", 0.05f);
-	RenderPtr->CreateAnimation("Parry", "Parry", 0.05f);
-	RenderPtr->CreateAnimation("Parry_Pink", "Parry_Pink", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "Jump", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f });
 
 	// Dash
-	RenderPtr->CreateAnimation("AirDash", "AirDash", 0.05f);
-	RenderPtr->CreateAnimation("Dash", "Dash", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "Dash", .FrameInter = 0.05f });
 
 	// Duck
-	RenderPtr->CreateAnimation("DuckReady", "DuckReady", 0.05f);
-	RenderPtr->CreateAnimation("Duck", "Duck", 0.07f);
+	RenderPtr->CreateAnimation({ .AnimationName = "DuckReady", .SpriteName = "DuckReady", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Duck", .SpriteName = "Duck", .FrameInter = 0.07f });
 
 	// Hit & Death
-	RenderPtr->CreateAnimation("AirHit", "AirHit", 0.05f);
-	RenderPtr->CreateAnimation("Hit", "Hit", 0.05f);
-	RenderPtr->CreateAnimation("Death", "Death", 0.05f);
-	RenderPtr->CreateAnimation("Ghost", "Ghost", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
 
 	// Hold
-	RenderPtr->CreateAnimation("Hold_Normal_DiagonalDown", "Hold_Normal_DiagonalDown", 0.07f);
-	RenderPtr->CreateAnimation("Hold_Normal_DiagonalUp", "Hold_Normal_DiagonalUp", 0.07f);
-	RenderPtr->CreateAnimation("Hold_Normal_Down", "Hold_Normal_Down", 0.07f);
-	RenderPtr->CreateAnimation("Hold_Normal_Straight", "Hold_Normal_Straight", 0.07f);
-	RenderPtr->CreateAnimation("Hold_Normal_Up", "Hold_Normal_Up", 0.07f);
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalDown", .SpriteName = "Hold_Normal_DiagonalDown", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalUp", .SpriteName = "Hold_Normal_DiagonalUp", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Down", .SpriteName = "Hold_Normal_Down", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Straight", .SpriteName = "Hold_Normal_Straight", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Up", .SpriteName = "Hold_Normal_Up", .FrameInter = 0.07f });
 
 	// Attack(Move, Duck, Hold(==Idle))
-	RenderPtr->CreateAnimation("Move_Attak_DiagonalUp", "Move_Attak_DiagonalUp", 0.05f);
-	RenderPtr->CreateAnimation("Move_Attak_Straight", "Move_Attak_Straight", 0.05f);
-	RenderPtr->CreateAnimation("DuckAttack", "DuckAttack", 0.05f);
-	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalDown", "Hold_Shoot_DiagonalDown", 0.05f);
-	RenderPtr->CreateAnimation("Hold_Shoot_DiagonalUp", "Hold_Shoot_DiagonalUp", 0.05f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Down", "Hold_Shoot_Down", 0.05f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Straight", "Hold_Shoot_Straight", 0.05f);
-	RenderPtr->CreateAnimation("Hold_Shoot_Up", "Hold_Shoot_Up", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_DiagonalUp", .SpriteName = "Move_Attak_DiagonalUp", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_Straight", .SpriteName = "Move_Attak_Straight", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "DuckAttack", .SpriteName = "DuckAttack", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalDown", .SpriteName = "Hold_Shoot_DiagonalDown", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalUp", .SpriteName = "Hold_Shoot_DiagonalUp", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Down", .SpriteName = "Hold_Shoot_Down", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Straight", .SpriteName = "Hold_Shoot_Straight", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
 
 	// EX
-	RenderPtr->CreateAnimation("AirEX_DiagonalDown", "AirEX_DiagonalDown", 0.05f);
-	RenderPtr->CreateAnimation("AirEX_DiagonalUp", "AirEX_DiagonalUp", 0.05f);
-	RenderPtr->CreateAnimation("AirEX_Down", "AirEX_Down", 0.05f);
-	RenderPtr->CreateAnimation("AirEX_Straight", "AirEX_Straight", 0.05f);
-	RenderPtr->CreateAnimation("AirEX_Up", "AirEX_Up", 0.05f);
-	RenderPtr->CreateAnimation("Ex_DiagonalDown", "Ex_DiagonalDown", 0.05f);
-	RenderPtr->CreateAnimation("Ex_DiagonalUp", "Ex_DiagonalUp", 0.05f);
-	RenderPtr->CreateAnimation("Ex_Down", "Ex_Down", 0.05f);
-	RenderPtr->CreateAnimation("Ex_Straight", "Ex_Straight", 0.05f);
-	RenderPtr->CreateAnimation("Ex_Up", "Ex_Up", 0.05f);
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_DiagonalUp", .SpriteName = "AirEX_DiagonalUp", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Down", .SpriteName = "AirEX_Down", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Straight", .SpriteName = "AirEX_Straight", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEX_Up", .SpriteName = "AirEX_Up", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f });
 
 	// Interaction & Intro
-	RenderPtr->CreateAnimation("ElderKettleInteraction", "ElderKettleInteraction", 0.07f);
-	RenderPtr->CreateAnimation("Intro_Flex", "Intro_Flex", 0.07f);
-	RenderPtr->CreateAnimation("Intro_Regular", "Intro_Regular", 0.07f);
+	RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
+	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
 }
 
 void Player::DebugRendererSetting()

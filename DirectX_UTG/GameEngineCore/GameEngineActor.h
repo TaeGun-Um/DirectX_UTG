@@ -17,12 +17,6 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
-	// Actor의 레벨은 액터 생성 시 자동으로 결정됨
-	inline class GameEngineLevel* GetLevel() const
-	{
-		return Level;
-	}
-
 	// 액터의 컴포넌트(충돌체, 랜더러) 생성 후 ComponentsList에 Init
 	template<typename ComponentType>
 	std::shared_ptr<ComponentType> CreateComponent()
@@ -40,8 +34,6 @@ protected:
 	virtual void Render(float _DeltaTime) {}
 
 private:
-	class GameEngineLevel* Level = nullptr;
-
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component); // 컴포넌트 정보 init
 
 };

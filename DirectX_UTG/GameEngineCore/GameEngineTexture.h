@@ -129,6 +129,12 @@ public:
 		return Desc.Height;
 	}
 
+	// 텍스쳐 크기 가져오기
+	float4 GetScale()
+	{
+		return float4(static_cast<float>(Desc.Width), static_cast<float>(Desc.Height));
+	}
+
 	// 픽셀 충돌용
 	GameEnginePixelColor GetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor = GameEnginePixelColor::Black);
 

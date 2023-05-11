@@ -24,12 +24,17 @@ public:
 	GameEngineSprite& operator=(const GameEngineSprite& _Other) = delete;
 	GameEngineSprite& operator=(GameEngineSprite&& _Other) noexcept = delete;
 
-	// 폴더 내 파일들을 프레임 애니메이션으로
+	// 폴더 내 파일들을 프레임 애니메이션으로(Path만)
 	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath = std::string(_Path);
+		return LoadFolder(NewPath.GetFileName(), _Path);
+	}
 
-		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(NewPath.GetFileName());
+	// 폴더 내 파일들을 프레임 애니메이션으로
+	static std::shared_ptr<GameEngineSprite> LoadFolder(std::string _Spritename, const std::string_view& _Path)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(_Spritename);
 		NewTexture->ResLoadFolder(_Path);
 		return NewTexture;
 	}

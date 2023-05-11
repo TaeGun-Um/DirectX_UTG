@@ -23,12 +23,6 @@ public:
 		return Actor;
 	}
 
-	// 컴포넌트의 Parent(Actor)에게서 GetLevel()
-	class GameEngineLevel* GetLevel()
-	{
-		return Actor->GetLevel();
-	}
-
 protected:
 
 private:

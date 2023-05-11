@@ -70,6 +70,15 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
+cbuffer AtlasData : register(b1)
+{
+    // 0.0 0.5
+    float2 FramePos;
+    // 0.5 0.5 
+    float2 FrameScale;
+    // float4 AtlasUV;
+}
+
 // 외부에서 쉐이더를 컴파일할 때, EntryPount를 원하는 경우가 있다.
 // 함수의 이름, "Texture_VS"를 입력하는 것이 EntryPoint 이다.
 
@@ -89,9 +98,12 @@ OutPut Texture_VS(Input _Value)
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     // OutPutValue.Pos = _Value.Pos;
-    OutPutValue.UV = _Value.UV;
+    // OutPutValue.UV = _Value.UV;
 
     // OutPutValue.Pos *= 월드뷰프로젝션;
+    
+    OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
     
     return OutPutValue;
 }
