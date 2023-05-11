@@ -792,10 +792,20 @@ void Player::FallUpdate(float _DeltaTime)
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		IsSlap = true;
+		ChangeState(PlayerState::Slap);
+		return;
+	}
 }
 void Player::FallEnd()
 {
-	MoveDirect = float4::Zero;
+	if (false == IsSlap)
+	{
+		MoveDirect = float4::Zero;
+	}
 	// IsFall의 false는 PixelCheck에서 실시
 }
 
