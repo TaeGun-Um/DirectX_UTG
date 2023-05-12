@@ -19,6 +19,7 @@ enum class PlayerState
 	EXAttack,
 	Holding,
 	HoldingAttack,
+	Hit,
 };
 
 // 설명 : Field 플레이어
@@ -174,5 +175,9 @@ private:
 	void HoldingAttackStart();
 	void HoldingAttackUpdate(float _DeltaTime);
 	void HoldingAttackEnd();
+
+	void HitStart();
+	void HitUpdate(float _DeltaTime);
+	void HitEnd();
 };
 

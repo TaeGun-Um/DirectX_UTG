@@ -18,7 +18,6 @@ Player* Player::MainPlayer = nullptr;
 Player::Player() 
 {
 	MainPlayer = this;
-	int a = 0;
 }
 
 Player::~Player() 
@@ -877,6 +876,9 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::HoldingAttack:
 		HoldingAttackStart();
 		break;
+	case PlayerState::Hit:
+		HitStart();
+		break;
 	default:
 		break;
 	}
@@ -927,6 +929,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::HoldingAttack:
 		HoldingAttackEnd();
+		break;
+	case PlayerState::Hit:
+		HitEnd();
 		break;
 	default:
 		break;
@@ -981,6 +986,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::HoldingAttack:
 		HoldingAttackUpdate(_DeltaTime);
+		break;
+	case PlayerState::Hit:
+		HitUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -2347,6 +2355,19 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 void Player::HoldingAttackEnd()
 {
 	IsHold = false;
+}
+
+void Player::HitStart()
+{
+
+}
+void Player::HitUpdate(float _DeltaTime)
+{
+
+}
+void Player::HitEnd()
+{
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
