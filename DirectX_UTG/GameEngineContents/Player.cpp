@@ -223,12 +223,13 @@ void Player::EXCreate()
 	if (true == WeaponType)
 	{
 		CreatePeashooter_EX();
-		CreateEXDust();
 	}
 	else if (false == WeaponType)
 	{
-		//CreateSpread_EX();
+		CreateSpread_EX();
 	}
+
+	CreateEXDust();
 }
 
 void Player::DustCreate(float _DeltaTime)
@@ -808,6 +809,61 @@ void Player::CreatePeashooter_EX()
 // 2번 EX 공격 
 void Player::CreateSpread_EX() 
 {
+	std::shared_ptr<Spread_EX> Projectile0 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile1 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile2 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile3 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile4 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile5 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile6 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile7 = GetLevel()->CreateActor<Spread_EX>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+
+	float4 ProjectilePosition0 = PlayerPosition + float4{ 90, 60 };  
+	float4 ProjectilePosition1 = PlayerPosition + float4{ 40, 110 }; 
+	float4 ProjectilePosition2 = PlayerPosition + float4{ -10, 160 };
+	float4 ProjectilePosition3 = PlayerPosition + float4{ -60, 110 };
+	float4 ProjectilePosition4 = PlayerPosition + float4{ -110, 60 };
+	float4 ProjectilePosition5 = PlayerPosition + float4{ -60, 10 }; 
+	float4 ProjectilePosition6 = PlayerPosition + float4{ -10, -40 };
+	float4 ProjectilePosition7 = PlayerPosition + float4{ 40, 10 };  
+
+	float4 ProjectileRotation0 = float4::Zero;
+	float4 ProjectileRotation1 = float4::Zero;
+	float4 ProjectileRotation2 = float4::Zero;
+	float4 ProjectileRotation3 = float4::Zero;
+	float4 ProjectileRotation4 = float4::Zero;
+	float4 ProjectileRotation5 = float4::Zero;
+	float4 ProjectileRotation6 = float4::Zero;
+	float4 ProjectileRotation7 = float4::Zero;
+
+	ProjectileRotation0 += float4{ 0, 0 };
+	ProjectileRotation1 += float4{ 0, 0, 45 };
+	ProjectileRotation2 += float4{ 0, 0, 90 };
+	ProjectileRotation3 += float4{ 0, 0, 135 };
+	ProjectileRotation4 += float4{ 0, 0, 180 };
+	ProjectileRotation5 += float4{ 0, 0, 225 };
+	ProjectileRotation6 += float4{ 0, 0, 270 };
+	ProjectileRotation7 += float4{ 0, 0, 315 };
+
+	Projectile0->SetStartPosition(ProjectilePosition0);
+	Projectile1->SetStartPosition(ProjectilePosition1);
+	Projectile2->SetStartPosition(ProjectilePosition2);
+	Projectile3->SetStartPosition(ProjectilePosition3);
+	Projectile4->SetStartPosition(ProjectilePosition4);
+	Projectile5->SetStartPosition(ProjectilePosition5);
+	Projectile6->SetStartPosition(ProjectilePosition6);
+	Projectile7->SetStartPosition(ProjectilePosition7);
+
+	Projectile0->SetProjectileRotation(ProjectileRotation0);
+	Projectile1->SetProjectileRotation(ProjectileRotation1);
+	Projectile2->SetProjectileRotation(ProjectileRotation2);
+	Projectile3->SetProjectileRotation(ProjectileRotation3);
+	Projectile4->SetProjectileRotation(ProjectileRotation4);
+	Projectile5->SetProjectileRotation(ProjectileRotation5);
+	Projectile6->SetProjectileRotation(ProjectileRotation6);
+	Projectile7->SetProjectileRotation(ProjectileRotation7);
 }
 
 // EX 공격 시 Dust 생성
