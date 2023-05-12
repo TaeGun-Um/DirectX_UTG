@@ -868,6 +868,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -889,12 +895,6 @@ void Player::IdleUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
 		ChangeState(PlayerState::DuckReady);
-		return;
-	}
-
-	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
-	{
-		ChangeState(PlayerState::Move);
 		return;
 	}
 }
