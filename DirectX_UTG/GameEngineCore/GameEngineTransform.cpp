@@ -295,7 +295,6 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 		std::shared_ptr<GameEngineObject> MasterPtr = Master->shared_from_this();
 		ParentMaster->Childs.remove(MasterPtr);
 		Parent = nullptr;
-
 	}
 
 	Parent = _Parent;
@@ -313,6 +312,15 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 		TransformUpdate();
 
 		AbsoluteReset();
+
+		GameEngineLevel* Level = Master->GetLevel();
+
+		std::shared_ptr<GameEngineObject> MasterPtr = Master->shared_from_this();
+
+		if (nullptr != dynamic_cast<GameEngineActor*>(Master))
+		{
+			Level->Actors[MasterPtr->GetOrder()].remove(std::dynamic_pointer_cast<GameEngineActor>(MasterPtr));
+		}
 
 		Parent->Child.push_back(this);
 		Parent->Master->Childs.push_back(Master->shared_from_this());

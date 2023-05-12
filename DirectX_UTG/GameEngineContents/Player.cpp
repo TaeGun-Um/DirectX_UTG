@@ -897,6 +897,11 @@ void Player::IdleUpdate(float _DeltaTime)
 		ChangeState(PlayerState::DuckReady);
 		return;
 	}
+
+	if (1 == RenderPtr->GetCurrentFrame())
+	{
+		int a = 0;
+	}
 }
 void Player::IdleEnd()
 {
