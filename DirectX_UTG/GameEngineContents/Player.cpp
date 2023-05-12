@@ -167,8 +167,9 @@ void Player::PlayerDebugRenderer()
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
-	if (true == IsDash || true == IsSlap)
+	if (true == IsDash || true == IsSlap || true == IsEXAttack)
 	{
+		PeashooterRenderPtr->Off();
 		return;
 	}
 
@@ -434,6 +435,7 @@ void Player::CreatePeashooter()
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
+	Projectile->SetColMap(ColMap, Pivot);
 }
 
 // 기본 EX 공격
@@ -698,6 +700,12 @@ void Player::CreateSpread()
 	Projectile2->SetDeathType(false);
 	Projectile3->SetDeathType(true);
 	Projectile4->SetDeathType(true);
+
+	Projectile0->SetColMap(ColMap, Pivot);
+	Projectile1->SetColMap(ColMap, Pivot);
+	Projectile2->SetColMap(ColMap, Pivot);
+	Projectile3->SetColMap(ColMap, Pivot);
+	Projectile4->SetColMap(ColMap, Pivot);
 }
 
 // 2번 EX 공격 

@@ -34,6 +34,11 @@ public:
 		}
 	}
 
+	void SetColMap(const std::shared_ptr<class GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
+	{
+		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -41,13 +46,14 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	PixelCollision PixelCollisionCheck;
 
-	float4 DeathPosition = float4::Zero;
 	float MoveSpeed = 1300.0f;
 	bool IsDeath = false;
 	bool Check = false;
 
 	void MoveDirection(float _DeltaTime);
+	void PixelCheck();
 	void DeathCheck();
 };
 

@@ -24,12 +24,13 @@ void Peashooter::Start()
 void Peashooter::Update(float _DeltaTime)
 {
 	MoveDirection(_DeltaTime);
+	PixelCheck();
 	DeathCheck();
 }
 
 void Peashooter::MoveDirection(float _DeltaTime)
 {
-	if (true == IsDeath)
+	if (true == IsDeath || true == Check)
 	{
 		return;
 	}
@@ -43,6 +44,24 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
+void Peashooter::PixelCheck()
+{
+	float4 ProjectilePosition = GetTransform()->GetLocalPosition();
+
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(ProjectilePosition);
+
+	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
+	{
+		if (false == Check)
+		{
+			Check = true;
+			RenderPtr->ChangeAnimation("Death", false);
+			RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
+			RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
+		}
+	}
+}
+
 void Peashooter::DeathCheck()
 {
 	if (1.0f <= GetLiveTime())
@@ -50,15 +69,19 @@ void Peashooter::DeathCheck()
 		if (false == Check)
 		{
 			Check = true;
-			IsDeath = true;
 			RenderPtr->ChangeAnimation("Death", false);
-			RenderPtr->GetTransform()->SetLocalPosition(float4{ 50, 0 });
+			RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
 			RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
 		}
+	}
 
-		if (true == RenderPtr->IsAnimationEnd())
-		{
-			Death();
-		}
+	if (true == RenderPtr->FindAnimation("Death")->IsEnd())
+	{
+		IsDeath = true;
+	}
+
+	if (true == IsDeath)
+	{
+		Death();
 	}
 }

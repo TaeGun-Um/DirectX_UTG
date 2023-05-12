@@ -28,12 +28,13 @@ void Spread::Start()
 void Spread::Update(float _DeltaTime)
 {
 	MoveDirection(_DeltaTime);
+	PixelCheck();
 	DeathCheck();
 }
 
 void Spread::MoveDirection(float _DeltaTime)
 {
-	if (true == IsDeath)
+	if (true == IsDeath || true == Check)
 	{
 		return;
 	}
@@ -47,6 +48,30 @@ void Spread::MoveDirection(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
+void Spread::PixelCheck()
+{
+	float4 ProjectilePosition = GetTransform()->GetLocalPosition();
+
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(ProjectilePosition);
+
+	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
+	{
+		if (false == Check)
+		{
+			Check = true;
+			
+			if (true == DeathType)
+			{
+				RenderPtr->ChangeAnimation("Death_Enemyhit", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Weak_Death_Enemyhit", false);
+			}
+		}
+	}
+}
+
 void Spread::DeathCheck()
 {
 	if (0.24f <= GetLiveTime())
@@ -54,7 +79,6 @@ void Spread::DeathCheck()
 		if (false == Check)
 		{
 			Check = true;
-			IsDeath = true;
 
 			if (true == DeathType)
 			{
@@ -65,10 +89,18 @@ void Spread::DeathCheck()
 				RenderPtr->ChangeAnimation("Weak_Death", false);
 			}
 		}
+	}
 
-		if (true == RenderPtr->IsAnimationEnd())
-		{
-			Death();
-		}
+	if (true == RenderPtr->FindAnimation("Death")->IsEnd()
+		|| true == RenderPtr->FindAnimation("Weak_Death")->IsEnd()
+		|| true == RenderPtr->FindAnimation("Death_Enemyhit")->IsEnd()
+		|| true == RenderPtr->FindAnimation("Weak_Death_Enemyhit")->IsEnd())
+	{
+		IsDeath = true;
+	}
+
+	if (true == IsDeath)
+	{
+		Death();
 	}
 }

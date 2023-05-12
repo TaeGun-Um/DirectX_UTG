@@ -40,6 +40,8 @@ public:
 	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
 	{
 		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+		ColMap = _ColMap;
+		Pivot = _Pivot;
 
 		ColMapHegiht_Half = PixelCollisionCheck.GetColMapHeight_Half();
 		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
@@ -79,6 +81,8 @@ private:
 	bool WeaponType = true;   // true : Peashooter // false : Spread
 
 	// Pixel
+	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
+	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
 	PixelCollision PixelCollisionCheck;
 
 	// Camera
