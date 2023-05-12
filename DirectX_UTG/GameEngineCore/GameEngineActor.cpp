@@ -18,6 +18,4 @@ void GameEngineActor::ComponentInit(std::shared_ptr<class GameEngineComponent> _
 	_Component->Level = GetLevel();
 	_Component->GetTransform()->SetParent(GetTransform());  // 컴포넌트의 부모를 해당 액터로 설정
 	_Component->Start();                                    // 컴포넌트 정보 init
-
-	PushChild(_Component);
 }

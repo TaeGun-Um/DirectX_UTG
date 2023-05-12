@@ -4,6 +4,42 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineObjectBase.h"
 
+enum class ColType
+{
+	// 캡슐
+	// 2D에서의 충돌은 모두가 한축이 같아야 한다.
+	POINT2D, // z를 0으로 만들고 충돌
+	SPHERE2D, // z를 0으로 만들고 충돌
+	AABBBOX2D, // z를 0으로 만들고 충돌
+	OBBBOX2D, // z를 0으로 만들고 충돌
+	POINT3D,
+	SPHERE3D,
+	AABBBOX3D,
+	OBBBOX3D,
+	MAX,
+};
+
+class CollisionData
+{
+public:
+	union
+	{
+		DirectX::BoundingSphere SPHERE;
+		DirectX::BoundingBox AABB;
+		DirectX::BoundingOrientedBox OBB;
+	};
+
+	CollisionData() {}
+};
+
+class CollisionParameter
+{
+public:
+	class GameEngineTransform* _OtherTrans = nullptr;
+	ColType ThisType = ColType::SPHERE3D;
+	ColType OtherType = ColType::SPHERE3D;
+};
+
 // 일단, 프리카메라모드 시 이런 구조체를 선언하고 값을 저장한 뒤 불러오는 형식을 쓰면 편하다
 struct TransformData
 {
@@ -125,12 +161,14 @@ public:
 		CalChild();
 	}
 
-	float4 GetWorldScale();    // 월드 크기 행렬 리턴
-	float4 GetWorldRotation(); // 월드 회전 행렬 리턴
-	float4 GetWorldPosition(); // 월드 이동 행렬 리턴
-	float4 GetLocalScale();    // 로컬 크기 행렬 리턴
-	float4 GetLocalRotation(); // 로컬 회전 행렬 리턴
-	float4 GetLocalPosition(); // 로컬 이동 행렬 리턴
+	float4 GetLocalScale();      // 로컬 크기 행렬 리턴
+	float4 GetLocalRotation();   // 로컬 회전 행렬 리턴
+	float4 GetLocalPosition();   // 로컬 이동 행렬 리턴
+	float4 GetLocalQuaternion(); // 로컬 쿼터니온 리턴
+	float4 GetWorldScale();      // 월드 크기 행렬 리턴
+	float4 GetWorldRotation();   // 월드 회전 행렬 리턴
+	float4 GetWorldPosition();   // 월드 이동 행렬 리턴
+	float4 GetWorldQuaternion(); // 월드 쿼터니온 리턴
 
 	// 월드 행렬 리턴
 	const float4x4 GetWorldMatrix()
@@ -293,37 +331,6 @@ public:
 		return Parent;
 	}
 
-	//// 스케일을 -로 변경하면 좌우가 반전된다.
-	//void SetLocalFlipScaleX()
-	//{
-	//	TransData.LocalScale.x = -TransData.LocalScale.x;
-	//	SetLocalScale(TransData.LocalScale);
-	//}
-
-	//// 왼쪽으로 플립
-	//void SetLocalNegativeScaleX()
-	//{
-	//	if (0 < TransData.LocalScale.x)
-	//	{
-	//		SetLocalFlipScaleX();
-	//		return;
-	//	}
-
-	//	return;
-	//}
-
-	//// 오른쪽으로 플립
-	//void SetLocalPositiveScaleX()
-	//{
-	//	if (0 > TransData.LocalScale.x)
-	//	{
-	//		SetLocalFlipScaleX();
-	//		return;
-	//	}
-
-	//	return;
-	//}
-
 	void SetLocalPositiveScaleX()
 	{
 		TransData.Scale.x = abs(TransData.Scale.x);
@@ -369,5 +376,37 @@ private:
 		return Master;
 	}
 
-};
+public:
+	bool Collision(const CollisionParameter& Data);
 
+private:
+	friend class InitColFunction;
+
+	CollisionData ColData;
+
+	static std::function<bool(GameEngineTransform*, GameEngineTransform*)> ArrColFunction[static_cast<int>(ColType::MAX)][static_cast<int>(ColType::MAX)];
+
+	static bool SphereToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool SphereToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool SphereToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+
+	static bool AABBToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+
+	static bool OBBToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+
+	static bool Sphere2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool Sphere2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool Sphere2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+
+	static bool AABB2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABB2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABB2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+
+	static bool OBB2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBB2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBB2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+};

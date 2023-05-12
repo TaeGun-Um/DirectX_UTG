@@ -11,6 +11,7 @@
 #include <d3d11_4.h>
 #include <d3dcompiler.h>
 #include <DirectXPackedVector.h>
+#include <DirectXCollision.h>
 
 // final 더이상 상속내릴지 못한다.
 class GameEngineMath final
@@ -532,7 +533,7 @@ public:
 };
 
 // 충돌체 데이터
-class CollisionData
+class CollisionDataAPI
 {
 public:
 	float4 Position;  // 충돌체 Pos
