@@ -14,7 +14,16 @@ Spread::~Spread()
 void Spread::Start()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetScaleToTexture("Temporary_Spread.png");
+
+	RenderPtr->CreateAnimation({ "Loop", "Spread_Loop.png", 0, 3, 0.05f, true, false });
+	RenderPtr->CreateAnimation({ "Death", "Spread_Death.png", 1, 4, 0.05f, true, true });
+	RenderPtr->CreateAnimation({ "Death_Enemyhit", "Spread_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+	RenderPtr->CreateAnimation({ "Weak_Loop", "Spread_Weak_Loop.png", 0, 3, 0.05f, true, true });
+	RenderPtr->CreateAnimation({ "Weak_Death", "Spread_Weak_Death.png", 1, 4, 0.05f, true, true });
+	RenderPtr->CreateAnimation({ "Weak_Death_Enemyhit", "Spread_Weak_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+
+	RenderPtr->GetTransform()->SetLocalScale(float4{ 400, 400 });
+	RenderPtr->ChangeAnimation("Loop");
 }
 void Spread::Update(float _DeltaTime)
 {
@@ -24,6 +33,11 @@ void Spread::Update(float _DeltaTime)
 
 void Spread::MoveDirection(float _DeltaTime)
 {
+	if (true == IsDeath)
+	{
+		return;
+	}
+
 	float MoveDist = MoveSpeed * _DeltaTime;
 
 	float4 MoveDist4 = float4::Zero;
@@ -35,8 +49,26 @@ void Spread::MoveDirection(float _DeltaTime)
 
 void Spread::DeathCheck()
 {
-	if (0.2f <= GetLiveTime())
+	if (0.24f <= GetLiveTime())
 	{
-		Death();
+		if (false == Check)
+		{
+			Check = true;
+			IsDeath = true;
+
+			if (true == DeathType)
+			{
+				RenderPtr->ChangeAnimation("Death", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Weak_Death", false);
+			}
+		}
+
+		if (true == RenderPtr->IsAnimationEnd())
+		{
+			Death();
+		}
 	}
 }

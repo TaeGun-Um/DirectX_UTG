@@ -38,7 +38,7 @@ void Player::Start()
 	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{300, 300});
 	PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
 	PeashooterRenderPtr->GetTransform()->SetParent(GetTransform());
-	PeashooterRenderPtr->ChangeAnimation("Spawn");
+	PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
 	PeashooterRenderPtr->Off();
 }
 void Player::Update(float _DeltaTime)
@@ -179,6 +179,24 @@ void Player::ProjectileCreate(float _DeltaTime)
 		WeaponType = !WeaponType;
 		bool Check = WeaponType;
 		ProjectileCreateTime = 0.06f;
+
+		if (true == WeaponType)
+		{
+			PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
+		}
+		else
+		{
+			PeashooterRenderPtr->ChangeAnimation("Spread_Spawn");
+		}
+	}
+
+	if (true == GameEngineInput::IsPress("Attack"))
+	{
+		PeashooterRenderPtr->On();
+	}
+	else
+	{
+		PeashooterRenderPtr->Off();
 	}
 
 	// WeaponType = true : Peashooter
@@ -194,18 +212,6 @@ void Player::ProjectileCreate(float _DeltaTime)
 		{
 			ProjectileCreateTime = 0.0f;
 			CreateSpread();
-		}
-	}
-
-	if (true == WeaponType)
-	{
-		if (true == GameEngineInput::IsPress("Attack"))
-		{
-			PeashooterRenderPtr->On();
-		}
-		else
-		{
-			PeashooterRenderPtr->Off();
 		}
 	}
 }
@@ -440,6 +446,7 @@ void Player::CreateSpread()
 	std::shared_ptr<Spread> Projectile1 = GetLevel()->CreateActor<Spread>(1);
 	std::shared_ptr<Spread> Projectile2 = GetLevel()->CreateActor<Spread>(1);
 	std::shared_ptr<Spread> Projectile3 = GetLevel()->CreateActor<Spread>(1);
+	std::shared_ptr<Spread> Projectile4 = GetLevel()->CreateActor<Spread>(1);
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
@@ -447,16 +454,18 @@ void Player::CreateSpread()
 	float4 ProjectilePosition1 = PlayerPosition;
 	float4 ProjectilePosition2 = PlayerPosition;
 	float4 ProjectilePosition3 = PlayerPosition;
+	float4 ProjectilePosition4 = PlayerPosition;
 
 	float4 ProjectileRotation0 = float4::Zero;
 	float4 ProjectileRotation1 = float4::Zero;
 	float4 ProjectileRotation2 = float4::Zero;
 	float4 ProjectileRotation3 = float4::Zero;
+	float4 ProjectileRotation4 = float4::Zero;
 
 	// 기본 로테이션은 Right_Front 기준
 	ProjectileRotation0 += float4{ 0, 0, 330 };
-	ProjectileRotation1 += float4{ 0, 0, 350 };
-	ProjectileRotation2 += float4{ 0, 0, 10 };
+	ProjectileRotation1 += float4{ 0, 0, 345 };
+	ProjectileRotation2 += float4{ 0, 0, 15 };
 	ProjectileRotation3 += float4{ 0, 0, 30 };
 
 	switch (ADValue)
@@ -467,11 +476,15 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ 15, 160 };
 		ProjectilePosition2 += float4{ 15, 160 };
 		ProjectilePosition3 += float4{ 15, 160 };
+		ProjectilePosition4 += float4{ 15, 160 };
 
 		ProjectileRotation0 += float4{ 0, 0, 90 }; 
 		ProjectileRotation1 += float4{ 0, 0, 90 };
 		ProjectileRotation2 += float4{ 0, 0, 90 };
 		ProjectileRotation3 += float4{ 0, 0, 90 };
+		ProjectileRotation4 += float4{ 0, 0, 90 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 15, 180 });
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
@@ -480,19 +493,39 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ 60, 120 };
 		ProjectilePosition2 += float4{ 60, 120 };
 		ProjectilePosition3 += float4{ 60, 120 };
+		ProjectilePosition4 += float4{ 60, 120 };
 
 		ProjectileRotation0 += float4{ 0, 0, 45 };
 		ProjectileRotation1 += float4{ 0, 0, 45 };
 		ProjectileRotation2 += float4{ 0, 0, 45 };
 		ProjectileRotation3 += float4{ 0, 0, 45 };
+		ProjectileRotation4 += float4{ 0, 0, 45 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 120 });
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		ProjectilePosition0 += float4{ 70, 70 };
-		ProjectilePosition1 += float4{ 70, 70 };
-		ProjectilePosition2 += float4{ 70, 70 };
-		ProjectilePosition3 += float4{ 70, 70 };
+		if (true == IsDuckAttack)
+		{
+			ProjectilePosition0 += float4{ 90, 40 };
+			ProjectilePosition1 += float4{ 90, 40 };
+			ProjectilePosition2 += float4{ 90, 40 };
+			ProjectilePosition3 += float4{ 90, 40 };
+			ProjectilePosition4 += float4{ 90, 40 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 90, 40 });
+		}
+		else
+		{
+			ProjectilePosition0 += float4{ 70, 70 };
+			ProjectilePosition1 += float4{ 70, 70 };
+			ProjectilePosition2 += float4{ 70, 70 };
+			ProjectilePosition3 += float4{ 70, 70 };
+			ProjectilePosition4 += float4{ 70, 70 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 70 });
+		}
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
@@ -501,11 +534,15 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ 60, 30 };
 		ProjectilePosition2 += float4{ 60, 30 };
 		ProjectilePosition3 += float4{ 60, 30 };
+		ProjectilePosition4 += float4{ 60, 30 };
 
 		ProjectileRotation0 += float4{ 0, 0, 315 };
 		ProjectileRotation1 += float4{ 0, 0, 315 };
 		ProjectileRotation2 += float4{ 0, 0, 315 };
 		ProjectileRotation3 += float4{ 0, 0, 315 };
+		ProjectileRotation4 += float4{ 0, 0, 315 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 30 });
 	}
 	break;
 	case AttackDirection::Right_Down:
@@ -519,6 +556,9 @@ void Player::CreateSpread()
 		ProjectileRotation1 += float4{ 0, 0, 270 };
 		ProjectileRotation2 += float4{ 0, 0, 270 };
 		ProjectileRotation3 += float4{ 0, 0, 270 };
+		ProjectileRotation4 += float4{ 0, 0, 270 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 30, -10 });
 	}
 	break;
 	case AttackDirection::Left_Up:
@@ -527,11 +567,15 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ -30, 160 };
 		ProjectilePosition2 += float4{ -30, 160 };
 		ProjectilePosition3 += float4{ -30, 160 };
+		ProjectilePosition4 += float4{ -30, 160 };
 
 		ProjectileRotation0 += float4{ 0, 0, 270 };
 		ProjectileRotation1 += float4{ 0, 0, 270 };
 		ProjectileRotation2 += float4{ 0, 0, 270 };
 		ProjectileRotation3 += float4{ 0, 0, 270 };
+		ProjectileRotation4 += float4{ 0, 0, 270 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 25, 180 });
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
@@ -540,24 +584,51 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ -70, 120 };
 		ProjectilePosition2 += float4{ -70, 120 };
 		ProjectilePosition3 += float4{ -70, 120 };
+		ProjectilePosition4 += float4{ -70, 120 };
 
 		ProjectileRotation0 += float4{ 0, 0, 315 };
 		ProjectileRotation1 += float4{ 0, 0, 315 };
 		ProjectileRotation2 += float4{ 0, 0, 315 };
 		ProjectileRotation3 += float4{ 0, 0, 315 };
+		ProjectileRotation4 += float4{ 0, 0, 315 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 120 });
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		ProjectilePosition0 += float4{ -70, 70 };
-		ProjectilePosition1 += float4{ -70, 70 };
-		ProjectilePosition2 += float4{ -70, 70 };
-		ProjectilePosition3 += float4{ -70, 70 };
+		if (true == IsDuckAttack)
+		{
+			ProjectilePosition0 += float4{ -110, 40 };
+			ProjectilePosition1 += float4{ -110, 40 };
+			ProjectilePosition2 += float4{ -110, 40 };
+			ProjectilePosition3 += float4{ -110, 40 };
+			ProjectilePosition4 += float4{ -110, 40 };
 
-		ProjectileRotation0 += float4{ 0, 0, 0 };
-		ProjectileRotation1 += float4{ 0, 0, 0 };
-		ProjectileRotation2 += float4{ 0, 0, 0 };
-		ProjectileRotation3 += float4{ 0, 0, 0 };
+			ProjectileRotation0 += float4{ 0, 0, 0 };
+			ProjectileRotation1 += float4{ 0, 0, 0 };
+			ProjectileRotation2 += float4{ 0, 0, 0 };
+			ProjectileRotation3 += float4{ 0, 0, 0 };
+			ProjectileRotation4 += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 120, 40 });
+		}
+		else
+		{
+			ProjectilePosition0 += float4{ -80, 70 };
+			ProjectilePosition1 += float4{ -80, 70 };
+			ProjectilePosition2 += float4{ -80, 70 };
+			ProjectilePosition3 += float4{ -80, 70 };
+			ProjectilePosition4 += float4{ -80, 70 };
+
+			ProjectileRotation0 += float4{ 0, 0, 0 };
+			ProjectileRotation1 += float4{ 0, 0, 0 };
+			ProjectileRotation2 += float4{ 0, 0, 0 };
+			ProjectileRotation3 += float4{ 0, 0, 0 };
+			ProjectileRotation4 += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 90, 70 });
+		}
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
@@ -566,11 +637,15 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ -70, 30 };
 		ProjectilePosition2 += float4{ -70, 30 };
 		ProjectilePosition3 += float4{ -70, 30 };
+		ProjectilePosition4 += float4{ -70, 30 };
 
 		ProjectileRotation0 += float4{ 0, 0, 45 };
 		ProjectileRotation1 += float4{ 0, 0, 45 };
 		ProjectileRotation2 += float4{ 0, 0, 45 };
 		ProjectileRotation3 += float4{ 0, 0, 45 };
+		ProjectileRotation4 += float4{ 0, 0, 45 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 30 });
 	}
 	break;
 	case AttackDirection::Left_Down:
@@ -579,11 +654,15 @@ void Player::CreateSpread()
 		ProjectilePosition1 += float4{ -30, -10 };
 		ProjectilePosition2 += float4{ -30, -10 };
 		ProjectilePosition3 += float4{ -30, -10 };
+		ProjectilePosition4 += float4{ -30, -10 };
 
 		ProjectileRotation0 += float4{ 0, 0, 90 };
 		ProjectileRotation1 += float4{ 0, 0, 90 };
 		ProjectileRotation2 += float4{ 0, 0, 90 };
 		ProjectileRotation3 += float4{ 0, 0, 90 };
+		ProjectileRotation4 += float4{ 0, 0, 90 };
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 40, -10 });
 	}
 	break;
 	default:
@@ -594,21 +673,31 @@ void Player::CreateSpread()
 	Projectile1->SetStartPosition(ProjectilePosition1);
 	Projectile2->SetStartPosition(ProjectilePosition2);
 	Projectile3->SetStartPosition(ProjectilePosition3);
+	Projectile4->SetStartPosition(ProjectilePosition4);
 
 	Projectile0->SetProjectileRotation(ProjectileRotation0);
 	Projectile1->SetProjectileRotation(ProjectileRotation1);
 	Projectile2->SetProjectileRotation(ProjectileRotation2);
 	Projectile3->SetProjectileRotation(ProjectileRotation3);
+	Projectile4->SetProjectileRotation(ProjectileRotation4);
 
 	Projectile0->SetDirection(Directbool);
 	Projectile1->SetDirection(Directbool);
 	Projectile2->SetDirection(Directbool);
 	Projectile3->SetDirection(Directbool);
+	Projectile4->SetDirection(Directbool);
 
-	Projectile0->SetMoveSpeed(1400);
-	Projectile1->SetMoveSpeed(1200);
-	Projectile2->SetMoveSpeed(1200);
-	Projectile3->SetMoveSpeed(1400);
+	Projectile0->SetMoveSpeed(1200);
+	Projectile1->SetMoveSpeed(1100);
+	Projectile2->SetMoveSpeed(1100);
+	Projectile3->SetMoveSpeed(1200);
+	Projectile4->SetMoveSpeed(1200);
+
+	Projectile0->SetDeathType(true);
+	Projectile1->SetDeathType(false);
+	Projectile2->SetDeathType(false);
+	Projectile3->SetDeathType(true);
+	Projectile4->SetDeathType(true);
 }
 
 // 2번 EX 공격 
@@ -1477,6 +1566,17 @@ void Player::SlapStart()
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
+	// 패리 성공 시
+	//if (true)
+	//{
+	//	IsSlap = false;
+	//	IsJump = false;
+	//	MoveDirect.y = 0;
+	//	JumpTime = 0.0f;
+	//	ChangeState(PlayerState::Jump);
+	//	return;
+	//}
+
 	JumpTime += _DeltaTime;
 
 	// 점프 시 이동
@@ -2448,7 +2548,8 @@ void Player::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
 
-	PeashooterRenderPtr->CreateAnimation({ "Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
+	PeashooterRenderPtr->CreateAnimation({ "Peashooter_Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
+	PeashooterRenderPtr->CreateAnimation({ "Spread_Spawn", "Spread_Spawn.png", 0, 3, 0.05f, true, false });
 }
 
 void Player::DebugRendererSetting()

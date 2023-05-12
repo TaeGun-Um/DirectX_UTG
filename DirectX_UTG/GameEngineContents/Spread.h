@@ -32,6 +32,11 @@ public:
 		}
 	}
 
+	void SetDeathType(bool _DeathType)
+	{
+		DeathType = _DeathType;
+	}
+
 	void SetMoveSpeed(float _MoveSpeed)
 	{
 		MoveSpeed = _MoveSpeed;
@@ -46,6 +51,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
 	float MoveSpeed = 1200.0f;
+	bool DeathType = true;
+	bool IsDeath = false;
+	bool Check = false;
 
 	void MoveDirection(float _DeltaTime);
 	void DeathCheck();
