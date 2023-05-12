@@ -1733,15 +1733,6 @@ void Player::DuckAttackEnd()
 void Player::EXAttackStart()
 {
 	IsEXAttack = true;
-
-	if (true == Directbool)
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ -20, -15 });
-	}
-	else
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ -20, 0 });
-	}
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
@@ -1886,15 +1877,6 @@ void Player::EXAttackUpdate(float _DeltaTime)
 }
 void Player::EXAttackEnd()
 {
-	if (true == Directbool)
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ 20, 15 });
-	}
-	else
-	{
-		RenderPtr->GetTransform()->AddLocalPosition({ 20, 0 });
-	}
-
 	IsEXAttack = false;
 }
 
