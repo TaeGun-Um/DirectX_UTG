@@ -18,9 +18,10 @@ void Peashooter_EX::Start()
 	RenderPtr->CreateAnimation({ "Loop", "Peashooter_EX_Loop.png", 0, 7, 0.07f, true, false });
 	RenderPtr->CreateAnimation({ "Death", "Peashooter_EX_Death.png", 0, 8, 0.05f, true, false });
 
-	RenderPtr->GetTransform()->SetLocalScale(float4{ 700, 700 });
+	RenderPtr->GetTransform()->SetLocalScale(float4{ 750, 750 });
 	RenderPtr->ChangeAnimation("Loop");
 }
+
 void Peashooter_EX::Update(float _DeltaTime)
 {
 	MoveDirection(_DeltaTime);

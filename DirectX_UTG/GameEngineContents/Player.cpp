@@ -223,6 +223,7 @@ void Player::EXCreate()
 	if (true == WeaponType)
 	{
 		CreatePeashooter_EX();
+		CreateEXDust();
 	}
 	else if (false == WeaponType)
 	{
@@ -801,6 +802,7 @@ void Player::CreatePeashooter_EX()
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
+	Projectile->SetMoveSpeed(900.0f);
 }
 
 // 2번 EX 공격 
@@ -811,6 +813,206 @@ void Player::CreateSpread_EX()
 // EX 공격 시 Dust 생성
 void Player::CreateEXDust()
 {
+	std::shared_ptr<EXDust> Projectile0 = GetLevel()->CreateActor<EXDust>(1);
+	std::shared_ptr<EXDust> Projectile1 = GetLevel()->CreateActor<EXDust>(1);
+	std::shared_ptr<EXDust> Projectile2 = GetLevel()->CreateActor<EXDust>(1);
+	std::shared_ptr<EXDust> Projectile3 = GetLevel()->CreateActor<EXDust>(1);
+	std::shared_ptr<EXDust> Projectile4 = GetLevel()->CreateActor<EXDust>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+
+	float4 ProjectilePosition0 = PlayerPosition;
+	float4 ProjectilePosition1 = PlayerPosition;
+	float4 ProjectilePosition2 = PlayerPosition;
+	float4 ProjectilePosition3 = PlayerPosition;
+	float4 ProjectilePosition4 = PlayerPosition;
+
+	float4 ProjectileRotation0 = float4::Zero;
+	float4 ProjectileRotation1 = float4::Zero;
+	float4 ProjectileRotation2 = float4::Zero;
+	float4 ProjectileRotation3 = float4::Zero;
+	float4 ProjectileRotation4 = float4::Zero;
+
+	// 기본 로테이션은 Right_Front 기준
+	ProjectileRotation0 += float4{ 0, 0, 320 };
+	ProjectileRotation1 += float4{ 0, 0, 340 };
+	ProjectileRotation2 += float4{ 0, 0, 20 };
+	ProjectileRotation3 += float4{ 0, 0, 40 };
+	ProjectileRotation3 += float4{ 0, 0, 0 };
+
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		ProjectilePosition0 += float4{ -65, 0 };
+		ProjectilePosition1 += float4{ -35, 0 };
+		ProjectilePosition2 += float4{ 25, 0 };
+		ProjectilePosition3 += float4{ 55, 0 };
+		ProjectilePosition4 += float4{ -5, 0 };
+
+		ProjectileRotation0 += float4{ 0, 0, 90 };
+		ProjectileRotation1 += float4{ 0, 0, 90 };
+		ProjectileRotation2 += float4{ 0, 0, 90 };
+		ProjectileRotation3 += float4{ 0, 0, 90 };
+		ProjectileRotation4 += float4{ 0, 0, 90 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		ProjectilePosition0 += float4{ -140, 80 };
+		ProjectilePosition1 += float4{ -110, 50 };
+		ProjectilePosition2 += float4{ -50, 10 };
+		ProjectilePosition3 += float4{ -20, -20 };
+		ProjectilePosition4 += float4{ -80, 30 };
+
+		ProjectileRotation0 += float4{ 0, 0, 45 };
+		ProjectileRotation1 += float4{ 0, 0, 45 };
+		ProjectileRotation2 += float4{ 0, 0, 45 };
+		ProjectileRotation3 += float4{ 0, 0, 45 };
+		ProjectileRotation4 += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		ProjectilePosition0 += float4{ -80, 130 };
+		ProjectilePosition1 += float4{ -80, 100 };
+		ProjectilePosition2 += float4{ -80, 40 };
+		ProjectilePosition3 += float4{ -80, 10 };
+		ProjectilePosition4 += float4{ -80, 70 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		ProjectilePosition0 += float4{ -20, 170 };
+		ProjectilePosition1 += float4{ -50, 140 };
+		ProjectilePosition2 += float4{ -110, 100 };
+		ProjectilePosition3 += float4{ -140, 70 };
+		ProjectilePosition4 += float4{ -80, 120 };
+
+		ProjectileRotation0 += float4{ 0, 0, 315 };
+		ProjectileRotation1 += float4{ 0, 0, 315 };
+		ProjectileRotation2 += float4{ 0, 0, 315 };
+		ProjectileRotation3 += float4{ 0, 0, 315 };
+		ProjectileRotation4 += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		ProjectilePosition0 += float4{ 60, 150 };
+		ProjectilePosition1 += float4{ 30, 150 };
+		ProjectilePosition2 += float4{ -30, 150 };
+		ProjectilePosition3 += float4{ -60, 150 };
+		ProjectilePosition4 += float4{ 0, 150 };
+
+		ProjectileRotation0 += float4{ 0, 0, 270 };
+		ProjectileRotation1 += float4{ 0, 0, 270 };
+		ProjectileRotation2 += float4{ 0, 0, 270 };
+		ProjectileRotation3 += float4{ 0, 0, 270 };
+		ProjectileRotation4 += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		ProjectilePosition0 += float4{ -65, 0 };
+		ProjectilePosition1 += float4{ -35, 0 };
+		ProjectilePosition2 += float4{ 25, 0 };
+		ProjectilePosition3 += float4{ 55, 0 };
+		ProjectilePosition4 += float4{ -5, 0 };
+
+		ProjectileRotation0 += float4{ 0, 0, 270 };
+		ProjectileRotation1 += float4{ 0, 0, 270 };
+		ProjectileRotation2 += float4{ 0, 0, 270 };
+		ProjectileRotation3 += float4{ 0, 0, 270 };
+		ProjectileRotation4 += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		ProjectilePosition0 += float4{ 10, -20 };
+		ProjectilePosition1 += float4{ 40, 10 };
+		ProjectilePosition2 += float4{ 100, 50 };
+		ProjectilePosition3 += float4{ 130, 80 };
+		ProjectilePosition4 += float4{ 60, 30 };
+
+		ProjectileRotation0 += float4{ 0, 0, 315 };
+		ProjectileRotation1 += float4{ 0, 0, 315 };
+		ProjectileRotation2 += float4{ 0, 0, 315 };
+		ProjectileRotation3 += float4{ 0, 0, 315 };
+		ProjectileRotation4 += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		ProjectilePosition0 += float4{ 70, 10 };
+		ProjectilePosition1 += float4{ 70, 40 };
+		ProjectilePosition2 += float4{ 70, 100 };
+		ProjectilePosition3 += float4{ 70, 130 };
+		ProjectilePosition4 += float4{ 70, 70 };
+
+		ProjectileRotation0 += float4{ 0, 0, 0 };
+		ProjectileRotation1 += float4{ 0, 0, 0 };
+		ProjectileRotation2 += float4{ 0, 0, 0 };
+		ProjectileRotation3 += float4{ 0, 0, 0 };
+		ProjectileRotation4 += float4{ 0, 0, 0 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		ProjectilePosition0 += float4{ 120, 60 };
+		ProjectilePosition1 += float4{ 90, 90 };
+		ProjectilePosition2 += float4{ 30, 150 };
+		ProjectilePosition3 += float4{ 0, 180 };
+		ProjectilePosition4 += float4{ 60, 120 };
+
+		ProjectileRotation0 += float4{ 0, 0, 45 };
+		ProjectileRotation1 += float4{ 0, 0, 45 };
+		ProjectileRotation2 += float4{ 0, 0, 45 };
+		ProjectileRotation3 += float4{ 0, 0, 45 };
+		ProjectileRotation4 += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		ProjectilePosition0 += float4{ 50, 150 };
+		ProjectilePosition1 += float4{ 20, 150 };
+		ProjectilePosition2 += float4{ -40, 150 };
+		ProjectilePosition3 += float4{ -70, 150 };
+		ProjectilePosition4 += float4{ -10, 150 };
+
+		ProjectileRotation0 += float4{ 0, 0, 90 };
+		ProjectileRotation1 += float4{ 0, 0, 90 };
+		ProjectileRotation2 += float4{ 0, 0, 90 };
+		ProjectileRotation3 += float4{ 0, 0, 90 };
+		ProjectileRotation4 += float4{ 0, 0, 90 };
+	}
+	break;
+	default:
+		break;
+	}
+
+	Projectile0->SetStartPosition(ProjectilePosition0);
+	Projectile1->SetStartPosition(ProjectilePosition1);
+	Projectile2->SetStartPosition(ProjectilePosition2);
+	Projectile3->SetStartPosition(ProjectilePosition3);
+	Projectile4->SetStartPosition(ProjectilePosition4);
+
+	Projectile0->SetProjectileRotation(ProjectileRotation0);
+	Projectile1->SetProjectileRotation(ProjectileRotation1);
+	Projectile2->SetProjectileRotation(ProjectileRotation2);
+	Projectile3->SetProjectileRotation(ProjectileRotation3);
+	Projectile4->SetProjectileRotation(ProjectileRotation4);
+
+	Projectile0->SetDirection(Directbool);
+	Projectile1->SetDirection(Directbool);
+	Projectile2->SetDirection(Directbool);
+	Projectile3->SetDirection(Directbool);
+	Projectile4->SetDirection(Directbool);
+
+	Projectile0->SetMoveSpeed(100.0f);
+	Projectile1->SetMoveSpeed(100.0f);
+	Projectile2->SetMoveSpeed(100.0f);
+	Projectile3->SetMoveSpeed(100.0f);
+	Projectile4->SetMoveSpeed(100.0f);
 }
 
 // 움직일 때 Dust 생성
@@ -2129,6 +2331,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Up", false);
 		}
+
+		PushBackAble = false;
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
@@ -2141,6 +2345,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Right_Front:
@@ -2153,6 +2359,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Straight", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
@@ -2165,6 +2373,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Right_Down:
@@ -2177,6 +2387,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Down", false);
 		}
+
+		PushBackAble = false;
 	}
 	break;
 	case AttackDirection::Left_Up:
@@ -2189,6 +2401,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Up", false);
 		}
+
+		PushBackAble = false;
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
@@ -2201,6 +2415,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Left_Front:
@@ -2213,6 +2429,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Straight", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
@@ -2225,6 +2443,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
 		}
+
+		PushBackAble = true;
 	}
 	break;
 	case AttackDirection::Left_Down:
@@ -2237,6 +2457,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		{
 			RenderPtr->ChangeAnimation("Ex_Down", false);
 		}
+
+		PushBackAble = false;
 	}
 	break;
 	default:
@@ -2245,8 +2467,23 @@ void Player::EXAttackUpdate(float _DeltaTime)
 
 	if (7 == RenderPtr->GetCurrentFrame() && 1 == CreateEXCount)
 	{
+		EXPushBack = true;
 		CreateEXCount = 0;
 		EXCreate();
+	}
+
+	if (true == EXPushBack && true == PushBackAble)
+	{
+		float MoveDis = (MoveSpeed / 3) * _DeltaTime;
+
+		if (true == Directbool)
+		{
+			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		}
+		else
+		{
+			GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		}
 	}
 
 	if (RenderPtr->IsAnimationEnd() && true == IsJump 
@@ -2263,6 +2500,8 @@ void Player::EXAttackUpdate(float _DeltaTime)
 }
 void Player::EXAttackEnd()
 {
+	EXPushBack = false;
+	PushBackAble = false;
 	IsEXAttack = false;
 	CreateEXCount = 1;
 }

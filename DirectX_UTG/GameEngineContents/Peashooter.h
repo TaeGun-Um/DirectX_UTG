@@ -34,6 +34,11 @@ public:
 		}
 	}
 
+	void SetMoveSpeed(float _MoveSpeed)
+	{
+		MoveSpeed = _MoveSpeed;
+	}
+
 	void SetColMap(const std::shared_ptr<class GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
 	{
 		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);

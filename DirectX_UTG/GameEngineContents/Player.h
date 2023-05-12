@@ -89,6 +89,8 @@ private:
 	bool IsAttackReady = false;
 	bool IsSlap = false;
 	bool IsEXAttack = false;
+	bool EXPushBack = false;
+	bool PushBackAble = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;

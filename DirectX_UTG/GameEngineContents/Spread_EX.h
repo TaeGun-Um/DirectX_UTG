@@ -32,6 +32,11 @@ public:
 		}
 	}
 
+	void SetMoveSpeed(float _MoveSpeed)
+	{
+		MoveSpeed = _MoveSpeed;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
