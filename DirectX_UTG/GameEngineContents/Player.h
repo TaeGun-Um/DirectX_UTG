@@ -58,6 +58,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
@@ -105,6 +106,8 @@ private:
 	void CreateMoveDust();
 	void CreateLandDust();
 	void CreateParryEffect();
+
+	int ProjectileSet = 0;
 
 	void DirectCheck();
 

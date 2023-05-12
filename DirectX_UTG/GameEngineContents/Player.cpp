@@ -34,6 +34,11 @@ void Player::Start()
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	RenderPtr->ChangeAnimation("Idle");
 	ChangeState(PlayerState::Idle);
+
+	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{300, 300});
+	PeashooterRenderPtr->GetTransform()->SetParent(GetTransform());
+	PeashooterRenderPtr->Off();
+	PeashooterRenderPtr->ChangeAnimation("Spawn");
 }
 void Player::Update(float _DeltaTime)
 {
@@ -190,6 +195,18 @@ void Player::ProjectileCreate(float _DeltaTime)
 			CreateSpread();
 		}
 	}
+
+	if (true == WeaponType)
+	{
+		if (true == GameEngineInput::IsPress("Attack"))
+		{
+			PeashooterRenderPtr->On();
+		}
+		else
+		{
+			PeashooterRenderPtr->Off();
+		}
+	}
 }
 
 // 기본 공격
@@ -201,66 +218,206 @@ void Player::CreatePeashooter()
 	float4 ProjectilePosition = PlayerPosition;
 	float4 ProjectileRotation = float4::Zero;
 
+	if (5 > ProjectileSet)
+	{
+		++ProjectileSet;
+	}
+	else if (5 == ProjectileSet)
+	{
+		ProjectileSet = 0;
+	}
+
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
 	{
-		ProjectilePosition += float4{ 15, 160 };
+		ProjectilePosition += float4{ 15, 180 };
 		ProjectileRotation += float4{ 0, 0, 90 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 8, 0 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -8 , 0 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 15, 180 });
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
 	{
-		ProjectilePosition += float4{ 60, 120 };
+		ProjectilePosition += float4{ 70, 120 };
 		ProjectileRotation += float4{ 0, 0, 45 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 5, -5 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -5, 5 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 120 });
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		ProjectilePosition += float4{ 70, 70 };
-		ProjectileRotation += float4{ 0, 0, 0 };
+		if (true == IsDuckAttack)
+		{
+			ProjectilePosition += float4{ 100, 40 };
+			ProjectileRotation += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
+		}
+		else
+		{
+			ProjectilePosition += float4{ 80, 70 };
+			ProjectileRotation += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 70 });
+		}
+
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 0, 8 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ 0, -8 };
+		}
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
 	{
-		ProjectilePosition += float4{ 60, 30 };
+		ProjectilePosition += float4{ 70, 30 };
 		ProjectileRotation += float4{ 0, 0, 315 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 5, 5 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -5, -5 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 30 });
 	}
 	break;
 	case AttackDirection::Right_Down:
 	{
-		ProjectilePosition += float4{ 20, -10 };
+		ProjectilePosition += float4{ 30, -10 };
 		ProjectileRotation += float4{ 0, 0, 270 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 8, 0 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -8 , 0 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 30, -10 });
 	}
 	break;
 	case AttackDirection::Left_Up:
 	{
-		ProjectilePosition += float4{ -30, 160 };
+		ProjectilePosition += float4{ -25, 180 };
 		ProjectileRotation += float4{ 0, 0, 270 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 8, 0 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -8 , 0 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 25, 180 });
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-		ProjectilePosition += float4{ -70, 120 };
+		ProjectilePosition += float4{ -80, 120 };
 		ProjectileRotation += float4{ 0, 0, 315 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 5, 5 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -5, -5 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 120 });
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		ProjectilePosition += float4{ -70, 70 };
-		ProjectileRotation += float4{ 0, 0, 0 };
+		if (true == IsDuckAttack)
+		{
+			ProjectilePosition += float4{ -110, 40 };
+			ProjectileRotation += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 120, 40 });
+		}
+		else
+		{
+			ProjectilePosition += float4{ -80, 70 };
+			ProjectileRotation += float4{ 0, 0, 0 };
+
+			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 90, 70 });
+		}
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 0, 8 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ 0, -8 };
+		}
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
 	{
-		ProjectilePosition += float4{ -70, 30 };
+		ProjectilePosition += float4{ -80, 30 };
 		ProjectileRotation += float4{ 0, 0, 45 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 5, -5 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -5, 5 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 30 });
 	}
 	break;
 	case AttackDirection::Left_Down:
 	{
-		ProjectilePosition += float4{ -30, -10 };
+		ProjectilePosition += float4{ -40, -10 };
 		ProjectileRotation += float4{ 0, 0, 90 };
+
+		if (3 > ProjectileSet && 0 != ProjectileSet)
+		{
+			ProjectilePosition += float4{ 8, 0 };
+		}
+		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		{
+			ProjectilePosition += float4{ -8 , 0 };
+		}
+
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 40, -10 });
 	}
 	break;
 	default:
@@ -2097,6 +2254,7 @@ void Player::HoldingAttackEnd()
 void Player::PlayerInitialSetting()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 	if (nullptr == GameEngineSprite::Find("Idle"))
 	{
@@ -2169,6 +2327,48 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Regular").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Peashooter\\Peashooter_Spawn"))
+	{
+		// 스프레드 시트 애니메이션
+		// RenderPtr->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
+
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Effect");
+		NewDir.Move("Attack");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Spawn.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Loop.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Death.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_EX_Loop.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_EX_Death.png").GetFullPath(), 5, 2);
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Spawn.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Death.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Death_Enemyhit.png").GetFullPath(), 3, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Death.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Death_Enemyhit.png").GetFullPath(), 3, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Spawn.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Flame.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Death.png").GetFullPath(), 6, 1);
+
+		//std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		//for (size_t i = 0; i < File.size(); i++)
+		//{
+		//	GameEngineTexture::Load(File[i].GetFullPath());
+		//}
+	}
+
+	if (nullptr == GameEngineSprite::Find("Ex_SFX"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -2178,14 +2378,16 @@ void Player::PlayerInitialSetting()
 		NewDir.Move("CupHead");
 		NewDir.Move("Ground");
 		NewDir.Move("Effect");
+		NewDir.Move("SFX");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_SFX").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("JumpDust").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_A.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_B.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_C.png").GetFullPath(), 5, 4);
 	}
+
 	// Idle
 	RenderPtr->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "Idle", .FrameInter = 0.07f });
 
@@ -2244,6 +2446,8 @@ void Player::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
 	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
+
+	PeashooterRenderPtr->CreateAnimation({ "Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
 }
 
 void Player::DebugRendererSetting()
