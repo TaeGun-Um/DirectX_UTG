@@ -52,7 +52,8 @@ void Player::Update(float _DeltaTime)
 	MoveCamera(_DeltaTime);         // 카메라 이동 연산
 	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
-	ProjectileCreate(_DeltaTime);	// 총알, EX, Dust 생성
+	ProjectileCreate(_DeltaTime);	// 총알 생성
+	DustCreate(_DeltaTime);			// Dust 생성
 	// 충돌체 필요
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
@@ -215,6 +216,23 @@ void Player::ProjectileCreate(float _DeltaTime)
 			CreateSpread();
 		}
 	}
+}
+
+void Player::EXCreate()
+{
+	if (true == WeaponType)
+	{
+		CreatePeashooter_EX();
+	}
+	else if (false == WeaponType)
+	{
+		//CreateSpread_EX();
+	}
+}
+
+void Player::DustCreate(float _DeltaTime)
+{
+
 }
 
 // 기본 공격
@@ -437,9 +455,6 @@ void Player::CreatePeashooter()
 	Projectile->SetDirection(Directbool);
 	Projectile->SetColMap(ColMap, Pivot);
 }
-
-// 기본 EX 공격
-void Player::CreatePeashooter_EX() {}
 
 // 2번 공격
 void Player::CreateSpread()
@@ -708,20 +723,110 @@ void Player::CreateSpread()
 	Projectile4->SetColMap(ColMap, Pivot);
 }
 
+// 기본 EX 공격
+void Player::CreatePeashooter_EX()
+{
+	std::shared_ptr<Peashooter_EX> Projectile = GetLevel()->CreateActor<Peashooter_EX>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 ProjectilePosition = PlayerPosition;
+	float4 ProjectileRotation = float4::Zero;
+
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		ProjectilePosition += float4{ 15, 180 };
+		ProjectileRotation += float4{ 0, 0, 90 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		ProjectilePosition += float4{ 70, 120 };
+		ProjectileRotation += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		ProjectilePosition += float4{ 80, 70 };
+		ProjectileRotation += float4{ 0, 0, 0 };
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		ProjectilePosition += float4{ 70, 30 };
+		ProjectileRotation += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		ProjectilePosition += float4{ 30, -10 };
+		ProjectileRotation += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		ProjectilePosition += float4{ -25, 180 };
+		ProjectileRotation += float4{ 0, 0, 270 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		ProjectilePosition += float4{ -80, 120 };
+		ProjectileRotation += float4{ 0, 0, 315 };
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		ProjectilePosition += float4{ -80, 70 };
+		ProjectileRotation += float4{ 0, 0, 0 };
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		ProjectilePosition += float4{ -80, 30 };
+		ProjectileRotation += float4{ 0, 0, 45 };
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		ProjectilePosition += float4{ -40, -10 };
+		ProjectileRotation += float4{ 0, 0, 90 };
+	}
+	break;
+	default:
+		break;
+	}
+
+	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetProjectileRotation(ProjectileRotation);
+	Projectile->SetDirection(Directbool);
+}
+
 // 2번 EX 공격 
-void Player::CreateSpread_EX() {}
+void Player::CreateSpread_EX() 
+{
+}
 
 // EX 공격 시 Dust 생성
-void Player::CreateEXDust() {}
+void Player::CreateEXDust()
+{
+}
 
 // 움직일 때 Dust 생성
-void Player::CreateMoveDust() {}
+void Player::CreateMoveDust()
+{
+}
 
 // 점프나 Fall 후 Land시 Dust 생성
-void Player::CreateLandDust() {}
+void Player::CreateLandDust()
+{
+}
 
 // Parry시 생성되는 Effect
-void Player::CreateParryEffect() {}
+void Player::CreateParryEffect()
+{
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
@@ -2138,6 +2243,12 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		break;
 	}
 
+	if (7 == RenderPtr->GetCurrentFrame() && 1 == CreateEXCount)
+	{
+		CreateEXCount = 0;
+		EXCreate();
+	}
+
 	if (RenderPtr->IsAnimationEnd() && true == IsJump 
 		|| RenderPtr->IsAnimationEnd() && true == IsFall)
 	{
@@ -2153,6 +2264,7 @@ void Player::EXAttackUpdate(float _DeltaTime)
 void Player::EXAttackEnd()
 {
 	IsEXAttack = false;
+	CreateEXCount = 1;
 }
 
 // Hold 입력 시 상태 체크
@@ -2490,13 +2602,6 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Loop.png").GetFullPath(), 4, 1);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Flame.png").GetFullPath(), 5, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Death.png").GetFullPath(), 6, 1);
-
-		//std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		//for (size_t i = 0; i < File.size(); i++)
-		//{
-		//	GameEngineTexture::Load(File[i].GetFullPath());
-		//}
 	}
 
 	if (nullptr == GameEngineSprite::Find("Ex_SFX"))

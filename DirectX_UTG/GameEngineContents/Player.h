@@ -96,9 +96,13 @@ private:
 	float ActivateDashTime = 0.0f;
 	float ProjectileCreateTime = 0.0f;
 
+	int CreateEXCount = 1;
+
 	AttackDirection ADValue = AttackDirection::Right_Front;
 
 	void ProjectileCreate(float _DeltaTime);
+	void EXCreate();
+	void DustCreate(float _DeltaTime);
 	void CreatePeashooter();
 	void CreatePeashooter_EX();
 	void CreateSpread();
