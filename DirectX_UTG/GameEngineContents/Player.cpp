@@ -36,9 +36,10 @@ void Player::Start()
 	ChangeState(PlayerState::Idle);
 
 	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{300, 300});
+	PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
 	PeashooterRenderPtr->GetTransform()->SetParent(GetTransform());
-	PeashooterRenderPtr->Off();
 	PeashooterRenderPtr->ChangeAnimation("Spawn");
+	PeashooterRenderPtr->Off();
 }
 void Player::Update(float _DeltaTime)
 {
