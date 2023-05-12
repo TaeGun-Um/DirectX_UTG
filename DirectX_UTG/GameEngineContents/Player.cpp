@@ -1135,15 +1135,6 @@ void Player::DuckReadyUpdate(float _DeltaTime)
 void Player::DuckReadyEnd()
 {
 	DuckTime = 0.0f;
-
-	//if (true == Directbool)
-	//{
-	//	ADValue = AttackDirection::Right_Front;
-	//}
-	//else
-	//{
-	//	ADValue = AttackDirection::Left_Front;
-	//}
 }
 
 // Duck(Crounch) 상태 체크
@@ -1218,14 +1209,6 @@ void Player::DuckUpdate(float _DeltaTime)
 }
 void Player::DuckEnd()
 {
-	//if (true == Directbool)
-	//{
-	//	ADValue = AttackDirection::Right_Front;
-	//}
-	//else
-	//{
-	//	ADValue = AttackDirection::Left_Front;
-	//}
 }
 
 // Jump 상태 체크
@@ -1750,6 +1733,15 @@ void Player::DuckAttackEnd()
 void Player::EXAttackStart()
 {
 	IsEXAttack = true;
+
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -20, -15 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ -20, 0 });
+	}
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
@@ -1894,6 +1886,15 @@ void Player::EXAttackUpdate(float _DeltaTime)
 }
 void Player::EXAttackEnd()
 {
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ 20, 15 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->AddLocalPosition({ 20, 0 });
+	}
+
 	IsEXAttack = false;
 }
 
@@ -2246,16 +2247,16 @@ void Player::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
 
 	// EX
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
 
 	// Interaction & Intro
 	RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
