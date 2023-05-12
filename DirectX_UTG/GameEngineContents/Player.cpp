@@ -262,13 +262,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ 15, 180 };
 		ProjectileRotation += float4{ 0, 0, 90 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 8, 0 };
+			ProjectilePosition += float4{ 10, 0 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -8 , 0 };
+			ProjectilePosition += float4{ -10 , 0 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 15, 180 });
@@ -279,13 +279,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ 70, 120 };
 		ProjectileRotation += float4{ 0, 0, 45 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 5, -5 };
+			ProjectilePosition += float4{ 7, -7 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -5, 5 };
+			ProjectilePosition += float4{ -7, 7 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 120 });
@@ -308,14 +308,13 @@ void Player::CreatePeashooter()
 			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 70 });
 		}
 
-
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 0, 8 };
+			ProjectilePosition += float4{ 0, 10 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 0, -8 };
+			ProjectilePosition += float4{ 0, -10 };
 		}
 	}
 	break;
@@ -324,13 +323,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ 70, 30 };
 		ProjectileRotation += float4{ 0, 0, 315 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 5, 5 };
+			ProjectilePosition += float4{ 7, 7 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -5, -5 };
+			ProjectilePosition += float4{ -7, -7 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 70, 30 });
@@ -341,13 +340,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ 30, -10 };
 		ProjectileRotation += float4{ 0, 0, 270 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 8, 0 };
+			ProjectilePosition += float4{ 10, 0 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -8 , 0 };
+			ProjectilePosition += float4{ -10 , 0 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 30, -10 });
@@ -358,13 +357,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ -25, 180 };
 		ProjectileRotation += float4{ 0, 0, 270 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 8, 0 };
+			ProjectilePosition += float4{ 10, 0 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -8 , 0 };
+			ProjectilePosition += float4{ -10, 0 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 25, 180 });
@@ -375,13 +374,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ -80, 120 };
 		ProjectileRotation += float4{ 0, 0, 315 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 5, 5 };
+			ProjectilePosition += float4{ 7, 7 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -5, -5 };
+			ProjectilePosition += float4{ -7, -7 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 120 });
@@ -404,13 +403,13 @@ void Player::CreatePeashooter()
 			PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 90, 70 });
 		}
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 0, 8 };
+			ProjectilePosition += float4{ 0, 10 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 0, -8 };
+			ProjectilePosition += float4{ 0, -10 };
 		}
 	}
 	break;
@@ -419,13 +418,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ -80, 30 };
 		ProjectileRotation += float4{ 0, 0, 45 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 5, -5 };
+			ProjectilePosition += float4{ 7, -7 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -5, 5 };
+			ProjectilePosition += float4{ -7, 7 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 80, 30 });
@@ -436,13 +435,13 @@ void Player::CreatePeashooter()
 		ProjectilePosition += float4{ -40, -10 };
 		ProjectileRotation += float4{ 0, 0, 90 };
 
-		if (3 > ProjectileSet && 0 != ProjectileSet)
+		if (1 == ProjectileSet || 4 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ 8, 0 };
+			ProjectilePosition += float4{ 10, 0 };
 		}
-		else if (5 > ProjectileSet && 3 <= ProjectileSet)
+		else if (2 == ProjectileSet || 3 == ProjectileSet)
 		{
-			ProjectilePosition += float4{ -8 , 0 };
+			ProjectilePosition += float4{ -10, 0 };
 		}
 
 		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 40, -10 });
