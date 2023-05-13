@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "TutorialLevel.h"
 
+#include <GameEngineCore/GameEngineSpriteRenderer.h> // 지울것
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -11,6 +12,8 @@
 #include "Tutorial_Map.h"
 #include "Tutorial_ColMap.h"
 #include "Player.h"
+
+#include "TestPlatform.h"
 
 #include "TransformGUI.h"
 
@@ -86,6 +89,12 @@ void TutorialLevel::Start()
 		GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
 		GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
 	}
+
+	// 지울 것(테스트)
+	{
+		PlatformObject = CreateActor<TestPlatform>(-100);
+		PlatformObject->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 200, 1 });
+	}
 }
 
 void TutorialLevel::PlayerDebugRenderOn()
@@ -109,7 +118,10 @@ void TutorialLevel::TutorialColMapOff()
 
 void TutorialLevel::Update(float _DeltaTime)
 {
-
+	if (PlayerObject->GetCollisionRenderPtr()->GetTransform()->Collision({PlatformObject->GetCollisionRenderPtr()->GetTransform(), ColType::AABBBOX2D, ColType::AABBBOX2D }))
+	{
+		int a = 0;
+	}
 }
 
 void TutorialLevel::LevelChangeStart()

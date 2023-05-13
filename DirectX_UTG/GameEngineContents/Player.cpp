@@ -28,6 +28,12 @@ void Player::Start()
 {
 	PlayerInitialSetting();
 	DebugRendererSetting();
+
+	CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	CollisionRenderPtr->SetTexture("GreenLine.png");
+	CollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+	CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
 
@@ -1115,6 +1121,17 @@ void Player::DirectCheck()
 			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
 			// DebugRenderPtr6->Off();
 		}
+
+		{
+			if (true == IsDuck)
+			{
+				CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+			}
+			else
+			{
+				CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+			}
+		}
 	}
 	else
 	{
@@ -1128,7 +1145,29 @@ void Player::DirectCheck()
 			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
 			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
 			// DebugRenderPtr6->Off();
+
+			
 		}
+
+		{
+			if (true == IsDuck)
+			{
+				CollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
+			}
+			else
+			{
+				CollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
+			}
+		}
+	}
+
+	if (true == IsDuck)
+	{
+		CollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
+	}
+	else
+	{
+		CollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
 	}
 
 	AttackDirectCheck();
@@ -1758,6 +1797,8 @@ void Player::DuckReadyEnd()
 // Duck(Crounch) 상태 체크
 void Player::DuckStart()
 {
+	IsDuck = true;
+
 	RenderPtr->ChangeAnimation("Duck");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
 
@@ -1827,6 +1868,7 @@ void Player::DuckUpdate(float _DeltaTime)
 }
 void Player::DuckEnd()
 {
+	IsDuck = false;
 }
 
 // Jump 상태 체크
@@ -2292,10 +2334,11 @@ void Player::RunAttackEnd()
 // Duck에서 Attack 입력 시 상태 체크
 void Player::DuckAttackStart()
 {
+	IsDuck = true;
+	IsDuckAttack = true;
+
 	RenderPtr->ChangeAnimation("DuckAttack");
 	RenderPtr->GetTransform()->SetLocalScale({ 220, 220, 1 });
-
-	IsDuckAttack = true;
 }
 void Player::DuckAttackUpdate(float _DeltaTime)
 {
@@ -2356,6 +2399,7 @@ void Player::DuckAttackUpdate(float _DeltaTime)
 void Player::DuckAttackEnd()
 {
 	IsDuckAttack = false;
+	IsDuck = false;
 }
 
 // EX Attack 상태 체크

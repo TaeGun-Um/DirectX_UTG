@@ -53,6 +53,12 @@ public:
 		IsDebugRender = false;
 	}
 
+	// 지울것
+	std::shared_ptr<class GameEngineSpriteRenderer> GetCollisionRenderPtr()
+	{
+		return CollisionRenderPtr;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -60,6 +66,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
@@ -85,6 +92,7 @@ private:
 
 	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
 	bool IsHold = false;
+	bool IsDuck = false;
 	bool IsDuckAttack = false;
 	bool IsAttackReady = false;
 	bool IsSlap = false;

@@ -200,6 +200,7 @@
       <Filter>Levels\7. Player</Filter>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="TestPlatform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -311,5 +312,6 @@
     <ClCompile Include="Player_Overworld.cpp">
       <Filter>Levels\7. Player</Filter>
     </ClCompile>
+    <ClCompile Include="TestPlatform.cpp" />
   </ItemGroup>
 </Project>
