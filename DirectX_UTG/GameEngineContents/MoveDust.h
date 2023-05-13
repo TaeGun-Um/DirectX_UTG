@@ -1,5 +1,12 @@
 #pragma once
 
+enum class DustType
+{
+	A,
+	B,
+	C
+};
+
 // Ό³Έν :
 class MoveDust : public GameEngineActor
 {
@@ -19,6 +26,16 @@ public:
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 	}
 
+	void SetDirection(bool _Direction)
+	{
+		if (false == _Direction)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
+	}
+
+	void SetDustType(DustType _Type);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -26,9 +43,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-
-	bool IsDeath = false;
-
+	DustType Type = DustType::A;
 	void DeathCheck();
 
 };

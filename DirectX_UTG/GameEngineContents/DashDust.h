@@ -19,6 +19,14 @@ public:
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 	}
 
+	void SetDirection(bool _Direction)
+	{
+		if (false == _Direction)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -26,9 +34,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-
-	bool IsDeath = false;
-
 	void DeathCheck();
 
 };

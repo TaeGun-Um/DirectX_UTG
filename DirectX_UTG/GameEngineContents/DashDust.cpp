@@ -17,7 +17,6 @@ void DashDust::Start()
 
 	RenderPtr->CreateAnimation({ .AnimationName = "DashDust", .SpriteName = "DashDust", .FrameInter = 0.05f, .ScaleToTexture = true });
 
-	//RenderPtr->GetTransform()->SetLocalScale({100, 100});
 	RenderPtr->ChangeAnimation("DashDust");
 }
 
@@ -30,7 +29,6 @@ void DashDust::DeathCheck()
 {
 	if (true == RenderPtr->IsAnimationEnd())
 	{
-		IsDeath = true;
 		Death();
 	}
 }

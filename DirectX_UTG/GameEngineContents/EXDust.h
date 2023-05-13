@@ -39,9 +39,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-
-	bool IsDeath = false;
-
 	void DeathCheck();
 
 };

@@ -101,12 +101,14 @@ private:
 	bool IsEXAttack = false;
 	bool EXPushBack = false;
 	bool PushBackAble = false;
+	bool MoveZeroPass = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
 	float DashTime = 0.0f;
 	float ActivateDashTime = 0.0f;
 	float ProjectileCreateTime = 0.0f;
+	float MoveTime = 0.0f;
 
 	int CreateEXCount = 1;
 
@@ -114,14 +116,13 @@ private:
 
 	void ProjectileCreate(float _DeltaTime);
 	void EXCreate();
-	void DustCreate(float _DeltaTime);
 	void CreatePeashooter();
 	void CreatePeashooter_EX();
 	void CreateSpread();
 	void CreateSpread_EX();
 	void CreateEXDust();
+	void CreateDashDust();
 	void CreateMoveDust();
-	void CreateLandDust();
 	void CreateParryEffect();
 
 	int ProjectileSet = 0;

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -10,7 +11,6 @@
 #include "Spread_EX.h"
 #include "DashDust.h"
 #include "EXDust.h"
-#include "LandDust.h"
 #include "MoveDust.h"
 #include "ParryEffect.h"
 
@@ -52,7 +52,7 @@ void Player::Update(float _DeltaTime)
 	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알 생성
-	DustCreate(_DeltaTime);			// Dust 생성
+	CreateMoveDust();
 	// 충돌체 필요
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
@@ -229,11 +229,6 @@ void Player::EXCreate()
 	}
 
 	CreateEXDust();
-}
-
-void Player::DustCreate(float _DeltaTime)
-{
-
 }
 
 // 기본 공격
@@ -946,14 +941,62 @@ void Player::CreateEXDust()
 	Projectile->SetDirection(Directbool);
 }
 
+// 대쉬 시 Dust 생성
+void Player::CreateDashDust()
+{
+	std::shared_ptr<DashDust> Dust = GetLevel()->CreateActor<DashDust>(1);
+
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	DustPosition += float4{ -10, 60 };
+
+	Dust->SetStartPosition(DustPosition);
+	Dust->SetDirection(Directbool);
+}
+
 // 움직일 때 Dust 생성
 void Player::CreateMoveDust()
 {
-}
+	if (0.4f >= MoveTime)
+	{
+		return;
+	}
 
-// 점프나 Fall 후 Land시 Dust 생성
-void Player::CreateLandDust()
-{
+	int RandValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	MoveTime = 0.0f;
+
+	std::shared_ptr<MoveDust> Dust = GetLevel()->CreateActor<MoveDust>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	if (0 == RandValue)
+	{
+		DustPosition += float4{ 0, 55 };
+		
+	}
+	else if (1 == RandValue)
+	{
+		DustPosition += float4{ 0, 60 };
+	}
+	else if (2 == RandValue)
+	{
+		DustPosition += float4{ 0, 65 };
+	}
+
+	if (true == Directbool)
+	{
+		DustPosition += float4{ -15, 0 };
+	}
+	else
+	{
+		DustPosition += float4{ 15, 0 };
+	}
+
+	Dust->SetStartPosition(DustPosition);
+	Dust->SetDirection(Directbool);
+	Dust->SetDustType(static_cast<DustType>(RandValue));
 }
 
 // Parry시 생성되는 Effect
@@ -1453,6 +1496,8 @@ void Player::MoveStart()
 }
 void Player::MoveUpdate(float _DeltaTime)
 {
+	MoveTime += _DeltaTime;
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -1523,6 +1568,7 @@ void Player::MoveUpdate(float _DeltaTime)
 }
 void Player::MoveEnd()
 {
+	MoveTime = 0.0f;
 }
 
 // Dash(Shift 입력) 상태 체크
@@ -1549,6 +1595,7 @@ void Player::DashStart()
 	}
 
 	IsDash = true;
+	CreateDashDust();
 }
 void Player::DashUpdate(float _DeltaTime)
 {
@@ -2125,6 +2172,8 @@ void Player::RunAttackStart()
 }
 void Player::RunAttackUpdate(float _DeltaTime)
 {
+	MoveTime += _DeltaTime;
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -2240,6 +2289,7 @@ void Player::RunAttackUpdate(float _DeltaTime)
 }
 void Player::RunAttackEnd()
 {
+	MoveTime = 0.0f;
 }
 
 // Duck에서 Attack 입력 시 상태 체크

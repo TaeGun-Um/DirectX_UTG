@@ -111,6 +111,7 @@ private:
 
 	void FieldCameraPivotCheck();
 	void OverwolrdCameraPivotCheck();
+	void CreateLandDust();
 
 	// FSM(+Pixel Check ¿ë bool°ª)
 	bool IsJump = false;
@@ -120,6 +121,7 @@ private:
 	bool AirDash = false;
 	bool BottomJumpAble = false;
 	bool BluePixelCheckAble = false;
+	bool JumpDustAble = false;
 
 	// alt + shift + .
 	virtual void IdleStart() {}

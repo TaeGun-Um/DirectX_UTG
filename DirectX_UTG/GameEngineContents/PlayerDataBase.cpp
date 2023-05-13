@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "LandDust.h"
+
 PlayerDataBase::PlayerDataBase() 
 {
 	if (false == GameEngineInput::IsKey("MoveUp"))
@@ -282,6 +284,7 @@ void PlayerDataBase::PixelCheck(float _DeltaTime)
 
 			if (false == PixelCollisionCheck.IsBlack(GravityPixel))
 			{
+				CreateLandDust();
 				IsFall = false;
 				break;
 			}
@@ -335,6 +338,7 @@ void PlayerDataBase::BottomJump(float _DeltaTime)
 
 			if (false == PixelCollisionCheck.IsBlue(GravityPixel))
 			{
+				CreateLandDust();
 				IsFall = false;
 				break;
 			}
@@ -369,4 +373,21 @@ void PlayerDataBase::BottomJumpStateCheck()
 			IsBottomJump = false;
 		}
 	}
+}
+
+// 점프나 Fall 후 Land시 Dust 생성
+void PlayerDataBase::CreateLandDust()
+{
+	if (true == IsJump)
+	{
+		return;
+	}
+
+	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	DustPosition += float4{ 0, 30 };
+
+	Dust->SetStartPosition(DustPosition);
 }
