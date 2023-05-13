@@ -8,9 +8,10 @@
 #include "Peashooter_EX.h"
 #include "Spread.h"
 #include "Spread_EX.h"
+#include "DashDust.h"
 #include "EXDust.h"
-#include "MoveDust.h"
 #include "LandDust.h"
+#include "MoveDust.h"
 #include "ParryEffect.h"
 
 Player* Player::MainPlayer = nullptr;
@@ -194,7 +195,7 @@ void Player::ProjectileCreate(float _DeltaTime)
 	{
 		PeashooterRenderPtr->On();
 	}
-	else
+	else 
 	{
 		PeashooterRenderPtr->Off();
 	}
@@ -866,206 +867,83 @@ void Player::CreateSpread_EX()
 // EX 공격 시 Dust 생성
 void Player::CreateEXDust()
 {
-	std::shared_ptr<EXDust> Projectile0 = GetLevel()->CreateActor<EXDust>(1);
-	std::shared_ptr<EXDust> Projectile1 = GetLevel()->CreateActor<EXDust>(1);
-	std::shared_ptr<EXDust> Projectile2 = GetLevel()->CreateActor<EXDust>(1);
-	std::shared_ptr<EXDust> Projectile3 = GetLevel()->CreateActor<EXDust>(1);
-	std::shared_ptr<EXDust> Projectile4 = GetLevel()->CreateActor<EXDust>(1);
-
+	std::shared_ptr<EXDust> Projectile = GetLevel()->CreateActor<EXDust>(1);
+	
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
-
-	float4 ProjectilePosition0 = PlayerPosition;
-	float4 ProjectilePosition1 = PlayerPosition;
-	float4 ProjectilePosition2 = PlayerPosition;
-	float4 ProjectilePosition3 = PlayerPosition;
-	float4 ProjectilePosition4 = PlayerPosition;
-
-	float4 ProjectileRotation0 = float4::Zero;
-	float4 ProjectileRotation1 = float4::Zero;
-	float4 ProjectileRotation2 = float4::Zero;
-	float4 ProjectileRotation3 = float4::Zero;
-	float4 ProjectileRotation4 = float4::Zero;
+	float4 ProjectilePosition = PlayerPosition;
+	float4 ProjectileRotation = float4::Zero;
 
 	// 기본 로테이션은 Right_Front 기준
-	ProjectileRotation0 += float4{ 0, 0, 320 };
-	ProjectileRotation1 += float4{ 0, 0, 340 };
-	ProjectileRotation2 += float4{ 0, 0, 20 };
-	ProjectileRotation3 += float4{ 0, 0, 40 };
-	ProjectileRotation3 += float4{ 0, 0, 0 };
+	ProjectileRotation += float4{ 0, 0, 0 };
 
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
 	{
-		ProjectilePosition0 += float4{ -65, 0 };
-		ProjectilePosition1 += float4{ -35, 0 };
-		ProjectilePosition2 += float4{ 25, 0 };
-		ProjectilePosition3 += float4{ 55, 0 };
-		ProjectilePosition4 += float4{ -5, 0 };
-
-		ProjectileRotation0 += float4{ 0, 0, 90 };
-		ProjectileRotation1 += float4{ 0, 0, 90 };
-		ProjectileRotation2 += float4{ 0, 0, 90 };
-		ProjectileRotation3 += float4{ 0, 0, 90 };
-		ProjectileRotation4 += float4{ 0, 0, 90 };
+		ProjectilePosition += float4{ -5, 0 };
+		ProjectileRotation += float4{ 0, 0, 90 };
 	}
 	break;
 	case AttackDirection::Right_DiagonalUp:
 	{
-		ProjectilePosition0 += float4{ -140, 80 };
-		ProjectilePosition1 += float4{ -110, 50 };
-		ProjectilePosition2 += float4{ -50, 10 };
-		ProjectilePosition3 += float4{ -20, -20 };
-		ProjectilePosition4 += float4{ -80, 30 };
-
-		ProjectileRotation0 += float4{ 0, 0, 45 };
-		ProjectileRotation1 += float4{ 0, 0, 45 };
-		ProjectileRotation2 += float4{ 0, 0, 45 };
-		ProjectileRotation3 += float4{ 0, 0, 45 };
-		ProjectileRotation4 += float4{ 0, 0, 45 };
+		ProjectilePosition += float4{ -60, 40 };
+		ProjectileRotation += float4{ 0, 0, 45 };
 	}
 	break;
 	case AttackDirection::Right_Front:
 	{
-		ProjectilePosition0 += float4{ -80, 130 };
-		ProjectilePosition1 += float4{ -80, 100 };
-		ProjectilePosition2 += float4{ -80, 40 };
-		ProjectilePosition3 += float4{ -80, 10 };
-		ProjectilePosition4 += float4{ -80, 70 };
+		ProjectilePosition += float4{ -70, 70 };
+		ProjectileRotation += float4{ 0, 0, 0 };
 	}
 	break;
 	case AttackDirection::Right_DiagonalDown:
 	{
-		ProjectilePosition0 += float4{ -20, 170 };
-		ProjectilePosition1 += float4{ -50, 140 };
-		ProjectilePosition2 += float4{ -110, 100 };
-		ProjectilePosition3 += float4{ -140, 70 };
-		ProjectilePosition4 += float4{ -80, 120 };
-
-		ProjectileRotation0 += float4{ 0, 0, 315 };
-		ProjectileRotation1 += float4{ 0, 0, 315 };
-		ProjectileRotation2 += float4{ 0, 0, 315 };
-		ProjectileRotation3 += float4{ 0, 0, 315 };
-		ProjectileRotation4 += float4{ 0, 0, 315 };
+		ProjectilePosition += float4{ -60, 130 };
+		ProjectileRotation += float4{ 0, 0, 315 };
 	}
 	break;
 	case AttackDirection::Right_Down:
 	{
-		ProjectilePosition0 += float4{ 60, 150 };
-		ProjectilePosition1 += float4{ 30, 150 };
-		ProjectilePosition2 += float4{ -30, 150 };
-		ProjectilePosition3 += float4{ -60, 150 };
-		ProjectilePosition4 += float4{ 0, 150 };
-
-		ProjectileRotation0 += float4{ 0, 0, 270 };
-		ProjectileRotation1 += float4{ 0, 0, 270 };
-		ProjectileRotation2 += float4{ 0, 0, 270 };
-		ProjectileRotation3 += float4{ 0, 0, 270 };
-		ProjectileRotation4 += float4{ 0, 0, 270 };
+		ProjectilePosition += float4{ 20, 130 };
+		ProjectileRotation += float4{ 0, 0, 270 };
 	}
 	break;
 	case AttackDirection::Left_Up:
 	{
-		ProjectilePosition0 += float4{ -65, 0 };
-		ProjectilePosition1 += float4{ -35, 0 };
-		ProjectilePosition2 += float4{ 25, 0 };
-		ProjectilePosition3 += float4{ 55, 0 };
-		ProjectilePosition4 += float4{ -5, 0 };
-
-		ProjectileRotation0 += float4{ 0, 0, 270 };
-		ProjectileRotation1 += float4{ 0, 0, 270 };
-		ProjectileRotation2 += float4{ 0, 0, 270 };
-		ProjectileRotation3 += float4{ 0, 0, 270 };
-		ProjectileRotation4 += float4{ 0, 0, 270 };
+		ProjectilePosition += float4{ -5, 0 };
+		ProjectileRotation += float4{ 0, 0, 270 };
 	}
 	break;
 	case AttackDirection::Left_DiagonalUp:
 	{
-		ProjectilePosition0 += float4{ 10, -20 };
-		ProjectilePosition1 += float4{ 40, 10 };
-		ProjectilePosition2 += float4{ 100, 50 };
-		ProjectilePosition3 += float4{ 130, 80 };
-		ProjectilePosition4 += float4{ 60, 30 };
-
-		ProjectileRotation0 += float4{ 0, 0, 315 };
-		ProjectileRotation1 += float4{ 0, 0, 315 };
-		ProjectileRotation2 += float4{ 0, 0, 315 };
-		ProjectileRotation3 += float4{ 0, 0, 315 };
-		ProjectileRotation4 += float4{ 0, 0, 315 };
+		ProjectilePosition += float4{ 50, 20 };
+		ProjectileRotation += float4{ 0, 0, 315 };
 	}
 	break;
 	case AttackDirection::Left_Front:
 	{
-		ProjectilePosition0 += float4{ 70, 10 };
-		ProjectilePosition1 += float4{ 70, 40 };
-		ProjectilePosition2 += float4{ 70, 100 };
-		ProjectilePosition3 += float4{ 70, 130 };
-		ProjectilePosition4 += float4{ 70, 70 };
-
-		ProjectileRotation0 += float4{ 0, 0, 0 };
-		ProjectileRotation1 += float4{ 0, 0, 0 };
-		ProjectileRotation2 += float4{ 0, 0, 0 };
-		ProjectileRotation3 += float4{ 0, 0, 0 };
-		ProjectileRotation4 += float4{ 0, 0, 0 };
+		ProjectilePosition += float4{ 70, 70 };
 	}
 	break;
 	case AttackDirection::Left_DiagonalDown:
 	{
-		ProjectilePosition0 += float4{ 120, 60 };
-		ProjectilePosition1 += float4{ 90, 90 };
-		ProjectilePosition2 += float4{ 30, 150 };
-		ProjectilePosition3 += float4{ 0, 180 };
-		ProjectilePosition4 += float4{ 60, 120 };
-
-		ProjectileRotation0 += float4{ 0, 0, 45 };
-		ProjectileRotation1 += float4{ 0, 0, 45 };
-		ProjectileRotation2 += float4{ 0, 0, 45 };
-		ProjectileRotation3 += float4{ 0, 0, 45 };
-		ProjectileRotation4 += float4{ 0, 0, 45 };
+		ProjectilePosition += float4{ 50, 130 };
+		ProjectileRotation += float4{ 0, 0, 45 };
 	}
 	break;
 	case AttackDirection::Left_Down:
 	{
-		ProjectilePosition0 += float4{ 50, 150 };
-		ProjectilePosition1 += float4{ 20, 150 };
-		ProjectilePosition2 += float4{ -40, 150 };
-		ProjectilePosition3 += float4{ -70, 150 };
-		ProjectilePosition4 += float4{ -10, 150 };
-
-		ProjectileRotation0 += float4{ 0, 0, 90 };
-		ProjectileRotation1 += float4{ 0, 0, 90 };
-		ProjectileRotation2 += float4{ 0, 0, 90 };
-		ProjectileRotation3 += float4{ 0, 0, 90 };
-		ProjectileRotation4 += float4{ 0, 0, 90 };
+		ProjectilePosition += float4{ -20, 130 };
+		ProjectileRotation += float4{ 0, 0, 90 };
 	}
 	break;
 	default:
 		break;
 	}
 
-	Projectile0->SetStartPosition(ProjectilePosition0);
-	Projectile1->SetStartPosition(ProjectilePosition1);
-	Projectile2->SetStartPosition(ProjectilePosition2);
-	Projectile3->SetStartPosition(ProjectilePosition3);
-	Projectile4->SetStartPosition(ProjectilePosition4);
-
-	Projectile0->SetProjectileRotation(ProjectileRotation0);
-	Projectile1->SetProjectileRotation(ProjectileRotation1);
-	Projectile2->SetProjectileRotation(ProjectileRotation2);
-	Projectile3->SetProjectileRotation(ProjectileRotation3);
-	Projectile4->SetProjectileRotation(ProjectileRotation4);
-
-	Projectile0->SetDirection(Directbool);
-	Projectile1->SetDirection(Directbool);
-	Projectile2->SetDirection(Directbool);
-	Projectile3->SetDirection(Directbool);
-	Projectile4->SetDirection(Directbool);
-
-	Projectile0->SetMoveSpeed(100.0f);
-	Projectile1->SetMoveSpeed(100.0f);
-	Projectile2->SetMoveSpeed(100.0f);
-	Projectile3->SetMoveSpeed(100.0f);
-	Projectile4->SetMoveSpeed(100.0f);
+	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetProjectileRotation(ProjectileRotation);
+	Projectile->SetDirection(Directbool);
 }
 
 // 움직일 때 Dust 생성
@@ -1091,13 +969,17 @@ void Player::DirectCheck()
 {
 	if (true == IsDash)
 	{
+		CollisionRenderPtr->Off();
 		return;
 	}
 
 	if (true == IsEXAttack)
 	{
+		CollisionRenderPtr->Off();
 		return;
 	}
+
+	CollisionRenderPtr->On();
 
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
@@ -1145,8 +1027,6 @@ void Player::DirectCheck()
 			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
 			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
 			// DebugRenderPtr6->Off();
-
-			
 		}
 
 		{
@@ -1406,7 +1286,7 @@ void Player::FallStart()
 }
 void Player::FallUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -1482,7 +1362,8 @@ void Player::FallEnd()
 // Idle 상태 체크
 void Player::IdleStart()
 {
-	RenderPtr->ChangeAnimation("Idle");
+	AirEXAttackAble = true;
+	RenderPtr->ChangeAnimation("Idle", false);
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::IdleUpdate(float _DeltaTime)
@@ -1525,12 +1406,6 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
-	{
-		ChangeState(PlayerState::Move);
-		return;
-	}
-
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -1546,6 +1421,12 @@ void Player::IdleUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
 	{
 		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
 		return;
 	}
 
@@ -1625,6 +1506,12 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
 		ChangeState(PlayerState::DuckReady);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+	{
+		ChangeState(PlayerState::Idle);
 		return;
 	}
 
@@ -1886,7 +1773,7 @@ void Player::JumpStart()
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -2190,6 +2077,18 @@ void Player::AttackUpdate(float _DeltaTime)
 		}
 	}
 
+	if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
 		|| true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
 	{
@@ -2309,6 +2208,18 @@ void Player::RunAttackUpdate(float _DeltaTime)
 		}
 	}
 
+	if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 	if (false == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -2406,6 +2317,10 @@ void Player::DuckAttackEnd()
 void Player::EXAttackStart()
 {
 	IsEXAttack = true;
+	AirEXAttackAble = false;
+	ChargeUpRenderPtr->ChangeAnimation("EX_ChargeUp", true);
+	ChargeUpRenderPtr->On();
+	ChargeUpRenderPtr->GetTransform()->SetLocalPosition(float4{-10, 80});
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
@@ -2556,6 +2471,11 @@ void Player::EXAttackUpdate(float _DeltaTime)
 		break;
 	}
 
+	if (true == ChargeUpRenderPtr->IsAnimationEnd())
+	{
+		ChargeUpRenderPtr->Off();
+	}
+
 	if (7 == RenderPtr->GetCurrentFrame() && 1 == CreateEXCount)
 	{
 		EXPushBack = true;
@@ -2595,6 +2515,17 @@ void Player::EXAttackEnd()
 	PushBackAble = false;
 	IsEXAttack = false;
 	CreateEXCount = 1;
+
+	if (true == WeaponType)
+	{
+		PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
+		PeashooterRenderPtr->On();
+	}
+	else
+	{
+		PeashooterRenderPtr->ChangeAnimation("Spread_Spawn");
+		PeashooterRenderPtr->On();
+	}
 }
 
 // Hold 입력 시 상태 체크
@@ -2828,6 +2759,7 @@ void Player::PlayerInitialSetting()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	ChargeUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 	if (nullptr == GameEngineSprite::Find("Idle"))
 	{
@@ -2946,12 +2878,17 @@ void Player::PlayerInitialSetting()
 		NewDir.Move("Effect");
 		NewDir.Move("SFX");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ex_SFX").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("JumpDust").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_A.png").GetFullPath(), 5, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_B.png").GetFullPath(), 5, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_C.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("JumpDust").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DashDust").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EXDust").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EX_ChargeUp").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("HitSFX").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
 	}
 
 	// Idle
@@ -3015,6 +2952,7 @@ void Player::PlayerInitialSetting()
 
 	PeashooterRenderPtr->CreateAnimation({ "Peashooter_Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
 	PeashooterRenderPtr->CreateAnimation({ "Spread_Spawn", "Spread_Spawn.png", 0, 3, 0.05f, true, false });
+	ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .ScaleToTexture = true });
 
 	// Setting
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });

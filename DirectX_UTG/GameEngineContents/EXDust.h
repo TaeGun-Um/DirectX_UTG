@@ -26,15 +26,10 @@ public:
 
 	void SetDirection(bool _Direction)
 	{
-		if (true == _Direction)
+		if (false == _Direction)
 		{
 			GetTransform()->SetLocalNegativeScaleX();
 		}
-	}
-
-	void SetMoveSpeed(float _MoveSpeed)
-	{
-		MoveSpeed = _MoveSpeed;
 	}
 
 protected:
@@ -45,10 +40,8 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
-	float MoveSpeed = 600.0f;
 	bool IsDeath = false;
 
-	void MoveDirection(float _DeltaTime);
 	void DeathCheck();
 
 };

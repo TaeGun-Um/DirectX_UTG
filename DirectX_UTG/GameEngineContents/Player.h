@@ -66,6 +66,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ChargeUpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
@@ -96,6 +97,7 @@ private:
 	bool IsDuckAttack = false;
 	bool IsAttackReady = false;
 	bool IsSlap = false;
+	bool AirEXAttackAble = false;
 	bool IsEXAttack = false;
 	bool EXPushBack = false;
 	bool PushBackAble = false;

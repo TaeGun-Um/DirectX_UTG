@@ -201,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="TestPlatform.h" />
+    <ClInclude Include="DashDust.h">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -313,5 +316,8 @@
       <Filter>Levels\7. Player</Filter>
     </ClCompile>
     <ClCompile Include="TestPlatform.cpp" />
+    <ClCompile Include="DashDust.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

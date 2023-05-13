@@ -14,9 +14,23 @@ LandDust::~LandDust()
 void LandDust::Start()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr->SetScaleToTexture("Ground_JumpDust_005.png");
+
+	RenderPtr->CreateAnimation({ .AnimationName = "JumpDust", .SpriteName = "JumpDust", .FrameInter = 0.05f, .ScaleToTexture = true });
+
+	//RenderPtr->GetTransform()->SetLocalScale({100, 100});
+	RenderPtr->ChangeAnimation("JumpDust");
 }
+
 void LandDust::Update(float _DeltaTime)
 {
+	DeathCheck();
+}
 
+void LandDust::DeathCheck()
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		IsDeath = true;
+		Death();
+	}
 }
