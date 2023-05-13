@@ -30,16 +30,8 @@ void Player::Start()
 	DebugRendererSetting();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
-	
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
-	RenderPtr->ChangeAnimation("Idle");
-	ChangeState(PlayerState::Idle);
 
-	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{300, 300});
-	PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
-	PeashooterRenderPtr->GetTransform()->SetParent(GetTransform());
-	PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
-	PeashooterRenderPtr->Off();
+	ChangeState(PlayerState::Idle);
 }
 void Player::Update(float _DeltaTime)
 {
@@ -2979,6 +2971,15 @@ void Player::PlayerInitialSetting()
 
 	PeashooterRenderPtr->CreateAnimation({ "Peashooter_Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
 	PeashooterRenderPtr->CreateAnimation({ "Spread_Spawn", "Spread_Spawn.png", 0, 3, 0.05f, true, false });
+
+	// Setting
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	RenderPtr->ChangeAnimation("Idle");
+
+	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{ 300, 300 });
+	PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
+	PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
+	PeashooterRenderPtr->Off();
 }
 
 void Player::DebugRendererSetting()
