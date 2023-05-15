@@ -35,7 +35,6 @@ private:
 	bool Directbool = true;
 	AttackDirection ADValue = AttackDirection::Right_Front;
 
-	void PlayerMove_Overworld(float _DeltaTime);
 	void PlayerInitialSetting();
 	void DirectCheck();
 	void MoveDirectCheck();

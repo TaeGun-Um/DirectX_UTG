@@ -20,17 +20,9 @@ void Player_Overworld::Start()
 }
 void Player_Overworld::Update(float _DeltaTime)
 {
-	PlayerMove_Overworld(_DeltaTime);
 	MoveCamera(_DeltaTime);
 	DirectCheck();
-	MoveUpdate(_DeltaTime);
-}
-
-void Player_Overworld::PlayerMove_Overworld(float _DeltaTime)
-{
-
-
-	
+	UpdateState(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,6 +169,70 @@ void Player_Overworld::IdleStart()
 }
 void Player_Overworld::IdleUpdate(float _DeltaTime)
 {
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Idle", false);
+	}
+	break;
+	default:
+		break;
+	}
+
+	if (true == GameEngineInput::IsPress("MoveUp")
+		|| true == GameEngineInput::IsPress("MoveDown")
+		|| true == GameEngineInput::IsPress("MoveRight")
+		|| true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(OverworldState::Move);
+		return;
+	}
 }
 void Player_Overworld::IdleEnd()
 {
@@ -185,25 +241,130 @@ void Player_Overworld::IdleEnd()
 void Player_Overworld::MoveStart()
 {
 }
-void Player_Overworld::MoveUpdate(float _DeltaTime) 
+void Player_Overworld::MoveUpdate(float _DeltaTime)
 {
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Move", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Move", false);
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Move", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Move", false);
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Move", false);
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Move", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Move", false);
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Move", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Move", false);
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Move", false);
+	}
+	break;
+	default:
+		break;
+	}
+
 	float MoveDis = MoveSpeed * _DeltaTime;
 
-	if (true == GameEngineInput::IsPress("MoveUp"))
+	if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight"))
 	{
-		GetTransform()->AddLocalPosition({ 0, MoveDis });
+		float4 MoveDis4 = { MoveDis, MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("MoveDown"))
+	else if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsPress("MoveRight"))
 	{
-		GetTransform()->AddLocalPosition({ 0, -MoveDis });
+		float4 MoveDis4 = { MoveDis, -MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("MoveRight"))
+	else if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		float4 MoveDis4 = { -MoveDis, MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("MoveLeft"))
+	else if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		float4 MoveDis4 = { -MoveDis, -MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
+	}
+	else if (true == GameEngineInput::IsPress("MoveUp"))
+	{
+		float4 MoveDis4 = { 0, MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
+	}
+	else if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		float4 MoveDis4 = { MoveDis, 0 };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal * MoveSpeed * _DeltaTime);
+	}
+	else if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		float4 MoveDis4 = { -MoveDis, 0 };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal* MoveSpeed* _DeltaTime);
+	}
+	else if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		float4 MoveDis4 = { 0, -MoveDis };
+		float4 MoveNormal = MoveDis4.NormalizeReturn();
+
+		GetTransform()->AddLocalPosition(MoveNormal* MoveSpeed* _DeltaTime);
+	}
+
+	if (false == GameEngineInput::IsPress("MoveUp")
+		&& false == GameEngineInput::IsPress("MoveDown")
+		&& false == GameEngineInput::IsPress("MoveRight")
+		&& false == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(OverworldState::Idle);
+		return;
 	}
 }
 void Player_Overworld::MoveEnd()
