@@ -62,14 +62,6 @@ protected:
 
 	void SetCameraFollowType(CameraFollowType _Type);
 	void MoveCamera(float _DeltaTime);
-	
-	std::shared_ptr<class GameEngineSpriteRenderer> AnimationCreate_Overworld();
-	
-	void AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel);
-	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
-	void PixelCheck(float _DeltaTime);
-	void BottomJump(float _DeltaTime);
-	void BottomJumpStateCheck();
 
 	float MoveSpeed = 400.0f;
 
@@ -111,17 +103,6 @@ private:
 
 	void FieldCameraPivotCheck();
 	void OverwolrdCameraPivotCheck();
-	void CreateLandDust();
-
-	// FSM(+Pixel Check ¿ë bool°ª)
-	bool IsJump = false;
-	bool IsFall = false;
-	bool IsDash = false;
-	bool IsBottomJump = false;
-	bool AirDash = false;
-	bool BottomJumpAble = false;
-	bool BluePixelCheckAble = false;
-	bool JumpDustAble = false;
 
 	// alt + shift + .
 	virtual void IdleStart() {}

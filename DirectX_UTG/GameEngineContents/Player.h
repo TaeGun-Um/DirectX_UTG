@@ -53,12 +53,6 @@ public:
 		IsDebugRender = false;
 	}
 
-	// 지울것
-	std::shared_ptr<class GameEngineCollision> GetCollisionRenderPtr()
-	{
-		return StandCollisionPtr;
-	}
-
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -68,7 +62,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ChargeUpRenderPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> StandCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> StandCollisionPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
@@ -82,29 +78,70 @@ private:
 	bool IsDebugRender = false;
 	bool IsCorrection = false;
 
+	// Init
 	void PlayerInitialSetting();
 	void PlayerCollisionSetting();
 	void DebugRendererSetting();
 
+	// Assistant
 	void PositionCorrection();
-	void PixelCalculation(float _DeltaTime);
 	void PlayerDebugRenderer();
 
+	// 픽셀체크
+	void PixelCalculation(float _DeltaTime);
+	void AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel);
+	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
+	void PixelCheck(float _DeltaTime);
+	void BottomJump(float _DeltaTime);
+	void BottomJumpStateCheck();
+
+	// 콜리전 체크
+	void CollisionCheck();
+	void CollisionBottomJump(float _DeltaTime);
+	void CollisionBottomJumpStateCheck();
+
+	// CreateActor
+	void ProjectileCreate(float _DeltaTime);
+	void EXCreate();
+	void CreatePeashooter();
+	void CreatePeashooter_EX();
+	void CreateSpread();
+	void CreateSpread_EX();
+	void CreateEXDust();
+	void CreateDashDust();
+	void CreateMoveDust();
+	void CreateParryEffect();
+	void CreateLandDust();
+
+	int ProjectileSet = 0;
+
 	// FSM
+	void DirectCheck();
+	void AttackDirectCheck();
+
 	PlayerState StateValue = PlayerState::Idle;
 	float4 MoveDirect = float4::Zero;
 
-	bool Directbool = true; // true == 오른쪽 // false == 왼쪽
-	bool IsHold = false;
+	bool Directbool = true;    // true == 오른쪽 // false == 왼쪽
+
+	// Air
+	bool IsJump = false;
+	bool IsFall = false;
+	bool IsSlap = false;
+	bool BluePixelCheckAble = false;
+	bool IsBottomJump = false;
+	bool BottomJumpAble = false;
+	bool AirEXAttackAble = false;
+	bool IsDash = false;
+	bool AirDash = false;
+
 	bool IsDuck = false;
 	bool IsDuckAttack = false;
 	bool IsAttackReady = false;
-	bool IsSlap = false;
-	bool AirEXAttackAble = false;
+	bool IsHold = false;
 	bool IsEXAttack = false;
 	bool EXPushBack = false;
 	bool PushBackAble = false;
-	bool MoveZeroPass = false;
 
 	bool Coll = false;
 
@@ -118,25 +155,6 @@ private:
 	int CreateEXCount = 1;
 
 	AttackDirection ADValue = AttackDirection::Right_Front;
-
-	void ProjectileCreate(float _DeltaTime);
-	void EXCreate();
-	void CreatePeashooter();
-	void CreatePeashooter_EX();
-	void CreateSpread();
-	void CreateSpread_EX();
-	void CreateEXDust();
-	void CreateDashDust();
-	void CreateMoveDust();
-	void CreateParryEffect();
-
-	int ProjectileSet = 0;
-
-	void DirectCheck();
-	void AttackDirectCheck();
-	void CollisionCheck();
-	void CollisionBottomJump(float _DeltaTime);
-	void CollisionBottomJumpStateCheck();
 
 	void ChangeState(PlayerState _StateValue);
 	void UpdateState(float _DeltaTime);

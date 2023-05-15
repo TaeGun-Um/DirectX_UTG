@@ -13,6 +13,7 @@
 #include "DashDust.h"
 #include "EXDust.h"
 #include "MoveDust.h"
+#include "LandDust.h"
 #include "ParryEffect.h"
 
 Player* Player::MainPlayer = nullptr;
@@ -48,7 +49,7 @@ void Player::Update(float _DeltaTime)
 	DirectCheck();				    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알 생성
-	CreateMoveDust();
+	CreateMoveDust();               // 움직일 때 Dust 생성
 	CollisionCheck();
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
@@ -98,6 +99,233 @@ void Player::PositionCorrection()
 	}
 }
 
+void Player::PlayerDebugRenderer()
+{
+	if (true == IsDebugRender)
+	{
+		DebugRenderPtr0->On();
+		DebugRenderPtr1->On();
+		DebugRenderPtr2->On();
+		DebugRenderPtr3->On();
+		DebugRenderPtr4->On();
+		DebugRenderPtr5->On();
+		DebugRenderPtr6->On();
+	}
+	else
+	{
+		DebugRenderPtr0->Off();
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                        Pixel                       /////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel)
+{
+	// Fall 체크 픽셀 모두 Black이나 Blue인 경우에만 AirDash 가능
+	if (true == PixelCollisionCheck.IsBlack(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(_RightFallMapPixel))
+	{
+		AirDash = true;
+	}
+	else if (true == PixelCollisionCheck.IsBlue(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(_RightFallMapPixel))
+	{
+		AirDash = true;
+	}
+	else if (true == PixelCollisionCheck.IsBlack(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(_RightFallMapPixel))
+	{
+		AirDash = true;
+	}
+	else if (true == PixelCollisionCheck.IsBlue(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(_RightFallMapPixel))
+	{
+		AirDash = true;
+	}
+}
+
+void Player::WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime)
+{
+	float DashFalseDist = MoveSpeed * _DeltaTime;
+	float DashTureDist = (MoveSpeed * 2) * _DeltaTime;
+
+	if (true == IsDash)
+	{
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashTureDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
+		}
+	}
+	else
+	{
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashFalseDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashFalseDist, 0 });
+		}
+	}
+}
+
+// BlackPixel을 체크
+void Player::PixelCheck(float _DeltaTime)
+{
+	// 낙하 체크
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	float4 LeftFallPos = PlayerPos + float4{ -40, -2 };
+	float4 RightFallPos = PlayerPos + float4{ 25, -2 };
+
+	GameEnginePixelColor LeftFallMapPixel = PixelCollisionCheck.PixelCheck(LeftFallPos);
+	GameEnginePixelColor RightFallMapPixel = PixelCollisionCheck.PixelCheck(RightFallPos);
+
+	// Fall 체크 픽셀 모두 Black이 아니라면 Fall 상태로 진입
+	if (false == PixelCollisionCheck.IsBlack(LeftFallMapPixel) && false == PixelCollisionCheck.IsBlack(RightFallMapPixel))
+	{
+		IsFall = true;
+	}
+	else // 이외 모든 상황 밑점프 불가
+	{
+		BottomJumpAble = false;
+	}
+
+	// 에어대쉬 가능 상태 체크
+	AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
+
+	// 바닥 체크
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+	if (true == PixelCollisionCheck.IsBlack(ColMapPixel))
+	{
+		IsJump = false;
+
+		while (true)
+		{
+			GetTransform()->AddLocalPosition({ 0, 1 });
+
+			PlayerPos = GetTransform()->GetLocalPosition();
+
+			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+			if (false == PixelCollisionCheck.IsBlack(GravityPixel))
+			{
+				CreateLandDust();
+				IsFall = false;
+				break;
+			}
+		}
+	}
+
+	// 벽 체크
+	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
+}
+
+// BluePixel을 체크
+void Player::BottomJump(float _DeltaTime)
+{
+	// 밑점프 체크
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	float4 LeftFallPos = PlayerPos + float4{ -40, -2 };
+	float4 RightFallPos = PlayerPos + float4{ 25, -2 };
+
+	GameEnginePixelColor LeftFallMapPixel = PixelCollisionCheck.PixelCheck(LeftFallPos);
+	GameEnginePixelColor RightFallMapPixel = PixelCollisionCheck.PixelCheck(RightFallPos);
+
+	// 에어대쉬 가능 상태 체크
+	AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
+
+	// Fall 체크 픽셀 모두 Blue라면 밑점프 가능 상태로 진입
+	if (true == PixelCollisionCheck.IsBlue(LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(RightFallMapPixel))
+	{
+		BottomJumpAble = true;
+	}
+
+	// 바닥 체크
+	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+	if (true == PixelCollisionCheck.IsBlue(ColMapPixel))
+	{
+		IsJump = false;
+
+		while (true)
+		{
+			GetTransform()->AddLocalPosition({ 0, 1 });
+
+			PlayerPos = GetTransform()->GetLocalPosition();
+
+			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+			if (false == PixelCollisionCheck.IsBlue(GravityPixel))
+			{
+				CreateLandDust();
+				IsFall = false;
+				break;
+			}
+		}
+	}
+
+	// 벽 체크
+	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
+}
+
+void Player::BottomJumpStateCheck()
+{
+	float4 BottomJumpCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
+
+	GameEnginePixelColor BottomJumpPixel = PixelCollisionCheck.PixelCheck(BottomJumpCheck);
+
+	if (true == IsBottomJump)
+	{
+		if (true == PixelCollisionCheck.IsBlue(BottomJumpPixel))
+		{
+			IsBottomJump = true;
+			return;
+		}
+		else
+		{
+			IsBottomJump = false;
+		}
+	}
+}
+
+// 점프나 Fall 후 Land시 Dust 생성
+void Player::CreateLandDust()
+{
+	if (true == IsJump)
+	{
+		return;
+	}
+
+	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	DustPosition += float4{ 0, 30 };
+
+	Dust->SetStartPosition(DustPosition);
+}
+
 // 플레이어 GetPixel 연산 모음
 void Player::PixelCalculation(float _DeltaTime)
 {
@@ -134,90 +362,81 @@ void Player::PixelCalculation(float _DeltaTime)
 	}
 }
 
-void Player::PlayerDebugRenderer()
-{
-	if (true == IsDebugRender)
-	{
-		DebugRenderPtr0->On();
-		DebugRenderPtr1->On();
-		DebugRenderPtr2->On();
-		DebugRenderPtr3->On();
-		DebugRenderPtr4->On();
-		DebugRenderPtr5->On();
-		DebugRenderPtr6->On();
-	}
-	else
-	{
-		DebugRenderPtr0->Off();
-		DebugRenderPtr1->Off();
-		DebugRenderPtr2->Off();
-		DebugRenderPtr3->Off();
-		DebugRenderPtr4->Off();
-		DebugRenderPtr5->Off();
-		DebugRenderPtr6->Off();
-	}
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                    Collision                    ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Player::CollisionCheck()
 {
 	if (true == IsDash)
 	{
-		StandCollisionRenderPtr->Off();
+		BodyCollisionRenderPtr->Off();
 	}
 
 	if (true == IsEXAttack)
 	{
-		StandCollisionRenderPtr->Off();
+		BodyCollisionRenderPtr->Off();
 	}
 
 	if (true == IsDuck)
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
 
 		if (true == Directbool)
 		{
-			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
-			StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 30 });
 		}
 		else
 		{
-			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
-			StandCollisionPtr->GetTransform()->SetLocalPosition({ 10, 30 });
-			StandCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, -1 });
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 30 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, -1 });
 		}
 	}
 	else
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
 
 		if (true == Directbool)
 		{
-			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
-			StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
 		}
 		else
 		{
-			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
-			StandCollisionPtr->GetTransform()->SetLocalPosition({ 10, 60 });
-			StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, -1 });
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 60 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, -1 });
 		}
 	}
 
-	// std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+	if (true == Directbool)
+	{
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 1 });
+	}
+	else
+	{
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, -1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 1 });
+	}
 
-	//if (true == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
-	//{
-	//	for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-	//	{
-	//		StandCollisionRenderPtr->Off();
-	//	}
-	//}
-	//else
-	//{
-	//	StandCollisionRenderPtr->On();
-	//}
+	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+
+	if (true == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
+	{
+		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+		{
+			BodyCollisionRenderPtr->Off();
+		}
+	}
+	else
+	{
+		BodyCollisionRenderPtr->On();
+	}
 }
 
 // BluePixel을 체크
@@ -229,7 +448,7 @@ void Player::CollisionBottomJump(float _DeltaTime)
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
 
 	// Fall 체크 픽셀 모두 Blue라면 밑점프 가능 상태로 진입
-	if (true == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
+	if (true == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 		{
@@ -246,7 +465,7 @@ void Player::CollisionBottomJump(float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition({ 0, 1 });
 
-			if (false == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 == ColTest.size())
+			if (false == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 == ColTest.size())
 			{
 				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
 				{
@@ -1138,8 +1357,6 @@ void Player::DirectCheck()
 		return;
 	}
 
-	StandCollisionRenderPtr->On();
-
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
@@ -1237,10 +1454,19 @@ void Player::AttackDirectCheck()
 
 void Player::PlayerInitialSetting()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	ChargeUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	if (nullptr == PeashooterRenderPtr)
+	{
+		PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	if (nullptr == ChargeUpRenderPtr)
+	{
+		ChargeUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	
 	if (nullptr == GameEngineSprite::Find("Idle"))
 	{
 		GameEngineDirectory NewDir;
@@ -1371,77 +1597,93 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
 	}
 
-	// Idle
-	RenderPtr->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "Idle", .FrameInter = 0.07f });
+	if (nullptr != RenderPtr)
+	{
+		// Idle
+		RenderPtr->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "Idle", .FrameInter = 0.07f });
 
-	// Move
-	RenderPtr->CreateAnimation({ .AnimationName = "Move", .SpriteName = "Move", .FrameInter = 0.05f });
+		// Move
+		RenderPtr->CreateAnimation({ .AnimationName = "Move", .SpriteName = "Move", .FrameInter = 0.05f });
 
-	// Jump & Parry(Slap)
-	RenderPtr->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "Jump", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f });
+		// Jump & Parry(Slap)
+		RenderPtr->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "Jump", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f });
 
-	// Dash
-	RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "Dash", .FrameInter = 0.05f });
+		// Dash
+		RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "Dash", .FrameInter = 0.05f });
 
-	// Duck
-	RenderPtr->CreateAnimation({ .AnimationName = "DuckReady", .SpriteName = "DuckReady", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Duck", .SpriteName = "Duck", .FrameInter = 0.07f });
+		// Duck
+		RenderPtr->CreateAnimation({ .AnimationName = "DuckReady", .SpriteName = "DuckReady", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Duck", .SpriteName = "Duck", .FrameInter = 0.07f });
 
-	// Hit & Death
-	RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
+		// Hit & Death
+		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
 
-	// Hold
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalDown", .SpriteName = "Hold_Normal_DiagonalDown", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalUp", .SpriteName = "Hold_Normal_DiagonalUp", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Down", .SpriteName = "Hold_Normal_Down", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Straight", .SpriteName = "Hold_Normal_Straight", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Up", .SpriteName = "Hold_Normal_Up", .FrameInter = 0.07f });
+		// Hold
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalDown", .SpriteName = "Hold_Normal_DiagonalDown", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalUp", .SpriteName = "Hold_Normal_DiagonalUp", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Down", .SpriteName = "Hold_Normal_Down", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Straight", .SpriteName = "Hold_Normal_Straight", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_Up", .SpriteName = "Hold_Normal_Up", .FrameInter = 0.07f });
 
-	// Attack(Move, Duck, Hold(==Idle))
-	RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_DiagonalUp", .SpriteName = "Move_Attak_DiagonalUp", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_Straight", .SpriteName = "Move_Attak_Straight", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "DuckAttack", .SpriteName = "DuckAttack", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalDown", .SpriteName = "Hold_Shoot_DiagonalDown", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalUp", .SpriteName = "Hold_Shoot_DiagonalUp", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Down", .SpriteName = "Hold_Shoot_Down", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Straight", .SpriteName = "Hold_Shoot_Straight", .FrameInter = 0.05f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
+		// Attack(Move, Duck, Hold(==Idle))
+		RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_DiagonalUp", .SpriteName = "Move_Attak_DiagonalUp", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Move_Attak_Straight", .SpriteName = "Move_Attak_Straight", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "DuckAttack", .SpriteName = "DuckAttack", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalDown", .SpriteName = "Hold_Shoot_DiagonalDown", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_DiagonalUp", .SpriteName = "Hold_Shoot_DiagonalUp", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Down", .SpriteName = "Hold_Shoot_Down", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Straight", .SpriteName = "Hold_Shoot_Straight", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
 
-	// EX
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
+		// EX
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
 
-	// Interaction & Intro
-	RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
-	RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
+		// Interaction & Intro
+		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
+	}
 
-	PeashooterRenderPtr->CreateAnimation({ "Peashooter_Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
-	PeashooterRenderPtr->CreateAnimation({ "Spread_Spawn", "Spread_Spawn.png", 0, 3, 0.05f, true, false });
-	ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+	if (nullptr != PeashooterRenderPtr)
+	{
+		PeashooterRenderPtr->CreateAnimation({ "Peashooter_Spawn", "Peashooter_Spawn.png", 0, 3, 0.05f, true, false });
+		PeashooterRenderPtr->CreateAnimation({ "Spread_Spawn", "Spread_Spawn.png", 0, 3, 0.05f, true, false });
+	}
+
+	if (nullptr != ChargeUpRenderPtr)
+	{
+		ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+	}
 
 	// Setting
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
-	RenderPtr->ChangeAnimation("Idle");
+	if (nullptr != RenderPtr)
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+		RenderPtr->ChangeAnimation("Idle");
+	}
 
-	PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{ 300, 300 });
-	PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
-	PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
-	PeashooterRenderPtr->Off();
+	if (nullptr != PeashooterRenderPtr)
+	{
+		PeashooterRenderPtr->GetTransform()->SetLocalScale(float4{ 300, 300 });
+		PeashooterRenderPtr->GetTransform()->SetLocalPosition(float4{ 100, 40 });
+		PeashooterRenderPtr->ChangeAnimation("Peashooter_Spawn");
+		PeashooterRenderPtr->Off();
+	}
 }
 
 void Player::DebugRendererSetting()
@@ -1461,46 +1703,94 @@ void Player::DebugRendererSetting()
 		GameEngineTexture::Load(File[i].GetFullPath());
 	}
 
-	DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
-	DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == DebugRenderPtr0)
+	{
+		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr1)
+	{
+		DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr1->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr2)
+	{
+		DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr2->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr3)
+	{
+		DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr3->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr4)
+	{
+		DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr4->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr5)
+	{
+		DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr6) // 아직 미사용
+	{
+		DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
+	}
+	
+	if (nullptr != DebugRenderPtr1
+		&& nullptr != DebugRenderPtr2
+		&& nullptr != DebugRenderPtr3
+		&& nullptr != DebugRenderPtr4
+		&& nullptr != DebugRenderPtr5
+		&& nullptr != DebugRenderPtr6)
+	{
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
+		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
+		//DebugRenderPtr6->Off();
 
-	DebugRenderPtr0->SetScaleToTexture("RedDot.png");
-	DebugRenderPtr1->SetScaleToTexture("RedDot.png");
-	DebugRenderPtr2->SetScaleToTexture("RedDot.png");
-	DebugRenderPtr3->SetScaleToTexture("RedDot.png");
-	DebugRenderPtr4->SetScaleToTexture("RedDot.png");
-	DebugRenderPtr5->SetScaleToTexture("GreenDot.png");
-	DebugRenderPtr6->SetScaleToTexture("RedDot.png");   // 미사용
-
-	DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
-	DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
-	DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
-	DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
-	DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
-	//DebugRenderPtr6->Off();
-
-	DebugRenderPtr0->Off();
-	DebugRenderPtr1->Off();
-	DebugRenderPtr2->Off();
-	DebugRenderPtr3->Off();
-	DebugRenderPtr4->Off();
-	DebugRenderPtr5->Off();
-	DebugRenderPtr6->Off();
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+	}
 }
 
 void Player::PlayerCollisionSetting()
 {
-	StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
-	StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
-	StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+	if (nullptr == BodyCollisionPtr)
+	{
+		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+	}
 
-	StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
-	StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
-	StandCollisionRenderPtr->SetTexture("GreenLine.png");
+	if (nullptr == StandCollisionPtr)
+	{
+		StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+	}
+
+	if (nullptr == BodyCollisionRenderPtr)
+	{
+		BodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
+	}
+
+	if (nullptr == StandCollisionRenderPtr)
+	{
+		StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 1 });
+		StandCollisionRenderPtr->SetTexture("BlueLine.png");
+	}
 }
