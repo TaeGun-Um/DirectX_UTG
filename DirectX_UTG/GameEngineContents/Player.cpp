@@ -156,6 +156,8 @@ void Player::CollisionCalculation(float _DeltaTime)
 	{
 		ParryCollisionCheck();
 	}
+
+	HitCollisionCheck(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -260,14 +262,57 @@ void Player::WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const Game
 
 void Player::CollisionSetting()
 {
-	if (true == IsDash)
+	if (true == Directbool)
 	{
-		BodyCollisionRenderPtr->Off();
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+	}
+	else
+	{
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
+
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
 	}
 
-	if (true == IsEXAttack)
+	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
+	{
+		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+
+		if (true == Directbool)
+		{
+			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		}
+		else
+		{
+			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
+		}
+	}
+
+	if (true == IsDash || true == IsEXAttack || true == IsHit)
 	{
 		BodyCollisionRenderPtr->Off();
+		return;
+	}
+	else
+	{
+		BodyCollisionRenderPtr->On();
 	}
 
 	if (true == IsDuck)
@@ -321,64 +366,6 @@ void Player::CollisionSetting()
 			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, -1 });
 		}
 	}
-
-	if (true == Directbool)
-	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
-
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
-	}
-	else
-	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
-
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
-	}
-
-	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
-	{
-		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
-		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
-
-		if (true == Directbool)
-		{
-			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
-			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
-		}
-		else
-		{
-			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
-			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
-			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
-		}
-	}
-
-	// 테스트용 (지울것)
-	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-	if (true == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
-	{
-		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-		{
-			BodyCollisionRenderPtr->Off();
-		}
-	}
-	else
-	{
-		BodyCollisionRenderPtr->On();
-	}
-	// 테스트용
 }
 
 // BluePixel을 체크
@@ -454,6 +441,28 @@ void Player::ParryCollisionCheck()
 		ParryCheck = true;
 		CreateParryEffect();
 	}
+}
+
+void Player::HitCollisionCheck(float _DeltaTime)
+{
+	//if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::MonsterAttack), ColType::AABBBOX2D, ColType::AABBBOX2D)
+	//	|| nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Monster), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	//{
+	//	IsHit = true;
+	//	HitTimeCheck = true;
+	//	BodyCollisionPtr->Off();
+	//}
+
+	//if (true == HitTimeCheck)
+	//{
+	//	HitTime += _DeltaTime;
+	//}
+
+	//if (3.0f <= HitTime)
+	//{
+	//	HitTimeCheck = false;
+	//	HitTime = 0.0f;
+	//}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1329,12 +1338,7 @@ void Player::CreateParryEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash)
-	{
-		return;
-	}
-
-	if (true == IsEXAttack)
+	if (true == IsDash || true == IsEXAttack || true == IsHit)
 	{
 		return;
 	}

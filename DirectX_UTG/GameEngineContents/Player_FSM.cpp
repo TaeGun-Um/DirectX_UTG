@@ -63,6 +63,9 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Hit:
 		HitStart();
 		break;
+	case PlayerState::Death:
+		DeathStart();
+		break;
 	default:
 		break;
 	}
@@ -116,6 +119,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Hit:
 		HitEnd();
+		break;
+	case PlayerState::Death:
+		DeathEnd();
 		break;
 	default:
 		break;
@@ -174,6 +180,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::Hit:
 		HitUpdate(_DeltaTime);
 		break;
+	case PlayerState::Death:
+		DeathUpdate(_DeltaTime);
+		break;
 	default:
 		break;
 	}
@@ -189,6 +198,12 @@ void Player::FallStart()
 }
 void Player::FallUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+	
 	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
 	{
 		ChangeState(PlayerState::EXAttack);
@@ -285,6 +300,12 @@ void Player::IdleStart()
 }
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -372,6 +393,12 @@ void Player::MoveStart()
 void Player::MoveUpdate(float _DeltaTime)
 {
 	MoveTime += _DeltaTime;
+
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
 
 	if (true == IsFall)
 	{
@@ -535,6 +562,12 @@ void Player::DuckReadyStart()
 }
 void Player::DuckReadyUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("EX"))
 	{
 		ChangeState(PlayerState::EXAttack);
@@ -622,6 +655,12 @@ void Player::DuckStart()
 }
 void Player::DuckUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("EX"))
 	{
 		ChangeState(PlayerState::EXAttack);
@@ -695,6 +734,12 @@ void Player::JumpStart()
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
 	{
 		ChangeState(PlayerState::EXAttack);
@@ -802,6 +847,12 @@ void Player::SlapStart()
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	// 패리 성공 시
 	if (true == ParryCheck)
 	{
@@ -868,6 +919,12 @@ void Player::AttackReadyStart()
 }
 void Player::AttackReadyUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -943,6 +1000,12 @@ void Player::AttackStart()
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == IsFall)
 	{
 		ChangeState(PlayerState::Fall);
@@ -1065,6 +1128,12 @@ void Player::RunAttackStart()
 void Player::RunAttackUpdate(float _DeltaTime)
 {
 	MoveTime += _DeltaTime;
+
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
 
 	if (true == IsFall)
 	{
@@ -1195,6 +1264,12 @@ void Player::DuckAttackStart()
 }
 void Player::DuckAttackUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("EX"))
 	{
 		ChangeState(PlayerState::EXAttack);
@@ -1477,6 +1552,12 @@ void Player::HoldingStart()
 }
 void Player::HoldingUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		IsHold = true;
@@ -1579,6 +1660,12 @@ void Player::HoldingAttackStart()
 }
 void Player::HoldingAttackUpdate(float _DeltaTime)
 {
+	if (true == IsHit)
+	{
+		ChangeState(PlayerState::Hit);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Hold"))
 	{
 		IsHold = true;
@@ -1682,13 +1769,41 @@ void Player::HoldingAttackEnd()
 
 void Player::HitStart()
 {
+	if (true == IsJump || true == IsFall)
+	{
+		RenderPtr->ChangeAnimation("AirHit");
+	}
+	else
+	{
+		RenderPtr->ChangeAnimation("Hit");
+	}
 
+	RenderPtr->GetTransform()->SetLocalScale({300, 330});
+
+	IsHit = false;
 }
 void Player::HitUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::HitEnd()
+{
+
+}
+
+void Player::DeathStart()
+{
+
+}
+void Player::DeathUpdate(float _DeltaTime)
+{
+
+}
+void Player::DeathEnd()
 {
 
 }

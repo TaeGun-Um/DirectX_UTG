@@ -30,5 +30,8 @@ private:
 	std::shared_ptr<class GameEngineCollision> CollisionPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> AttackCollisionRenderPtr;
+	std::shared_ptr<class GameEngineCollision> AttackCollisionPtr;
+
 };
 

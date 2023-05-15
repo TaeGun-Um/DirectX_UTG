@@ -20,6 +20,7 @@ enum class PlayerState
 	Holding,
 	HoldingAttack,
 	Hit,
+	Death,
 };
 
 // 설명 : Field 플레이어
@@ -118,6 +119,7 @@ private:
 	void PlatformBottomJump(float _DeltaTime);
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
 	void ParryCollisionCheck();
+	void HitCollisionCheck(float _DeltaTime);
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);
@@ -166,6 +168,9 @@ private:
 	bool IsEXAttack = false;
 	bool EXPushBack = false;
 	bool PushBackAble = false;
+	bool IsHit = false;
+	bool HitTimeCheck = false;
+	bool IsDeath = false;
 
 	bool Coll = false;
 
@@ -176,6 +181,7 @@ private:
 	float ProjectileCreateTime = 0.0f;
 	float MoveTime = 0.0f;
 	float PlatformHeight = 0.0f;
+	float HitTime = 0.0f;
 
 	int CreateEXCount = 1;
 	int FallPosCheck = 1;
@@ -248,5 +254,9 @@ private:
 	void HitStart();
 	void HitUpdate(float _DeltaTime);
 	void HitEnd();
+
+	void DeathStart();
+	void DeathUpdate(float _DeltaTime);
+	void DeathEnd();
 };
 
