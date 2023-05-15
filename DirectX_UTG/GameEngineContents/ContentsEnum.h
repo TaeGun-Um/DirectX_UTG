@@ -23,4 +23,5 @@ enum class CollisionOrder
 	Monster,			// 2
 	MonsterAttack,		// 3
 	Platform,			// 4
+	ParrySpot,		    // 5
 };

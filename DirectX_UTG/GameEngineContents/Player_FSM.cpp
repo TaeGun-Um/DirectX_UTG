@@ -3,6 +3,7 @@
 
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 void Player::ChangeState(PlayerState _StateValue)
@@ -798,19 +799,22 @@ void Player::SlapStart()
 {
 	RenderPtr->ChangeAnimation("Parry");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
+
+	ParryCollisionPtr->On();
+	ParryCollisionRenderPtr->On();
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
 	// 패리 성공 시
-	//if (true)
-	//{
-	//	IsSlap = false;
-	//	IsJump = false;
-	//	MoveDirect.y = 0;
-	//	JumpTime = 0.0f;
-	//	ChangeState(PlayerState::Jump);
-	//	return;
-	//}
+	if (true == ParryCheck)
+	{
+		IsSlap = false;
+		IsJump = false;
+		MoveDirect.y = 0;
+		JumpTime = 0.0f;
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 
 	JumpTime += _DeltaTime;
 
@@ -854,7 +858,9 @@ void Player::SlapUpdate(float _DeltaTime)
 }
 void Player::SlapEnd()
 {
-
+	ParryCheck = false;
+	ParryCollisionPtr->Off();
+	ParryCollisionRenderPtr->Off();
 }
 
 // Idle에서 MoveUp 입력 시 상태 체크

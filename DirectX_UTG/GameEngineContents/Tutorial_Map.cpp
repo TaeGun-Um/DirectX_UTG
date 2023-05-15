@@ -37,6 +37,32 @@ void Tutorial_Map::Start()
 		PlatformCollisionRenderPtr->SetTexture("GreenLine.png");
 	}
 
+	ParrySpotCollisionRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+	ParrySpotCollisionRenderPtr0->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionRenderPtr0->GetTransform()->SetLocalPosition({ 705, -7, 1 });
+	ParrySpotCollisionRenderPtr0->SetTexture("RedLine.png");
+
+	ParrySpotCollisionRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+	ParrySpotCollisionRenderPtr1->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionRenderPtr1->GetTransform()->SetLocalPosition({ 895, -7, 1 });
+	ParrySpotCollisionRenderPtr1->SetTexture("RedLine.png");
+
+	ParrySpotCollisionRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+	ParrySpotCollisionRenderPtr2->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionRenderPtr2->GetTransform()->SetLocalPosition({ 1085, -7, 1 });
+	ParrySpotCollisionRenderPtr2->SetTexture("RedLine.png");
+
+	ParrySpotCollisionPtr0 = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
+	ParrySpotCollisionPtr0->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionPtr0->GetTransform()->SetLocalPosition({ 705, -7, 1 });
+
+	ParrySpotCollisionPtr1 = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
+	ParrySpotCollisionPtr1->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionPtr1->GetTransform()->SetLocalPosition({ 895, -7, 1 });
+
+	ParrySpotCollisionPtr2 = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
+	ParrySpotCollisionPtr2->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	ParrySpotCollisionPtr2->GetTransform()->SetLocalPosition({ 1085, -7, 1 });
 }
 void Tutorial_Map::Update(float _DeltaTime)
 {

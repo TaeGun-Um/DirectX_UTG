@@ -76,9 +76,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> StandCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BottomSensorCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> StandCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BottomSensorCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
@@ -115,6 +117,7 @@ private:
 	void CollisionSetting();
 	void PlatformBottomJump(float _DeltaTime);
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
+	void ParryCollisionCheck();
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);
@@ -146,6 +149,7 @@ private:
 	bool IsJump = false;
 	bool IsFall = false;
 	bool IsSlap = false;
+	bool ParryCheck = false;
 	bool PlatformCheckAble = false;
 	bool PlatformFallCheck = false;
 	bool PlatformFall = false;

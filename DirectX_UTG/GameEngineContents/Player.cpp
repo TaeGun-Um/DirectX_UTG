@@ -151,6 +151,11 @@ void Player::CollisionCalculation(float _DeltaTime)
 
 		PlatformBottomJump(_DeltaTime);
 	}
+
+	if (true == IsSlap)
+	{
+		ParryCollisionCheck();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,6 +287,23 @@ void Player::CollisionSetting()
 			BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, -1 });
 		}
 	}
+	else if (true == IsJump || true == IsFall)
+	{
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+
+		if (true == Directbool)
+		{
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		}
+		else
+		{
+			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
+		}
+	}
 	else
 	{
 		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
@@ -323,6 +345,24 @@ void Player::CollisionSetting()
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
+	}
+
+	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
+	{
+		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+
+		if (true == Directbool)
+		{
+			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		}
+		else
+		{
+			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
+		}
 	}
 
 	// 테스트용 (지울것)
@@ -404,6 +444,15 @@ void Player::PlatformBottomJumpStateCheck(float _DeltaTime)
 		{
 			IsBottomJump = false;
 		}
+	}
+}
+
+void Player::ParryCollisionCheck()
+{
+	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::ParrySpot), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		ParryCheck = true;
+		CreateParryEffect();
 	}
 }
 
@@ -1265,6 +1314,13 @@ void Player::CreateLandDust()
 // Parry시 생성되는 Effect
 void Player::CreateParryEffect()
 {
+	std::shared_ptr<ParryEffect> Effect = GetLevel()->CreateActor<ParryEffect>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 EffectPosition = PlayerPosition;
+
+	EffectPosition += float4{ 0, 90 };
+
+	Effect->SetStartPosition(EffectPosition);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1711,6 +1767,14 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
 	}
 
+	if (nullptr == ParryCollisionPtr)
+	{
+		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+		ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		ParryCollisionPtr->Off();
+	}
+
 	if (nullptr == BodyCollisionRenderPtr)
 	{
 		BodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -1733,5 +1797,14 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
 		BottomSensorCollisionRenderPtr->SetTexture("GreenLine.png");
+	}
+
+	if (nullptr == ParryCollisionRenderPtr)
+	{
+		ParryCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+		ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		ParryCollisionRenderPtr->SetTexture("RedLine.png");
+		ParryCollisionRenderPtr->Off();
 	}
 }
