@@ -239,6 +239,20 @@ void Player::FallUpdate(float _DeltaTime)
 		MoveDirect.y = 0;
 	}
 
+	if (false == IsFall && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
+		|| false == IsFall && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (false == IsFall && true == GameEngineInput::IsPress("MoveRight")
+		|| false == IsFall && true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
 	if (false == IsFall)
 	{
 		ChangeState(PlayerState::Idle);
@@ -350,6 +364,7 @@ void Player::IdleEnd()
 // Move(Run) 상태 체크
 void Player::MoveStart()
 {
+	AirEXAttackAble = true;
 	RenderPtr->ChangeAnimation("Move");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
@@ -748,6 +763,20 @@ void Player::JumpUpdate(float _DeltaTime)
 		MoveDirect.y = 0;
 	}
 
+	if (false == IsJump && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
+		|| false == IsJump && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (false == IsJump && true == GameEngineInput::IsPress("MoveRight")
+		|| false == IsJump && true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
 	if (false == IsJump)
 	{
 		ChangeState(PlayerState::Idle);
@@ -1027,6 +1056,7 @@ void Player::AttackEnd()
 // Move(Run)에서 Attack 입력 시 상태 체크
 void Player::RunAttackStart()
 {
+	AirEXAttackAble = true;
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
 void Player::RunAttackUpdate(float _DeltaTime)
