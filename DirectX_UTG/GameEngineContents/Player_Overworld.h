@@ -2,6 +2,13 @@
 
 #include "PlayerDataBase.h"
 
+enum class OverworldState
+{
+	Idle,
+	Move,
+	Win,
+};
+
 // Ό³Έν :
 class Player_Overworld : public PlayerDataBase
 {
@@ -25,7 +32,17 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
 
+	bool Directbool = true;
+	AttackDirection ADValue = AttackDirection::Right_Front;
+
 	void PlayerMove_Overworld(float _DeltaTime);
+	void PlayerInitialSetting();
+	void DirectCheck();
+	void MoveDirectCheck();
+
+	void UpdateState(float _DeltaTime);
+	void ChangeState(OverworldState _StateValue);
+	OverworldState StateValue = OverworldState::Idle;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;
@@ -34,5 +51,9 @@ private:
 	void MoveStart() override;
 	void MoveUpdate(float _DeltaTime) override;
 	void MoveEnd() override;
+
+	void WinStart();
+	void WinUpdate(float _DeltaTime);
+	void WinEnd();
 };
 

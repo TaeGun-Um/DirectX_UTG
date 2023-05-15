@@ -35,10 +35,10 @@ void CupheadCore::GameStart()
 
 	//GameEngineCore::CreateLevel<TestLevel>();
 	//GameEngineCore::CreateLevel<First_OpeningLevel>();
-	GameEngineCore::CreateLevel<TutorialLevel>();
-	//GameEngineCore::CreateLevel<OverworldLevel>();
+	//GameEngineCore::CreateLevel<TutorialLevel>();
+	GameEngineCore::CreateLevel<OverworldLevel>();
 
-	GameEngineCore::ChangeLevel("TutorialLevel");
+	GameEngineCore::ChangeLevel("OverworldLevel");
 }
 
 void CupheadCore::GameEnd()

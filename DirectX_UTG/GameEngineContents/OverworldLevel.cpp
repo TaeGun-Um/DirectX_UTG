@@ -35,23 +35,6 @@ void OverworldLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-	// 임시 플레이어 이미지 로드
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("CH_Overworld");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
