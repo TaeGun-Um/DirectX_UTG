@@ -54,9 +54,9 @@ public:
 	}
 
 	// Áö¿ï°Í
-	std::shared_ptr<class GameEngineSpriteRenderer> GetCollisionRenderPtr()
+	std::shared_ptr<class GameEngineCollision> GetCollisionRenderPtr()
 	{
-		return CollisionRenderPtr;
+		return StandCollisionPtr;
 	}
 
 protected:
@@ -67,7 +67,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ChargeUpRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
+
+	std::shared_ptr<class GameEngineSpriteRenderer> StandCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> StandCollisionPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
@@ -81,6 +83,7 @@ private:
 	bool IsCorrection = false;
 
 	void PlayerInitialSetting();
+	void PlayerCollisionSetting();
 	void DebugRendererSetting();
 
 	void PositionCorrection();
@@ -102,6 +105,8 @@ private:
 	bool EXPushBack = false;
 	bool PushBackAble = false;
 	bool MoveZeroPass = false;
+
+	bool Coll = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
@@ -128,8 +133,11 @@ private:
 	int ProjectileSet = 0;
 
 	void DirectCheck();
-
 	void AttackDirectCheck();
+	void CollisionCheck();
+	void CollisionBottomJump(float _DeltaTime);
+	void CollisionBottomJumpStateCheck();
+
 	void ChangeState(PlayerState _StateValue);
 	void UpdateState(float _DeltaTime);
 

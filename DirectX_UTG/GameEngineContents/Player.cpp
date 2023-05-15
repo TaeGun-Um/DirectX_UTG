@@ -4,6 +4,7 @@
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "Peashooter.h"
 #include "Peashooter_EX.h"
@@ -29,12 +30,7 @@ void Player::Start()
 {
 	PlayerInitialSetting();
 	DebugRendererSetting();
-
-	CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	CollisionRenderPtr->SetTexture("GreenLine.png");
-	CollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
-	CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
-
+	PlayerCollisionSetting();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
 
@@ -53,9 +49,10 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);	// 총알 생성
 	CreateMoveDust();
-	// 충돌체 필요
+	CollisionCheck();
 	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
 	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
+	//CollisionBottomJump(_DeltaTime); 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,10 +130,10 @@ void Player::PixelCalculation(float _DeltaTime)
 		}
 
 		BottomJump(_DeltaTime);
+		//CollisionBottomJump(_DeltaTime);
 	}
 }
 
-// 플레이어 GetPixel 연산 모음
 void Player::PlayerDebugRenderer()
 {
 	if (true == IsDebugRender)
@@ -158,6 +155,127 @@ void Player::PlayerDebugRenderer()
 		DebugRenderPtr4->Off();
 		DebugRenderPtr5->Off();
 		DebugRenderPtr6->Off();
+	}
+}
+
+void Player::CollisionCheck()
+{
+	if (true == IsDash)
+	{
+		StandCollisionRenderPtr->Off();
+	}
+
+	if (true == IsEXAttack)
+	{
+		StandCollisionRenderPtr->Off();
+	}
+
+	if (true == IsDuck)
+	{
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
+
+		if (true == Directbool)
+		{
+			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+			StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+		}
+		else
+		{
+			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
+			StandCollisionPtr->GetTransform()->SetLocalPosition({ 10, 30 });
+			StandCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, -1 });
+		}
+	}
+	else
+	{
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+
+		if (true == Directbool)
+		{
+			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+			StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+		}
+		else
+		{
+			StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
+			StandCollisionPtr->GetTransform()->SetLocalPosition({ 10, 60 });
+			StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, -1 });
+		}
+	}
+
+	// std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+
+	//if (true == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
+	//{
+	//	for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+	//	{
+	//		StandCollisionRenderPtr->Off();
+	//	}
+	//}
+	//else
+	//{
+	//	StandCollisionRenderPtr->On();
+	//}
+}
+
+// BluePixel을 체크
+void Player::CollisionBottomJump(float _DeltaTime)
+{
+	// 에어대쉬 가능 상태 체크
+	// AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
+
+	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
+
+	// Fall 체크 픽셀 모두 Blue라면 밑점프 가능 상태로 진입
+	if (true == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
+	{
+		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+		{
+			BottomJumpAble = true;
+			Coll = true;
+		}
+	}
+
+	if (true == Coll)
+	{
+		IsJump = false;
+
+		while (true)
+		{
+			GetTransform()->AddLocalPosition({ 0, 1 });
+
+			if (false == StandCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 == ColTest.size())
+			{
+				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
+				{
+					Coll = false;
+					IsFall = false;
+				}
+				break;
+			}
+		}
+	}
+}
+
+void Player::CollisionBottomJumpStateCheck()
+{
+	float4 BottomJumpCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
+
+	GameEnginePixelColor BottomJumpPixel = PixelCollisionCheck.PixelCheck(BottomJumpCheck);
+
+	if (true == IsBottomJump)
+	{
+		if (true == PixelCollisionCheck.IsBlue(BottomJumpPixel))
+		{
+			IsBottomJump = true;
+			return;
+		}
+		else
+		{
+			IsBottomJump = false;
+		}
 	}
 }
 
@@ -1012,17 +1130,15 @@ void Player::DirectCheck()
 {
 	if (true == IsDash)
 	{
-		CollisionRenderPtr->Off();
 		return;
 	}
 
 	if (true == IsEXAttack)
 	{
-		CollisionRenderPtr->Off();
 		return;
 	}
 
-	CollisionRenderPtr->On();
+	StandCollisionRenderPtr->On();
 
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
@@ -1046,17 +1162,6 @@ void Player::DirectCheck()
 			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
 			// DebugRenderPtr6->Off();
 		}
-
-		{
-			if (true == IsDuck)
-			{
-				CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
-			}
-			else
-			{
-				CollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
-			}
-		}
 	}
 	else
 	{
@@ -1071,26 +1176,6 @@ void Player::DirectCheck()
 			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
 			// DebugRenderPtr6->Off();
 		}
-
-		{
-			if (true == IsDuck)
-			{
-				CollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
-			}
-			else
-			{
-				CollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
-			}
-		}
-	}
-
-	if (true == IsDuck)
-	{
-		CollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
-	}
-	else
-	{
-		CollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
 	}
 
 	AttackDirectCheck();
@@ -1406,4 +1491,16 @@ void Player::DebugRendererSetting()
 	DebugRenderPtr4->Off();
 	DebugRenderPtr5->Off();
 	DebugRenderPtr6->Off();
+}
+
+void Player::PlayerCollisionSetting()
+{
+	StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+	StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
+	StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+
+	StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
+	StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+	StandCollisionRenderPtr->SetTexture("GreenLine.png");
 }

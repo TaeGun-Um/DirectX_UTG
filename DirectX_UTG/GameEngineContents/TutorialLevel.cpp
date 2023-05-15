@@ -118,10 +118,6 @@ void TutorialLevel::TutorialColMapOff()
 
 void TutorialLevel::Update(float _DeltaTime)
 {
-	if (PlayerObject->GetCollisionRenderPtr()->GetTransform()->Collision({PlatformObject->GetCollisionRenderPtr()->GetTransform(), ColType::AABBBOX2D, ColType::AABBBOX2D }))
-	{
-		int a = 0;
-	}
 }
 
 void TutorialLevel::LevelChangeStart()

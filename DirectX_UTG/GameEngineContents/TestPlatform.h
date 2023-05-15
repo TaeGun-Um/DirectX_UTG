@@ -27,6 +27,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+	std::shared_ptr<class GameEngineCollision> CollisionPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr;
 
 };
