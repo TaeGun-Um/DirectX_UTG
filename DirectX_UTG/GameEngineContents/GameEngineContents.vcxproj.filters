@@ -319,5 +319,8 @@
     <ClCompile Include="DashDust.cpp">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
+    <ClCompile Include="Player_FSM.cpp">
+      <Filter>Levels\7. Player</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
