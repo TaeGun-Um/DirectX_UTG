@@ -18,7 +18,7 @@ public:
 	GameEngineObjectBase& operator=(GameEngineObjectBase&& _Other) noexcept = delete;
 	
 	// 상속한 Object의 Order 세팅
-	void SetOrder(int _Order)
+	virtual void SetOrder(int _Order)
 	{
 		Order = _Order;
 	}

@@ -19,14 +19,16 @@ public:
 
 	// 액터의 컴포넌트(충돌체, 랜더러) 생성 후 ComponentsList에 Init
 	template<typename ComponentType>
-	std::shared_ptr<ComponentType> CreateComponent()
+	std::shared_ptr<ComponentType> CreateComponent(int _Order = 0)
 	{
 		std::shared_ptr<class GameEngineComponent> NewComponent = std::make_shared<ComponentType>();
 
-		ComponentInit(NewComponent);
+		ComponentInit(NewComponent, _Order);
 
 		return std::dynamic_pointer_cast<ComponentType>(NewComponent);
 	}
+
+	void SetOrder(int _Order) override;
 
 protected:
 	virtual void Start() {}
@@ -34,7 +36,7 @@ protected:
 	virtual void Render(float _DeltaTime) {}
 
 private:
-	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component); // 컴포넌트 정보 init
+	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order = 0); // 컴포넌트 정보 init
 
 };
 

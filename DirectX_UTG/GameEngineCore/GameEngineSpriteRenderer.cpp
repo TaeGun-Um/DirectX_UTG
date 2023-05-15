@@ -16,34 +16,54 @@ bool AnimationInfo::IsEnd()
 
 void AnimationInfo::Reset()
 {
-	CurFrame = StartFrame;
-	CurTime = Inter;
+	CurFrame = 0;
+	CurTime = FrameTime[0];
 	IsEndValue = false;
+	IsPauseValue = false;
 }
 
 void AnimationInfo::Update(float _DeltaTime)
 {
 	IsEndValue = false;
+
+	if (true == IsPauseValue)
+	{
+		return;
+	}
+
+	size_t CurFrameIndex = FrameIndex[CurFrame];
+
+	if (UpdateEventFunction.end() != UpdateEventFunction.find(CurFrameIndex))
+	{
+		UpdateEventFunction[CurFrameIndex]();
+	}
+
 	CurTime -= _DeltaTime;
 
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
-		CurTime += Inter;
 
-		if (CurFrame > EndFrame)
+		if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
+		{
+			StartEventFunction[CurFrameIndex]();
+		}
+
+		if (FrameIndex.size() <= CurFrame)
 		{
 			IsEndValue = true;
 
 			if (true == Loop)
 			{
-				CurFrame = StartFrame;
+				CurFrame = 0;
 			}
 			else
 			{
 				--CurFrame;
 			}
 		}
+
+		CurTime += FrameTime[CurFrame];
 	}
 }
 
@@ -137,40 +157,71 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	std::shared_ptr<AnimationInfo> NewAnimation = std::make_shared<AnimationInfo>();
 	Animations[_Paramter.AnimationName.data()] = NewAnimation;
 
-	if (-1 != _Paramter.Start)
+	if (0 != _Paramter.FrameIndex.size())
 	{
-		if (_Paramter.Start < 0)
-		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 만들려고 했습니다." + std::string(_Paramter.AnimationName));
-			return nullptr;
-		}
-
-		NewAnimation->StartFrame = _Paramter.Start;
+		NewAnimation->FrameIndex = _Paramter.FrameIndex;
 	}
 	else
 	{
-		NewAnimation->StartFrame = 0;
-	}
-
-	if (-1 != _Paramter.End)
-	{
-		if (_Paramter.End >= Sprite->GetSpriteCount())
+		if (-1 != _Paramter.Start)
 		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 만들려고 했습니다." + std::string(_Paramter.AnimationName));
-			return nullptr;
+			if (_Paramter.Start < 0)
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			NewAnimation->StartFrame = _Paramter.Start;
+		}
+		else
+		{
+			NewAnimation->StartFrame = 0;
+		}
+		if (-1 != _Paramter.End)
+		{
+			if (_Paramter.End >= Sprite->GetSpriteCount())
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			NewAnimation->EndFrame = _Paramter.End;
+		}
+		else
+		{
+			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
-		NewAnimation->EndFrame = _Paramter.End;
+		if (NewAnimation->EndFrame < NewAnimation->StartFrame)
+		{
+			MsgAssert("애니메이션을 생성할때 End가 Start보다 클 수 없습니다");
+			return nullptr;
+		}
+		NewAnimation->FrameIndex.reserve(NewAnimation->EndFrame - NewAnimation->StartFrame + 1);
+
+		// StartFrame 부터 EndFrame까지 순서대로 FrameIndex에 푸시
+		for (size_t i = NewAnimation->StartFrame; i <= NewAnimation->EndFrame; ++i)
+		{
+			NewAnimation->FrameIndex.push_back(i);
+		}
+	}
+
+	if (0 != _Paramter.FrameTime.size())
+	{
+		NewAnimation->FrameTime = _Paramter.FrameTime;
+
 	}
 	else
 	{
-		NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
+		for (size_t i = 0; i < NewAnimation->FrameIndex.size(); ++i)
+		{
+			NewAnimation->FrameTime.push_back(_Paramter.FrameInter);
+		}
 	}
 
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
-	NewAnimation->Inter = _Paramter.FrameInter;
 	NewAnimation->ScaleToTexture = _Paramter.ScaleToTexture;
 
 	return NewAnimation;
@@ -201,12 +252,18 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 	}
 }
 
-void GameEngineSpriteRenderer::Render(float _Delta)
+void GameEngineSpriteRenderer::Update(float _Delta)
 {
 	if (nullptr != CurAnimation)
 	{
 		CurAnimation->Update(_Delta);
+	}
+}
 
+void GameEngineSpriteRenderer::Render(float _Delta)
+{
+	if (nullptr != CurAnimation)
+	{
 		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
 
 		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
@@ -220,6 +277,7 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 
 			Scale.x *= Info.CutData.SizeX;
 			Scale.y *= Info.CutData.SizeY;
+			Scale.z = 1.0f;
 
 			Scale *= ScaleRatio;
 
@@ -228,4 +286,47 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 	}
 
 	GameEngineRenderer::Render(_Delta);
+}
+
+void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
+{
+	Sprite = GameEngineSprite::Find(_SpriteName);
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
+void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
+{
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
+void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
+{
+	std::shared_ptr<AnimationInfo>  Info = FindAnimation(_AnimationName);
+
+	if (nullptr == Info)
+	{
+		MsgAssert("존재하지 않는 애니메이션에 이벤트 세팅을 하려고 했습니다.");
+	}
+
+	Info->UpdateEventFunction[_Frame] = _Event;
+}
+
+void GameEngineSpriteRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
+{
+	std::shared_ptr<AnimationInfo>  Info = FindAnimation(_AnimationName);
+
+	if (nullptr == Info)
+	{
+		MsgAssert("존재하지 않는 애니메이션에 이벤트 세팅을 하려고 했습니다.");
+	}
+
+	Info->StartEventFunction[_Frame] = _Event;
 }

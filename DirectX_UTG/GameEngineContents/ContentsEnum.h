@@ -15,3 +15,12 @@ enum class AttackDirection
 	Left_DiagonalDown,	// 8
 	Left_Down,			// 9
 };
+
+enum class CollisionOrder
+{
+	Player,             // 0
+	PlayerAttack,		// 1
+	Monster,			// 2
+	MonsterAttack,		// 3
+	Platform,			// 4
+};

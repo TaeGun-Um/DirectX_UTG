@@ -259,7 +259,7 @@ void GameEngineTransform::WorldDecompose()
 	ColData.OBB.Orientation = TransData.WorldQuaternion.DirectFloat4;
 }
 
-void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
+void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParentWorld /*= true*/)
 {
 	if (IsDebug())
 	{
@@ -301,7 +301,10 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 
 	if (nullptr != Parent)
 	{
-		TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+		if (true == _IsParentWorld)
+		{
+			TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+		}
 
 		LocalDecompose();
 

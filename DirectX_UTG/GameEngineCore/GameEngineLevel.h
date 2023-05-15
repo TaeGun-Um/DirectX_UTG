@@ -7,10 +7,13 @@
 // 설명 : 레벨
 class GameEngineActor;
 class GameEngineCamera;
+class GameEngineCollision;
 class GameEngineLevel : public GameEngineUpdateObject
 {
-	friend class GameEngineTransform;
 	friend class GameEngineCore;
+	friend class GameEngineActor;
+	friend class GameEngineCollision;
+	friend class GameEngineTransform;
 
 public:
 	GameEngineTimeEvent TimeEvent;
@@ -61,7 +64,7 @@ public:
 	// (05.03)GUI에게 전달할 다이나믹캐스트 레벨포인터
 	std::shared_ptr<GameEngineLevel> GetSharedThis()
 	{
-		return Shared_This_dynamic_pointer<GameEngineLevel>();
+		return DynamicThis<GameEngineLevel>();
 	}
 
 protected:
@@ -77,6 +80,10 @@ private:
 	std::shared_ptr<GameEngineCamera> UICamera;                         // UI 카메라, 아직 안만듬
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;  // 레벨에 포함되는 Actor들의 리스트
+
+	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
+
+	void PushCollision(std::shared_ptr<GameEngineCollision> _Collision);
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 

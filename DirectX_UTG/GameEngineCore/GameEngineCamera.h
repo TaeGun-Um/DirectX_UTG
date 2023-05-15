@@ -73,5 +73,6 @@ private:
 	float Near = 0.1f;      // 근평면
 	float Far = 10000.0f;   // 원평면
 
+	void RenderRelease();
 };
 

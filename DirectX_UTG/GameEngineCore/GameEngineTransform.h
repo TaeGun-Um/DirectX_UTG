@@ -322,7 +322,7 @@ public:
 		TransData = _Data;
 	}
 
-	void SetParent(GameEngineTransform* _Parent); // 부모 설정
+	void SetParent(GameEngineTransform* _Parent, bool _IsParentWorld = true);
 	void CalChild();                              // 부모의 영향을 자식에게 적용
 
 	GameEngineTransform* GetParent()
