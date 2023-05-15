@@ -53,6 +53,17 @@ public:
 		IsDebugRender = false;
 	}
 
+	// 픽셀 충돌 설정
+	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
+	{
+		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+		ColMap = _ColMap;
+		Pivot = _Pivot;
+
+		ColMapHegiht_Half = PixelCollisionCheck.GetColMapHeight_Half();
+		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -95,6 +106,10 @@ private:
 	// 픽셀체크
 	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
+	
+	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
+	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
+	PixelCollision PixelCollisionCheck;
 
 	// 콜리전 체크
 	void CollisionSetting();

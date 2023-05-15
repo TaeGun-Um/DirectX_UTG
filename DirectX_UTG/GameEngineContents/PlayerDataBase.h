@@ -18,12 +18,6 @@ public:
 	PlayerDataBase& operator=(const PlayerDataBase& _Other) = delete;
 	PlayerDataBase& operator=(PlayerDataBase&& _Other) noexcept = delete;
 
-	// 무기 체인지(추후)
-	void SwapWeapon()
-	{
-		WeaponType = !WeaponType;
-	}
-
 	// 플레이어로 부터의 카메라 이동 값 리턴
 	float4 GetCameraMoveDistance()
 	{
@@ -36,21 +30,25 @@ public:
 		MoveSpeed = _Value;
 	}
 
-	// 픽셀 충돌 설정
-	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
-	{
-		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
-		ColMap = _ColMap;
-		Pivot = _Pivot;
-
-		ColMapHegiht_Half = PixelCollisionCheck.GetColMapHeight_Half();
-		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
-	}
-
 protected:
 	void Start() override {}
 	void Update(float _DeltaTime) override {}
 	void Render(float _DeltaTime) override {}
+
+	int GetHP()
+	{
+		return HP;
+	}
+
+	int GetEXGauge()
+	{
+		return EXGauge;
+	}
+
+	int GetEXStack()
+	{
+		return EXStack;
+	}
 
 	enum class CameraFollowType
 	{
@@ -67,15 +65,10 @@ protected:
 
 private:
 	// Status
-	int HP = 5;
+	int HP = 3;
 	int EXGauge = 0;
 	int EXStack = 0;
 	bool WeaponType = true;   // true : Peashooter // false : Spread
-
-	// Pixel
-	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
-	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
-	PixelCollision PixelCollisionCheck;
 
 	// Camera
 	CameraFollowType CameraType = CameraFollowType::None;
