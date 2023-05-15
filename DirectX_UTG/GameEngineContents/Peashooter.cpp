@@ -13,13 +13,16 @@ Peashooter::~Peashooter()
 
 void Peashooter::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	RenderPtr->CreateAnimation({ "Loop", "Peashooter_Loop.png", 0, 7, 0.07f, true, false });
-	RenderPtr->CreateAnimation({ "Death", "Peashooter_Death.png", 0, 6, 0.05f, true, false });
+		RenderPtr->CreateAnimation({ "Loop", "Peashooter_Loop.png", 0, 7, 0.07f, true, false });
+		RenderPtr->CreateAnimation({ "Death", "Peashooter_Death.png", 0, 6, 0.05f, true, false });
 
-	RenderPtr->GetTransform()->SetLocalScale(float4{ 350, 350 });
-	RenderPtr->ChangeAnimation("Loop");
+		RenderPtr->GetTransform()->SetLocalScale(float4{ 350, 350 });
+		RenderPtr->ChangeAnimation("Loop");
+	}
 }
 void Peashooter::Update(float _DeltaTime)
 {

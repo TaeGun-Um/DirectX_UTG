@@ -13,20 +13,29 @@ Spread_EX::~Spread_EX()
 
 void Spread_EX::Start()
 {
-	FalmeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	FalmeRenderPtr->GetTransform()->SetLocalPosition({-100, 0});
+		RenderPtr->CreateAnimation({ "Spawn", "Spread_EX_Spawn.png", 0, 4, 0.04f, true, true });
+		RenderPtr->CreateAnimation({ "Loop", "Spread_EX_Loop.png", 0, 3, 0.07f, true, true });
+		RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, true, true });
 
-	RenderPtr->CreateAnimation({ "Spawn", "Spread_EX_Spawn.png", 0, 4, 0.04f, true, true });
-	RenderPtr->CreateAnimation({ "Loop", "Spread_EX_Loop.png", 0, 3, 0.07f, true, true });
-	RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, true, true });
-	FalmeRenderPtr->CreateAnimation({ "FlameStart", "Spread_EX_Flame.png", 0, 4, 0.07f, true, true });
-	FalmeRenderPtr->CreateAnimation({ "FlameLoop", "Spread_EX_Flame.png", 5, 9, 0.07f, true, true });
-	FalmeRenderPtr->CreateAnimation({ "FlameEnd", "Spread_EX_Flame.png", 10, 16, 0.07f, true, true });
+		RenderPtr->ChangeAnimation("Spawn");
+	}
 
-	RenderPtr->ChangeAnimation("Spawn");
-	FalmeRenderPtr->ChangeAnimation("FlameStart");
+	if (nullptr == FalmeRenderPtr)
+	{
+		FalmeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+
+		FalmeRenderPtr->GetTransform()->SetLocalPosition({ -100, 0 });
+
+		FalmeRenderPtr->CreateAnimation({ "FlameStart", "Spread_EX_Flame.png", 0, 4, 0.07f, true, true });
+		FalmeRenderPtr->CreateAnimation({ "FlameLoop", "Spread_EX_Flame.png", 5, 9, 0.07f, true, true });
+		FalmeRenderPtr->CreateAnimation({ "FlameEnd", "Spread_EX_Flame.png", 10, 16, 0.07f, true, true });
+
+		FalmeRenderPtr->ChangeAnimation("FlameStart");
+	}
 }
 
 void Spread_EX::Update(float _DeltaTime)

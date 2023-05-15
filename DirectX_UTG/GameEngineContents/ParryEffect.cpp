@@ -13,12 +13,14 @@ ParryEffect::~ParryEffect()
 
 void ParryEffect::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	RenderPtr->CreateAnimation({ .AnimationName = "ParryEffect", .SpriteName = "ParryEffect", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "ParryEffect", .SpriteName = "ParryEffect", .FrameInter = 0.05f, .ScaleToTexture = true });
 
-	//RenderPtr->GetTransform()->SetLocalScale({100, 100});
-	RenderPtr->ChangeAnimation("ParryEffect");
+		RenderPtr->ChangeAnimation("ParryEffect");
+	}
 }
 
 void ParryEffect::Update(float _DeltaTime)

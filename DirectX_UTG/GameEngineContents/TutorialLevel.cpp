@@ -57,6 +57,12 @@ void TutorialLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
+	// Character
+	{
+		PlayerObject = CreateActor<Player>(1);
+		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
+		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+	}
 	// Background, Map
 	{
 
@@ -72,13 +78,6 @@ void TutorialLevel::Start()
 		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
 		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
-	// Character
-	{
-		PlayerObject = CreateActor<Player>(1);
-		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1});
-		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-	}
-
 	// GUI
 	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
@@ -92,8 +91,23 @@ void TutorialLevel::Start()
 
 	// 지울 것(테스트)
 	{
-		PlatformObject = CreateActor<TestPlatform>(-100);
-		PlatformObject->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 200, 1 });
+		std::shared_ptr<class TestPlatform> PlatformObject0 = CreateActor<TestPlatform>(-100);
+		PlatformObject0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 200, 1 });
+
+		std::shared_ptr<class TestPlatform> PlatformObject1 = CreateActor<TestPlatform>(-100);
+		PlatformObject1->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half, 1 });
+
+		std::shared_ptr<class TestPlatform> PlatformObject2 = CreateActor<TestPlatform>(-100);
+		PlatformObject2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half + 100, 1 });
+
+		std::shared_ptr<class TestPlatform> PlatformObject3 = CreateActor<TestPlatform>(-100);
+		PlatformObject3->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + 100, 1 });
+
+		std::shared_ptr<class TestPlatform> PlatformObject4 = CreateActor<TestPlatform>(-100);
+		PlatformObject4->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + -200, 1 });
+
+		std::shared_ptr<class TestPlatform> PlatformObject5 = CreateActor<TestPlatform>(-100);
+		PlatformObject5->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half - 200, 1 });
 	}
 }
 

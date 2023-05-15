@@ -13,11 +13,14 @@ DashDust::~DashDust()
 
 void DashDust::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	RenderPtr->CreateAnimation({ .AnimationName = "DashDust", .SpriteName = "DashDust", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "DashDust", .SpriteName = "DashDust", .FrameInter = 0.05f, .ScaleToTexture = true });
 
-	RenderPtr->ChangeAnimation("DashDust");
+		RenderPtr->ChangeAnimation("DashDust");
+	}
 }
 
 void DashDust::Update(float _DeltaTime)

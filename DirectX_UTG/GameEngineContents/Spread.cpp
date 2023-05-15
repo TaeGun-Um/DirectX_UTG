@@ -13,17 +13,20 @@ Spread::~Spread()
 
 void Spread::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	RenderPtr->CreateAnimation({ "Loop", "Spread_Loop.png", 0, 3, 0.05f, true, false });
-	RenderPtr->CreateAnimation({ "Death", "Spread_Death.png", 1, 4, 0.05f, true, true });
-	RenderPtr->CreateAnimation({ "Death_Enemyhit", "Spread_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
-	RenderPtr->CreateAnimation({ "Weak_Loop", "Spread_Weak_Loop.png", 0, 3, 0.05f, true, true });
-	RenderPtr->CreateAnimation({ "Weak_Death", "Spread_Weak_Death.png", 1, 4, 0.05f, true, true });
-	RenderPtr->CreateAnimation({ "Weak_Death_Enemyhit", "Spread_Weak_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Loop", "Spread_Loop.png", 0, 3, 0.05f, true, false });
+		RenderPtr->CreateAnimation({ "Death", "Spread_Death.png", 1, 4, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Death_Enemyhit", "Spread_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Weak_Loop", "Spread_Weak_Loop.png", 0, 3, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Weak_Death", "Spread_Weak_Death.png", 1, 4, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Weak_Death_Enemyhit", "Spread_Weak_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
 
-	RenderPtr->GetTransform()->SetLocalScale(float4{ 400, 400 });
-	RenderPtr->ChangeAnimation("Loop");
+		RenderPtr->GetTransform()->SetLocalScale(float4{ 400, 400 });
+		RenderPtr->ChangeAnimation("Loop");
+	}
 }
 void Spread::Update(float _DeltaTime)
 {

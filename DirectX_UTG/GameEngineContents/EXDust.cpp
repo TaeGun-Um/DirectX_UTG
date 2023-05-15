@@ -13,11 +13,14 @@ EXDust::~EXDust()
 
 void EXDust::Start()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	RenderPtr->CreateAnimation({ .AnimationName = "EXDust", .SpriteName = "EXDust", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "EXDust", .SpriteName = "EXDust", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-	RenderPtr->ChangeAnimation("EXDust");
+		RenderPtr->ChangeAnimation("EXDust");
+	}
 }
 
 void EXDust::Update(float _DeltaTime)

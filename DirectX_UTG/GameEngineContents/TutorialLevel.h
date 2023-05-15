@@ -23,7 +23,6 @@ protected:
 
 private:
 	std::shared_ptr<class Player> PlayerObject = nullptr;
-	std::shared_ptr<class TestPlatform> PlatformObject = nullptr; // Áö¿ï°Í
 	std::shared_ptr<class Tutorial_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 

@@ -34,26 +34,24 @@ void Player::Start()
 	PlayerCollisionSetting();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
-
 	ChangeState(PlayerState::Idle);
 }
 void Player::Update(float _DeltaTime)
 {
 	if (false == IsCorrection)
 	{
-		PositionCorrection();		// 최초 레벨 진입 시 위치 세팅
+		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
 		return;
 	}
 
-	MoveCamera(_DeltaTime);         // 카메라 이동 연산
-	DirectCheck();				    // 플레이어 위치 판정
-	UpdateState(_DeltaTime);		// 플레이어 FSM 업데이트
-	ProjectileCreate(_DeltaTime);	// 총알 생성
-	CreateMoveDust();               // 움직일 때 Dust 생성
-	CollisionCheck();
-	PixelCalculation(_DeltaTime);	// 플레이어 픽셀 충돌 계산
-	PlayerDebugRenderer();			// 플레이어 디버깅 랜더 온오프
-	//CollisionBottomJump(_DeltaTime); 
+	MoveCamera(_DeltaTime);			    // 카메라 이동 연산
+	DirectCheck();					    // 플레이어 위치 판정
+	UpdateState(_DeltaTime);			// 플레이어 FSM 업데이트
+	ProjectileCreate(_DeltaTime);		// 총알 생성
+	CreateMoveDust();					// 움직일 때 Dust 생성
+	CollisionSetting();
+	CollisionCalculation(_DeltaTime);	// 플레이어 맵충돌(픽셀, 충돌체) 계산
+	PlayerDebugRenderer();				// 플레이어 디버깅 랜더 온오프
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,61 +121,43 @@ void Player::PlayerDebugRenderer()
 	}
 }
 
+// 플레이어 충돌 연산(픽셀, 충돌체) 모음
+void Player::CollisionCalculation(float _DeltaTime)
+{
+	// 위로 솓아오르는 점프 상태일 경우에만 BluePixel 통과 가능
+	if (true == IsJump && 0.0f <= MoveDirect.y)
+	{
+		PlatformCheckAble = false;
+	}
+	else
+	{
+		PlatformCheckAble = true;
+	}
+
+	if (true == IsBottomJump || true == PlatformFall)
+	{
+		PlatformBottomJumpStateCheck(_DeltaTime);
+	}
+	else if (nullptr == BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		PixelCheck(_DeltaTime);
+	}
+	else
+	{
+		if (false == PlatformCheckAble)
+		{
+			return;
+		}
+
+		PlatformBottomJump(_DeltaTime);
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                        Pixel                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Player::AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel)
-{
-	// Fall 체크 픽셀 모두 Black이나 Blue인 경우에만 AirDash 가능
-	if (true == PixelCollisionCheck.IsBlack(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(_RightFallMapPixel))
-	{
-		AirDash = true;
-	}
-	else if (true == PixelCollisionCheck.IsBlue(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(_RightFallMapPixel))
-	{
-		AirDash = true;
-	}
-	else if (true == PixelCollisionCheck.IsBlack(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(_RightFallMapPixel))
-	{
-		AirDash = true;
-	}
-	else if (true == PixelCollisionCheck.IsBlue(_LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(_RightFallMapPixel))
-	{
-		AirDash = true;
-	}
-}
-
-void Player::WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime)
-{
-	float DashFalseDist = MoveSpeed * _DeltaTime;
-	float DashTureDist = (MoveSpeed * 2) * _DeltaTime;
-
-	if (true == IsDash)
-	{
-		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
-		{
-			GetTransform()->AddLocalPosition({ DashTureDist, 0 });
-		}
-		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
-		{
-			GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
-		}
-	}
-	else
-	{
-		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
-		{
-			GetTransform()->AddLocalPosition({ DashFalseDist, 0 });
-		}
-		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
-		{
-			GetTransform()->AddLocalPosition({ -DashFalseDist, 0 });
-		}
-	}
-}
-
-// BlackPixel을 체크
+// BlackPixel 픽셀 체크
 void Player::PixelCheck(float _DeltaTime)
 {
 	// 낙하 체크
@@ -199,7 +179,11 @@ void Player::PixelCheck(float _DeltaTime)
 	}
 
 	// 에어대쉬 가능 상태 체크
-	AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
+	// Fall 체크 픽셀 모두 Black이나 Blue인 경우에만 AirDash 가능
+	if (true == PixelCollisionCheck.IsBlack(LeftFallMapPixel) && true == PixelCollisionCheck.IsBlack(RightFallMapPixel))
+	{
+		AirDash = true;
+	}
 
 	// 바닥 체크
 	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
@@ -235,130 +219,33 @@ void Player::PixelCheck(float _DeltaTime)
 	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
 }
 
-// BluePixel을 체크
-void Player::BottomJump(float _DeltaTime)
+// Black 픽셀 벽 체크
+void Player::WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime)
 {
-	// 밑점프 체크
-	float4 PlayerPos = GetTransform()->GetLocalPosition();
-	float4 LeftFallPos = PlayerPos + float4{ -40, -2 };
-	float4 RightFallPos = PlayerPos + float4{ 25, -2 };
+	float DashFalseDist = MoveSpeed * _DeltaTime;
+	float DashTureDist = (MoveSpeed * 2) * _DeltaTime;
 
-	GameEnginePixelColor LeftFallMapPixel = PixelCollisionCheck.PixelCheck(LeftFallPos);
-	GameEnginePixelColor RightFallMapPixel = PixelCollisionCheck.PixelCheck(RightFallPos);
-
-	// 에어대쉬 가능 상태 체크
-	AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
-
-	// Fall 체크 픽셀 모두 Blue라면 밑점프 가능 상태로 진입
-	if (true == PixelCollisionCheck.IsBlue(LeftFallMapPixel) && true == PixelCollisionCheck.IsBlue(RightFallMapPixel))
+	if (true == IsDash)
 	{
-		BottomJumpAble = true;
-	}
-
-	// 바닥 체크
-	GameEnginePixelColor ColMapPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
-
-	if (true == PixelCollisionCheck.IsBlue(ColMapPixel))
-	{
-		IsJump = false;
-
-		while (true)
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
 		{
-			GetTransform()->AddLocalPosition({ 0, 1 });
-
-			PlayerPos = GetTransform()->GetLocalPosition();
-
-			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
-
-			if (false == PixelCollisionCheck.IsBlue(GravityPixel))
-			{
-				CreateLandDust();
-				IsFall = false;
-				break;
-			}
+			GetTransform()->AddLocalPosition({ DashTureDist, 0 });
 		}
-	}
-
-	// 벽 체크
-	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
-	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
-
-	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
-	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
-
-	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
-}
-
-void Player::BottomJumpStateCheck()
-{
-	float4 BottomJumpCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
-
-	GameEnginePixelColor BottomJumpPixel = PixelCollisionCheck.PixelCheck(BottomJumpCheck);
-
-	if (true == IsBottomJump)
-	{
-		if (true == PixelCollisionCheck.IsBlue(BottomJumpPixel))
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
 		{
-			IsBottomJump = true;
-			return;
+			GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
 		}
-		else
-		{
-			IsBottomJump = false;
-		}
-	}
-}
-
-// 점프나 Fall 후 Land시 Dust 생성
-void Player::CreateLandDust()
-{
-	if (true == IsJump)
-	{
-		return;
-	}
-
-	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>(1);
-	float4 PlayerPosition = GetTransform()->GetLocalPosition();
-	float4 DustPosition = PlayerPosition;
-
-	DustPosition += float4{ 0, 30 };
-
-	Dust->SetStartPosition(DustPosition);
-}
-
-// 플레이어 GetPixel 연산 모음
-void Player::PixelCalculation(float _DeltaTime)
-{
-	// 위로 솓아오르는 점프 상태일 경우에만 BluePixel 통과 가능
-	if (true == IsJump && 0.0f <= MoveDirect.y)
-	{
-		BluePixelCheckAble = false;
 	}
 	else
 	{
-		BluePixelCheckAble = true;
-	}
-
-	float4 PlayerPosCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
-	GameEnginePixelColor BluePixelCheck = PixelCollisionCheck.PixelCheck(PlayerPosCheck);
-
-	if (true == IsBottomJump)
-	{
-		BottomJumpStateCheck(); // 밑점프 상태일 경우 기존과 다른 픽셀충돌 연산 실시
-	}
-	else if (false == PixelCollisionCheck.IsBlue(BluePixelCheck))
-	{
-		PixelCheck(_DeltaTime);
-	}
-	else
-	{
-		if (false == BluePixelCheckAble)
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
 		{
-			return;
+			GetTransform()->AddLocalPosition({ DashFalseDist, 0 });
 		}
-
-		BottomJump(_DeltaTime);
-		//CollisionBottomJump(_DeltaTime);
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashFalseDist, 0 });
+		}
 	}
 }
 
@@ -366,7 +253,7 @@ void Player::PixelCalculation(float _DeltaTime)
 ///////////////////////////////////////////                    Collision                    ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Player::CollisionCheck()
+void Player::CollisionSetting()
 {
 	if (true == IsDash)
 	{
@@ -415,17 +302,31 @@ void Player::CollisionCheck()
 
 	if (true == Directbool)
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, 1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
 	}
 	else
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, -1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
+
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
 	}
 
+	// 테스트용 (지울것)
 	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
 	if (true == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
 	{
 		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
@@ -437,27 +338,21 @@ void Player::CollisionCheck()
 	{
 		BodyCollisionRenderPtr->On();
 	}
+	// 테스트용
 }
 
 // BluePixel을 체크
-void Player::CollisionBottomJump(float _DeltaTime)
+void Player::PlatformBottomJump(float _DeltaTime)
 {
 	// 에어대쉬 가능 상태 체크
-	// AirDashCheck(LeftFallMapPixel, RightFallMapPixel);
-
-	std::vector<std::shared_ptr<GameEngineCollision>> ColTest;
-
-	// Fall 체크 픽셀 모두 Blue라면 밑점프 가능 상태로 진입
-	if (true == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 != ColTest.size())
+	if (nullptr != BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
-		for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-		{
-			BottomJumpAble = true;
-			Coll = true;
-		}
+		AirDash = true;
+		BottomJumpAble = true;
 	}
 
-	if (true == Coll)
+	// 바닥 체크
+	if (nullptr != StandCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		IsJump = false;
 
@@ -465,28 +360,42 @@ void Player::CollisionBottomJump(float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition({ 0, 1 });
 
-			if (false == BodyCollisionPtr->CollisionAll(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D, ColTest), 0 == ColTest.size())
+			if (nullptr == StandCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 			{
-				for (std::shared_ptr<GameEngineCollision> Col : ColTest)
-				{
-					Coll = false;
-					IsFall = false;
-				}
+				CreateLandDust();
+				IsFall = false;
 				break;
 			}
 		}
 	}
+
+	// 벽 체크
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
 }
 
-void Player::CollisionBottomJumpStateCheck()
+void Player::PlatformBottomJumpStateCheck(float _DeltaTime)
 {
-	float4 BottomJumpCheck = GetTransform()->GetLocalPosition() + float4{ 0, -1 };
+	// 벽 체크
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
 
-	GameEnginePixelColor BottomJumpPixel = PixelCollisionCheck.PixelCheck(BottomJumpCheck);
+	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	WallCheck(LeftWallPixel, RightWallPixel, _DeltaTime);
 
 	if (true == IsBottomJump)
 	{
-		if (true == PixelCollisionCheck.IsBlue(BottomJumpPixel))
+		if (nullptr != BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 		{
 			IsBottomJump = true;
 			return;
@@ -1336,6 +1245,23 @@ void Player::CreateMoveDust()
 	Dust->SetDustType(static_cast<DustType>(RandValue));
 }
 
+// 점프나 Fall 후 Land시 Dust 생성
+void Player::CreateLandDust()
+{
+	if (true == IsJump)
+	{
+		return;
+	}
+
+	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	DustPosition += float4{ 0, 30 };
+
+	Dust->SetStartPosition(DustPosition);
+}
+
 // Parry시 생성되는 Effect
 void Player::CreateParryEffect()
 {
@@ -1774,8 +1700,15 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == StandCollisionPtr)
 	{
 		StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+	}
+
+	if (nullptr == BottomSensorCollisionPtr)
+	{
+		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)
@@ -1789,8 +1722,16 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == StandCollisionRenderPtr)
 	{
 		StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 2, 1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
 		StandCollisionRenderPtr->SetTexture("BlueLine.png");
+	}
+
+	if (nullptr == BottomSensorCollisionRenderPtr)
+	{
+		BottomSensorCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionRenderPtr->SetTexture("GreenLine.png");
 	}
 }

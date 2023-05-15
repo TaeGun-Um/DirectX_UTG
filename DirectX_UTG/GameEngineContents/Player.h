@@ -64,8 +64,10 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> StandCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> BottomSensorCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> StandCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> BottomSensorCollisionPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
@@ -87,18 +89,17 @@ private:
 	void PositionCorrection();
 	void PlayerDebugRenderer();
 
+	// 픽셀, 충돌체 체크 모음
+	void CollisionCalculation(float _DeltaTime);
+
 	// 픽셀체크
-	void PixelCalculation(float _DeltaTime);
-	void AirDashCheck(const GameEnginePixelColor& _LeftFallMapPixel, const GameEnginePixelColor& _RightFallMapPixel);
 	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
-	void BottomJump(float _DeltaTime);
-	void BottomJumpStateCheck();
 
 	// 콜리전 체크
-	void CollisionCheck();
-	void CollisionBottomJump(float _DeltaTime);
-	void CollisionBottomJumpStateCheck();
+	void CollisionSetting();
+	void PlatformBottomJump(float _DeltaTime);
+	void PlatformBottomJumpStateCheck(float _DeltaTime);
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);
@@ -121,6 +122,8 @@ private:
 
 	PlayerState StateValue = PlayerState::Idle;
 	float4 MoveDirect = float4::Zero;
+	float4 CurrentPlayerPos = float4::Zero;
+	float4 PlatformScale = float4::Zero;
 
 	bool Directbool = true;    // true == 오른쪽 // false == 왼쪽
 
@@ -128,7 +131,9 @@ private:
 	bool IsJump = false;
 	bool IsFall = false;
 	bool IsSlap = false;
-	bool BluePixelCheckAble = false;
+	bool PlatformCheckAble = false;
+	bool PlatformFallCheck = false;
+	bool PlatformFall = false;
 	bool IsBottomJump = false;
 	bool BottomJumpAble = false;
 	bool AirEXAttackAble = false;
@@ -151,8 +156,10 @@ private:
 	float ActivateDashTime = 0.0f;
 	float ProjectileCreateTime = 0.0f;
 	float MoveTime = 0.0f;
+	float PlatformHeight = 0.0f;
 
 	int CreateEXCount = 1;
+	int FallPosCheck = 1;
 
 	AttackDirection ADValue = AttackDirection::Right_Front;
 
