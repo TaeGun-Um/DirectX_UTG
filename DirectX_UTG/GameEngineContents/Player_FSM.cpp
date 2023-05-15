@@ -232,7 +232,7 @@ void Player::FallUpdate(float _DeltaTime)
 
 	if (true == IsFall)
 	{
-		MoveDirect.y += -3000.0f * _DeltaTime;
+		MoveDirect.y += -3300.0f * _DeltaTime;
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
 	else if (false == IsFall)
@@ -689,7 +689,7 @@ void Player::JumpStart()
 	// 점프력
 	if (false == IsJump && false == IsSlap)
 	{
-		MoveDirect.y = 900.0f;
+		MoveDirect.y = 850.0f;
 		IsJump = true;
 	}
 }
@@ -746,20 +746,17 @@ void Player::JumpUpdate(float _DeltaTime)
 	}
 
 	// 점프
-	if (true == GameEngineInput::IsPress("Jump") && 0.01f <= JumpTime)
+	if (true == GameEngineInput::IsPress("Jump") && 0.2f >= JumpTime)
 	{
-		if (0.15f >= JumpTime)
-		{
-			MoveDirect.y += 2200.0f * _DeltaTime;
-		}
+		MoveDirect.y += 2450.0f * _DeltaTime;
 	}
 
-	if (true == IsJump && 0.01f <= JumpTime)
+	if (true == IsJump)
 	{
-		MoveDirect.y += -3000.0f * _DeltaTime;
+		MoveDirect.y += -3300.0f * _DeltaTime;
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
-	else if (false == IsJump && 0.01f <= JumpTime)
+	else if (false == IsJump)
 	{
 		MoveDirect.y = 0;
 	}
