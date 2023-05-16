@@ -65,6 +65,78 @@ public:
 		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
 	}
 
+	int GetPlayerHP()
+	{
+		return PlayerHP;
+	}
+
+	float GetPlayerEXGauge()
+	{
+		return PlayerEXGauge;
+	}
+
+	int GetPlayerEXStack()
+	{
+		return PlayerEXStack;
+	}
+
+	void MinusPlayerHP()
+	{
+		if (PlayerHP > 0)
+		{
+			--PlayerHP;
+		}
+		else
+		{
+			return;
+		}
+	}
+
+	void AddPlayerEXStack()
+	{
+		if (PlayerEXStack < 5)
+		{
+			++PlayerEXStack;
+		}
+		else
+		{
+			return;
+		}
+	}
+
+	void AddPlayerEXGauge_Peashooter()
+	{
+		if (5 != PlayerEXStack)
+		{
+			++PlayerEXGauge;
+		}
+		
+		CheckPlayerEXGauge();
+	}
+
+	void AddPlayerEXGauge_Spread()
+	{
+		if (5 != PlayerEXStack)
+		{
+			PlayerEXGauge += 0.2f;
+		}
+
+		CheckPlayerEXGauge();
+	}
+
+	void CheckPlayerEXGauge()
+	{
+		if (PlayerEXGauge > 29.0f)
+		{
+			PlayerEXGauge = 0.0f;
+
+			if (PlayerEXStack < 5)
+			{
+				++PlayerEXStack;
+			}
+		}
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -95,6 +167,25 @@ private:
 	bool IsCorrection = false;
 
 	// Init
+	void SetPlayerHP(int _HP)
+	{
+		PlayerHP = _HP;
+	}
+
+	void SetPlayerEXGauge(float _EXGauge)
+	{
+		PlayerEXGauge = _EXGauge;
+	}
+
+	void SetPlayerEXStack(int _EXStack)
+	{
+		PlayerEXStack = _EXStack;
+	}
+
+	int PlayerHP = 0;
+	float PlayerEXGauge = 0;
+	int PlayerEXStack = 0;
+
 	void PlayerInitialSetting();
 	void PlayerCollisionSetting();
 	void DebugRendererSetting();
@@ -146,6 +237,7 @@ private:
 	float4 PlatformScale = float4::Zero;
 
 	bool Directbool = true;    // true == ¿À¸¥ÂÊ // false == ¿ÞÂÊ
+	bool WeaponType = true;    // true : Peashooter // false : Spread
 
 	// Air
 	bool IsJump = false;

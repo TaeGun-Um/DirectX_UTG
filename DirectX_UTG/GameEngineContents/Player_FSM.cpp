@@ -204,7 +204,7 @@ void Player::FallUpdate(float _DeltaTime)
 		return;
 	}
 	
-	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
+	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -338,7 +338,7 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -438,7 +438,7 @@ void Player::MoveUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -568,7 +568,7 @@ void Player::DuckReadyUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -661,7 +661,7 @@ void Player::DuckUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -740,7 +740,7 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble)
+	if (true == GameEngineInput::IsDown("EX") && true == AirEXAttackAble && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -961,7 +961,7 @@ void Player::AttackReadyUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -1012,7 +1012,7 @@ void Player::AttackUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -1141,7 +1141,7 @@ void Player::RunAttackUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -1270,7 +1270,7 @@ void Player::DuckAttackUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("EX"))
+	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
 		return;
@@ -1333,6 +1333,14 @@ void Player::DuckAttackEnd()
 // EX Attack 상태 체크
 void Player::EXAttackStart()
 {
+	--PlayerEXStack;
+
+	if (0 > PlayerEXStack)
+	{
+		MsgAssert("EX 몬가 잘못됨");
+		return;
+	}
+
 	IsEXAttack = true;
 	AirEXAttackAble = false;
 	ChargeUpRenderPtr->ChangeAnimation("EX_ChargeUp", true);
@@ -1562,7 +1570,7 @@ void Player::HoldingUpdate(float _DeltaTime)
 	{
 		IsHold = true;
 
-		if (true == GameEngineInput::IsDown("EX"))
+		if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 		{
 			ChangeState(PlayerState::EXAttack);
 			return;
@@ -1670,7 +1678,7 @@ void Player::HoldingAttackUpdate(float _DeltaTime)
 	{
 		IsHold = true;
 
-		if (true == GameEngineInput::IsDown("EX"))
+		if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 		{
 			ChangeState(PlayerState::EXAttack);
 			return;
@@ -1779,11 +1787,11 @@ void Player::HitStart()
 	}
 
 	RenderPtr->GetTransform()->SetLocalScale({300, 330});
-
-	IsHit = false;
 }
 void Player::HitUpdate(float _DeltaTime)
 {
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 160 });
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::Idle);
@@ -1792,7 +1800,7 @@ void Player::HitUpdate(float _DeltaTime)
 }
 void Player::HitEnd()
 {
-
+	IsHit = false;
 }
 
 void Player::DeathStart()

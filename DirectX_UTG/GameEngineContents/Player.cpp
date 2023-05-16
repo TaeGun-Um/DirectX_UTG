@@ -34,6 +34,11 @@ void Player::Start()
 	PlayerCollisionSetting();
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
+
+	SetPlayerHP(GetHP());
+	SetPlayerEXGauge(GetEXGauge());
+	SetPlayerEXStack(GetEXStack());
+
 	ChangeState(PlayerState::Idle);
 }
 void Player::Update(float _DeltaTime)
@@ -305,10 +310,9 @@ void Player::CollisionSetting()
 		}
 	}
 
-	if (true == IsDash || true == IsEXAttack || true == IsHit)
+	if (true == IsDash || true == IsEXAttack || true == HitTimeCheck)
 	{
 		BodyCollisionRenderPtr->Off();
-		return;
 	}
 	else
 	{
@@ -440,29 +444,32 @@ void Player::ParryCollisionCheck()
 	{
 		ParryCheck = true;
 		CreateParryEffect();
+		AddPlayerEXStack();
 	}
 }
 
 void Player::HitCollisionCheck(float _DeltaTime)
 {
-	//if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::MonsterAttack), ColType::AABBBOX2D, ColType::AABBBOX2D)
-	//	|| nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Monster), ColType::AABBBOX2D, ColType::AABBBOX2D))
-	//{
-	//	IsHit = true;
-	//	HitTimeCheck = true;
-	//	BodyCollisionPtr->Off();
-	//}
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::MonsterAttack), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		|| nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Monster), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		IsHit = true;
+		HitTimeCheck = true;
+		MinusPlayerHP();
+		BodyCollisionPtr->Off();
+	}
 
-	//if (true == HitTimeCheck)
-	//{
-	//	HitTime += _DeltaTime;
-	//}
+	if (true == HitTimeCheck)
+	{
+		HitTime += _DeltaTime;
+	}
 
-	//if (3.0f <= HitTime)
-	//{
-	//	HitTimeCheck = false;
-	//	HitTime = 0.0f;
-	//}
+	if (3.0f <= HitTime)
+	{
+		HitTimeCheck = false;
+		HitTime = 0.0f;
+		BodyCollisionPtr->On();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

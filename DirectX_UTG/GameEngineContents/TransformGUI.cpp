@@ -3,6 +3,8 @@
 
 #include <GameEngineBase/GameEngineString.h>
 
+#include "Player.h"
+
 TransformGUI::TransformGUI() 
 {
 }
@@ -150,18 +152,12 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ColMapRenderOff();
 	}
 
-	ImGui::Text("Hi");
-
-	/*for (std::function<void()>& _CallbackRef : CustomGuiFunctions)
+	if (nullptr != Player::MainPlayer)
 	{
-		if (nullptr == _CallbackRef)
-		{
-			MsgAssert_Rtti<TransformGUI>(" - nullptr 커스텀 Gui 콜백을 호출하려 했습니다");
-			return;
-		}
-
-		_CallbackRef();
-	}*/
+		ImGui::Text("PlayerHP : %d", MainPalyer->GetPlayerHP());
+		ImGui::Text("EXGauge : %f", MainPalyer->GetPlayerEXGauge());
+		ImGui::Text("EXStack : %d", MainPalyer->GetPlayerEXStack());
+	}
 }
 
 void TransformGUI::SetTarget(GameEngineTransform* _Target)
@@ -193,6 +189,11 @@ void TransformGUI::SetTarget(GameEngineTransform* _Target)
 		Scale[2] = LocalScale.z;
 		Scale[3] = LocalScale.w;
 	}
+}
+
+void TransformGUI::SetMainPalyer(std::shared_ptr<class Player> _MainPalyer)
+{
+	MainPalyer = _MainPalyer;
 }
 
 void TransformGUI::HelpMarker(const std::string_view& _Text)

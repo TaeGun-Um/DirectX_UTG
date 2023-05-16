@@ -40,7 +40,7 @@ protected:
 		return HP;
 	}
 
-	int GetEXGauge()
+	float GetEXGauge()
 	{
 		return EXGauge;
 	}
@@ -66,9 +66,8 @@ protected:
 private:
 	// Status
 	int HP = 3;
-	int EXGauge = 0;
+	float EXGauge = 0;
 	int EXStack = 0;
-	bool WeaponType = true;   // true : Peashooter // false : Spread
 
 	// Camera
 	CameraFollowType CameraType = CameraFollowType::None;

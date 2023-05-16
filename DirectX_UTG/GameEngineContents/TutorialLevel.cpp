@@ -82,6 +82,7 @@ void TutorialLevel::Start()
 	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
+		GUI->SetMainPalyer(PlayerObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);

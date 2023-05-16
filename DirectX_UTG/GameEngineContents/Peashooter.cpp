@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
+
 Peashooter::Peashooter() 
 {
 }
@@ -85,6 +87,7 @@ void Peashooter::DeathCheck()
 
 	if (true == IsDeath)
 	{
+		Player::MainPlayer->AddPlayerEXGauge_Peashooter();
 		Death();
 	}
 }

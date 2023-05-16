@@ -20,6 +20,8 @@ public:
 
 	void SetTarget(GameEngineTransform* _Target);
 
+	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
+
 	std::function<void()> PlayerDebugRenderOn;
 	std::function<void()> PlayerDebugRenderOff;
 
@@ -29,6 +31,7 @@ public:
 protected:
 
 private:
+	std::shared_ptr<class Player> MainPalyer = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 
 	bool IsWorldPostion = false;
@@ -41,6 +44,10 @@ private:
 	float Postion[4] = { 0, 0, 0, 1 };
 	float Rotation[4] = { 0, 0, 0, 1 };
 	float Scale[4] = { 1, 1, 1, 1 };
+
+	int PlayerHP = 0;
+	int PlayerEXGauge = 0;
+	int PlayerEXStack = 0;
 
 	std::vector<std::function<void()>> CustomGuiFunctions;
 

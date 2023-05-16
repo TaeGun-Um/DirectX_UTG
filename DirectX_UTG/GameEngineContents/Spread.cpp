@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
+
 Spread::Spread() 
 {
 }
@@ -104,6 +106,7 @@ void Spread::DeathCheck()
 
 	if (true == IsDeath)
 	{
+		Player::MainPlayer->AddPlayerEXGauge_Spread();
 		Death();
 	}
 }
