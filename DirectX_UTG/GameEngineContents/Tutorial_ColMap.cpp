@@ -19,6 +19,7 @@ void Tutorial_ColMap::Start()
 		RenderPtr->SetTexture("Tutorial_ColMap_d.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 6188, 720, 1 });
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 1 });
+		RenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		RenderPtr->Off();
 	}
 }
