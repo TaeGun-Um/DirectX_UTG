@@ -112,7 +112,6 @@ void Player::PlayerDebugRenderer()
 		DebugRenderPtr3->On();
 		DebugRenderPtr4->On();
 		DebugRenderPtr5->On();
-		DebugRenderPtr6->On();
 	}
 	else
 	{
@@ -122,7 +121,6 @@ void Player::PlayerDebugRenderer()
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
 		DebugRenderPtr5->Off();
-		DebugRenderPtr6->Off();
 	}
 }
 
@@ -174,8 +172,8 @@ void Player::PixelCheck(float _DeltaTime)
 {
 	// 낙하 체크
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
-	float4 LeftFallPos = PlayerPos + float4{ -40, -2 };
-	float4 RightFallPos = PlayerPos + float4{ 25, -2 };
+	float4 LeftFallPos = PlayerPos + float4{ -25, -2 };
+	float4 RightFallPos = PlayerPos + float4{ 15, -2 };
 
 	GameEnginePixelColor LeftFallMapPixel = PixelCollisionCheck.PixelCheck(LeftFallPos);
 	GameEnginePixelColor RightFallMapPixel = PixelCollisionCheck.PixelCheck(RightFallPos);
@@ -222,8 +220,8 @@ void Player::PixelCheck(float _DeltaTime)
 	}
 
 	// 벽 체크
-	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
-	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+	float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
 
 	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
 	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
@@ -269,42 +267,30 @@ void Player::CollisionSetting()
 {
 	if (true == Directbool)
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 40, 10 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -5, 5 });
 
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 3, -2, 1 });
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 3, -2, 1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 15, -6 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -5, -3 });
 	}
 	else
 	{
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 40, 10 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ 5, 5 });
 
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 3, -2, -1 });
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 3, -2, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 15, -6 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 5, -3 });
 	}
 
 	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
 	{
-		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
-		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
-
 		if (true == Directbool)
 		{
-			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
 			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
 		}
 		else
 		{
-			ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
 			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
 			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
 		}
@@ -321,55 +307,55 @@ void Player::CollisionSetting()
 
 	if (true == IsDuck)
 	{
-		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 140, 60 });
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
-
 		if (true == Directbool)
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 30 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, 1 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 30 });
 		}
 		else
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 30 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 30 });
 			BodyCollisionPtr->GetTransform()->SetLocalScale({ 140, 60, -1 });
 		}
 	}
 	else if (true == IsJump || true == IsFall)
 	{
-		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80 });
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
-
 		if (true == Directbool)
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
 		}
 		else
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 80 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
 			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
 		}
 	}
 	else
 	{
-		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
-
 		if (true == Directbool)
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, 1 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ -5, 60 });
 		}
 		else
 		{
-			BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ 10, 60 });
 			BodyCollisionPtr->GetTransform()->SetLocalPosition({ 10, 60 });
 			BodyCollisionPtr->GetTransform()->SetLocalScale({ 90, 120, -1 });
 		}
 	}
+
+	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+
+	ParryCollisionRenderPtr->GetTransform()->SetLocalScale(ParryCollisionPtr->GetTransform()->GetLocalScale());
+	ParryCollisionRenderPtr->GetTransform()->SetLocalPosition(ParryCollisionPtr->GetTransform()->GetLocalPosition());
+
+	StandCollisionRenderPtr->GetTransform()->SetLocalScale(StandCollisionPtr->GetTransform()->GetLocalScale());
+	StandCollisionRenderPtr->GetTransform()->SetLocalPosition(StandCollisionPtr->GetTransform()->GetLocalPosition());
+
+	BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale(BottomSensorCollisionPtr->GetTransform()->GetLocalScale());
+	BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(BottomSensorCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
 // BluePixel을 체크
@@ -402,8 +388,8 @@ void Player::PlatformBottomJump(float _DeltaTime)
 
 	// 벽 체크
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
-	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
-	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+	float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
 
 	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
 	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
@@ -416,8 +402,8 @@ void Player::PlatformBottomJumpStateCheck(float _DeltaTime)
 	// 벽 체크
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 
-	float4 LeftWallCheckPos = PlayerPos + float4{ -40, 10 };
-	float4 RightWallCheckPos = PlayerPos + float4{ 25, 10 };
+	float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
 
 	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
 	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
@@ -1365,12 +1351,10 @@ void Player::DirectCheck()
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 
 		{
-			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 });
-			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
-			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -40, -2 });
-			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
-			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
-			// DebugRenderPtr6->Off();
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, 10 });
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 15, -2 });
 		}
 	}
 	else
@@ -1379,12 +1363,10 @@ void Player::DirectCheck()
 		RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
 
 		{
-			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
-			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 40, 10 });
-			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
-			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 40, -2 });
-			// DebugRenderPtr5는 액터 바로 밑(y-1)이기 때문에 필요 없음
-			// DebugRenderPtr6->Off();
+			DebugRenderPtr1->GetTransform()->SetLocalPosition({ -15, 10 });
+			DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });
+			DebugRenderPtr3->GetTransform()->SetLocalPosition({ -15, -2 });
+			DebugRenderPtr4->GetTransform()->SetLocalPosition({ 25, -2 });
 		}
 	}
 
@@ -1726,32 +1708,24 @@ void Player::DebugRendererSetting()
 		DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
 		DebugRenderPtr5->SetScaleToTexture("RedDot.png");
 	}
-	if (nullptr == DebugRenderPtr6) // 아직 미사용
-	{
-		DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr6->SetScaleToTexture("RedDot.png");
-	}
 	
 	if (nullptr != DebugRenderPtr1
 		&& nullptr != DebugRenderPtr2
 		&& nullptr != DebugRenderPtr3
 		&& nullptr != DebugRenderPtr4
-		&& nullptr != DebugRenderPtr5
-		&& nullptr != DebugRenderPtr6)
+		&& nullptr != DebugRenderPtr5)
 	{
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, 10 }); // 왼쪽 벽
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, 10 });  // 오른쪽 벽
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -40, -2 }); // 왼쪽 낙하
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 25, -2 });  // 오른쪽 낙하
-		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, -1 });   // 밑점프 체크
-		//DebugRenderPtr6->Off();
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 }); // 왼쪽 벽
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, 10 });  // 오른쪽 벽
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, -2 }); // 왼쪽 낙하
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, -2 });  // 오른쪽 낙하
+		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, 0 });    // 플레이어 위치
 
 		DebugRenderPtr1->Off();
 		DebugRenderPtr2->Off();
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
 		DebugRenderPtr5->Off();
-		DebugRenderPtr6->Off();
 	}
 }
 
@@ -1767,15 +1741,15 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == StandCollisionPtr)
 	{
 		StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
-		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10 });
+		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7, 5 });
 	}
 
 	if (nullptr == BottomSensorCollisionPtr)
 	{
 		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 30, -6 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7, -3 });
 	}
 
 	if (nullptr == ParryCollisionPtr)
@@ -1789,16 +1763,16 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == BodyCollisionRenderPtr)
 	{
 		BodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		BodyCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 120 });
-		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 60 });
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 	}
 
 	if (nullptr == StandCollisionRenderPtr)
 	{
 		StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
-		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
+		StandCollisionRenderPtr->GetTransform()->SetLocalScale(StandCollisionPtr->GetTransform()->GetLocalScale());
+		StandCollisionRenderPtr->GetTransform()->SetLocalPosition(StandCollisionPtr->GetTransform()->GetLocalPosition());
 		StandCollisionRenderPtr->SetTexture("BlueBox.png");
 		StandCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
@@ -1806,8 +1780,8 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == BottomSensorCollisionRenderPtr)
 	{
 		BottomSensorCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale(BottomSensorCollisionPtr->GetTransform()->GetLocalScale());
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(BottomSensorCollisionPtr->GetTransform()->GetLocalPosition());
 		BottomSensorCollisionRenderPtr->SetTexture("RedBox.png");
 		BottomSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
@@ -1815,8 +1789,8 @@ void Player::PlayerCollisionSetting()
 	if (nullptr == ParryCollisionRenderPtr)
 	{
 		ParryCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		ParryCollisionRenderPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
-		ParryCollisionRenderPtr->GetTransform()->SetLocalPosition({ -5, 80 });
+		ParryCollisionRenderPtr->GetTransform()->SetLocalScale(ParryCollisionPtr->GetTransform()->GetLocalScale());
+		ParryCollisionRenderPtr->GetTransform()->SetLocalPosition(ParryCollisionPtr->GetTransform()->GetLocalPosition());
 		ParryCollisionRenderPtr->SetTexture("RedLine.png");
 		ParryCollisionRenderPtr->Off();
 	}

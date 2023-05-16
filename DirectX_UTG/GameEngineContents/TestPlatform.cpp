@@ -38,12 +38,12 @@ void TestPlatform::Start()
 	RenderPtr->ChangeAnimation("Platform");
 
 	CollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Platform));
-	CollisionPtr->GetTransform()->SetLocalScale({ 200, 26, 1 });
+	CollisionPtr->GetTransform()->SetLocalScale({ 200, 25, 1 });
 	CollisionPtr->GetTransform()->SetLocalPosition({ 0, 20 });
 
 	CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	CollisionRenderPtr->GetTransform()->SetLocalScale({ 200, 26 });
-	CollisionRenderPtr->GetTransform()->SetLocalPosition({ 0, 20 });
+	CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+	CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
 	CollisionRenderPtr->SetTexture("GreenBox.png");
 	CollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
 

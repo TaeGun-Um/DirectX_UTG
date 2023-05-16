@@ -34,23 +34,27 @@ void Tutorial_Map::Start()
 		PlatformCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalScale({ 290, 26, 1 });
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalPosition({ -970, 0, 1 });
-		PlatformCollisionRenderPtr->SetTexture("GreenLine.png");
+		PlatformCollisionRenderPtr->SetTexture("GreenBox.png");
+		PlatformCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.5f;
 	}
 
 	ParrySpotCollisionRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
 	ParrySpotCollisionRenderPtr0->GetTransform()->SetLocalScale({ 50, 50, 1 });
 	ParrySpotCollisionRenderPtr0->GetTransform()->SetLocalPosition({ 705, -7, 1 });
-	ParrySpotCollisionRenderPtr0->SetTexture("RedLine.png");
+	ParrySpotCollisionRenderPtr0->SetTexture("RedBox.png");
+	ParrySpotCollisionRenderPtr0->ColorOptionValue.MulColor.a = 0.6f;
 
 	ParrySpotCollisionRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
 	ParrySpotCollisionRenderPtr1->GetTransform()->SetLocalScale({ 50, 50, 1 });
 	ParrySpotCollisionRenderPtr1->GetTransform()->SetLocalPosition({ 895, -7, 1 });
-	ParrySpotCollisionRenderPtr1->SetTexture("RedLine.png");
+	ParrySpotCollisionRenderPtr1->SetTexture("RedBox.png");
+	ParrySpotCollisionRenderPtr1->ColorOptionValue.MulColor.a = 0.6f;
 
 	ParrySpotCollisionRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
 	ParrySpotCollisionRenderPtr2->GetTransform()->SetLocalScale({ 50, 50, 1 });
 	ParrySpotCollisionRenderPtr2->GetTransform()->SetLocalPosition({ 1085, -7, 1 });
-	ParrySpotCollisionRenderPtr2->SetTexture("RedLine.png");
+	ParrySpotCollisionRenderPtr2->SetTexture("RedBox.png");
+	ParrySpotCollisionRenderPtr2->ColorOptionValue.MulColor.a = 0.6f;
 
 	ParrySpotCollisionPtr0 = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
 	ParrySpotCollisionPtr0->GetTransform()->SetLocalScale({ 50, 50, 1 });

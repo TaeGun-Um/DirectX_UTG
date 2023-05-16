@@ -26,10 +26,7 @@ enum class PlayerState
 // 설명 : Field 플레이어
 class Player : public PlayerDataBase
 {
-	friend class Peashooter;
-	friend class Peashooter_EX;
-	friend class Spread;
-	friend class Spread_EX;
+	friend class TransformGUI;
 
 public:
 	static Player* MainPlayer;
@@ -161,7 +158,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr5 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr6 = nullptr;
 
 	bool IsDebugRender = false;
 	bool IsCorrection = false;
