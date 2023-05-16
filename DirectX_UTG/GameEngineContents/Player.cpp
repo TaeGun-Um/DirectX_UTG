@@ -139,7 +139,7 @@ void Player::CollisionCalculation(float _DeltaTime)
 		PlatformCheckAble = true;
 	}
 
-	if (true == IsBottomJump || true == PlatformFall)
+	if (true == IsBottomJump)
 	{
 		PlatformBottomJumpStateCheck(_DeltaTime);
 	}

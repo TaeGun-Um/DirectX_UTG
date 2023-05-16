@@ -233,8 +233,6 @@ private:
 
 	PlayerState StateValue = PlayerState::Idle;
 	float4 MoveDirect = float4::Zero;
-	float4 CurrentPlayerPos = float4::Zero;
-	float4 PlatformScale = float4::Zero;
 
 	bool Directbool = true;    // true == ¿À¸¥ÂÊ // false == ¿ÞÂÊ
 	bool WeaponType = true;    // true : Peashooter // false : Spread
@@ -242,11 +240,9 @@ private:
 	// Air
 	bool IsJump = false;
 	bool IsFall = false;
+	bool PlatformCheckAble = false;
 	bool IsSlap = false;
 	bool ParryCheck = false;
-	bool PlatformCheckAble = false;
-	bool PlatformFallCheck = false;
-	bool PlatformFall = false;
 	bool IsBottomJump = false;
 	bool BottomJumpAble = false;
 	bool AirEXAttackAble = false;
@@ -264,19 +260,14 @@ private:
 	bool HitTimeCheck = false;
 	bool IsDeath = false;
 
-	bool Coll = false;
-
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
 	float DashTime = 0.0f;
-	float ActivateDashTime = 0.0f;
 	float ProjectileCreateTime = 0.0f;
 	float MoveTime = 0.0f;
-	float PlatformHeight = 0.0f;
 	float HitTime = 0.0f;
 
 	int CreateEXCount = 1;
-	int FallPosCheck = 1;
 
 	AttackDirection ADValue = AttackDirection::Right_Front;
 
