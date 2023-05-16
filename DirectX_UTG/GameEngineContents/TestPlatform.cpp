@@ -44,16 +44,17 @@ void TestPlatform::Start()
 	CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	CollisionRenderPtr->GetTransform()->SetLocalScale({ 200, 26 });
 	CollisionRenderPtr->GetTransform()->SetLocalPosition({ 0, 20 });
-	CollisionRenderPtr->SetTexture("GreenLine.png");
+	CollisionRenderPtr->SetTexture("GreenBox.png");
+	CollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
 
-	AttackCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-	AttackCollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-	AttackCollisionPtr->GetTransform()->SetLocalPosition({ 50, 0 });
+	//AttackCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+	//AttackCollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	//AttackCollisionPtr->GetTransform()->SetLocalPosition({ 50, 0 });
 
-	AttackCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	AttackCollisionRenderPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-	AttackCollisionRenderPtr->GetTransform()->SetLocalPosition({ 50, 0 });
-	AttackCollisionRenderPtr->SetTexture("RedLine.png");
+	//AttackCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	//AttackCollisionRenderPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
+	//AttackCollisionRenderPtr->GetTransform()->SetLocalPosition({ 50, 0 });
+	//AttackCollisionRenderPtr->SetTexture("RedLine.png");
 }
 
 void TestPlatform::Update(float _DeltaTime)

@@ -274,9 +274,9 @@ void Player::CollisionSetting()
 		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
 		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
 
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 3, -2, 1 });
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, 1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 3, -2, 1 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
 	}
 	else
@@ -286,9 +286,9 @@ void Player::CollisionSetting()
 		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10, -1 });
 		StandCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, 5 });
 
-		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 3, -2, -1 });
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
-		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 0, -2, -1 });
+		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 3, -2, -1 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 7.5, -1 });
 	}
 
@@ -1799,7 +1799,8 @@ void Player::PlayerCollisionSetting()
 		StandCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		StandCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, 10, 1 });
 		StandCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, 5 });
-		StandCollisionRenderPtr->SetTexture("BlueLine.png");
+		StandCollisionRenderPtr->SetTexture("BlueBox.png");
+		StandCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
 
 	if (nullptr == BottomSensorCollisionRenderPtr)
@@ -1807,7 +1808,8 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale({ 66, -2, 1 });
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition({ -7.5, -1 });
-		BottomSensorCollisionRenderPtr->SetTexture("GreenLine.png");
+		BottomSensorCollisionRenderPtr->SetTexture("RedBox.png");
+		BottomSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
 
 	if (nullptr == ParryCollisionRenderPtr)
