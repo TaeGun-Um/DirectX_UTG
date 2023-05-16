@@ -2,7 +2,7 @@
 #include "GameEngineActor.h"
 
 // 설명 : 액터의 컴포넌트들 (충돌체, 랜더러 등)
-class GameEngineComponent : public GameEngineUpdateObject
+class GameEngineComponent : public GameEngineObject
 {
 	friend class GameEngineActor;
 

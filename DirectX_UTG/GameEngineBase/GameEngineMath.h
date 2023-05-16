@@ -117,6 +117,14 @@ public:
 			float w;
 		};
 
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		};
+
 		float Arr1D[4];
 
 		// 심드 연산을 위한 Direct 전용 float3, float4, DirectVector

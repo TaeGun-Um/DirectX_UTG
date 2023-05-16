@@ -88,5 +88,32 @@ void GameEngineObject::AllRelease()
 	{
 		Object->AllRelease();
 	}
-
 }
+
+//bool GameEngineObject::IsDeath()
+//{
+//	GameEngineTransform* Trans = GetTransform()->GetParent();
+//
+//	if (nullptr != Trans)
+//	{
+//		GameEngineObject* Master = Trans->GetMaster();
+//
+//		return GameEngineObjectBase::IsDeath() || Master->IsDeath();
+//	}
+//
+//	return GameEngineObjectBase::IsDeath();
+//}
+//
+//bool GameEngineObject::IsUpdate()
+//{
+//	GameEngineTransform* Trans = GetTransform()->GetParent();
+//
+//	if (nullptr != Trans)
+//	{
+//		GameEngineObject* Master = Trans->GetMaster();
+//
+//		return GameEngineObjectBase::IsUpdate() || Master->IsUpdate();
+//	}
+//
+//	return GameEngineObjectBase::IsUpdate();
+//}

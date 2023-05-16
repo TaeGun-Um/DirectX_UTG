@@ -1,8 +1,8 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineObject.h"
 
 // 설명 :
-class GameEngineActor : public GameEngineUpdateObject
+class GameEngineActor : public GameEngineObject
 {
 	friend class GameEngineLevel;
 
@@ -16,6 +16,12 @@ public:
 	GameEngineActor(GameEngineActor&& _Other) noexcept = delete;
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
+
+	template<typename ActorType, typename EnumType>
+	std::shared_ptr<ActorType> CreateComponent(EnumType _Order)
+	{
+		return CreateComponent<ActorType>(static_cast<int>(_Order));
+	}
 
 	// 액터의 컴포넌트(충돌체, 랜더러) 생성 후 ComponentsList에 Init
 	template<typename ComponentType>

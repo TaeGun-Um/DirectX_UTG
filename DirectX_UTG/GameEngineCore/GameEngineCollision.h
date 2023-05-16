@@ -21,6 +21,12 @@ public:
 		return Collision(static_cast<int>(_TargetGroup), _ThisColType, _OtherColtype);
 	}
 
+	template<typename EnumType>
+	bool CollisionAll(EnumType _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col)
+	{
+		return CollisionAll(static_cast<int>(_TargetGroup), _ThisColType, _OtherColtype, _Col);
+	}
+
 	std::shared_ptr<GameEngineCollision> Collision(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype);
 
 	bool CollisionAll(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col);

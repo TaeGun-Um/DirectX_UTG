@@ -59,6 +59,10 @@ private:
 	std::multimap<std::string, GameEngineSamplerSetter> SamplerSetters;
 
 public:
+	GameEngineTextureSetter* GetTextureSetter(const std::string_view& _View);
+
+	std::vector<GameEngineTextureSetter*> GetTextureSetters(const std::string_view& _View);
+
 	// 생성된 상수 버퍼를 ConstantBuffer에 저장한다.
 	void CreateConstantBufferSetter(const GameEngineConstantBufferSetter& _Buffer)
 	{

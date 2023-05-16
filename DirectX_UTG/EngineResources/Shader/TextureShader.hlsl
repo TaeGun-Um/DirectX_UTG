@@ -137,9 +137,10 @@ OutPut Texture_VS(Input _Value)
 
 // 아웃풋머저에 0번 타겟에 출력된 float4를 레드로 출력하라는 뜻
 
-cbuffer OutPixelColor : register(b0)
+cbuffer ColorOption : register(b0)
 {
-    float4 OutColor;
+    float4 MulColor;
+    float4 PlusColor;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -155,6 +156,8 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     //{
     //    clip(-1);
     //}
+    Color *= MulColor;
+    Color += PlusColor;
     
     return Color;
 }
