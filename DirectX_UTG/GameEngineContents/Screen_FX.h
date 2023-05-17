@@ -20,7 +20,7 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
 };
 

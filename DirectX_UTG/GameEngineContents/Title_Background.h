@@ -20,9 +20,9 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr0;
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr1;
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr2;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr0 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr1 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr2 = nullptr;
 
 	float KeyRenderTime = 0.0f;
 };

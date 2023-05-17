@@ -24,9 +24,10 @@ void First_OpeningLevel::Start()
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsAnyKey())
+	if (true == MDHR_Logo::LogoPtr->GetLogoAnimationIsEnd()
+		&& true == GameEngineInput::IsAnyKey())
 	{
-		GameEngineCore::ChangeLevel("TutorialLevel");
+		GameEngineCore::ChangeLevel("Second_OpeningLevel");
 	}
 }
 
