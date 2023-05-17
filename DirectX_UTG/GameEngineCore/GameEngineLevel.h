@@ -30,16 +30,16 @@ public:
 
 	// string 매개 변수만 활용한 CreateActor
 	template<typename ActorType>
-	std::shared_ptr<ActorType> CreateActor(const std::string_view& _Name)
+	std::shared_ptr<ActorType> CreateActorToName(const std::string_view& _Name = "")
 	{
 		return CreateActor<ActorType>(0, _Name);
 	}
 
-	//template<typename ActorType, typename EnumType>
-	//std::shared_ptr<ActorType> CreateActor(EnumType  _Order, const std::string_view& _Name = "")
-	//{
-	//	return CreateActor(static_cast<int>(_Order), _Name);
-	//}
+	template<typename ActorType, typename EnumType>
+	std::shared_ptr<ActorType> CreateActor(EnumType _Order, const std::string_view& _Name = "")
+	{
+		return CreateActor<ActorType>(static_cast<int>(_Order), _Name);
+	}
 
 	// Order 지정, string 매개 변수를 통한 CreateActor
 	template<typename ActorType>

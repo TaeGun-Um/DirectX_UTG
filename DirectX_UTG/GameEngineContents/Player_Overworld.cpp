@@ -388,7 +388,7 @@ void Player_Overworld::PlayerInitialSetting()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	if (nullptr == GameEngineSprite::Find("Idle"))
+	if (nullptr == GameEngineSprite::Find("Up_Idle"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");

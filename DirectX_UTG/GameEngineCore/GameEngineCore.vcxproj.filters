@@ -67,6 +67,9 @@
     <Filter Include="UI\ImGui">
       <UniqueIdentifier>{6c5dc63f-07ac-49c9-b586-b1366e1a77a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentPattern">
+      <UniqueIdentifier>{8cced859-a6ec-4a55-b3a3-a7949cba6c3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -201,6 +204,12 @@
     <ClInclude Include="GameEngineSprite.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineTileMapRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h">
+      <Filter>ContentPattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -328,6 +337,12 @@
     </ClCompile>
     <ClCompile Include="GameEngineSprite.cpp">
       <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTileMapRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp">
+      <Filter>ContentPattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

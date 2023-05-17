@@ -45,7 +45,7 @@ void First_OpeningLevel::Start()
 	// CreateActor
 	//std::shared_ptr<MDHR_Logo> Object0 = CreateActor<MDHR_Logo>("Screen_FX");
 	// std::shared_ptr<MDHR_Logo> Object2 = CreateActor<MDHR_Logo>("MDHR_Logo"); // 스프라이트 시트
-	std::shared_ptr<Title_Background> Object1 = CreateActor<Title_Background>("Title_Background");
+	std::shared_ptr<Title_Background> Object1 = CreateActor<Title_Background>();
 	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
 }
 void First_OpeningLevel::Update(float _DeltaTime)

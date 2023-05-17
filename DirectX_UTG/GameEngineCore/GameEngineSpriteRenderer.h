@@ -3,6 +3,8 @@
 #include "GameEngineRenderer.h"
 #include "GameEngineSprite.h"
 
+#include "EngineContentRenderingStruct.h"
+
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
 	friend class GameEngineSpriteRenderer;
@@ -60,12 +62,6 @@ public:
 	bool ScaleToTexture = false;
 	std::vector<size_t> FrameIndex = std::vector<size_t>();
 	std::vector<float> FrameTime = std::vector<float>();
-};
-
-struct ColorOption
-{
-	float4 MulColor;
-	float4 PlusColor;
 };
 
 // Ό³Έν :

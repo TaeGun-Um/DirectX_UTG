@@ -43,7 +43,7 @@ void Second_OpeningLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
 	// CreateActor
-	std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>("BookRender");
+	std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>();
 	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
 }
 void Second_OpeningLevel::Update(float _DeltaTime)
