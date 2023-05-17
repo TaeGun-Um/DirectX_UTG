@@ -22,6 +22,7 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	float AccessTime = 0.0f;
 
 };
 
