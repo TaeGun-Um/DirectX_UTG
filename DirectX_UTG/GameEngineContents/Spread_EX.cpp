@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Spread_EX.h"
 
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 Spread_EX::Spread_EX() 

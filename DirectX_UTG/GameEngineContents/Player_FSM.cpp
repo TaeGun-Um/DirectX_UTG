@@ -353,6 +353,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("Attack") && true == PortalAble)
+	{
+		ChangeState(PlayerState::Portal);
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -1789,7 +1795,19 @@ void Player::HitEnd()
 
 void Player::PortalStart()
 {
+	Portaling = true;
+
 	RenderPtr->ChangeAnimation("Portal");
+
+	if (true == Directbool)
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ -15, 70 });
+	}
+	else
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 5, 70 });
+	}
+	
 }
 void Player::PortalUpdate(float _DeltaTime)
 {
@@ -1801,7 +1819,7 @@ void Player::PortalUpdate(float _DeltaTime)
 }
 void Player::PortalEnd()
 {
-
+	Portaling = false;
 }
 
 void Player::DeathStart()

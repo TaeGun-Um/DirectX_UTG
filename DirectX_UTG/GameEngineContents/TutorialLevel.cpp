@@ -11,6 +11,7 @@
 #include "Tutorial_BackLayer.h"
 #include "Tutorial_Map.h"
 #include "Tutorial_ColMap.h"
+#include "PortalDoor.h"
 #include "Player.h"
 
 #include "TestPlatform.h"
@@ -78,6 +79,11 @@ void TutorialLevel::Start()
 		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
 		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
 	}
+	// Actor
+	{
+		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-100);
+		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1});
+	}
 	// GUI
 	{
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
@@ -92,22 +98,22 @@ void TutorialLevel::Start()
 
 	// 지울 것(테스트)
 	{
-		std::shared_ptr<class TestPlatform> PlatformObject0 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject0 = CreateActor<TestPlatform>(-100);
 		PlatformObject0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 200, 1 });
 
-		std::shared_ptr<class TestPlatform> PlatformObject1 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject1 = CreateActor<TestPlatform>(-100);
 		PlatformObject1->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half, 1 });
 
-		std::shared_ptr<class TestPlatform> PlatformObject2 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject2 = CreateActor<TestPlatform>(-100);
 		PlatformObject2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half + 100, 1 });
 
-		std::shared_ptr<class TestPlatform> PlatformObject3 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject3 = CreateActor<TestPlatform>(-100);
 		PlatformObject3->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + 100, 1 });
 
-		std::shared_ptr<class TestPlatform> PlatformObject4 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject4 = CreateActor<TestPlatform>(-100);
 		PlatformObject4->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + -200, 1 });
 
-		std::shared_ptr<class TestPlatform> PlatformObject5 = CreateActor<TestPlatform>(-100);
+		std::shared_ptr<TestPlatform> PlatformObject5 = CreateActor<TestPlatform>(-100);
 		PlatformObject5->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half - 200, 1 });
 	}
 }

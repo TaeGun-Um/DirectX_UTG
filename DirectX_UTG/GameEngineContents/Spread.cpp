@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Spread.h"
 
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "Player.h"

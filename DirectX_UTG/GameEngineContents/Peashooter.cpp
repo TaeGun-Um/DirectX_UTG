@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Peashooter.h"
 
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "Player.h"

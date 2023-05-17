@@ -197,6 +197,7 @@ private:
 	void PositionCorrection();
 	void PlayerDebugRenderer();
 	void HitBlink(float _DeltaTime);
+	void PortalCheck();
 
 	// 픽셀, 충돌체 체크 모음
 	void CollisionCalculation(float _DeltaTime);
@@ -264,6 +265,8 @@ private:
 	bool IsHit = false;
 	bool HitTimeCheck = false;
 	bool IsDeath = false;
+	bool PortalAble = false;
+	bool Portaling = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;

@@ -162,6 +162,8 @@ void Player::CollisionCalculation(float _DeltaTime)
 	}
 
 	HitCollisionCheck(_DeltaTime);
+
+	PortalCheck();
 }
 
 void Player::HitBlink(float _DeltaTime)
@@ -199,6 +201,20 @@ void Player::HitBlink(float _DeltaTime)
 	else if (0.2f < Inter && Inter <= 0.3f)
 	{
 		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+	}
+}
+
+void Player::PortalCheck()
+{
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Portal), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		&& PlayerState::Idle == StateValue
+		|| PlayerState::Portal == StateValue)
+	{
+		PortalAble = true;
+	}
+	else
+	{
+		PortalAble = false;
 	}
 }
 
@@ -509,7 +525,7 @@ void Player::HitCollisionCheck(float _DeltaTime)
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
-	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit)
+	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit || true == PortalAble)
 	{
 		PeashooterRenderPtr->Off();
 		return;
@@ -1390,7 +1406,7 @@ void Player::CreateHitEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash || true == IsEXAttack)
+	if (true == IsDash || true == IsEXAttack || true == Portaling)
 	{
 		return;
 	}

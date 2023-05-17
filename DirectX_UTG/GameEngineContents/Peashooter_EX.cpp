@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Peashooter_EX.h"
 
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 Peashooter_EX::Peashooter_EX() 

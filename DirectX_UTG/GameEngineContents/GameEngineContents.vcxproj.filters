@@ -207,6 +207,7 @@
     <ClInclude Include="HitSFX.h">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
+    <ClInclude Include="PortalDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -328,5 +329,6 @@
     <ClCompile Include="HitSFX.cpp">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
+    <ClCompile Include="PortalDoor.cpp" />
   </ItemGroup>
 </Project>
