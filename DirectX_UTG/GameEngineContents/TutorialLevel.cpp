@@ -83,6 +83,7 @@ void TutorialLevel::Start()
 	{
 		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-100);
 		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1});
+		Object->SetPortalValue(PortalValue::Overworld);
 	}
 	// GUI
 	{

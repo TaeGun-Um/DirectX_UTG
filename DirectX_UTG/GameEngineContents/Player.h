@@ -63,6 +63,21 @@ public:
 		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
 	}
 
+	bool GetPlayerPortalAble()
+	{
+		return PortalAble;
+	}
+
+	bool GetPlayerPortaling()
+	{
+		return Portaling;
+	}
+
+	std::shared_ptr<class GameEngineSpriteRenderer> GetPlayerMainRenderPtr()
+	{
+		return RenderPtr;
+	}
+
 	int GetPlayerHP()
 	{
 		return PlayerHP;

@@ -66,6 +66,23 @@ public:
 		return MainLevel;
 	}
 
+	static bool FindLevel(const std::string_view& _Name)
+	{
+		bool IsExistence = false;
+		std::string Name = GameEngineString::ToUpper(_Name.data());
+		
+		if (LevelMap.end() != LevelMap.find(Name))
+		{
+			IsExistence = true;
+		}
+		else
+		{
+			IsExistence = false;
+		}
+
+		return IsExistence;
+	}
+
 protected:
 
 private:
