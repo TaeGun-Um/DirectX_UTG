@@ -163,6 +163,44 @@ void Player::CollisionCalculation(float _DeltaTime)
 	HitCollisionCheck(_DeltaTime);
 }
 
+void Player::HitBlink(float _DeltaTime)
+{
+	if (true == IsHit)
+	{
+		return;
+	}
+
+	if (2.95f <= HitTime)
+	{
+		Inter = 0.0f;
+		MulColorCheck = false;
+		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		return;
+	}
+
+	if (false == MulColorCheck)
+	{
+		MulColorCheck = true;
+		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
+		BlinkMulColor = 0.4f;
+	}
+
+	Inter += _DeltaTime;
+
+	if (0.4f < Inter)
+	{
+		Inter = 0.0f;
+	}
+	else if (0.3f < Inter && Inter <= 0.4f)
+	{
+		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+	}
+	else if (0.2f < Inter && Inter <= 0.3f)
+	{
+		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                        Pixel                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -448,6 +486,7 @@ void Player::HitCollisionCheck(float _DeltaTime)
 	if (true == HitTimeCheck)
 	{
 		HitTime += _DeltaTime;
+		HitBlink(_DeltaTime);
 	}
 
 	if (3.0f <= HitTime)
@@ -464,7 +503,7 @@ void Player::HitCollisionCheck(float _DeltaTime)
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
-	if (true == IsDash || true == IsSlap || true == IsEXAttack)
+	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit)
 	{
 		PeashooterRenderPtr->Off();
 		return;
@@ -1331,7 +1370,7 @@ void Player::CreateParryEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash || true == IsEXAttack || true == IsHit)
+	if (true == IsDash || true == IsEXAttack)
 	{
 		return;
 	}
@@ -1594,8 +1633,8 @@ void Player::PlayerInitialSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Duck", .SpriteName = "Duck", .FrameInter = 0.07f });
 
 		// Hit & Death
-		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.05f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.04f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.04f });
 		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
 

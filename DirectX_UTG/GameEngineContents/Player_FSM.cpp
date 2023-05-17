@@ -356,12 +356,6 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
-
 	if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		ChangeState(PlayerState::Move);
@@ -432,7 +426,7 @@ void Player::MoveUpdate(float _DeltaTime)
 		{
 			GetTransform()->AddLocalPosition({ MoveDis, 0 });
 		}
-		if (true == GameEngineInput::IsPress("MoveLeft"))
+		else if (true == GameEngineInput::IsPress("MoveLeft"))
 		{
 			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 		}
@@ -453,12 +447,6 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
 		ChangeState(PlayerState::DuckReady);
-		return;
-	}
-
-	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
-	{
-		ChangeState(PlayerState::Idle);
 		return;
 	}
 
@@ -1078,18 +1066,6 @@ void Player::AttackUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
-	}
-
-	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
-	}
-
 	if (true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
 		|| true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
 	{
@@ -1171,7 +1147,7 @@ void Player::RunAttackUpdate(float _DeltaTime)
 	{
 		GetTransform()->AddLocalPosition({ MoveDis, 0 });
 	}
-	if (true == GameEngineInput::IsPress("MoveLeft"))
+	else if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
@@ -1216,18 +1192,6 @@ void Player::RunAttackUpdate(float _DeltaTime)
 		{
 			ADValue = AttackDirection::Left_Front;
 		}
-	}
-
-	if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
-	}
-
-	if (true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
 	}
 
 	if (false == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
@@ -1786,7 +1750,7 @@ void Player::HitStart()
 		RenderPtr->ChangeAnimation("Hit");
 	}
 
-	RenderPtr->GetTransform()->SetLocalScale({300, 330});
+	RenderPtr->GetTransform()->SetLocalScale({ 300, 330 });
 }
 void Player::HitUpdate(float _DeltaTime)
 {

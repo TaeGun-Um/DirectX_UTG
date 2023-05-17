@@ -186,9 +186,16 @@ private:
 	void PlayerCollisionSetting();
 	void DebugRendererSetting();
 
+	float OriginMulColor = 0.0f;
+	float BlinkMulColor = 0.0f;
+	float Inter = 0.5f;
+
+	bool MulColorCheck = false;
+
 	// Assistant
 	void PositionCorrection();
 	void PlayerDebugRenderer();
+	void HitBlink(float _DeltaTime);
 
 	// 픽셀, 충돌체 체크 모음
 	void CollisionCalculation(float _DeltaTime);
