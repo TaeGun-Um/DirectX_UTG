@@ -28,6 +28,33 @@ TutorialLevel::~TutorialLevel()
 
 void TutorialLevel::Start()
 {
+}
+
+void TutorialLevel::PlayerDebugRenderOn()
+{
+	PlayerObject->PlayerDebugRenderOn();
+}
+
+void TutorialLevel::PlayerDebugRenderOff()
+{
+	PlayerObject->PlayerDebugRenderOff();
+}
+
+void TutorialLevel::TutorialColMapOn()
+{
+	ThisColMap->ColMapDebugRenderOn();
+}
+void TutorialLevel::TutorialColMapOff()
+{
+	ThisColMap->ColMapDebugRenderOff();
+}
+
+void TutorialLevel::Update(float _DeltaTime)
+{
+}
+
+void TutorialLevel::LevelChangeStart()
+{
 	// 레벨 리소스 로드
 	{
 		GameEngineDirectory NewDir;
@@ -60,41 +87,49 @@ void TutorialLevel::Start()
 	// CreateActor
 	// Character
 	{
-		PlayerObject = CreateActor<Player>(1);
-		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
-		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		if (nullptr == PlayerObject)
+		{
+			PlayerObject = CreateActor<Player>(1);
+			PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
+			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		}
 	}
 	// Background, Map
 	{
-
 		std::shared_ptr<Tutorial_BackGround> Object0 = CreateActor<Tutorial_BackGround>(-100);
 		Object0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 
 		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
-		Object1->GetTransform()->SetLocalPosition(PlayMapPosition + float4{0, 0, 50});
+		Object1->GetTransform()->SetLocalPosition(PlayMapPosition + float4{ 0, 0, 50 });
 
 		std::shared_ptr<Tutorial_BackLayer> Object2 = CreateActor<Tutorial_BackLayer>(-10);
 		Object2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
 
-		ThisColMap = CreateActor<Tutorial_ColMap>(-30);
-		ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
+		if (nullptr == ThisColMap)
+		{
+			ThisColMap = CreateActor<Tutorial_ColMap>(-30);
+			ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
+		}
 	}
 	// Actor
 	{
 		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-100);
-		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1});
+		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1 });
 		Object->SetPortalValue(PortalValue::Overworld);
 	}
 	// GUI
 	{
-		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
-		GUI->SetTarget(PlayerObject->GetTransform());
-		GUI->SetMainPalyer(PlayerObject);
+		if (nullptr == GUI)
+		{
+			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+			GUI->SetTarget(PlayerObject->GetTransform());
+			GUI->SetMainPalyer(PlayerObject);
 
-		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
-		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
-		GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
-		GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
+			GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
+			GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
+			GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
+			GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
+		}
 	}
 
 	// 지울 것(테스트)
@@ -117,34 +152,6 @@ void TutorialLevel::Start()
 		std::shared_ptr<TestPlatform> PlatformObject5 = CreateActor<TestPlatform>(-100);
 		PlatformObject5->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half - 200, 1 });
 	}
-}
-
-void TutorialLevel::PlayerDebugRenderOn()
-{
-	PlayerObject->PlayerDebugRenderOn();
-}
-
-void TutorialLevel::PlayerDebugRenderOff()
-{
-	PlayerObject->PlayerDebugRenderOff();
-}
-
-void TutorialLevel::TutorialColMapOn()
-{
-	ThisColMap->ColMapDebugRenderOn();
-}
-void TutorialLevel::TutorialColMapOff()
-{
-	ThisColMap->ColMapDebugRenderOff();
-}
-
-void TutorialLevel::Update(float _DeltaTime)
-{
-}
-
-void TutorialLevel::LevelChangeStart()
-{
-
 }
 void TutorialLevel::LevelChangeEnd()
 {

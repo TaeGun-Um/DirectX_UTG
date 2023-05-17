@@ -60,65 +60,41 @@ void PortalDoor::LevelChange()
 	{
 	case PortalValue::WaitingRoom:
 	{
-		if (false == GameEngineCore::FindLevel("WaitingRoomLevel"))
-		{
-			GameEngineCore::CreateLevel<WaitingRoomLevel>();
-		}
 		GameEngineCore::ChangeLevel("WaitingRoomLevel");
-	break;
 	}
+	break;
 	case PortalValue::Tutorial:
 	{
-		if (false == GameEngineCore::FindLevel("TutorialLevel"))
-		{
-			GameEngineCore::CreateLevel<TutorialLevel>();
-		}
 		GameEngineCore::ChangeLevel("TutorialLevel");
-	break;
 	}
+	break;
 	case PortalValue::Overworld:
 	{
-		if (false == GameEngineCore::FindLevel("OverworldLevel"))
-		{
-			GameEngineCore::CreateLevel<OverworldLevel>();
-		}
 		GameEngineCore::ChangeLevel("OverworldLevel");
-	break;
 	}
+	break;
 	case PortalValue::Frog:
 	{
-		if (false == GameEngineCore::FindLevel("FrogLevel"))
-		{
-			GameEngineCore::CreateLevel<FrogLevel>();
-		}
 		GameEngineCore::ChangeLevel("FrogLevel");
-	break;
 	}
+	break;
 	case PortalValue::Dragon:
 	{
-		if (false == GameEngineCore::FindLevel("DragonLevel"))
-		{
-			GameEngineCore::CreateLevel<DragonLevel>();
-		}
 		GameEngineCore::ChangeLevel("DragonLevel");
-	break;
 	}
+	break;
 	case PortalValue::Mouse:
 	{
-		if (false == GameEngineCore::FindLevel("MouseLevel"))
-		{
-			GameEngineCore::CreateLevel<MouseLevel>();
-		}
 		GameEngineCore::ChangeLevel("MouseLevel");
-	break;
 	}
+	break;
 	case PortalValue::Unknown:
 	{
 		MsgAssert("PortalValue를 설정하지 않았습니다. Unknown으로는 갈 수 없습니다.");
 		return;
-	break;
 	}
+	break;
 	default:
-		break;
+	break;
 	}
 }

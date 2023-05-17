@@ -220,10 +220,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Obj.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="OverworldLevel.h">
       <SubType>
       </SubType>
@@ -278,18 +274,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Spread_EX.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestLevel_Map.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestObject.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -383,10 +367,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Obj.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="OverworldLevel.cpp">
       <SubType>
       </SubType>
@@ -450,18 +430,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Spread_EX.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestLevel_Map.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestObject.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -16,6 +16,14 @@ WaitingRoomLevel::~WaitingRoomLevel()
 
 void WaitingRoomLevel::Start()
 {
+}
+void WaitingRoomLevel::Update(float _DeltaTime)
+{
+
+}
+
+void WaitingRoomLevel::LevelChangeStart()
+{
 	// 리소스 로드
 	{
 		GameEngineDirectory NewDir;
@@ -40,15 +48,6 @@ void WaitingRoomLevel::Start()
 	// CreateActor
 	//std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>("BookRender");
 	//Object1->GetTransform()->AddWorldPosition({ 0, -3 });
-}
-void WaitingRoomLevel::Update(float _DeltaTime)
-{
-
-}
-
-void WaitingRoomLevel::LevelChangeStart()
-{
-
 }
 void WaitingRoomLevel::LevelChangeEnd()
 {

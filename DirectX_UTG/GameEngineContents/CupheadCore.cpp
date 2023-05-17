@@ -4,11 +4,10 @@
 #include <GameEngineCore\GameEngineCore.h>
 #include <GameEngineCore/GameEngineGUI.h>
 
-#include "TestLevel.h"
 #include "First_OpeningLevel.h"
+#include "Second_OpeningLevel.h"
 #include "TutorialLevel.h"
 #include "WaitingRoomLevel.h"
-#include "TutorialLevel.h"
 #include "OverworldLevel.h"
 #include "FrogLevel.h"
 #include "DragonLevel.h"
@@ -33,12 +32,17 @@ void CupheadCore::GameStart()
 
 	ContentsResourcesCreate();
 
-	//GameEngineCore::CreateLevel<TestLevel>();
-	//GameEngineCore::CreateLevel<First_OpeningLevel>();
+	GameEngineCore::CreateLevel<First_OpeningLevel>();
+	GameEngineCore::CreateLevel<Second_OpeningLevel>();
 	GameEngineCore::CreateLevel<TutorialLevel>();
-	//GameEngineCore::CreateLevel<OverworldLevel>();
+	GameEngineCore::CreateLevel<WaitingRoomLevel>();
+	GameEngineCore::CreateLevel<OverworldLevel>();
+	GameEngineCore::CreateLevel<FrogLevel>();
+	GameEngineCore::CreateLevel<DragonLevel>();
+	GameEngineCore::CreateLevel<MouseLevel>();
+	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::ChangeLevel("TutorialLevel");
+	GameEngineCore::ChangeLevel("First_OpeningLevel");
 }
 
 void CupheadCore::GameEnd()

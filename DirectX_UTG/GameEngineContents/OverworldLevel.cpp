@@ -19,23 +19,14 @@ OverworldLevel::~OverworldLevel()
 
 void OverworldLevel::Start()
 {
-	// 리소스 로드
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Overworld");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+}
+void OverworldLevel::Update(float _DeltaTime)
+{
+}
 
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-
+void OverworldLevel::LevelChangeStart()
+{
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
@@ -47,16 +38,11 @@ void OverworldLevel::Start()
 	}
 	// Character
 	{
-		std::shared_ptr<Player_Overworld> Object = CreateActor<Player_Overworld>(1);
+		if (nullptr == PlayerObject)
+		{
+			PlayerObject = CreateActor<Player_Overworld>(1);
+		}
 	}
-}
-void OverworldLevel::Update(float _DeltaTime)
-{
-}
-
-void OverworldLevel::LevelChangeStart()
-{
-
 }
 void OverworldLevel::LevelChangeEnd()
 {

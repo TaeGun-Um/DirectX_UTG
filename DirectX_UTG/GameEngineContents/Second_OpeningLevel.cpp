@@ -21,6 +21,20 @@ Second_OpeningLevel::~Second_OpeningLevel()
 
 void Second_OpeningLevel::Start()
 {
+}
+void Second_OpeningLevel::Update(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsPress("Action"))
+	{
+		//GameEngineCore::CreateLevel<WaitingRoomLevel>();
+		//GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		GameEngineCore::CreateLevel<TutorialLevel>();
+		GameEngineCore::ChangeLevel("TutorialLevel");
+	}
+}
+
+void Second_OpeningLevel::LevelChangeStart()
+{
 	// 리소스 로드
 	{
 		GameEngineDirectory NewDir;
@@ -45,21 +59,6 @@ void Second_OpeningLevel::Start()
 	// CreateActor
 	std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>();
 	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
-}
-void Second_OpeningLevel::Update(float _DeltaTime)
-{
-	if (true == GameEngineInput::IsPress("Action"))
-	{
-		//GameEngineCore::CreateLevel<WaitingRoomLevel>();
-		//GameEngineCore::ChangeLevel("WaitingRoomLevel");
-		GameEngineCore::CreateLevel<TutorialLevel>();
-		GameEngineCore::ChangeLevel("TutorialLevel");
-	}
-}
-
-void Second_OpeningLevel::LevelChangeStart()
-{
-
 }
 void Second_OpeningLevel::LevelChangeEnd()
 {

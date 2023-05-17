@@ -4,6 +4,8 @@
 class MDHR_Logo : public GameEngineActor
 {
 public:
+	static MDHR_Logo* LogoPtr;
+
 	// constrcuter destructer
 	MDHR_Logo();
 	~MDHR_Logo();
@@ -14,6 +16,11 @@ public:
 	MDHR_Logo& operator=(const MDHR_Logo& _Other) = delete;
 	MDHR_Logo& operator=(MDHR_Logo&& _Other) noexcept = delete;
 
+	static bool GetLogoAnimationIsEnd()
+	{
+		return IsEnd;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -21,6 +28,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
-
+	static bool IsEnd;
 };
 

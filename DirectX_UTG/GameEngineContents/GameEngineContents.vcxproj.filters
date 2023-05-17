@@ -7,12 +7,6 @@
     <Filter Include="ContentsCore">
       <UniqueIdentifier>{cc419df3-0d29-4704-8a6e-f5149bbc8fa9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Levels\0. TestLevel">
-      <UniqueIdentifier>{d19c7044-25bf-4eff-8dff-cb13bacb743a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels\0. TestLevel\Object">
-      <UniqueIdentifier>{76a6fed1-8291-4b18-809c-0aae6541cff0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Levels\1. Opening">
       <UniqueIdentifier>{4b2fb859-1d6a-4ae6-a8f4-e5d1997ef5ed}</UniqueIdentifier>
     </Filter>
@@ -90,9 +84,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestObject.h">
-      <Filter>Levels\0. TestLevel\Object</Filter>
-    </ClInclude>
     <ClInclude Include="CupheadCore.h">
       <Filter>ContentsCore</Filter>
     </ClInclude>
@@ -123,9 +114,6 @@
     <ClInclude Include="MouseLevel.h">
       <Filter>Levels\5. Bosses\3. Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>Levels\0. TestLevel</Filter>
-    </ClInclude>
     <ClInclude Include="MDHR_Logo.h">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClInclude>
@@ -147,17 +135,11 @@
     <ClInclude Include="Tutorial_Map.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Obj.h">
-      <Filter>Levels\0. TestLevel\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Tutorial_BackGround.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
     <ClInclude Include="Overworld_Map.h">
       <Filter>Levels\4. Overworld\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="TestLevel_Map.h">
-      <Filter>Levels\0. TestLevel\Object</Filter>
     </ClInclude>
     <ClInclude Include="TransformGUI.h">
       <Filter>IMGUI</Filter>
@@ -210,9 +192,6 @@
     <ClInclude Include="PortalDoor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TestObject.cpp">
-      <Filter>Levels\0. TestLevel\Object</Filter>
-    </ClCompile>
     <ClCompile Include="CupheadCore.cpp">
       <Filter>ContentsCore</Filter>
     </ClCompile>
@@ -246,9 +225,6 @@
     <ClCompile Include="MouseLevel.cpp">
       <Filter>Levels\5. Bosses\3. Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>Levels\0. TestLevel</Filter>
-    </ClCompile>
     <ClCompile Include="MDHR_Logo.cpp">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClCompile>
@@ -267,17 +243,11 @@
     <ClCompile Include="Tutorial_Map.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Obj.cpp">
-      <Filter>Levels\0. TestLevel\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Tutorial_BackGround.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
     <ClCompile Include="Overworld_Map.cpp">
       <Filter>Levels\4. Overworld\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="TestLevel_Map.cpp">
-      <Filter>Levels\0. TestLevel\Object</Filter>
     </ClCompile>
     <ClCompile Include="TransformGUI.cpp">
       <Filter>IMGUI</Filter>
