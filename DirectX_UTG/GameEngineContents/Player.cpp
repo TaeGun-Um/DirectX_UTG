@@ -338,10 +338,12 @@ void Player::CollisionSetting()
 	if (true == IsDash || true == IsEXAttack || true == HitTimeCheck)
 	{
 		BodyCollisionRenderPtr->Off();
+		BodyCollisionPtr->Off();
 	}
 	else
 	{
 		BodyCollisionRenderPtr->On();
+		BodyCollisionPtr->On();
 	}
 
 	if (true == IsDuck)
@@ -1824,6 +1826,7 @@ void Player::PlayerCollisionSetting()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
+		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
 
 	if (nullptr == StandCollisionRenderPtr)

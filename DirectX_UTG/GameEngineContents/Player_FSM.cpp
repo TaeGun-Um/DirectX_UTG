@@ -63,6 +63,9 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Hit:
 		HitStart();
 		break;
+	case PlayerState::Portal:
+		PortalStart();
+		break;
 	case PlayerState::Death:
 		DeathStart();
 		break;
@@ -119,6 +122,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Hit:
 		HitEnd();
+		break;
+	case PlayerState::Portal:
+		PortalEnd();
 		break;
 	case PlayerState::Death:
 		DeathEnd();
@@ -179,6 +185,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::Hit:
 		HitUpdate(_DeltaTime);
+		break;
+	case PlayerState::Portal:
+		PortalUpdate(_DeltaTime);
 		break;
 	case PlayerState::Death:
 		DeathUpdate(_DeltaTime);
@@ -1776,6 +1785,23 @@ void Player::HitUpdate(float _DeltaTime)
 void Player::HitEnd()
 {
 	IsHit = false;
+}
+
+void Player::PortalStart()
+{
+	RenderPtr->ChangeAnimation("Portal");
+}
+void Player::PortalUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+void Player::PortalEnd()
+{
+
 }
 
 void Player::DeathStart()

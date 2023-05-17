@@ -20,6 +20,7 @@ enum class PlayerState
 	Holding,
 	HoldingAttack,
 	Hit,
+	Portal,
 	Death,
 };
 
@@ -341,6 +342,10 @@ private:
 	void HitStart();
 	void HitUpdate(float _DeltaTime);
 	void HitEnd();
+
+	void PortalStart();
+	void PortalUpdate(float _DeltaTime);
+	void PortalEnd();
 
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);
