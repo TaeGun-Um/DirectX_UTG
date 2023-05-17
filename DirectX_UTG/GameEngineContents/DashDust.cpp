@@ -17,7 +17,7 @@ void DashDust::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "DashDust", .SpriteName = "DashDust", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "DashDust", .SpriteName = "DashDust", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("DashDust");
 	}

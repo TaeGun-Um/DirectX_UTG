@@ -12,6 +12,7 @@
 #include "Spread_EX.h"
 #include "DashDust.h"
 #include "EXDust.h"
+#include "HitSFX.h"
 #include "MoveDust.h"
 #include "LandDust.h"
 #include "ParryEffect.h"
@@ -479,7 +480,10 @@ void Player::HitCollisionCheck(float _DeltaTime)
 	{
 		IsHit = true;
 		HitTimeCheck = true;
+
 		MinusPlayerHP();
+		CreateHitEffect();
+
 		BodyCollisionPtr->Off();
 	}
 
@@ -1350,6 +1354,7 @@ void Player::CreateLandDust()
 	DustPosition += float4{ 0, 30 };
 
 	Dust->SetStartPosition(DustPosition);
+	Dust->SetDirection(Directbool);
 }
 
 // Parry시 생성되는 Effect
@@ -1362,6 +1367,19 @@ void Player::CreateParryEffect()
 	EffectPosition += float4{ 0, 90 };
 
 	Effect->SetStartPosition(EffectPosition);
+	Effect->SetDirection(Directbool);
+}
+
+void Player::CreateHitEffect()
+{
+	std::shared_ptr<HitSFX> Effect = GetLevel()->CreateActor<HitSFX>(1);
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 EffectPosition = PlayerPosition;
+
+	EffectPosition += float4{ -10, 110 };
+
+	Effect->SetStartPosition(EffectPosition);
+	Effect->SetDirection(Directbool);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1550,6 +1568,7 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ElderKettleInteraction").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Flex").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Regular").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Peashooter\\Peashooter_Spawn"))
@@ -1608,7 +1627,6 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EX_ChargeUp").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("HitSFX").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
 	}
 
 	if (nullptr != RenderPtr)
@@ -1621,21 +1639,21 @@ void Player::PlayerInitialSetting()
 
 		// Jump & Parry(Slap)
 		RenderPtr->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "Jump", .FrameInter = 0.05f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f, .Loop = false });
+		RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f, .Loop = false });
 
 		// Dash
-		RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "Dash", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f, .Loop = false });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "Dash", .FrameInter = 0.05f, .Loop = false });
 
 		// Duck
 		RenderPtr->CreateAnimation({ .AnimationName = "DuckReady", .SpriteName = "DuckReady", .FrameInter = 0.05f });
 		RenderPtr->CreateAnimation({ .AnimationName = "Duck", .SpriteName = "Duck", .FrameInter = 0.07f });
 
 		// Hit & Death
-		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.04f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.04f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.04f, .Loop = false });
+		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.04f, .Loop = false });
+		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f, .Loop = false });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
 
 		// Hold
@@ -1656,21 +1674,22 @@ void Player::PlayerInitialSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Shoot_Up", .SpriteName = "Hold_Shoot_Up", .FrameInter = 0.05f });
 
 		// EX
-		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalDown", .SpriteName = "AirEX_DiagonalDown", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_DiagonalUp", .SpriteName = "AirEx_DiagonalUp", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Down", .SpriteName = "AirEx_Down", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Straight", .SpriteName = "AirEx_Straight", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "AirEx_Up", .SpriteName = "AirEx_Up", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalDown", .SpriteName = "Ex_DiagonalDown", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_DiagonalUp", .SpriteName = "Ex_DiagonalUp", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Down", .SpriteName = "Ex_Down", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Straight", .SpriteName = "Ex_Straight", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		// Interaction & Intro
-		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f });
-		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f });
+		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Portal", .SpriteName = "Portal", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 	}
 
 	if (nullptr != PeashooterRenderPtr)

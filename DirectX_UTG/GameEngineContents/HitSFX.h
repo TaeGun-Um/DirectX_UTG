@@ -1,18 +1,18 @@
 #pragma once
 
 // Ό³Έν :
-class ParryEffect : public GameEngineActor
+class HitSFX : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	ParryEffect();
-	~ParryEffect();
+	HitSFX();
+	~HitSFX();
 
 	// delete Function
-	ParryEffect(const ParryEffect& _Other) = delete;
-	ParryEffect(ParryEffect&& _Other) noexcept = delete;
-	ParryEffect& operator=(const ParryEffect& _Other) = delete;
-	ParryEffect& operator=(ParryEffect&& _Other) noexcept = delete;
+	HitSFX(const HitSFX& _Other) = delete;
+	HitSFX(HitSFX&& _Other) noexcept = delete;
+	HitSFX& operator=(const HitSFX& _Other) = delete;
+	HitSFX& operator=(HitSFX&& _Other) noexcept = delete;
 
 	void SetStartPosition(const float4& _PlayerPosition)
 	{
@@ -34,9 +34,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-
-	bool IsDeath = false;
-
 	void DeathCheck();
 
 };

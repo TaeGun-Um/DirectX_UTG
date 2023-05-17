@@ -35,9 +35,9 @@ void MoveDust::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ "Dust_A", "Dust_A.png", 0, 18, 0.05f, true, true });
-		RenderPtr->CreateAnimation({ "Dust_B", "Dust_B.png", 0, 19, 0.05f, true, true });
-		RenderPtr->CreateAnimation({ "Dust_C", "Dust_C.png", 0, 18, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Dust_A", "Dust_A.png", 0, 18, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Dust_B", "Dust_B.png", 0, 19, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Dust_C", "Dust_C.png", 0, 18, 0.05f, false, true });
 
 		RenderPtr->ChangeAnimation("Dust_A");
 	}

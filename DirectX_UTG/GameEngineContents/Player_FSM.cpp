@@ -1754,7 +1754,18 @@ void Player::HitStart()
 }
 void Player::HitUpdate(float _DeltaTime)
 {
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 160 });
+	if (0 == RenderPtr->GetCurrentFrame() || 5 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 160 });
+	}
+	else if (1 == RenderPtr->GetCurrentFrame() || 4 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 170 });
+	}
+	else if (2 == RenderPtr->GetCurrentFrame() || 3 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 180 });
+	}
 
 	if (true == RenderPtr->IsAnimationEnd())
 	{

@@ -204,6 +204,9 @@
     <ClInclude Include="DashDust.h">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
+    <ClInclude Include="HitSFX.h">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestObject.cpp">
@@ -321,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="Player_FSM.cpp">
       <Filter>Levels\7. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="HitSFX.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

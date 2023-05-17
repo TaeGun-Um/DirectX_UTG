@@ -17,7 +17,7 @@ void ParryEffect::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "ParryEffect", .SpriteName = "ParryEffect", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "ParryEffect", .SpriteName = "ParryEffect", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("ParryEffect");
 	}

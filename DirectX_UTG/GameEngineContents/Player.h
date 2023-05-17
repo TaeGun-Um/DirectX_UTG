@@ -227,6 +227,7 @@ private:
 	void CreateMoveDust();
 	void CreateParryEffect();
 	void CreateLandDust();
+	void CreateHitEffect();
 
 	int ProjectileSet = 0;
 

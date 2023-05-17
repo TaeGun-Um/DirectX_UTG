@@ -17,7 +17,7 @@ void LandDust::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "JumpDust", .SpriteName = "JumpDust", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "JumpDust", .SpriteName = "JumpDust", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("JumpDust");
 	}
