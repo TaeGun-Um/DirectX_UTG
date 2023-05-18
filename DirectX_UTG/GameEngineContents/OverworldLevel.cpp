@@ -9,6 +9,7 @@
 #include "Overworld_Map.h"
 #include "Player_Overworld.h"
 
+#include "Screen_FX.h"
 #include "Loading.h"
 
 OverworldLevel::OverworldLevel() 
@@ -44,6 +45,10 @@ void OverworldLevel::LevelChangeStart()
 		{
 			PlayerObject = CreateActor<Player_Overworld>(1);
 		}
+	}
+
+	{
+		std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
 	}
 
 	LoadingPtr = CreateActor<Loading>();

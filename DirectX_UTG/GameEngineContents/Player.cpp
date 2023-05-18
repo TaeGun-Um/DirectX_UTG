@@ -488,7 +488,7 @@ void Player::ParryCollisionCheck()
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::ParrySpot), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		ParryCheck = true;
-		CreateParryEffect();
+		//CreateParryEffect();
 		AddPlayerEXStack();
 	}
 }

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
 
+#include <GameEngineBase/GameEngineTime.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -863,7 +864,20 @@ void Player::SlapUpdate(float _DeltaTime)
 		IsJump = false;
 		MoveDirect.y = 0;
 		JumpTime = 0.0f;
-		ChangeState(PlayerState::Jump);
+
+		GameEngineTime::GlobalTime.SetTimeScale(0.0f);
+
+		size_t a = RenderPtr->GetCurrentFrame();
+		RenderPtr->ChangeAnimation("Parry_Pink");
+	
+		NormalDeltaTime += GameEngineTime::GlobalTime.GetNormalDeltaTime();
+
+		if (NormalDeltaTime >= 0.2f)
+		{
+			GameEngineTime::GlobalTime.SetTimeScale(1.0f);
+			ChangeState(PlayerState::Jump);
+		}
+
 		return;
 	}
 
@@ -909,6 +923,7 @@ void Player::SlapUpdate(float _DeltaTime)
 }
 void Player::SlapEnd()
 {
+	NormalDeltaTime = 0.0f;
 	ParryCheck = false;
 	ParryCollisionPtr->Off();
 	ParryCollisionRenderPtr->Off();

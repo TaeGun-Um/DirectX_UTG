@@ -289,6 +289,7 @@ private:
 	float ProjectileCreateTime = 0.0f;
 	float MoveTime = 0.0f;
 	float HitTime = 0.0f;
+	float NormalDeltaTime = 0.0f;
 
 	int CreateEXCount = 1;
 

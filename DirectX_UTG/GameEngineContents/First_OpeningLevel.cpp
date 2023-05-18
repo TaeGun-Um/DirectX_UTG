@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 
 #include "Second_OpeningLevel.h"
+
 #include "Screen_FX.h"
 #include "MDHR_Logo.h"
 #include "Title_Background.h"
@@ -39,8 +40,6 @@ void First_OpeningLevel::Update(float _DeltaTime)
 
 void First_OpeningLevel::LevelChangeStart()
 {
-
-
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
