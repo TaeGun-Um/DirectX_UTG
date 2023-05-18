@@ -36,17 +36,17 @@ void Player::Start()
 	SetCameraFollowType(CameraFollowType::Field);
 	SetPlayerMoveSpeed(380.0f);
 
-	SetPlayerHP(GetHP());
-	SetPlayerEXGauge(GetEXGauge());
-	SetPlayerEXStack(GetEXStack());
-
 	ChangeState(PlayerState::Idle);
 }
 void Player::Update(float _DeltaTime)
 {
 	if (false == IsCorrection)
 	{
+		On();
 		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
+		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
+		SetPlayerEXGauge(GetEXGauge());
+		SetPlayerEXStack(GetEXStack());
 		return;
 	}
 
@@ -55,7 +55,7 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);			// 플레이어 FSM 업데이트
 	ProjectileCreate(_DeltaTime);		// 총알 생성
 	CreateMoveDust();					// 움직일 때 Dust 생성
-	CollisionSetting();
+	CollisionSetting();                 // 프레임마다 콜리전 위치 체크
 	CollisionCalculation(_DeltaTime);	// 플레이어 맵충돌(픽셀, 충돌체) 계산
 	PlayerDebugRenderer();				// 플레이어 디버깅 랜더 온오프
 }
@@ -67,8 +67,6 @@ void Player::Update(float _DeltaTime)
 // 플레이어 위치 보정 함수(최초 레벨 init 시 실시)
 void Player::PositionCorrection()
 {
-	On();
-
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 
 	if (0 >= PlayerPos.y)
@@ -488,7 +486,7 @@ void Player::ParryCollisionCheck()
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::ParrySpot), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		ParryCheck = true;
-		//CreateParryEffect();
+		CreateParryEffect();
 		AddPlayerEXStack();
 	}
 }

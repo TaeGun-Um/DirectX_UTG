@@ -29,10 +29,6 @@ void CupheadCore::GameStart()
 {
 	new int(); // 신뢰의 릭
 
-	int a = 0;
-
-	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
-
 	ContentsResourcesCreate();
 
 	GameEngineCore::CreateLevel<First_OpeningLevel>();
@@ -45,7 +41,7 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<MouseLevel>();
 	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::ChangeLevel("TutorialLevel");
+	GameEngineCore::ChangeLevel("OverworldLevel");
 }
 
 void CupheadCore::GameEnd()
@@ -55,6 +51,9 @@ void CupheadCore::GameEnd()
 
 void CupheadCore::ContentsResourcesCreate()
 {
+	// IMGUI Create
+	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
+
 	// 텍스처 로드만 각 레벨별로 하고 정리하는 습관을 들이세요.
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{

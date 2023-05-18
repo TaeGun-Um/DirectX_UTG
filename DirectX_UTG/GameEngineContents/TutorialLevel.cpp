@@ -85,8 +85,7 @@ void TutorialLevel::LevelChangeStart()
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	//GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 3600, PlayMapHeight_Half - 100, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
 	// Character
@@ -94,8 +93,7 @@ void TutorialLevel::LevelChangeStart()
 		if (nullptr == PlayerObject)
 		{
 			PlayerObject = CreateActor<Player>(-1);
-			// PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
-			PlayerObject->GetTransform()->SetLocalPosition({ 3600 , PlayMapHeight_Half, 1 });
+			PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
 			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		}
 	}
