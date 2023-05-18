@@ -57,6 +57,7 @@ void TutorialLevel::Update(float _DeltaTime)
 void TutorialLevel::LevelChangeStart()
 {
 	// 레벨 리소스 로드
+	if (nullptr == GameEngineTexture::Find("Tutorial_Map"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
