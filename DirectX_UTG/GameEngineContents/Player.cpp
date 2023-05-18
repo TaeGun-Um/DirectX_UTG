@@ -67,6 +67,8 @@ void Player::Update(float _DeltaTime)
 // 플레이어 위치 보정 함수(최초 레벨 init 시 실시)
 void Player::PositionCorrection()
 {
+	On();
+
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 
 	if (0 >= PlayerPos.y)
@@ -1739,21 +1741,6 @@ void Player::PlayerInitialSetting()
 
 void Player::DebugRendererSetting()
 {
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("CupHead_Resource");
-	NewDir.Move("CupHead_Resource");
-	NewDir.Move("Image");
-	NewDir.Move("Character");
-	NewDir.Move("CupHead");
-	NewDir.Move("DebugImage");
-
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-	for (size_t i = 0; i < File.size(); i++)
-	{
-		GameEngineTexture::Load(File[i].GetFullPath());
-	}
-
 	if (nullptr == DebugRenderPtr0)
 	{
 		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();

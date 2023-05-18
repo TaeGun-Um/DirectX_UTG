@@ -9,6 +9,8 @@
 #include "Overworld_Map.h"
 #include "Player_Overworld.h"
 
+#include "Loading.h"
+
 OverworldLevel::OverworldLevel() 
 {
 }
@@ -43,8 +45,11 @@ void OverworldLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player_Overworld>(1);
 		}
 	}
+
+	LoadingPtr = CreateActor<Loading>();
+	LoadingPtr->SetLoadingPtrOff();
 }
 void OverworldLevel::LevelChangeEnd()
 {
-
+	LoadingPtr->SetLoadingPtrOn();
 }

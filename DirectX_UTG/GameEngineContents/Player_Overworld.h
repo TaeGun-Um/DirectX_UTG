@@ -33,7 +33,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
 
 	bool Directbool = true;
-	AttackDirection ADValue = AttackDirection::Right_Front;
+	AttackDirection ADValue = AttackDirection::Right_Down;
 
 	void PlayerInitialSetting();
 	void DirectCheck();

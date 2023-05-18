@@ -24,14 +24,16 @@ void AnimationInfo::Reset()
 
 void AnimationInfo::Update(float _DeltaTime)
 {
-	if (false == Loop && FrameIndex.size() == CurFrame + 1)
-	{
-		IsEndValue = true;
-	}
-	else
-	{
-		IsEndValue = false;
-	}
+	//if (false == Loop && FrameIndex.size() == CurFrame + 1)
+	//{
+	//	IsEndValue = true;
+	//}
+	//else
+	//{
+	//	IsEndValue = false;
+	//}
+
+	IsEndValue = false;
 
 	if (true == IsPauseValue)
 	{

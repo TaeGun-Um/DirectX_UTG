@@ -25,14 +25,16 @@ void MDHR_Logo::Start()
 		NewDir.Move("Image");
 		NewDir.Move("Level");
 		NewDir.Move("Opening1");
+		NewDir.Move("MDHR_Logo");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("MDHR_Logo").GetFullPath());
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("MDHR_Logo.png").GetFullPath(), 5, 20);
 	}
 
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "MDHR_Logo", .SpriteName = "MDHR_Logo", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ "MDHR_Logo", "MDHR_Logo.png", 0, 99, 0.05f, false, false});
+		RenderPtr->GetTransform()->SetLocalScale({ 1300, 731 });
 		RenderPtr->ChangeAnimation("MDHR_Logo");
 	}
 }

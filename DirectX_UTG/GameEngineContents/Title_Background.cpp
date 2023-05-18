@@ -58,7 +58,7 @@ void Title_Background::Start()
 		RenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
 		RenderPtr2->SetTexture("PressAnyButton.png");
 		RenderPtr2->GetTransform()->SetLocalScale({ 355, 51, 2 });
-		RenderPtr2->GetTransform()->AddWorldPosition({ 25, -300 });
+		RenderPtr2->GetTransform()->AddWorldPosition({ 25, -280 });
 		RenderPtr2->Off();
 	}
 }
@@ -75,12 +75,12 @@ void Title_Background::Update(float _DeltaTime)
 
 	KeyRenderTime += _DeltaTime;
 
-	if (2.0f <= KeyRenderTime)
+	if (1.0f <= KeyRenderTime)
 	{
 		RenderPtr2->Off();
 	}
 	
-	if (4.0f <= KeyRenderTime)
+	if (2.0f <= KeyRenderTime)
 	{
 		RenderPtr2->On();
 		KeyRenderTime = 0.0f;

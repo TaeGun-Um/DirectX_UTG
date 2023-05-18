@@ -14,6 +14,7 @@
 #include "PortalDoor.h"
 #include "Player.h"
 
+#include "Loading.h"
 #include "TestPlatform.h"
 
 #include "TransformGUI.h"
@@ -155,5 +156,4 @@ void TutorialLevel::LevelChangeStart()
 }
 void TutorialLevel::LevelChangeEnd()
 {
-
 }

@@ -22,6 +22,7 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 
 };
 

@@ -28,13 +28,14 @@ void Screen_FX::Start()
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "Screen_FX", .SpriteName = "Screen_FX", .FrameInter = 0.1f });
-		RenderPtr->GetTransform()->SetLocalScale({1280, 720});
+		RenderPtr->CreateAnimation({ .AnimationName = "Screen_FX", .SpriteName = "Screen_FX", .FrameInter = 0.01f });
+		RenderPtr->GetTransform()->SetLocalScale({ 1300, 731 });
 		RenderPtr->ChangeAnimation("Screen_FX");
-		RenderPtr->ColorOptionValue.MulColor.r = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.g = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.b = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.a = 0.2f;
+
+		RenderPtr->ColorOptionValue.MulColor.r = 0.15f;
+		RenderPtr->ColorOptionValue.MulColor.g = 0.15f;
+		RenderPtr->ColorOptionValue.MulColor.b = 0.15f;
+		RenderPtr->ColorOptionValue.MulColor.a = 0.35f;
 	}
 }
 void Screen_FX::Update(float _DeltaTime)

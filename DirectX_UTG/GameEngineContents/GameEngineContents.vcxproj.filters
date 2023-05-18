@@ -190,6 +190,7 @@
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
     <ClInclude Include="PortalDoor.h" />
+    <ClInclude Include="Loading.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -300,5 +301,6 @@
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
     <ClCompile Include="PortalDoor.cpp" />
+    <ClCompile Include="Loading.cpp" />
   </ItemGroup>
 </Project>

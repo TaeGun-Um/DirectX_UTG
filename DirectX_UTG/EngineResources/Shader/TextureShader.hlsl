@@ -152,12 +152,8 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     // float4를 float2로 할 수 있음 : float4.xy == float2
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     
-    //if (Color.a == 0)
-    //{
-    //    clip(-1);
-    //}
-    Color *= MulColor;
     Color += PlusColor;
+    Color *= MulColor;
     
     return Color;
 }

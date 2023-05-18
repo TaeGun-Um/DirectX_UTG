@@ -10,6 +10,7 @@
 #include "TutorialLevel.h"
 
 #include "BookRender.h"
+#include "Loading.h"
 
 Second_OpeningLevel::Second_OpeningLevel() 
 {
@@ -27,6 +28,7 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 {
 	if (true == BookRender::GetBookAnimationIsEnd())
 	{
+		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("TutorialLevel");
 	}
 }
@@ -40,8 +42,10 @@ void Second_OpeningLevel::LevelChangeStart()
 	// CreateActor
 	std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>();
 	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
+
+	LoadingPtr = CreateActor<Loading>();
+	LoadingPtr->SetLoadingPtrOff();
 }
 void Second_OpeningLevel::LevelChangeEnd()
 {
-
 }

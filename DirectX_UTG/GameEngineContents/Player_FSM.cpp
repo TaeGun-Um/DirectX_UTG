@@ -1819,6 +1819,7 @@ void Player::PortalUpdate(float _DeltaTime)
 }
 void Player::PortalEnd()
 {
+	Off();
 	Portaling = false;
 }
 
