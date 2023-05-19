@@ -75,68 +75,70 @@ void TutorialLevel::LevelChangeStart()
 	int PlayMapHeight = PlayMap->GetHeight();
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
 	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
-	float4 PlayMapPosition = { PlayMapWidth_Half, PlayMapHeight_Half, 1 };
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	//GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 3200, PlayMapHeight_Half - 100, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
+	//GetMainCamera()->GetTransform()->SetLocalPosition({ 3200, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
-	// Character
-	{
-		if (nullptr == PlayerObject)
-		{
-			PlayerObject = CreateActor<Player>(-1);
-			//PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
-			PlayerObject->GetTransform()->SetLocalPosition({ 3200 , PlayMapHeight_Half, 1 });
-			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-		}
-	}
-	// Background, Map
-	{
-		std::shared_ptr<Tutorial_BackGround> Object0 = CreateActor<Tutorial_BackGround>(-100);
-		Object0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
-
-		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
-		Object1->GetTransform()->SetLocalPosition(PlayMapPosition + float4{ 0, 0, 50 });
-
-		std::shared_ptr<Tutorial_Target> Object2 = CreateActor<Tutorial_Target>(-50);
-		Object2->GetTransform()->SetLocalPosition({3447, 305, 50});
-
-		std::shared_ptr<Tutorial_BackLayer> Object3 = CreateActor<Tutorial_BackLayer>(-10);
-		Object3->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
-
-		if (nullptr == ThisColMap)
-		{
-			ThisColMap = CreateActor<Tutorial_ColMap>(-30);
-			ThisColMap->GetTransform()->SetLocalPosition(PlayMapPosition);
-		}
-	}
-	// Actor
-	{
-		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-110);
-		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1 });
-		Object->SetPortalValue(PortalValue::Overworld);
-	}
-	// GUI
-	{
-		if (nullptr == GUI)
-		{
-			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
-			GUI->SetTarget(PlayerObject->GetTransform());
-			GUI->SetMainPalyer(PlayerObject);
-
-			GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
-			GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
-			GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
-			GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
-		}
-	}
-
+	// ScreenSFX
 	{
 		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
 		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+	}
+	// Layer
+	{
+		//std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
+		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+	}
+	// ColMap
+	if (nullptr == ThisColMap)
+	{
+		ThisColMap = CreateActor<Tutorial_ColMap>();
+		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
+	}
+	// Wall Actor
+	{
+		std::shared_ptr<Tutorial_Target> Object = CreateActor<Tutorial_Target>();
+		Object->GetTransform()->SetLocalPosition({ 3447, 305 });
+	}
+	// Portal
+	{
+		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-110);
+		Object->GetTransform()->SetLocalPosition({ 5840, 150 });
+		Object->SetPortalValue(PortalValue::Overworld);
+	}
+	// Character
+	if (nullptr == PlayerObject)
+	{
+		PlayerObject = CreateActor<Player>();
+		PlayerObject->GetTransform()->SetLocalPosition({ -PlayMapWidth_Half , PlayMapHeight_Half });
+		//PlayerObject->GetTransform()->SetLocalPosition({ 3200 , PlayMapHeight_Half, 1 });
+		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+	}
+	// Map
+	{
+		std::shared_ptr<Tutorial_Map> Object = CreateActor<Tutorial_Map>();
+		Object->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
+	}
+
+	// Background
+	{
+		std::shared_ptr<Tutorial_BackGround> Object = CreateActor<Tutorial_BackGround>();
+		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
+	}
+	// GUI
+	if (nullptr == GUI)
+	{
+		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		GUI->SetTarget(PlayerObject->GetTransform());
+		GUI->SetMainPalyer(PlayerObject);
+
+		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
+		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
+		GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
+		GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
 	}
 }
 void TutorialLevel::LevelChangeEnd()

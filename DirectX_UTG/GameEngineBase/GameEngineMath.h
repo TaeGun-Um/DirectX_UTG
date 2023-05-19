@@ -273,6 +273,11 @@ public:
 		return static_cast<unsigned int>(w * 0.5f);
 	}
 
+	float MaxFloat() const
+	{
+		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
+	}
+
 	// Degree을 통한 X축 회전 (Radian으로 변환)
 	void RotaitonXDeg(float _Deg)
 	{

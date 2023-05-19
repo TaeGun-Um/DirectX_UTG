@@ -1,10 +1,11 @@
 #pragma once
-
 #include "GameEngineTexture.h"
+#include "GameEngineRenderer.h"
 
-// 설명 : WinAPI에서 HDC를 배운적이 있다. Direct에서는 RenderTarget이 HDC 역할을 함
+// 설명 :
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 {
+	friend class GameEngineCore;
 public:
 	// constrcuter destructer
 	GameEngineRenderTarget();
@@ -16,7 +17,6 @@ public:
 	GameEngineRenderTarget& operator=(const GameEngineRenderTarget& _Other) = delete;
 	GameEngineRenderTarget& operator=(GameEngineRenderTarget&& _Other) noexcept = delete;
 
-	// Resource에 추가 후 헤당 RenderTarget의 Texture와 Color 설정
 	static std::shared_ptr<GameEngineRenderTarget> Create(const std::string_view& _Name, std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
@@ -26,26 +26,41 @@ public:
 		return NewRenderTarget;
 	}
 
-	// 백버퍼(화면)를 일정한 색으로 Clear (다음 그림을 그리기 위함)
+	static std::shared_ptr<GameEngineRenderTarget> Create(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	{
+		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
+
+		NewRenderTarget->ResCreate(_Format, _Scale, _Color);
+
+		return NewRenderTarget;
+	}
+
 	void Clear();
 
-	// 아웃풋머저 단계를 실시하기 위한 Setting 함수
-	// GameEngineDevice::RenderStart() 에서 Clear() 실시
 	void Setting() override;
 
-	// 깊이버퍼 텍스쳐 생성
-	void CreateDepthTexture();
-
 	void Reset();
+
+	void CreateDepthTexture(int _Index = 0);
+
+	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
 protected:
 
 private:
-	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };     // 백버퍼를 Clear하기 위한 색 지정
-	std::shared_ptr<GameEngineTexture> Texture;    // RenderTarget을 생성한 Texture
+	static void RenderTargetUnitInit();
+	static GameEngineRenderUnit MergeUnit;
+
+	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	std::vector<std::shared_ptr<GameEngineTexture>> Textures;
+	std::vector<ID3D11RenderTargetView*> RTVs;
+
 	std::shared_ptr<GameEngineTexture> DepthTexture;
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
+
+	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
 
 };
 

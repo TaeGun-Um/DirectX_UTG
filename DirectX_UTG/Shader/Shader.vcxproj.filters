@@ -2,5 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <FxCompile Include="..\EngineResources\Shader\TextureShader.hlsl" />
+    <FxCompile Include="..\..\..\AR45\DirectX\DirectX45\EngineResources\Shader\MergeShader.hlsl" />
   </ItemGroup>
 </Project>

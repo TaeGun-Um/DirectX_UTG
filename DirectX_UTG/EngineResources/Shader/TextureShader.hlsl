@@ -146,6 +146,14 @@ cbuffer ColorOption : register(b0)
 Texture2D DiffuseTex : register(t0);
 SamplerState CLAMPSAMPLER : register(s0); // 옵션은 이렇게, 스테이트는 저렇게 이런 식으로 정보를 전달할 수 있는 것이 바로 샘플러이다.
 
+struct OutColor
+{
+    float4 Color0 : SV_Target0;
+    float4 Color1 : SV_Target1;
+    float4 Color2 : SV_Target2;
+    float4 Color3 : SV_Target3;
+};
+
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     // 스위즐링 표현법

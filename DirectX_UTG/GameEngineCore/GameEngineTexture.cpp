@@ -7,13 +7,14 @@
 #pragma comment(lib, "..\\GameEngineCore\\ThirdParty\\DirectXTex\\lib\\x64\\Release\\DirectXTex.lib")
 #endif
 
+// #pragma comment(lib, "DirectXTex.lib")
+
 GameEnginePixelColor GameEnginePixelColor::Black = { 0, 0, 0, 0 };
 
 GameEngineTexture::GameEngineTexture()
 {
 }
 
-// Texture와 RenderTarget은 동적할당이기 때문에, 소멸자 호출 시 Release를 실시해야 한다.
 GameEngineTexture::~GameEngineTexture()
 {
 	if (nullptr != DSV)
@@ -41,15 +42,16 @@ GameEngineTexture::~GameEngineTexture()
 	}
 }
 
-// HDC를 Texture2D에 할당 후 CreateRenderTargetView() 호출
+
 void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
+
 	Texture2D->GetDesc(&Desc);
+
 	CreateRenderTargetView();
 }
 
-// Texture(HDC)를 통해 RenderTarget을 만듬
 void GameEngineTexture::CreateRenderTargetView()
 {
 	if (nullptr == Texture2D)
@@ -58,12 +60,30 @@ void GameEngineTexture::CreateRenderTargetView()
 		return;
 	}
 
-	// RenderTarget은 여러 개 만들 수 있다.
+	// 랜더타겟은 여러개를 만들수 있다.
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
 
 	if (S_OK != Result)
 	{
-		MsgAssert("랜더타겟뷰 생성에 실패했습니다.");
+		MsgAssert("랜더타겟 뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
+void GameEngineTexture::CreateShaderResourcesView()
+{
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처가 존재하지 않는 쉐이더 리소스 뷰를 만들 수는 없습니다.");
+		return;
+	}
+
+	// 랜더타겟은 여러개를 만들수 있다.
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, nullptr, &SRV);
+
+	if (S_OK != Result)
+	{
+		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다.");
 		return;
 	}
 }
@@ -76,10 +96,8 @@ void GameEngineTexture::CreateDepthStencilView()
 		return;
 	}
 
+	// 랜더타겟은 여러개를 만들수 있다.
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D, nullptr, &DSV);
-	// 1번 : 구조체
-	// 2번 : 텍스쳐 만들 때 특별히 넣어줄 것이 있는가? 없으니 null
-	// 3번 : 정보를 받을 구조체, ID3D11DepthStencilView
 
 	if (S_OK != Result)
 	{
@@ -88,14 +106,15 @@ void GameEngineTexture::CreateDepthStencilView()
 	}
 }
 
-// 경로를 받은 뒤 리소스를 로드한다.
+
 void GameEngineTexture::ResLoad(const std::string_view& _Path)
 {
+	// GameEnginePath NewPath = 
+
 	GameEnginePath NewPath(_Path);
 
 	std::string Ext = GameEngineString::ToUpper(NewPath.GetExtension());
 
-	// LoadFromWICFile의 1번 인자가 wchar라서 해당 함수 호출로 변환
 	std::wstring Path = GameEngineString::AnsiToUniCode(NewPath.GetFullPath());
 
 	if (Ext == ".TGA")
@@ -110,38 +129,44 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	{
 		MsgAssert("텍스처 로드에 실패했습니다." + std::string(_Path.data()));
 	}
-	// 1번 인자 : wchar로 변환 후 전달
-	// 2번 인자 : 알아서 해줘
-	// 3번 인자 : 텍스쳐 정보를 전달
-	// 4번 인자 : 로드된 정보를 여기 담는다.
 
 	if (S_OK != DirectX::CreateShaderResourceView
 	(
-		GameEngineDevice::GetDevice(), // 1. 디바이스 전달
-		Image.GetImages(),             // 2. 넣을 이미지
-		Image.GetImageCount(),         // 3. 이미지는 여러개 겹쳐서 넣을 수 있다. 그것의 수(Count)
-		Image.GetMetadata(),           // 4. 메타 데이터
-		&SRV)                          // 5. ID3D11ShaderResourceView로 정보 전달받음
-	)
+		GameEngineDevice::GetDevice(),
+		Image.GetImages(),
+		Image.GetImageCount(),
+		Image.GetMetadata(),
+		&SRV
+	))
 	{
 		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다." + std::string(_Path.data()));
 	}
 
-	// 텍스쳐 너비와 높이 멤버변수에 저장
 	Desc.Width = static_cast<UINT>(Data.width);
 	Desc.Height = static_cast<UINT>(Data.height);
+
+	// Texture2D->GetDesc(&Desc);
 }
 
-// CreateShaderResourceView()로 SRV에 값을 전달받은 후, 해당 값으로 VSSetShaderResources(), PSSetShaderResources() 실시
 void GameEngineTexture::VSSetting(UINT _Slot)
 {
-	// 0번 슬롯에 SRV로 넣겠다.
+	if (nullptr == SRV)
+	{
+		MsgAssert("SRV가 존재하지 않는 텍스처를 쉐이더에 세팅할수 없습니다.");
+		return;
+	}
+
 	GameEngineDevice::GetContext()->VSSetShaderResources(_Slot, 1, &SRV);
 }
 
 void GameEngineTexture::PSSetting(UINT _Slot)
 {
-	// 0번 슬롯에 SRV로 넣겠다.
+	if (nullptr == SRV)
+	{
+		MsgAssert("SRV가 존재하지 않는 텍스처를 쉐이더에 세팅할수 없습니다.");
+		return;
+	}
+
 	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &SRV);
 }
 
@@ -151,7 +176,17 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 
 	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL == Desc.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
+	{
+		CreateRenderTargetView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & Desc.BindFlags)
+	{
+		CreateShaderResourcesView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
 	{
 		CreateDepthStencilView();
 	}
@@ -368,19 +403,11 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 	case DXGI_FORMAT_B5G5R5A1_UNORM:
 		break;
 	case DXGI_FORMAT_B8G8R8A8_UNORM:
-	{
-		int Index = _Y * static_cast<int>(GetWidth()) + _X;
-		ColorPtr = ColorPtr + (Index * 4);
-		GameEnginePixelColor Return;
-		Return.r = ColorPtr[2];
-		Return.g = ColorPtr[1];
-		Return.b = ColorPtr[0];
-		Return.a = ColorPtr[3];
-		return Return;
-	}
 		break;
 	case DXGI_FORMAT_B8G8R8X8_UNORM:
 	{
+		// 컬러1개에 4바이트인 100 * 100
+		// 10, 10
 		int Index = _Y * static_cast<int>(GetWidth()) + _X;
 		ColorPtr = ColorPtr + (Index * 4);
 		GameEnginePixelColor Return;
@@ -390,7 +417,6 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 		Return.a = ColorPtr[3];
 		return Return;
 	}
-		break;
 	case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
 		break;
 	case DXGI_FORMAT_B8G8R8A8_TYPELESS:

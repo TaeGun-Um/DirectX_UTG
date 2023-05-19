@@ -1,11 +1,10 @@
 #include "PrecompileHeader.h"
 #include "GameEngineSpriteRenderer.h"
-
 #include "GameEngineSprite.h"
 
 const SpriteInfo& AnimationInfo::CurSpriteInfo()
 {
-	const SpriteInfo& Info = Sprite->GetSpriteInfo(CurFrame);
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(FrameIndex[CurFrame]);
 	return Info;
 }
 
@@ -29,12 +28,16 @@ void AnimationInfo::Update(float _DeltaTime)
 		IsEndValue = false;
 	}
 
+	// 1;
+	// 
+
 	if (true == IsPauseValue)
 	{
 		return;
 	}
 
 	size_t CurFrameIndex = FrameIndex[CurFrame];
+
 
 	if (UpdateEventFunction.end() != UpdateEventFunction.find(CurFrameIndex))
 	{
@@ -47,10 +50,8 @@ void AnimationInfo::Update(float _DeltaTime)
 	{
 		++CurFrame;
 
-		if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
-		{
-			StartEventFunction[CurFrameIndex]();
-		}
+
+
 
 		if (FrameIndex.size() <= CurFrame)
 		{
@@ -62,13 +63,33 @@ void AnimationInfo::Update(float _DeltaTime)
 			}
 			else
 			{
+				IsEndValue = true;
 				--CurFrame;
 			}
 		}
 
+		//다음프레임이 존재하면서
+		else
+		{
+			CurFrameIndex = FrameIndex[CurFrame];
+
+			//Start콜백이 있다면 콜백을 호출
+			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
+			{
+				StartEventFunction[CurFrameIndex]();
+			}
+		}
+
+
 		CurTime += FrameTime[CurFrame];
+
+		// 0 ~ 9
+
+		// 9
 	}
 }
+
+// SpriteRenderer
 
 GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 {
@@ -78,22 +99,13 @@ GameEngineSpriteRenderer::~GameEngineSpriteRenderer()
 {
 }
 
+
 void GameEngineSpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
-	SetPipeLine("2DTexture");
-
-	AtlasData.x = 0.0f;
-	AtlasData.y = 0.0f;
-	AtlasData.z = 1.0f;
-	AtlasData.w = 1.0f;
-
-	ColorOptionValue.MulColor = float4::One;
-	ColorOptionValue.PlusColor = float4::Null;
-
-	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
-	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+	SpriteRenderInit();
+	// AtlasData
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
@@ -115,7 +127,6 @@ void GameEngineSpriteRenderer::SetFlipY()
 	GetTransform()->SetLocalScale(LocalScale);
 }
 
-// 이미지를 세팅한 뒤, 그 크기로 세팅
 void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 {
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
@@ -131,7 +142,25 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 	GetTransform()->SetLocalScale(Scale);
 }
 
-// 애니메이션이 존재하는지 확인
+void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
+{
+	Sprite = GameEngineSprite::Find(_SpriteName);
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
+void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
+{
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std::string_view& _Name)
 {
 	std::map<std::string, std::shared_ptr<AnimationInfo>>::iterator FindIter = Animations.find(_Name.data());
@@ -144,7 +173,6 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std
 	return FindIter->second;
 }
 
-// 애니메이션 생성
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const AnimationParameter& _Paramter)
 {
 	if (nullptr != FindAnimation(_Paramter.AnimationName))
@@ -166,10 +194,15 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 
 	if (0 != _Paramter.FrameIndex.size())
 	{
+		// 프레임 인덱스 입력시
 		NewAnimation->FrameIndex = _Paramter.FrameIndex;
+
 	}
 	else
 	{
+		// 프레임 인덱스 미 입력시
+
+		// 시작 프레임 지정
 		if (-1 != _Paramter.Start)
 		{
 			if (_Paramter.Start < 0)
@@ -182,8 +215,10 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 시작프레임 0
 			NewAnimation->StartFrame = 0;
 		}
+		// 끝 프레임 지정
 		if (-1 != _Paramter.End)
 		{
 			if (_Paramter.End >= Sprite->GetSpriteCount())
@@ -196,6 +231,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 끝프레임은 마지막
 			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
@@ -213,6 +249,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 	}
 
+	// 타임 데이터가 있다면
 	if (0 != _Paramter.FrameTime.size())
 	{
 		NewAnimation->FrameTime = _Paramter.FrameTime;
@@ -226,6 +263,8 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 	}
 
+
+
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
@@ -234,7 +273,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	return NewAnimation;
 }
 
-// 애니메이션 변경
+
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
@@ -245,7 +284,7 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 		return;
 	}
 
-	if (CurAnimation == Find && false == _Force)
+	if (CurAnimation.get() == Find.get() && false == _Force)
 	{
 		return;
 	}
@@ -257,6 +296,7 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 	{
 		CurAnimation->CurFrame = _Frame;
 	}
+
 }
 
 void GameEngineSpriteRenderer::Update(float _Delta)
@@ -290,28 +330,9 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 
 			GetTransform()->SetLocalScale(Scale);
 		}
+
 	}
-
 	GameEngineRenderer::Render(_Delta);
-}
-
-void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
-{
-	Sprite = GameEngineSprite::Find(_SpriteName);
-	Frame = _Frame;
-
-	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
-	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
-	AtlasData = Info.CutData;
-}
-
-void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
-{
-	Frame = _Frame;
-
-	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
-	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
-	AtlasData = Info.CutData;
 }
 
 void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
@@ -343,4 +364,22 @@ std::string GameEngineSpriteRenderer::GetTexName()
 	GameEngineTextureSetter* Tex = GetShaderResHelper().GetTextureSetter("DiffuseTex");
 	std::string Name = Tex->Res->GetNameToString();
 	return Name;
+}
+
+void GameEngineSpriteRenderer::SpriteRenderInit()
+{
+
+	SetPipeLine("2DTexture");
+
+	AtlasData.x = 0.0f;
+	AtlasData.y = 0.0f;
+	AtlasData.z = 1.0f;
+	AtlasData.w = 1.0f;
+
+	ColorOptionValue.MulColor = float4::One;
+	ColorOptionValue.PlusColor = float4::Null;
+
+	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+
 }

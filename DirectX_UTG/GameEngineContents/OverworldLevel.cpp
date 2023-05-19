@@ -35,18 +35,15 @@ void OverworldLevel::LevelChangeStart()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
 	// CreateActor
+	// Character
+	if (nullptr == PlayerObject)
+	{
+		PlayerObject = CreateActor<Player_Overworld>(1);
+	}
 	// Background, Map
 	{
-		std::shared_ptr<Overworld_Map> Object = CreateActor<Overworld_Map>(-100);
+		std::shared_ptr<Overworld_Map> Object = CreateActor<Overworld_Map>();
 	}
-	// Character
-	{
-		if (nullptr == PlayerObject)
-		{
-			PlayerObject = CreateActor<Player_Overworld>(1);
-		}
-	}
-
 	{
 		//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
 	}

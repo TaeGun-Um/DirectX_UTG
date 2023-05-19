@@ -1,9 +1,8 @@
 #pragma once
-
 #include "GameEngineRenderer.h"
 #include "GameEngineSprite.h"
-
 #include "EngineContentRenderingStruct.h"
+#include <map>
 
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
@@ -50,6 +49,7 @@ public:
 	bool IsEnd();
 };
 
+
 class AnimationParameter
 {
 public:
@@ -63,6 +63,7 @@ public:
 	std::vector<size_t> FrameIndex = std::vector<size_t>();
 	std::vector<float> FrameTime = std::vector<float>();
 };
+
 
 // 설명 :
 class GameEngineSpriteRenderer : public GameEngineRenderer
@@ -88,22 +89,17 @@ public:
 	}
 
 	void SetFlipX();
-
 	void SetFlipY();
 
-	// 애니메이션이 존재하는지 확인
 	std::shared_ptr<AnimationInfo> FindAnimation(const std::string_view& _Name);
 
-	// 애니메이션 생성
 	std::shared_ptr<AnimationInfo> CreateAnimation(const AnimationParameter& _Paramter);
 
-	// 애니메이션 변경(2번 인자의 Force를 바로 입력하기 위함)
 	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
 	{
 		ChangeAnimation(_Name, _Frame, _Force);
 	}
 
-	// 애니메이션 변경
 	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
 
 	bool IsAnimationEnd()
@@ -111,20 +107,24 @@ public:
 		return CurAnimation->IsEnd();
 	}
 
+	size_t GetCurrentFrame()
+	{
+		return CurAnimation->FrameIndex[CurAnimation->CurFrame];
+	}
+
 	float4 GetAtlasData()
 	{
 		return AtlasData;
-	}
-
-	size_t GetCurrentFrame()
-	{
-		return CurAnimation->CurFrame;
 	}
 
 	inline float GetScaleRatio() const
 	{
 		return ScaleRatio;
 	}
+
+	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
+
+	void SetFrame(size_t _Frame);
 
 	void SetAnimPauseOn()
 	{
@@ -136,22 +136,22 @@ public:
 		CurAnimation->PauseOff();
 	}
 
-	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
+	ColorOption ColorOptionValue;
 
-	void SetFrame(size_t _Frame);
 
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
-	ColorOption ColorOptionValue;
-
 	std::string GetTexName();
 
+
 protected:
+	void SpriteRenderInit();
 
 private:
 	void Update(float _Delta) override;
+
 	void Render(float _Delta) override;
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
@@ -160,11 +160,13 @@ private:
 
 	float4 AtlasData;
 
+
+	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
+	size_t Frame = -1;
+
+
 	float ScaleRatio = 1.0f;
 
 	void Start() override;
-
-	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
-
-	size_t Frame = -1;
 };
+

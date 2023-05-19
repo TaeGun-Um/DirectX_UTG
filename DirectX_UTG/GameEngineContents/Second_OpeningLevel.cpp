@@ -40,11 +40,11 @@ void Second_OpeningLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
+	//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
+	
 	// CreateActor
 	std::shared_ptr<BookRender> Object1 = CreateActor<BookRender>();
 	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
-
-	std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
 
 	LoadingPtr = CreateActor<Loading>();
 	LoadingPtr->SetLoadingPtrOff();
