@@ -44,13 +44,17 @@ void First_OpeningLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
-	//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
-	
 	// CreateActor
-	std::shared_ptr<Title_Background> Object1 = CreateActor<Title_Background>();
-	std::shared_ptr<MDHR_Logo> Object0 = CreateActor<MDHR_Logo>();
-	Object1->GetTransform()->AddWorldPosition({ 0, -3 });
-	
+	{
+		std::shared_ptr<Title_Background> Object = CreateActor<Title_Background>();
+		Object->GetTransform()->AddWorldPosition({ 0, -3 });
+	}
+	{
+		std::shared_ptr<MDHR_Logo> Object = CreateActor<MDHR_Logo>();
+	}
+	{
+		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
+	}
 
 	LoadingPtr = CreateActor<Loading>();
 	LoadingPtr->SetLoadingPtrOff();

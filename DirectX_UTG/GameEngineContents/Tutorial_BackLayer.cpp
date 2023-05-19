@@ -1,7 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Tutorial_BackLayer.h"
 
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 
 #include "Player.h"
 
@@ -30,14 +31,14 @@ void Tutorial_BackLayer::Start()
 
 	if (nullptr == RenderPtr)
 	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RenderPtr = CreateComponent<GameEngineUIRenderer>();
 		RenderPtr->SetTexture("Tutorial_BackLayer_002.png");
 		RenderPtr->GetTransform()->SetLocalScale({ 1280, 720, 1 });
-		RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 1 });
+		RenderPtr->GetTransform()->SetLocalPosition({ -640, -260, 1 });
 	}
 }
 void Tutorial_BackLayer::Update(float _DeltaTime)
 {
-	float4 MinusDist = Player::MainPlayer->GetCameraMoveDistance();
-	GetTransform()->AddWorldPosition(MinusDist);
+	//float4 MinusDist = Player::MainPlayer->GetCameraMoveDistance();
+	//GetTransform()->AddWorldPosition(MinusDist);
 }
