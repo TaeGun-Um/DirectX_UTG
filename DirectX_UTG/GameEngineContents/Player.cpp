@@ -636,7 +636,7 @@ void Player::EXCreate()
 // 기본 공격
 void Player::CreatePeashooter()
 {
-	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>(1);
+	std::shared_ptr<Peashooter> Projectile = GetLevel()->CreateActor<Peashooter>();
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 ProjectilePosition = PlayerPosition;
@@ -856,11 +856,11 @@ void Player::CreatePeashooter()
 // 2번 공격
 void Player::CreateSpread()
 {
-	std::shared_ptr<Spread> Projectile0 = GetLevel()->CreateActor<Spread>(1);
-	std::shared_ptr<Spread> Projectile1 = GetLevel()->CreateActor<Spread>(1);
-	std::shared_ptr<Spread> Projectile2 = GetLevel()->CreateActor<Spread>(1);
-	std::shared_ptr<Spread> Projectile3 = GetLevel()->CreateActor<Spread>(1);
-	std::shared_ptr<Spread> Projectile4 = GetLevel()->CreateActor<Spread>(1);
+	std::shared_ptr<Spread> Projectile0 = GetLevel()->CreateActor<Spread>();
+	std::shared_ptr<Spread> Projectile1 = GetLevel()->CreateActor<Spread>();
+	std::shared_ptr<Spread> Projectile2 = GetLevel()->CreateActor<Spread>();
+	std::shared_ptr<Spread> Projectile3 = GetLevel()->CreateActor<Spread>();
+	std::shared_ptr<Spread> Projectile4 = GetLevel()->CreateActor<Spread>();
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
@@ -1123,7 +1123,7 @@ void Player::CreateSpread()
 // 기본 EX 공격
 void Player::CreatePeashooter_EX()
 {
-	std::shared_ptr<Peashooter_EX> Projectile = GetLevel()->CreateActor<Peashooter_EX>(1);
+	std::shared_ptr<Peashooter_EX> Projectile = GetLevel()->CreateActor<Peashooter_EX>();
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 ProjectilePosition = PlayerPosition;
@@ -1204,14 +1204,14 @@ void Player::CreatePeashooter_EX()
 // 2번 EX 공격 
 void Player::CreateSpread_EX() 
 {
-	std::shared_ptr<Spread_EX> Projectile0 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile1 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile2 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile3 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile4 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile5 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile6 = GetLevel()->CreateActor<Spread_EX>(1);
-	std::shared_ptr<Spread_EX> Projectile7 = GetLevel()->CreateActor<Spread_EX>(1);
+	std::shared_ptr<Spread_EX> Projectile0 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile1 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile2 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile3 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile4 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile5 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile6 = GetLevel()->CreateActor<Spread_EX>();
+	std::shared_ptr<Spread_EX> Projectile7 = GetLevel()->CreateActor<Spread_EX>();
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
@@ -1264,7 +1264,7 @@ void Player::CreateSpread_EX()
 // EX 공격 시 Dust 생성
 void Player::CreateEXDust()
 {
-	std::shared_ptr<EXDust> Projectile = GetLevel()->CreateActor<EXDust>(1);
+	std::shared_ptr<EXDust> Projectile = GetLevel()->CreateActor<EXDust>();
 	
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 ProjectilePosition = PlayerPosition;
@@ -1346,7 +1346,7 @@ void Player::CreateEXDust()
 // 대쉬 시 Dust 생성
 void Player::CreateDashDust()
 {
-	std::shared_ptr<DashDust> Dust = GetLevel()->CreateActor<DashDust>(1);
+	std::shared_ptr<DashDust> Dust = GetLevel()->CreateActor<DashDust>();
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 DustPosition = PlayerPosition;
@@ -1369,7 +1369,7 @@ void Player::CreateMoveDust()
 
 	MoveTime = 0.0f;
 
-	std::shared_ptr<MoveDust> Dust = GetLevel()->CreateActor<MoveDust>(1);
+	std::shared_ptr<MoveDust> Dust = GetLevel()->CreateActor<MoveDust>();
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 DustPosition = PlayerPosition;
 
@@ -1409,7 +1409,7 @@ void Player::CreateLandDust()
 		return;
 	}
 
-	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>(1);
+	std::shared_ptr<LandDust> Dust = GetLevel()->CreateActor<LandDust>();
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 DustPosition = PlayerPosition;
 
@@ -1422,7 +1422,7 @@ void Player::CreateLandDust()
 // Parry시 생성되는 Effect
 void Player::CreateParryEffect()
 {
-	std::shared_ptr<ParryEffect> Effect = GetLevel()->CreateActor<ParryEffect>(1);
+	std::shared_ptr<ParryEffect> Effect = GetLevel()->CreateActor<ParryEffect>();
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 EffectPosition = PlayerPosition;
 
@@ -1434,7 +1434,7 @@ void Player::CreateParryEffect()
 
 void Player::CreateHitEffect()
 {
-	std::shared_ptr<HitSFX> Effect = GetLevel()->CreateActor<HitSFX>(1);
+	std::shared_ptr<HitSFX> Effect = GetLevel()->CreateActor<HitSFX>();
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 EffectPosition = PlayerPosition;
 

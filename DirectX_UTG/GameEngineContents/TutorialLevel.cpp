@@ -82,15 +82,34 @@ void TutorialLevel::LevelChangeStart()
 	//GetMainCamera()->GetTransform()->SetLocalPosition({ 3200, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
-	// ScreenSFX
+	// Background
 	{
-		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
-		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+		std::shared_ptr<Tutorial_BackGround> Object = CreateActor<Tutorial_BackGround>();
+		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 	}
-	// Layer
+	// Map
 	{
-		//std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
-		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+		std::shared_ptr<Tutorial_Map> Object = CreateActor<Tutorial_Map>();
+		Object->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
+	}
+	// Character
+	if (nullptr == PlayerObject)
+	{
+		PlayerObject = CreateActor<Player>();
+		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half });
+		//PlayerObject->GetTransform()->SetLocalPosition({ 3200 , PlayMapHeight_Half, 1 });
+		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+	}
+	// Portal
+	{
+		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>();
+		Object->GetTransform()->SetLocalPosition({ 5840, 150 });
+		Object->SetPortalValue(PortalValue::Overworld);
+	}
+	// Wall Actor
+	{
+		std::shared_ptr<Tutorial_Target> Object = CreateActor<Tutorial_Target>();
+		Object->GetTransform()->SetLocalPosition({ 3447, 305 });
 	}
 	// ColMap
 	if (nullptr == ThisColMap)
@@ -98,36 +117,17 @@ void TutorialLevel::LevelChangeStart()
 		ThisColMap = CreateActor<Tutorial_ColMap>();
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
-	// Wall Actor
+	// Layer
 	{
-		std::shared_ptr<Tutorial_Target> Object = CreateActor<Tutorial_Target>();
-		Object->GetTransform()->SetLocalPosition({ 3447, 305 });
+		//std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
+		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
 	}
-	// Portal
+	// ScreenSFX
 	{
-		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-110);
-		Object->GetTransform()->SetLocalPosition({ 5840, 150 });
-		Object->SetPortalValue(PortalValue::Overworld);
-	}
-	// Character
-	if (nullptr == PlayerObject)
-	{
-		PlayerObject = CreateActor<Player>();
-		PlayerObject->GetTransform()->SetLocalPosition({ -PlayMapWidth_Half , PlayMapHeight_Half });
-		//PlayerObject->GetTransform()->SetLocalPosition({ 3200 , PlayMapHeight_Half, 1 });
-		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-	}
-	// Map
-	{
-		std::shared_ptr<Tutorial_Map> Object = CreateActor<Tutorial_Map>();
-		Object->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
+		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
+		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
 	}
 
-	// Background
-	{
-		std::shared_ptr<Tutorial_BackGround> Object = CreateActor<Tutorial_BackGround>();
-		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
-	}
 	// GUI
 	if (nullptr == GUI)
 	{
