@@ -730,7 +730,13 @@ void Player::JumpStart()
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
 	// มกวมทย
-	if (false == IsJump && false == IsSlap)
+	if (true == SlapJump)
+	{
+		MoveDirect.y = 1000.0f;
+		SlapJump = false;
+		IsJump = true;
+	}
+	else if (false == IsJump && false == IsSlap)
 	{
 		MoveDirect.y = 850.0f;
 		IsJump = true;
@@ -862,6 +868,7 @@ void Player::SlapUpdate(float _DeltaTime)
 	{
 		IsSlap = false;
 		IsJump = false;
+		SlapJump = true;
 		MoveDirect.y = 0;
 		JumpTime = 0.0f;
 
@@ -874,6 +881,7 @@ void Player::SlapUpdate(float _DeltaTime)
 
 		if (NormalDeltaTime >= 0.2f)
 		{
+			JumpTime = NormalDeltaTime;
 			GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 			ChangeState(PlayerState::Jump);
 		}

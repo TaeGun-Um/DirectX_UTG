@@ -48,7 +48,7 @@ void OverworldLevel::LevelChangeStart()
 	}
 
 	{
-		std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
+		//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
 	}
 
 	LoadingPtr = CreateActor<Loading>();

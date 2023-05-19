@@ -1406,7 +1406,7 @@ void Player::CreateHitEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash || true == IsEXAttack || true == Portaling)
+	if (true == IsDash || true == IsEXAttack || true == Portaling || true == ParryCheck)
 	{
 		return;
 	}

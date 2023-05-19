@@ -47,6 +47,11 @@ public:
 		IsCorrection = true;
 	}
 
+	bool GetParryCheck()
+	{
+		return ParryCheck;
+	}
+
 	void PlayerDebugRenderOn()
 	{
 		IsDebugRender = true;
@@ -268,6 +273,7 @@ private:
 	bool IsFall = false;
 	bool PlatformCheckAble = false;
 	bool IsSlap = false;
+	bool SlapJump = false;
 	bool ParryCheck = false;
 	bool IsBottomJump = false;
 	bool BottomJumpAble = false;

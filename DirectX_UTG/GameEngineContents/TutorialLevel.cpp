@@ -11,12 +11,10 @@
 #include "Tutorial_BackLayer.h"
 #include "Tutorial_Map.h"
 #include "Tutorial_ColMap.h"
-#include "PortalDoor.h"
-#include "Player.h"
 
+#include "Player.h"
+#include "PortalDoor.h"
 #include "Screen_FX.h"
-#include "Loading.h"
-#include "TestPlatform.h"
 
 #include "TransformGUI.h"
 
@@ -58,7 +56,7 @@ void TutorialLevel::Update(float _DeltaTime)
 void TutorialLevel::LevelChangeStart()
 {
 	// 레벨 리소스 로드
-	if (nullptr == GameEngineTexture::Find("Tutorial_Map"))
+	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -67,12 +65,7 @@ void TutorialLevel::LevelChangeStart()
 		NewDir.Move("Level");
 		NewDir.Move("Tutorial_Normal");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Tutorial_ColMap.png").GetFullPath());
 	}
 
 	// ColMap
@@ -116,7 +109,7 @@ void TutorialLevel::LevelChangeStart()
 	}
 	// Actor
 	{
-		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-100);
+		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>(-110);
 		Object->GetTransform()->SetLocalPosition({ 5840, 150, 1 });
 		Object->SetPortalValue(PortalValue::Overworld);
 	}
@@ -133,27 +126,6 @@ void TutorialLevel::LevelChangeStart()
 			GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
 			GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
 		}
-	}
-
-	// 지울 것(테스트)
-	{
-		std::shared_ptr<TestPlatform> PlatformObject0 = CreateActor<TestPlatform>(-100);
-		PlatformObject0->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 200, 1 });
-
-		std::shared_ptr<TestPlatform> PlatformObject1 = CreateActor<TestPlatform>(-100);
-		PlatformObject1->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half, 1 });
-
-		std::shared_ptr<TestPlatform> PlatformObject2 = CreateActor<TestPlatform>(-100);
-		PlatformObject2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half + 100, 1 });
-
-		std::shared_ptr<TestPlatform> PlatformObject3 = CreateActor<TestPlatform>(-100);
-		PlatformObject3->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + 100, 1 });
-
-		std::shared_ptr<TestPlatform> PlatformObject4 = CreateActor<TestPlatform>(-100);
-		PlatformObject4->GetTransform()->SetLocalPosition({ 900 , PlayMapHeight_Half + -200, 1 });
-
-		std::shared_ptr<TestPlatform> PlatformObject5 = CreateActor<TestPlatform>(-100);
-		PlatformObject5->GetTransform()->SetLocalPosition({ 400 , PlayMapHeight_Half - 200, 1 });
 	}
 
 	{

@@ -27,7 +27,7 @@ void Title_Background::Start()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cuphead_and_Mugman").GetFullPath());
 
-		if (nullptr == GameEngineSprite::Find("PressAnyButton"))
+		if (nullptr == GameEngineTexture::Find("PressAnyButton.png"))
 		{
 			NewDir.Move("Title");
 

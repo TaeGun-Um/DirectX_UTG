@@ -24,12 +24,15 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
 
-	// 지울것(옮길것)
 	std::shared_ptr<class GameEngineSpriteRenderer> ParrySpotCollisionRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ParrySpotCollisionRenderPtr1 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ParrySpotCollisionRenderPtr2 = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParrySpotCollisionPtr0 = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParrySpotCollisionPtr1 = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParrySpotCollisionPtr2 = nullptr;
+
+	void Step_1();
+	void Step_2();
+	void Step_3();
 };
 

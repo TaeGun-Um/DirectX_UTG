@@ -15,6 +15,19 @@ Tutorial_BackGround::~Tutorial_BackGround()
 
 void Tutorial_BackGround::Start()
 {
+	if (nullptr == GameEngineTexture::Find("Tutorial_BackLayer_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+		NewDir.Move("Drawing");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Tutorial_BackLayer_001.png").GetFullPath());
+	}
+
 	if (RenderPtr == nullptr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
