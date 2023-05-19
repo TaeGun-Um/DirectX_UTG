@@ -42,7 +42,7 @@ void OverworldLevel::LevelChangeStart()
 	// Character
 	if (nullptr == PlayerObject)
 	{
-		PlayerObject = CreateActor<Player_Overworld>(1);
+		PlayerObject = CreateActor<Player_Overworld>();
 	}
 	{
 		//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();

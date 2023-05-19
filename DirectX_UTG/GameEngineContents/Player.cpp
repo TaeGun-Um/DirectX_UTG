@@ -40,10 +40,10 @@ void Player::Start()
 }
 void Player::Update(float _DeltaTime)
 {
-	if (true == IsCorrection)
+	if (false == IsCorrection)
 	{
 		On();
-		//PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
+		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());
 		SetPlayerEXStack(GetEXStack());
@@ -93,6 +93,12 @@ void Player::PositionCorrection()
 			PlayerPos = GetTransform()->GetLocalPosition();
 
 			GameEnginePixelColor GravityPixel = PixelCollisionCheck.PixelCheck(PlayerPos);
+
+			if (-10000.0f >= PlayerPos.y)
+			{
+				MsgAssert("픽셀 충돌에 문제가 생겼다");
+				return;
+			}
 
 			if (true == PixelCollisionCheck.IsBlack(GravityPixel))
 			{
