@@ -172,10 +172,12 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> StandCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BottomSensorCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FrontSensorCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> StandCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BottomSensorCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> FrontSensorCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
@@ -241,6 +243,7 @@ private:
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
 	void ParryCollisionCheck();
 	void HitCollisionCheck(float _DeltaTime);
+	void WallCollisionCheck(float _DeltaTime);
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);

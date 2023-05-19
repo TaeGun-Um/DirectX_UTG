@@ -11,6 +11,7 @@
 #include "Tutorial_BackLayer.h"
 #include "Tutorial_Map.h"
 #include "Tutorial_ColMap.h"
+#include "Tutorial_Target.h"
 
 #include "Player.h"
 #include "PortalDoor.h"
@@ -78,7 +79,8 @@ void TutorialLevel::LevelChangeStart()
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
+	//GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 3200, PlayMapHeight_Half - 100, -620.0f });
 
 	// CreateActor
 	// Character
@@ -86,7 +88,8 @@ void TutorialLevel::LevelChangeStart()
 		if (nullptr == PlayerObject)
 		{
 			PlayerObject = CreateActor<Player>(-1);
-			PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
+			//PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half, 1 });
+			PlayerObject->GetTransform()->SetLocalPosition({ 3200 , PlayMapHeight_Half, 1 });
 			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		}
 	}
@@ -98,8 +101,11 @@ void TutorialLevel::LevelChangeStart()
 		std::shared_ptr<Tutorial_Map> Object1 = CreateActor<Tutorial_Map>(-50);
 		Object1->GetTransform()->SetLocalPosition(PlayMapPosition + float4{ 0, 0, 50 });
 
-		std::shared_ptr<Tutorial_BackLayer> Object2 = CreateActor<Tutorial_BackLayer>(-10);
-		Object2->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
+		std::shared_ptr<Tutorial_Target> Object2 = CreateActor<Tutorial_Target>(-50);
+		Object2->GetTransform()->SetLocalPosition({3447, 305, 50});
+
+		std::shared_ptr<Tutorial_BackLayer> Object3 = CreateActor<Tutorial_BackLayer>(-10);
+		Object3->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 10 });
 
 		if (nullptr == ThisColMap)
 		{

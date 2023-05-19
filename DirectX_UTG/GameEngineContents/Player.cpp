@@ -164,6 +164,8 @@ void Player::CollisionCalculation(float _DeltaTime)
 	HitCollisionCheck(_DeltaTime);
 
 	PortalCheck();
+
+	WallCollisionCheck(_DeltaTime);
 }
 
 void Player::HitBlink(float _DeltaTime)
@@ -327,6 +329,9 @@ void Player::CollisionSetting()
 
 		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 15, -6 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -5, -3 });
+
+		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 50 });
 	}
 	else
 	{
@@ -335,6 +340,9 @@ void Player::CollisionSetting()
 
 		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 15, -6 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 5, -3 });
+
+		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 55, 50 });
 	}
 
 	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
@@ -413,6 +421,9 @@ void Player::CollisionSetting()
 
 	BottomSensorCollisionRenderPtr->GetTransform()->SetLocalScale(BottomSensorCollisionPtr->GetTransform()->GetLocalScale());
 	BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(BottomSensorCollisionPtr->GetTransform()->GetLocalPosition());
+
+	FrontSensorCollisionRenderPtr->GetTransform()->SetLocalScale(FrontSensorCollisionPtr->GetTransform()->GetLocalScale());
+	FrontSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(FrontSensorCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
 // BluePixelÀ» Ã¼Å©
@@ -516,6 +527,39 @@ void Player::HitCollisionCheck(float _DeltaTime)
 		HitTimeCheck = false;
 		HitTime = 0.0f;
 		BodyCollisionPtr->On();
+	}
+}
+
+void Player::WallCollisionCheck(float _DeltaTime)
+{
+	if (nullptr != FrontSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Wall), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		if (true == IsDash)
+		{
+			float DashDist = (MoveSpeed * 2) * _DeltaTime;
+
+			if (true == Directbool)
+			{
+				GetTransform()->AddLocalPosition({ -DashDist, 0 });
+			}
+			else
+			{
+				GetTransform()->AddLocalPosition({ DashDist, 0 });
+			}
+		}
+		else
+		{
+			float MoveDis = MoveSpeed * _DeltaTime;
+
+			if (true == Directbool)
+			{
+				GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+			}
+			else
+			{
+				GetTransform()->AddLocalPosition({ MoveDis, 0 });
+			}
+		}
 	}
 }
 
@@ -1813,6 +1857,13 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7, -3 });
 	}
 
+	if (nullptr == FrontSensorCollisionPtr)
+	{
+		FrontSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 50 });
+	}
+
 	if (nullptr == ParryCollisionPtr)
 	{
 		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
@@ -1846,6 +1897,15 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(BottomSensorCollisionPtr->GetTransform()->GetLocalPosition());
 		BottomSensorCollisionRenderPtr->SetTexture("RedBox.png");
 		BottomSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+	}
+
+	if (nullptr == FrontSensorCollisionRenderPtr)
+	{
+		FrontSensorCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		FrontSensorCollisionRenderPtr->GetTransform()->SetLocalScale(FrontSensorCollisionPtr->GetTransform()->GetLocalScale());
+		FrontSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(FrontSensorCollisionPtr->GetTransform()->GetLocalPosition());
+		FrontSensorCollisionRenderPtr->SetTexture("GreenBox.png");
+		FrontSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
 
 	if (nullptr == ParryCollisionRenderPtr)
