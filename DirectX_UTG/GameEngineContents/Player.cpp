@@ -1581,7 +1581,14 @@ void Player::PlayerInitialSetting()
 		// Jump & Parry(Slap)
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Jump").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Parry").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Parry_Pink").GetFullPath());
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_0.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_1.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_2.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_3.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_4.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_5.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_6.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_7.png").GetFullPath(), 1, 1);
 
 		// Dash
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirDash").GetFullPath());
@@ -1702,7 +1709,14 @@ void Player::PlayerInitialSetting()
 		// Jump & Parry(Slap)
 		RenderPtr->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "Jump", .FrameInter = 0.05f });
 		RenderPtr->CreateAnimation({ .AnimationName = "Parry", .SpriteName = "Parry", .FrameInter = 0.05f, .Loop = false });
-		RenderPtr->CreateAnimation({ .AnimationName = "Parry_Pink", .SpriteName = "Parry_Pink", .FrameInter = 0.05f, .Loop = false });
+		RenderPtr->CreateAnimation({ "Parry_Pink_0", "Parry_Pink_0.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_1", "Parry_Pink_1.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_2", "Parry_Pink_2.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_3", "Parry_Pink_3.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_4", "Parry_Pink_4.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_5", "Parry_Pink_5.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_6", "Parry_Pink_6.png", 0, 0, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Parry_Pink_7", "Parry_Pink_7.png", 0, 0, 0.05f, false, true });
 
 		// Dash
 		RenderPtr->CreateAnimation({ .AnimationName = "AirDash", .SpriteName = "AirDash", .FrameInter = 0.05f, .Loop = false });

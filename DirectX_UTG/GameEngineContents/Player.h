@@ -306,6 +306,8 @@ private:
 	float NormalDeltaTime = 0.0f;
 
 	int CreateEXCount = 1;
+	int ParryCountSet = 1;
+	size_t ParryFrame = 0;
 
 	AttackDirection ADValue = AttackDirection::Right_Front;
 

@@ -874,14 +874,20 @@ void Player::SlapUpdate(float _DeltaTime)
 
 		GameEngineTime::GlobalTime.SetTimeScale(0.0f);
 
-		size_t a = RenderPtr->GetCurrentFrame();
-		RenderPtr->ChangeAnimation("Parry_Pink");
+		if (1 == ParryCountSet)
+		{
+			ParryCountSet = 0;
+			ParryFrame = RenderPtr->GetCurrentFrame();
+		}
+		
+		RenderPtr->ChangeAnimation("Parry_Pink_" + std::to_string(ParryFrame));
 	
 		NormalDeltaTime += GameEngineTime::GlobalTime.GetNormalDeltaTime();
 
 		if (NormalDeltaTime >= 0.2f)
 		{
 			JumpTime = NormalDeltaTime;
+			ParryCountSet = 1;
 			GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 			ChangeState(PlayerState::Jump);
 		}
