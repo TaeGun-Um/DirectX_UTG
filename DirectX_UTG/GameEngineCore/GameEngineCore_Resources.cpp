@@ -141,9 +141,9 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
-		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;           // ADD <-> MAX
 		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
-		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;  // SRC_ALPHA <-> ONE
 
 		// 1번 인자 : 자동으로 알파 부분을 제거해서 출력해주는 것이다. 사용 시 연산이 굉장히 느려서 사용 안함. False
 		// 2번 인자 : 블랜드를 여러 개 넣을 것인지 정하는 것. 랜더 타겟이 여러 개일 경우, true로 하면 랜더 타겟 하나 당 블랜드를 하나씩 만들면서 넣어줄 수도 있다.

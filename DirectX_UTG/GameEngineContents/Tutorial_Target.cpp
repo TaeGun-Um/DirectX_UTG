@@ -59,7 +59,6 @@ void Tutorial_Target::Start()
 		BoxCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Wall));
 		BoxCollisionPtr->GetTransform()->SetLocalScale({ 190, 400, 1 });
 		BoxCollisionPtr->GetTransform()->SetLocalPosition({ -6, -70 });
-		
 	}
 
 	if (nullptr == TargetCollisionPtr)
