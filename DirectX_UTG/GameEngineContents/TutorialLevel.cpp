@@ -198,6 +198,13 @@ void TutorialLevel::LevelChangeStart()
 }
 void TutorialLevel::LevelChangeEnd()
 {
+	PlayerObject = nullptr;
+	ThisColMap = nullptr;
+	GUI = nullptr;
+	MapObject = nullptr;
+	TargetObject = nullptr;
+	PortalDoorObject = nullptr;
+
 	GameEngineSprite::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
 }
