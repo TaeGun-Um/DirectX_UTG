@@ -26,10 +26,26 @@ void Peashooter::Start()
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 350, 350 });
 		RenderPtr->ChangeAnimation("Loop");
 	}
+
+	if (nullptr == ProjectileCollisionPtr)
+	{
+		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Peashooter));
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 25, 0 });
+	}
+
+	if (nullptr == ProjectileCollisionRenderPtr)
+	{
+		ProjectileCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ProjectileCollisionRenderPtr->SetTexture("RedBox.png");
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalScale(ProjectileCollisionPtr->GetTransform()->GetLocalScale());
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalPosition(ProjectileCollisionPtr->GetTransform()->GetLocalPosition());
+	}
 }
 void Peashooter::Update(float _DeltaTime)
 {
 	MoveDirection(_DeltaTime);
+	HitCheck();
 	PixelCheck();
 	DeathCheck();
 }
@@ -50,6 +66,15 @@ void Peashooter::MoveDirection(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
+void Peashooter::HitCheck()
+{
+	if (true == IsHit)
+	{
+		IsHit = false;
+		Player::MainPlayer->AddPlayerEXGauge_Peashooter();
+	}
+}
+
 void Peashooter::PixelCheck()
 {
 	float4 ProjectilePosition = GetTransform()->GetLocalPosition();
@@ -60,10 +85,7 @@ void Peashooter::PixelCheck()
 	{
 		if (false == Check)
 		{
-			Check = true;
-			RenderPtr->ChangeAnimation("Death", false);
-			RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
-			RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
+			SetPeashooterDeath();
 		}
 	}
 }
@@ -74,10 +96,7 @@ void Peashooter::DeathCheck()
 	{
 		if (false == Check)
 		{
-			Check = true;
-			RenderPtr->ChangeAnimation("Death", false);
-			RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
-			RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
+			SetPeashooterDeath();
 		}
 	}
 
@@ -88,7 +107,18 @@ void Peashooter::DeathCheck()
 
 	if (true == IsDeath)
 	{
-		Player::MainPlayer->AddPlayerEXGauge_Peashooter();
 		Death();
 	}
+}
+
+void Peashooter::SetPeashooterDeath()
+{
+	Check = true;
+
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
+
+	RenderPtr->ChangeAnimation("Death", false);
+	RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
+	RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
 }

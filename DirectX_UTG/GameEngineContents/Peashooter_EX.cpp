@@ -24,6 +24,21 @@ void Peashooter_EX::Start()
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 750, 750 });
 		RenderPtr->ChangeAnimation("Loop");
 	}
+
+	if (nullptr == ProjectileCollisionPtr)
+	{
+		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PeashooterEX));
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 25, 0 });
+	}
+
+	if (nullptr == ProjectileCollisionRenderPtr)
+	{
+		ProjectileCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ProjectileCollisionRenderPtr->SetTexture("RedLine.png");
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalScale(ProjectileCollisionPtr->GetTransform()->GetLocalScale());
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalPosition(ProjectileCollisionPtr->GetTransform()->GetLocalPosition());
+	}
 }
 
 void Peashooter_EX::Update(float _DeltaTime)
@@ -68,4 +83,16 @@ void Peashooter_EX::DeathCheck()
 	{
 		Death();
 	}
+}
+
+void Peashooter_EX::SetPeashooter_EXDeath()
+{
+	//Check = true;
+
+	//ProjectileCollisionRenderPtr->Death();
+	//ProjectileCollisionPtr->Death();
+
+	//RenderPtr->ChangeAnimation("Death", false);
+	//RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
+	//RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
 }

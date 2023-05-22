@@ -2,6 +2,7 @@
 #include "Screen_FX.h"
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 
 Screen_FX::Screen_FX() 
 {
@@ -27,15 +28,15 @@ void Screen_FX::Start()
 
 	if (nullptr == RenderPtr)
 	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "Screen_FX", .SpriteName = "Screen_FX", .FrameInter = 0.01f });
-		RenderPtr->GetTransform()->SetLocalScale({ 1300, 731 });
+		RenderPtr = CreateComponent<GameEngineUIRenderer>();
+		RenderPtr->CreateAnimation({ .AnimationName = "Screen_FX", .SpriteName = "Screen_FX", .FrameInter = 0.05f });
+		RenderPtr->GetTransform()->SetLocalScale({ 1280, 720 });
 		RenderPtr->ChangeAnimation("Screen_FX");
 
-		RenderPtr->ColorOptionValue.MulColor.r = 0.0f;
-		RenderPtr->ColorOptionValue.MulColor.g = 0.0f;
-		RenderPtr->ColorOptionValue.MulColor.b = 0.0f;
-		RenderPtr->ColorOptionValue.MulColor.a = 0.45f;
+		RenderPtr->ColorOptionValue.MulColor.r = 0.6f;
+		RenderPtr->ColorOptionValue.MulColor.g = 0.6f;
+		RenderPtr->ColorOptionValue.MulColor.b = 0.6f;
+		RenderPtr->ColorOptionValue.MulColor.a = 0.5f;
 	}
 }
 void Screen_FX::Update(float _DeltaTime)

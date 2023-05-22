@@ -18,12 +18,16 @@ enum class AttackDirection
 
 enum class CollisionOrder
 {
-	Player,             // 0
-	PlayerAttack,		// 1
-	Monster,			// 2
-	MonsterAttack,		// 3
-	Platform,			// 4
-	ParrySpot,		    // 5
-	Portal,				// 6
-	Wall,				// 7 (일단 튜토리얼)
+	Player,         
+	PlayerSensor,
+	Peashooter,
+	PeashooterEX,
+	Spread,
+	SpreadEX,
+	Monster,			
+	MonsterAttack,		
+	Platform,			
+	ParrySpot,		    
+	Portal,				
+	Wall,
 };

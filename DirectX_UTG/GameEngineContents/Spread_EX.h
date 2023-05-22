@@ -31,6 +31,8 @@ public:
 		GetTransform()->SetLocalRotation(_Rotation);
 	}
 
+	void SetSpread_EXDeath();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -39,6 +41,8 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FalmeRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
 
 	Spread_EXState StateValue = Spread_EXState::Spawn;
 

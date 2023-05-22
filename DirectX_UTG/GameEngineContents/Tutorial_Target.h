@@ -27,5 +27,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> TargetCollisionRenderPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BoxCollisionRenderPtr;
 
+	bool IsDeath = false;
+	int HP = 10;
+
+	void CollisionCheck();
+	void SetDeath();
+
 };
 

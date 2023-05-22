@@ -37,11 +37,38 @@ void Spread_EX::Start()
 
 		FalmeRenderPtr->ChangeAnimation("FlameStart");
 	}
+
+	if (nullptr == ProjectileCollisionPtr)
+	{
+		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::SpreadEX));
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 25, 0 });
+	}
+
+	if (nullptr == ProjectileCollisionRenderPtr)
+	{
+		ProjectileCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ProjectileCollisionRenderPtr->SetTexture("GreenLine.png");
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalScale(ProjectileCollisionPtr->GetTransform()->GetLocalScale());
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalPosition(ProjectileCollisionPtr->GetTransform()->GetLocalPosition());
+	}
 }
 
 void Spread_EX::Update(float _DeltaTime)
 {
 	UpdateState(_DeltaTime);
+}
+
+void Spread_EX::SetSpread_EXDeath()
+{
+	//Check = true;
+
+	//ProjectileCollisionRenderPtr->Death();
+	//ProjectileCollisionPtr->Death();
+
+	//RenderPtr->ChangeAnimation("Death", false);
+	//RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
+	//RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
 }
 
 void Spread_EX::ChangeState(Spread_EXState _StateValue)
@@ -82,6 +109,7 @@ void Spread_EX::ChangeState(Spread_EXState _StateValue)
 	}
 
 }
+
 void Spread_EX::UpdateState(float _DeltaTime)
 {
 	switch (StateValue)

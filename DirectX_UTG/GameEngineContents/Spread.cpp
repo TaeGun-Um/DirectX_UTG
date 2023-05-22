@@ -30,10 +30,26 @@ void Spread::Start()
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 400, 400 });
 		RenderPtr->ChangeAnimation("Loop");
 	}
+
+	if (nullptr == ProjectileCollisionPtr)
+	{
+		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Spread));
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+	}
+
+	if (nullptr == ProjectileCollisionRenderPtr)
+	{
+		ProjectileCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ProjectileCollisionRenderPtr->SetTexture("GreenBox.png");
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalScale(ProjectileCollisionPtr->GetTransform()->GetLocalScale());
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalPosition(ProjectileCollisionPtr->GetTransform()->GetLocalPosition());
+	}
 }
 void Spread::Update(float _DeltaTime)
 {
 	MoveDirection(_DeltaTime);
+	HitCheck();
 	PixelCheck();
 	DeathCheck();
 }
@@ -54,6 +70,15 @@ void Spread::MoveDirection(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
+void Spread::HitCheck()
+{
+	if (true == IsHit)
+	{
+		IsHit = false;
+		Player::MainPlayer->AddPlayerEXGauge_Peashooter();
+	}
+}
+
 void Spread::PixelCheck()
 {
 	float4 ProjectilePosition = GetTransform()->GetLocalPosition();
@@ -64,16 +89,7 @@ void Spread::PixelCheck()
 	{
 		if (false == Check)
 		{
-			Check = true;
-			
-			if (true == DeathType)
-			{
-				RenderPtr->ChangeAnimation("Death_Enemyhit", false);
-			}
-			else
-			{
-				RenderPtr->ChangeAnimation("Weak_Death_Enemyhit", false);
-			}
+			SetSpreadDeath();
 		}
 	}
 }
@@ -84,16 +100,7 @@ void Spread::DeathCheck()
 	{
 		if (false == Check)
 		{
-			Check = true;
-
-			if (true == DeathType)
-			{
-				RenderPtr->ChangeAnimation("Death", false);
-			}
-			else
-			{
-				RenderPtr->ChangeAnimation("Weak_Death", false);
-			}
+			SetSpreadDeath();
 		}
 	}
 
@@ -107,7 +114,23 @@ void Spread::DeathCheck()
 
 	if (true == IsDeath)
 	{
-		Player::MainPlayer->AddPlayerEXGauge_Spread();
 		Death();
+	}
+}
+
+void Spread::SetSpreadDeath()
+{
+	Check = true;
+
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
+
+	if (true == DeathType)
+	{
+		RenderPtr->ChangeAnimation("Death_Enemyhit", false);
+	}
+	else
+	{
+		RenderPtr->ChangeAnimation("Weak_Death_Enemyhit", false);
 	}
 }

@@ -1865,28 +1865,28 @@ void Player::PlayerCollisionSetting()
 
 	if (nullptr == StandCollisionPtr)
 	{
-		StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		StandCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
 		StandCollisionPtr->GetTransform()->SetLocalScale({ 66, 10 });
 		StandCollisionPtr->GetTransform()->SetLocalPosition({ -7, 5 });
 	}
 
 	if (nullptr == BottomSensorCollisionPtr)
 	{
-		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
 		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 30, -6 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7, -3 });
 	}
 
 	if (nullptr == FrontSensorCollisionPtr)
 	{
-		FrontSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		FrontSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
 		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
 		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 50 });
 	}
 
 	if (nullptr == ParryCollisionPtr)
 	{
-		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
 		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
 		ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
 		ParryCollisionPtr->Off();

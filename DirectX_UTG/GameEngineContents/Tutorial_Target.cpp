@@ -4,6 +4,9 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "Peashooter.h"
+#include "Spread.h"
+
 Tutorial_Target::Tutorial_Target() 
 {
 }
@@ -14,19 +17,6 @@ Tutorial_Target::~Tutorial_Target()
 
 void Tutorial_Target::Start()
 {
-	if (nullptr == GameEngineTexture::Find("tutorial_target_0001"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Tutorial_Normal");
-		NewDir.Move("Target");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("tutorial_target_0001.png").GetFullPath());
-	}
-
 	if (nullptr == GameEngineTexture::Find("tutorial_pyramid_topper.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -40,6 +30,30 @@ void Tutorial_Target::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("tutorial_pyramid_topper.png").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("Target"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Target").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
+	}
+
 	if (nullptr == BoxCollisionPtr)
 	{
 		BoxCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Wall));
@@ -51,7 +65,7 @@ void Tutorial_Target::Start()
 	if (nullptr == TargetCollisionPtr)
 	{
 		TargetCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
-		TargetCollisionPtr->GetTransform()->SetLocalScale({ 70, 80, 1 });
+		TargetCollisionPtr->GetTransform()->SetLocalScale({ 40, 55, 1 });
 		TargetCollisionPtr->GetTransform()->SetLocalPosition({ -3, 110 });
 	}
 
@@ -66,9 +80,12 @@ void Tutorial_Target::Start()
 	if (nullptr == TargetRenderPtr)
 	{
 		TargetRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		TargetRenderPtr->SetTexture("tutorial_target_0001.png");
+		TargetRenderPtr->CreateAnimation({ .AnimationName = "Target", .SpriteName = "Target", .FrameInter = 0.08f });
+		TargetRenderPtr->CreateAnimation({ .AnimationName = "Explosion", .SpriteName = "Explosion", .FrameInter = 0.07f, .Loop = false });
 		TargetRenderPtr->GetTransform()->SetLocalScale({ 76, 87, 1 });
 		TargetRenderPtr->GetTransform()->SetLocalPosition(TargetCollisionPtr->GetTransform()->GetLocalPosition());
+
+		TargetRenderPtr->ChangeAnimation("Target");
 	}
 
 	if (nullptr == TargetCollisionRenderPtr)
@@ -90,5 +107,60 @@ void Tutorial_Target::Start()
 
 void Tutorial_Target::Update(float _DeltaTime)
 {
+	SetDeath();
+	CollisionCheck();
+}
 
+void Tutorial_Target::CollisionCheck()
+{
+	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		&& 1 <= HP)
+	{
+		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::AABBBOX2D)->GetActor();
+		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
+		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
+		--HP;
+
+		if (0 >= HP)
+		{
+			IsDeath = true;
+		}
+	}
+
+	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::OBBBOX2D)
+		&& 1 <= HP)
+	{
+		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::OBBBOX2D)->GetActor();
+		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
+		dynamic_cast<Spread*>(Projectile)->SetHitture();
+		--HP;
+
+		if (0 >= HP)
+		{
+			IsDeath = true;
+		}
+	}
+}
+
+void Tutorial_Target::SetDeath()
+{
+	if (false == IsDeath)
+	{
+		return;
+	}
+
+	BoxCollisionRenderPtr->Death();
+	BoxCollisionPtr->Death();
+	BoxRenderPtr->Death();
+	TargetCollisionPtr->Death();
+
+	TargetRenderPtr->GetTransform()->SetLocalScale({ 350, 350, 1 });
+	TargetRenderPtr->GetTransform()->SetLocalPosition({ -3, 50 });
+
+	TargetRenderPtr->ChangeAnimation("Explosion", false);
+
+	if (true == TargetRenderPtr->FindAnimation("Explosion")->IsEnd())
+	{
+		Death();
+	}
 }

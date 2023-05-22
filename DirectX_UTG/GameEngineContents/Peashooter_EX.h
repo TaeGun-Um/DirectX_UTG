@@ -37,6 +37,8 @@ public:
 		MoveSpeed = _MoveSpeed;
 	}
 
+	void SetPeashooter_EXDeath();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -44,6 +46,8 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
 
 	float MoveSpeed = 600.0f;
 	bool IsDeath = false;
