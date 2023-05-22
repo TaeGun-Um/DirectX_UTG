@@ -65,7 +65,7 @@ void Tutorial_Target::Start()
 	if (nullptr == TargetCollisionPtr)
 	{
 		TargetCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
-		TargetCollisionPtr->GetTransform()->SetLocalScale({ 40, 55, 1 });
+		TargetCollisionPtr->GetTransform()->SetLocalScale({ 60, 70, 1 });
 		TargetCollisionPtr->GetTransform()->SetLocalPosition({ -3, 110 });
 	}
 
@@ -113,10 +113,10 @@ void Tutorial_Target::Update(float _DeltaTime)
 
 void Tutorial_Target::CollisionCheck()
 {
-	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::AABBBOX2D)
+	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::SPHERE2D, ColType::OBBBOX2D)
 		&& 1 <= HP)
 	{
-		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::AABBBOX2D)->GetActor();
+		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::SPHERE2D, ColType::OBBBOX2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
 		--HP;
@@ -127,10 +127,10 @@ void Tutorial_Target::CollisionCheck()
 		}
 	}
 
-	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::OBBBOX2D)
+	if (nullptr != TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::SPHERE2D, ColType::OBBBOX2D)
 		&& 1 <= HP)
 	{
-		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::OBBBOX2D)->GetActor();
+		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::SPHERE2D, ColType::OBBBOX2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
 		--HP;
@@ -152,6 +152,7 @@ void Tutorial_Target::SetDeath()
 	BoxCollisionRenderPtr->Death();
 	BoxCollisionPtr->Death();
 	BoxRenderPtr->Death();
+	TargetCollisionRenderPtr->Death();
 	TargetCollisionPtr->Death();
 
 	TargetRenderPtr->GetTransform()->SetLocalScale({ 350, 350, 1 });

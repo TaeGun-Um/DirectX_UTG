@@ -76,5 +76,6 @@ private:
 	void PixelCheck();
 	void DeathCheck();
 
+	void SetSpreadDeathWeak();
 };
 

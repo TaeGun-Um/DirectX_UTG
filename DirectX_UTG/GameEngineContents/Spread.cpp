@@ -98,10 +98,7 @@ void Spread::DeathCheck()
 {
 	if (0.24f <= GetLiveTime())
 	{
-		if (false == Check)
-		{
-			SetSpreadDeath();
-		}
+		SetSpreadDeathWeak();
 	}
 
 	if (true == RenderPtr->FindAnimation("Death")->IsEnd()
@@ -115,6 +112,23 @@ void Spread::DeathCheck()
 	if (true == IsDeath)
 	{
 		Death();
+	}
+}
+
+void Spread::SetSpreadDeathWeak()
+{
+	Check = true;
+
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
+
+	if (true == DeathType)
+	{
+		RenderPtr->ChangeAnimation("Death", false);
+	}
+	else
+	{
+		RenderPtr->ChangeAnimation("Weak_Death", false);
 	}
 }
 
