@@ -42,6 +42,15 @@ void PortalDoor::Start()
 
 void PortalDoor::Update(float _DeltaTime)
 {
+	if (true == IsDebugRender)
+	{
+		RenderPtr->On();
+	}
+	else
+	{
+		RenderPtr->Off();
+	}
+
 	if (false == Player::MainPlayer->GetPlayerPortalAble())
 	{
 		return;

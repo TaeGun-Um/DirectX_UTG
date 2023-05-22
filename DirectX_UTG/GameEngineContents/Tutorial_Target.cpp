@@ -74,6 +74,7 @@ void Tutorial_Target::Start()
 		BoxRenderPtr->SetTexture("tutorial_pyramid_topper.png");
 		BoxRenderPtr->GetTransform()->SetLocalScale({ 195, 170, 1 });
 		BoxRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		BoxRenderPtr->CameraCullingOn();
 	}
 
 	if (nullptr == TargetRenderPtr)
@@ -83,6 +84,7 @@ void Tutorial_Target::Start()
 		TargetRenderPtr->CreateAnimation({ .AnimationName = "Explosion", .SpriteName = "Explosion", .FrameInter = 0.07f, .Loop = false });
 		TargetRenderPtr->GetTransform()->SetLocalScale({ 76, 87, 1 });
 		TargetRenderPtr->GetTransform()->SetLocalPosition(TargetCollisionPtr->GetTransform()->GetLocalPosition());
+		TargetRenderPtr->CameraCullingOn();
 
 		TargetRenderPtr->ChangeAnimation("Target");
 	}
@@ -106,6 +108,17 @@ void Tutorial_Target::Start()
 
 void Tutorial_Target::Update(float _DeltaTime)
 {
+	if (true == IsDebugRender)
+	{
+		BoxCollisionRenderPtr->On();
+		TargetCollisionRenderPtr->On();
+	}
+	else
+	{
+		BoxCollisionRenderPtr->Off();
+		TargetCollisionRenderPtr->Off();
+	}
+
 	SetDeath();
 	CollisionCheck();
 }

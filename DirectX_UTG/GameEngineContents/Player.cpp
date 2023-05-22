@@ -119,6 +119,10 @@ void Player::PlayerDebugRenderer()
 		DebugRenderPtr3->On();
 		DebugRenderPtr4->On();
 		DebugRenderPtr5->On();
+		BodyCollisionRenderPtr->On();
+		StandCollisionRenderPtr->On();
+		BottomSensorCollisionRenderPtr->On();
+		FrontSensorCollisionRenderPtr->On();
 	}
 	else
 	{
@@ -128,6 +132,10 @@ void Player::PlayerDebugRenderer()
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
 		DebugRenderPtr5->Off();
+		BodyCollisionRenderPtr->Off();
+		StandCollisionRenderPtr->Off();
+		BottomSensorCollisionRenderPtr->Off();
+		FrontSensorCollisionRenderPtr->Off();
 	}
 }
 
@@ -857,6 +865,15 @@ void Player::CreatePeashooter()
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
 	Projectile->SetColMap(ColMap, Pivot);
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
 }
 
 // 2번 공격
@@ -1124,6 +1141,23 @@ void Player::CreateSpread()
 	Projectile2->SetColMap(ColMap, Pivot);
 	Projectile3->SetColMap(ColMap, Pivot);
 	Projectile4->SetColMap(ColMap, Pivot);
+
+	if (true == IsDebugRender)
+	{
+		Projectile0->SetCollisionRenderOn();
+		Projectile1->SetCollisionRenderOn();
+		Projectile2->SetCollisionRenderOn();
+		Projectile3->SetCollisionRenderOn();
+		Projectile4->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile0->SetCollisionRenderOff();
+		Projectile1->SetCollisionRenderOff();
+		Projectile2->SetCollisionRenderOff();
+		Projectile3->SetCollisionRenderOff();
+		Projectile4->SetCollisionRenderOff();
+	}
 }
 
 // 기본 EX 공격
@@ -1205,6 +1239,15 @@ void Player::CreatePeashooter_EX()
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
 	Projectile->SetMoveSpeed(900.0f);
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
 }
 
 // 2번 EX 공격 
@@ -1265,6 +1308,29 @@ void Player::CreateSpread_EX()
 	Projectile5->SetProjectileRotation(ProjectileRotation5);
 	Projectile6->SetProjectileRotation(ProjectileRotation6);
 	Projectile7->SetProjectileRotation(ProjectileRotation7);
+
+	if (true == IsDebugRender)
+	{
+		Projectile0->SetCollisionRenderOn();
+		Projectile1->SetCollisionRenderOn();
+		Projectile2->SetCollisionRenderOn();
+		Projectile3->SetCollisionRenderOn();
+		Projectile4->SetCollisionRenderOn();
+		Projectile5->SetCollisionRenderOn();
+		Projectile6->SetCollisionRenderOn();
+		Projectile7->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile0->SetCollisionRenderOff();
+		Projectile1->SetCollisionRenderOff();
+		Projectile2->SetCollisionRenderOff();
+		Projectile3->SetCollisionRenderOff();
+		Projectile4->SetCollisionRenderOff();
+		Projectile5->SetCollisionRenderOff();
+		Projectile6->SetCollisionRenderOff();
+		Projectile7->SetCollisionRenderOff();
+	}
 }
 
 // EX 공격 시 Dust 생성
@@ -1344,6 +1410,8 @@ void Player::CreateEXDust()
 		break;
 	}
 
+	ProjectilePosition += float4{ 0, 0, 4 };
+
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
@@ -1357,7 +1425,7 @@ void Player::CreateDashDust()
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 DustPosition = PlayerPosition;
 
-	DustPosition += float4{ -10, 60 };
+	DustPosition += float4{ -10, 60, 3 };
 
 	Dust->SetStartPosition(DustPosition);
 	Dust->SetDirection(Directbool);
@@ -1402,6 +1470,8 @@ void Player::CreateMoveDust()
 		DustPosition += float4{ 15, 0 };
 	}
 
+	DustPosition += float4{ 0, 0, 3 };
+
 	Dust->SetStartPosition(DustPosition);
 	Dust->SetDirection(Directbool);
 	Dust->SetDustType(static_cast<DustType>(RandValue));
@@ -1419,7 +1489,7 @@ void Player::CreateLandDust()
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 DustPosition = PlayerPosition;
 
-	DustPosition += float4{ 0, 30 };
+	DustPosition += float4{ 0, 30, 3 };
 
 	Dust->SetStartPosition(DustPosition);
 	Dust->SetDirection(Directbool);
@@ -1432,7 +1502,7 @@ void Player::CreateParryEffect()
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 	float4 EffectPosition = PlayerPosition;
 
-	EffectPosition += float4{ 0, 90 };
+	EffectPosition += float4{ 0, 90, 3 };
 
 	Effect->SetStartPosition(EffectPosition);
 	Effect->SetDirection(Directbool);

@@ -120,7 +120,14 @@ void Tutorial_Map::Start()
 }
 void Tutorial_Map::Update(float _DeltaTime)
 {
-	//Player::MainPlayer
+	if (true == IsDebugRender)
+	{
+		PlatformCollisionRenderPtr->On();
+	}
+	else
+	{
+		PlatformCollisionRenderPtr->Off();
+	}
 
 	if (nullptr != ParrySpotCollisionPtr0->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D)
 		&& Player::MainPlayer->GetParryCheck())

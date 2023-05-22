@@ -34,21 +34,57 @@ void TutorialLevel::Start()
 
 void TutorialLevel::PlayerDebugRenderOn()
 {
-	PlayerObject->PlayerDebugRenderOn();
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOn();
+	}
 }
 
 void TutorialLevel::PlayerDebugRenderOff()
 {
-	PlayerObject->PlayerDebugRenderOff();
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOff();
+	}
 }
 
-void TutorialLevel::TutorialColMapOn()
+void TutorialLevel::LevelDebugOn()
 {
-	ThisColMap->ColMapDebugRenderOn();
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOn();
+	}
+	if (nullptr != MapObject)
+	{
+		MapObject->MapDebugRenderOn();
+	}
+	if (nullptr != PortalDoorObject)
+	{
+		PortalDoorObject->PortalDebugRenderOn();
+	}
+	if (nullptr != TargetObject)
+	{
+		TargetObject->TargetDebugRenderOn();
+	}
 }
-void TutorialLevel::TutorialColMapOff()
+void TutorialLevel::LevelDebugOff()
 {
-	ThisColMap->ColMapDebugRenderOff();
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOff();
+	}
+	if (nullptr != MapObject)
+	{
+		MapObject->MapDebugRenderOff();
+	}
+	if (nullptr != PortalDoorObject)
+	{
+		PortalDoorObject->PortalDebugRenderOff();
+	}
+	if (nullptr != TargetObject)
+	{
+		TargetObject->TargetDebugRenderOff();
+	}
 }
 
 void TutorialLevel::Update(float _DeltaTime)
@@ -98,6 +134,7 @@ void TutorialLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
 	//GetMainCamera()->GetTransform()->SetLocalPosition({ 3200, PlayMapHeight_Half - 100, -620.0f });
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	// CreateActor
 	// Background
@@ -107,8 +144,8 @@ void TutorialLevel::LevelChangeStart()
 	}
 	// Map
 	{
-		std::shared_ptr<Tutorial_Map> Object = CreateActor<Tutorial_Map>();
-		Object->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
+		MapObject = CreateActor<Tutorial_Map>();
+		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
 	}
 	// Character
 	if (nullptr == PlayerObject)
@@ -120,14 +157,14 @@ void TutorialLevel::LevelChangeStart()
 	}
 	// Portal
 	{
-		std::shared_ptr<PortalDoor> Object = CreateActor<PortalDoor>();
-		Object->GetTransform()->SetLocalPosition({ 5840, 150 });
-		Object->SetPortalValue(PortalValue::Overworld);
+		PortalDoorObject = CreateActor<PortalDoor>();
+		PortalDoorObject->GetTransform()->SetLocalPosition({ 5840, 150 });
+		PortalDoorObject->SetPortalValue(PortalValue::Overworld);
 	}
 	// Wall Actor
 	{
-		std::shared_ptr<Tutorial_Target> Object = CreateActor<Tutorial_Target>();
-		Object->GetTransform()->SetLocalPosition({ 3447, 305 });
+		TargetObject = CreateActor<Tutorial_Target>();
+		TargetObject->GetTransform()->SetLocalPosition({ 3447, 305 });
 	}
 	// ColMap
 	if (nullptr == ThisColMap)
@@ -155,12 +192,12 @@ void TutorialLevel::LevelChangeStart()
 
 		GUI->PlayerDebugRenderOn = std::bind(&TutorialLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
-		GUI->ColMapRenderOn = std::bind(&TutorialLevel::TutorialColMapOn, this);
-		GUI->ColMapRenderOff = std::bind(&TutorialLevel::TutorialColMapOff, this);
+		GUI->ColMapRenderOn = std::bind(&TutorialLevel::LevelDebugOn, this);
+		GUI->ColMapRenderOff = std::bind(&TutorialLevel::LevelDebugOff, this);
 	}
 }
 void TutorialLevel::LevelChangeEnd()
 {
-	GameEngineTexture::ResourcesClear();
 	GameEngineSprite::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
 }

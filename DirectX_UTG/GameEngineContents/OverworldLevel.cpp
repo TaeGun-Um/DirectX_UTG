@@ -34,6 +34,7 @@ void OverworldLevel::LevelChangeStart()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
@@ -72,6 +73,6 @@ void OverworldLevel::LevelChangeStart()
 }
 void OverworldLevel::LevelChangeEnd()
 {
-	GameEngineTexture::ResourcesClear();
 	GameEngineSprite::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
 }

@@ -53,6 +53,6 @@ void WaitingRoomLevel::LevelChangeStart()
 }
 void WaitingRoomLevel::LevelChangeEnd()
 {
-	GameEngineTexture::ResourcesClear();
 	GameEngineSprite::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
 }

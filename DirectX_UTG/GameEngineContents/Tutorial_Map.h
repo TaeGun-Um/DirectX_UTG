@@ -14,6 +14,16 @@ public:
 	Tutorial_Map& operator=(const Tutorial_Map& _Other) = delete;
 	Tutorial_Map& operator=(Tutorial_Map&& _Other) noexcept = delete;
 
+	void MapDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void MapDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -34,5 +44,7 @@ private:
 	void Step_1();
 	void Step_2();
 	void Step_3();
+
+	bool IsDebugRender = false;
 };
 

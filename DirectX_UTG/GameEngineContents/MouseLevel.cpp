@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "MouseLevel.h"
 
+#include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
@@ -23,6 +24,11 @@ void MouseLevel::Update(float _DeltaTime)
 
 void MouseLevel::LevelChangeStart()
 {
+	// 카메라 세팅
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
+
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
 		GameEngineDirectory NewDir;
@@ -43,6 +49,6 @@ void MouseLevel::LevelChangeStart()
 }
 void MouseLevel::LevelChangeEnd()
 {
-	GameEngineTexture::ResourcesClear();
 	GameEngineSprite::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
 }

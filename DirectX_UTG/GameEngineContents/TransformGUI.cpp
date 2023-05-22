@@ -159,44 +159,19 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ImGui::Text("EXGauge : %f", MainPalyer->GetPlayerEXGauge());
 		ImGui::Text("EXStack : %d", MainPalyer->GetPlayerEXStack());
 
-		const char* IsPlatformCheckAble = "false";
+		//ImGui::Text("IsBottomJump : %s", IsBottomJump);
+		//const char* CollisionPtr = "NULL";
 
-		if (true == MainPalyer->PlatformCheckAble)
-		{
-			IsPlatformCheckAble = "true";
-		}
-		else
-		{
-			IsPlatformCheckAble = "false";
-		}
-
-		ImGui::Text("PlatformCheckAble : %s", IsPlatformCheckAble);
-
-		const char* IsBottomJump = "false";
-
-		if (true == MainPalyer->IsBottomJump)
-		{
-			IsBottomJump = "true";
-		}
-		else
-		{
-			IsBottomJump = "false";
-		}
-
-		ImGui::Text("IsBottomJump : %s", IsBottomJump);
-
-		const char* CollisionPtr = "NULL";
-
-		if (nullptr == MainPalyer->BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
-		{
-			CollisionPtr = "NULL";
-		}
-		else
-		{
-			CollisionPtr = "Collision";
-		}
-		
-		ImGui::Text("CollisionPtr : %s", CollisionPtr);
+		//if (nullptr == MainPalyer->BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
+		//{
+		//	CollisionPtr = "NULL";
+		//}
+		//else
+		//{
+		//	CollisionPtr = "Collision";
+		//}
+		//
+		//ImGui::Text("CollisionPtr : %s", CollisionPtr);
 	}
 }
 

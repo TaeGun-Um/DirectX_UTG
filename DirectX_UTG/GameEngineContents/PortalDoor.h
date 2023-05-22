@@ -30,6 +30,16 @@ public:
 		PV = _Value;
 	}
 
+	void PortalDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void PortalDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -42,5 +52,6 @@ private:
 	PortalValue PV = PortalValue::Unknown;
 
 	void LevelChange();
+	bool IsDebugRender = false;
 };
 

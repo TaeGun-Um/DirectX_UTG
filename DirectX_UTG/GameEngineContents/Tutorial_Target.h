@@ -14,6 +14,16 @@ public:
 	Tutorial_Target& operator=(const Tutorial_Target& _Other) = delete;
 	Tutorial_Target& operator=(Tutorial_Target&& _Other) noexcept = delete;
 
+	void TargetDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void TargetDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -27,6 +37,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> TargetCollisionRenderPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BoxCollisionRenderPtr;
 
+	bool IsDebugRender = false;
 	bool IsDeath = false;
 	int HP = 10;
 

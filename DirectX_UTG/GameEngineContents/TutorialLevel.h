@@ -26,9 +26,13 @@ private:
 	std::shared_ptr<class Tutorial_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 
+	std::shared_ptr<class Tutorial_Map> MapObject = nullptr;
+	std::shared_ptr<class Tutorial_Target> TargetObject = nullptr;
+	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
+
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
-	void TutorialColMapOn();
-	void TutorialColMapOff();
+	void LevelDebugOn();
+	void LevelDebugOff();
 };
 

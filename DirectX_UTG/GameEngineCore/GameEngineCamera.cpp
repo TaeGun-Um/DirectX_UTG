@@ -138,7 +138,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 }
 
-
 void GameEngineCamera::Setting()
 {
 	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
@@ -171,7 +170,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 				// 퀵소트 내일
 				RenderGroup.sort([](std::shared_ptr<GameEngineRenderer>& _Left, std::shared_ptr<GameEngineRenderer>& _Right)
 					{
-						return _Left->CalZ > _Right->CalZ;
+						return _Left->CalZ < _Right->CalZ;
 					});
 			}
 

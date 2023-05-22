@@ -39,6 +39,16 @@ public:
 
 	void SetPeashooter_EXDeath();
 
+	void SetCollisionRenderOn()
+	{
+		ProjectileCollisionRenderPtr->On();
+	}
+
+	void SetCollisionRenderOff()
+	{
+		ProjectileCollisionRenderPtr->Off();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

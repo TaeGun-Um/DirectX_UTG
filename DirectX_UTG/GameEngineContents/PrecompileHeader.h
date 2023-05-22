@@ -4,6 +4,7 @@
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "PixelCollision.h"
 #include "ContentsEnum.h"
