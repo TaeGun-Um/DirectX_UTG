@@ -41,7 +41,7 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<MouseLevel>();
 	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::ChangeLevel("TutorialLevel");
+	GameEngineCore::ChangeLevel("First_OpeningLevel");
 }
 
 void CupheadCore::GameEnd()
@@ -53,23 +53,4 @@ void CupheadCore::ContentsResourcesCreate()
 {
 	// IMGUI Create
 	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
-
-	// 텍스처 로드만 각 레벨별로 하고 정리하는 습관을 들이세요.
-	if (nullptr == GameEngineSprite::Find("BlueBox"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("DebugImage");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
 }

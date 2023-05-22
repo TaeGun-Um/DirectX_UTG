@@ -73,6 +73,23 @@ public:
 	// 상속한 클래스에게 Setting 함수를 설정하도록 함
 	virtual void Setting() {}
 
+	// 원하는 타이밍에 제거되도록 하기 위해 생성 후 Core에게 friend
+	static void ResourcesClear()
+	{
+		for (std::shared_ptr<ResourcesType> Type : UnNamedRes)
+		{
+			Type->IsUnLoad = true;
+		}
+
+		for (std::pair<std::string, std::shared_ptr<ResourcesType>> Type : NamedResources)
+		{
+			Type.second->IsUnLoad = true;
+		}
+
+		NamedResources.clear();
+		UnNamedRes.clear();
+	}
+
 protected:
 	// Name을 인자로 받지 않는 Create
 	static std::shared_ptr<ResourcesType> CreateUnNamed()
@@ -100,16 +117,10 @@ protected:
 		return NewRes;
 	}
 
-	// 원하는 타이밍에 제거되도록 하기 위해 생성 후 Core에게 friend
-	static void ResourcesClear()
-	{
-		NamedResources.clear();
-		UnNamedRes.clear();
-	}
-
 private:
 	std::string Path;  // 상속받은 클래스의 Path
 	std::string Name;  // 상속받은 클래스의 Name
+	bool IsUnLoad = false;
 
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources; // Create 시 map으로 insert된 리소스들
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;

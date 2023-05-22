@@ -4,6 +4,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
 WaitingRoomLevel::WaitingRoomLevel() 
@@ -24,14 +25,15 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 void WaitingRoomLevel::LevelChangeStart()
 {
-	// 리소스 로드
+	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("WaittingRoom");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("DebugImage");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -51,5 +53,6 @@ void WaitingRoomLevel::LevelChangeStart()
 }
 void WaitingRoomLevel::LevelChangeEnd()
 {
-
+	GameEngineTexture::ResourcesClear();
+	GameEngineSprite::ResourcesClear();
 }

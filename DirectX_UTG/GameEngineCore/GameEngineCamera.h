@@ -4,6 +4,13 @@
 #include <list>
 #include <map>
 
+enum class SortType
+{
+	None,
+	ZSort,
+	YSort,
+};
+
 // Ό³Έν :
 class GameEngineRenderer;
 class GameEngineRenderTarget;
@@ -62,18 +69,23 @@ public:
 
 	bool IsView(const TransformData& _TransData);
 
+	template<typename EnumType>
+	void SetSortType(EnumType _Index, SortType _Sort)
+	{
+		SetSortType(static_cast<int>(_Index), _Sort);
+	}
+
+	void SetSortType(int _Index, SortType _Sort)
+	{
+		SortValues[_Index] = _Sort;
+	}
 
 protected:
 	void Start() override;
 
-
-
 private:
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
-
-	D3D11_VIEWPORT ViewPortData;
-
-	std::shared_ptr<GameEngineRenderTarget> CamTarget;
+	std::map<int, SortType> SortValues;
 
 	DirectX::BoundingOrientedBox Box;
 
@@ -87,6 +99,8 @@ private:
 
 	CameraType ProjectionType = CameraType::None;
 
+	D3D11_VIEWPORT ViewPortData;
+
 	float Width = 0.0f;
 	float Height = 0.0f;
 
@@ -98,5 +112,6 @@ private:
 
 	void Release();
 
+	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 };
 

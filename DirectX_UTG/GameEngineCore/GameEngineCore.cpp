@@ -50,6 +50,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			MainLevel->LevelChangeEnd();
+			MainLevel->ActorLevelChangeEnd();
 		}
 
 		MainLevel = NextLevel;
@@ -57,6 +58,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			MainLevel->LevelChangeStart();
+			MainLevel->ActorLevelChangeStart();
 		}
 
 		NextLevel = nullptr;
