@@ -3,17 +3,33 @@
 enum class AttackDirection
 {
 	//Right
-	Right_Up,           // 0
-	Right_DiagonalUp,   // 1
-	Right_Front,        // 2
-	Right_DiagonalDown, // 3
-	Right_Down,         // 4
+	Right_Up,           
+	Right_DiagonalUp,   
+	Right_Front,        
+	Right_DiagonalDown, 
+	Right_Down,         
 	//Left
-	Left_Up,            // 5
-	Left_DiagonalUp,    // 6
-	Left_Front,			// 7
-	Left_DiagonalDown,	// 8
-	Left_Down,			// 9
+	Left_Up,            
+	Left_DiagonalUp,    
+	Left_Front,			
+	Left_DiagonalDown,	
+	Left_Down,			
+};
+
+enum class RenderOrder
+{
+	Background,
+	Platform,
+	MonsterEffect,
+	Monster,
+	MonsterAttack,
+	PlayerEffect,
+	Player,
+	PlayerAttack,
+	Layer,
+	UI,
+	Debug,
+	SFX,
 };
 
 enum class CollisionOrder

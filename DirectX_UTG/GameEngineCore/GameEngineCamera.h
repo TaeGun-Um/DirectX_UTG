@@ -66,14 +66,14 @@ public:
 protected:
 	void Start() override;
 
-	D3D11_VIEWPORT ViewPortData;
-	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 
-	float Width = 0.0f;
-	float Height = 0.0f;
 
 private:
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
+
+	D3D11_VIEWPORT ViewPortData;
+
+	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 
 	DirectX::BoundingOrientedBox Box;
 
@@ -86,6 +86,9 @@ private:
 	TransformData OldData;
 
 	CameraType ProjectionType = CameraType::None;
+
+	float Width = 0.0f;
+	float Height = 0.0f;
 
 	float FOV = 60.0f;
 	float Near = 0.1f;

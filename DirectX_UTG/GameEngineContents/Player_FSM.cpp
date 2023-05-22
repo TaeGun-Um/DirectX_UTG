@@ -919,6 +919,26 @@ void Player::SlapUpdate(float _DeltaTime)
 		MoveDirect.y = 0;
 	}
 
+	if (false == IsJump && true == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("Attack")
+		|| false == IsJump && true == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("Attack"))
+	{
+		IsSlap = false;
+		MoveDirect.y = 0;
+		JumpTime = 0.0f;
+		ChangeState(PlayerState::RunAttack);
+		return;
+	}
+
+	if (false == IsJump && true == GameEngineInput::IsPress("MoveRight")
+		|| false == IsJump && true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		IsSlap = false;
+		MoveDirect.y = 0;
+		JumpTime = 0.0f;
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
 	if (false == IsJump)
 	{
 		IsSlap = false;
