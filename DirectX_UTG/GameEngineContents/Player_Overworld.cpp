@@ -538,31 +538,6 @@ void Player_Overworld::PlayerInitialSetting()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	if (nullptr == GameEngineSprite::Find("Up_Idle"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("Overworld");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Up_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DU_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Side_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DD_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Down_Idle").GetFullPath());
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Up_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DU_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Side_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DD_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Down_Move").GetFullPath());
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("InterAction_Win").GetFullPath());
-	}
-
 	if (nullptr == GameEngineSprite::Find("DashDust"))
 	{
 		GameEngineDirectory NewDir;
@@ -578,21 +553,35 @@ void Player_Overworld::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DashDust").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Overworld"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Overworld");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Overworld.png").GetFullPath(), 16, 8);
+	}
+
 	// Idle
-	RenderPtr->CreateAnimation({ .AnimationName = "Up_Idle", .SpriteName = "Up_Idle", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DU_Idle", .SpriteName = "DU_Idle", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Side_Idle", .SpriteName = "Side_Idle", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DD_Idle", .SpriteName = "DD_Idle", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Down_Idle", .SpriteName = "Down_Idle", .FrameInter = 0.07f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ "Up_Idle", "Overworld.png", 0, 3, 0.1f, true});
+	RenderPtr->CreateAnimation({ "DU_Idle", "Overworld.png", 16, 18, 0.1f, true});
+	RenderPtr->CreateAnimation({ "Side_Idle", "Overworld.png", 32, 37, 0.1f, true});
+	RenderPtr->CreateAnimation({ "DD_Idle", "Overworld.png", 64, 67, 0.1f, true});
+	RenderPtr->CreateAnimation({ "Down_Idle", "Overworld.png", 80, 82, 0.1f, true});
 
 	// Move
-	RenderPtr->CreateAnimation({ .AnimationName = "Up_Move", .SpriteName = "Up_Move", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DU_Move", .SpriteName = "DU_Move", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.07f, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.07f, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ "Up_Move", "Overworld.png", 4, 15, 0.07f, true, false });
+	RenderPtr->CreateAnimation({ "DU_Move", "Overworld.png", 19, 30, 0.07f, true, false });
+	RenderPtr->CreateAnimation({ "Side_Move", "Overworld.png", 51, 61, 0.07f, true, false });
+	RenderPtr->CreateAnimation({ "DD_Move", "Overworld.png", 68, 79, 0.07f, true, false });
+	RenderPtr->CreateAnimation({ "Down_Move", "Overworld.png", 96, 108, 0.07f, true, false });
 
 	// Setting
+	RenderPtr->GetTransform()->SetLocalScale({103, 113});
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 30 });
 	RenderPtr->ChangeAnimation("Down_Idle");
 }

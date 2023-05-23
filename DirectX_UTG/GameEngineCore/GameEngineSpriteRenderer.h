@@ -138,13 +138,11 @@ public:
 
 	ColorOption ColorOptionValue;
 
-
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	std::string GetTexName();
-
 
 protected:
 	void SpriteRenderInit();
