@@ -15,6 +15,7 @@ Player_Overworld::~Player_Overworld()
 void Player_Overworld::Start()
 {
 	PlayerInitialSetting();
+	DebugRendererSetting();
 	SetCameraFollowType(CameraFollowType::Overworld);
 	SetPlayerMoveSpeed(230.0f);
 }
@@ -22,6 +23,7 @@ void Player_Overworld::Update(float _DeltaTime)
 {
 	MoveCamera(_DeltaTime);
 	DirectCheck();
+	PixelCheck(_DeltaTime);
 	UpdateState(_DeltaTime);
 }
 
@@ -43,12 +45,10 @@ void Player_Overworld::DirectCheck()
 	if (true == Directbool)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
-		//RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	}
 	else
 	{
 		GetTransform()->SetLocalNegativeScaleX();
-		//RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
 	}
 
 	MoveDirectCheck();
@@ -102,6 +102,37 @@ void Player_Overworld::MoveDirectCheck()
 			ADValue = AttackDirection::Left_Down;
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                       PixelCheck                         //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player_Overworld::PixelCheck(float _DeltaTime)
+{
+	// 낙하 체크
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	float4 LeftFallPos = PlayerPos + float4{ -25, -2 };
+	float4 RightFallPos = PlayerPos + float4{ 15, -2 };
+
+	float DashFalseDist = MoveSpeed * _DeltaTime;
+	float DashTureDist = (MoveSpeed * 2) * _DeltaTime;
+
+	float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	if (true == PixelCollisionCheck.IsBlack(LeftWallPixel))
+	{
+		GetTransform()->AddLocalPosition({ DashTureDist, 0 });
+	}
+	if (true == PixelCollisionCheck.IsBlack(RightWallPixel))
+	{
+		GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,6 +415,10 @@ void Player_Overworld::WinEnd()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////             Init(Animation & Collision)            /////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Player_Overworld::PlayerInitialSetting()
 {
 	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -445,4 +480,49 @@ void Player_Overworld::PlayerInitialSetting()
 	// Setting
 	// RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	RenderPtr->ChangeAnimation("Down_Idle");
+}
+
+void Player_Overworld::DebugRendererSetting()
+{
+	if (nullptr == DebugRenderPtr0)
+	{
+		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr1)
+	{
+		DebugRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr1->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr2)
+	{
+		DebugRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr2->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr3)
+	{
+		DebugRenderPtr3 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr3->SetScaleToTexture("RedDot.png");
+	}
+	if (nullptr == DebugRenderPtr4)
+	{
+		DebugRenderPtr4 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr4->SetScaleToTexture("RedDot.png");
+	}
+
+	if (nullptr != DebugRenderPtr1
+		&& nullptr != DebugRenderPtr2
+		&& nullptr != DebugRenderPtr3
+		&& nullptr != DebugRenderPtr4)
+	{
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -10, 10 });		// 왼쪽 상단
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 10, 10 });		// 오른쪽 상단
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ 10, -10 });		// 오른쪽 하단
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ -10, -10 });    // 왼쪽 하단
+
+		DebugRenderPtr1->Off();
+		DebugRenderPtr2->Off();
+		DebugRenderPtr3->Off();
+		DebugRenderPtr4->Off();
+	}
 }

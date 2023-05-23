@@ -211,6 +211,11 @@ void TransformGUI::SetMainPalyer(std::shared_ptr<class Player> _MainPalyer)
 	MainPalyer = _MainPalyer;
 }
 
+void TransformGUI::SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer)
+{
+	OverworldPalyer = _OverworldPalyer;
+}
+
 void TransformGUI::HelpMarker(const std::string_view& _Text)
 {
 	ImGui::TextDisabled("(?)");

@@ -25,17 +25,53 @@ public:
 	Player_Overworld& operator=(const Player_Overworld& _Other) = delete;
 	Player_Overworld& operator=(Player_Overworld&& _Other) noexcept = delete;
 
+	void PlayerDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void PlayerDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
+	// ÇÈ¼¿ Ãæµ¹ ¼³Á¤
+	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
+	{
+		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
+		ColMap = _ColMap;
+		Pivot = _Pivot;
+
+		ColMapHegiht_Half = PixelCollisionCheck.GetColMapHeight_Half();
+		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr2 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
 
+	bool IsDebugRender = false;
 	bool Directbool = true;
+
+	// ÇÈ¼¿Ã¼Å©
+	void PixelCheck(float _DeltaTime);
+
+	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
+	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
+	PixelCollision PixelCollisionCheck;
+
 	AttackDirection ADValue = AttackDirection::Right_Down;
 
 	void PlayerInitialSetting();
+	void DebugRendererSetting();
 	void DirectCheck();
 	void MoveDirectCheck();
 

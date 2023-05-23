@@ -63,7 +63,6 @@ protected:
 
 	float MoveSpeed = 400.0f;
 
-private:
 	// Status
 	int HP = 3;
 	float EXGauge = 0;
@@ -104,6 +103,8 @@ private:
 	virtual void MoveStart() {}
 	virtual void MoveUpdate(float _DeltaTime) {}
 	virtual void MoveEnd() {}
+
+private:
 
 };
 

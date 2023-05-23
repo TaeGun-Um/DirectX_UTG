@@ -21,6 +21,7 @@ public:
 	void SetTarget(GameEngineTransform* _Target);
 
 	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
+	void SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer);
 
 	std::function<void()> PlayerDebugRenderOn;
 	std::function<void()> PlayerDebugRenderOff;
@@ -31,6 +32,7 @@ public:
 protected:
 
 private:
+	std::shared_ptr<class Player_Overworld> OverworldPalyer = nullptr;
 	std::shared_ptr<class Player> MainPalyer = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 

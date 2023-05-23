@@ -22,8 +22,17 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class Player_Overworld> PlayerObject = nullptr;
+	std::shared_ptr<class Overworld_ColMap> ThisColMap = nullptr;
+	std::shared_ptr<class TransformGUI> GUI = nullptr;
+
+	std::shared_ptr<class Overworld_Map> MapObject = nullptr;
+	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
+
+	void PlayerDebugRenderOn();
+	void PlayerDebugRenderOff();
+	void LevelDebugOn();
+	void LevelDebugOff();
 
 };
 
