@@ -33,7 +33,7 @@ void OverworldLevel::PlayerDebugRenderOn()
 {
 	if (nullptr != PlayerObject)
 	{
-		//PlayerObject->PlayerDebugRenderOn();
+		PlayerObject->PlayerDebugRenderOn();
 	}
 }
 
@@ -41,7 +41,7 @@ void OverworldLevel::PlayerDebugRenderOff()
 {
 	if (nullptr != PlayerObject)
 	{
-		//PlayerObject->PlayerDebugRenderOff();
+		PlayerObject->PlayerDebugRenderOff();
 	}
 }
 

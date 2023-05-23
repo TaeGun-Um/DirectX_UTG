@@ -58,7 +58,17 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
 
+	enum class DirectState
+	{
+		Up,
+		Down,
+		Right,
+		Left,
+	};
+
 	bool IsDebugRender = false;
+	DirectState DirectValue = DirectState::Down;
+	bool UpDownbool = false;
 	bool Directbool = true;
 
 	// ÇÈ¼¿Ã¼Å©
@@ -72,6 +82,7 @@ private:
 
 	void PlayerInitialSetting();
 	void DebugRendererSetting();
+	void PlayerDebugRenderer();
 	void DirectCheck();
 	void MoveDirectCheck();
 
