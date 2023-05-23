@@ -172,6 +172,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="ContentsSpriteRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CupheadCore.h">
       <SubType>
       </SubType>
@@ -328,6 +332,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BookRender.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ContentsSpriteRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

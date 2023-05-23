@@ -128,5 +128,5 @@ void GameEngineRenderTarget::Merge(std::shared_ptr<GameEngineRenderTarget> _Othe
 	MergeUnit.ShaderResHelper.SetTexture("DiffuseTex", _Other->Textures[0]);
 
 	MergeUnit.Render(0.0f);
-
+	MergeUnit.ShaderResHelper.AllResourcesReset();
 }

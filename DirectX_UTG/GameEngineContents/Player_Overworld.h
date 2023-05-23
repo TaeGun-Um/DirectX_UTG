@@ -58,17 +58,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
 
-	enum class DirectState
-	{
-		Up,
-		Down,
-		Right,
-		Left,
-	};
-
 	bool IsDebugRender = false;
-	DirectState DirectValue = DirectState::Down;
-	bool UpDownbool = false;
 	bool Directbool = true;
 
 	// ÇÈ¼¿Ã¼Å©
@@ -89,6 +79,11 @@ private:
 	void UpdateState(float _DeltaTime);
 	void ChangeState(OverworldState _StateValue);
 	OverworldState StateValue = OverworldState::Idle;
+
+	float4 LUD = float4::Zero;
+	float4 RUD = float4::Zero;
+	float4 RDD = float4::Zero;
+	float4 LDD = float4::Zero;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;

@@ -12,6 +12,7 @@ public:
 	class GameEngineShader* ParentShader;   // 쉐이더 타입(버텍스냐 픽셀이냐)
 
 	virtual void Setting() = 0;             // 세터들에게 Setting을 강요하도록 virtual 실시
+	virtual void Reset() {};
 };
 
 // 상수 버퍼 헬퍼 클래스
@@ -34,6 +35,7 @@ public:
 
 	// 텍스쳐 세팅을 ParentShader로 구분하고, Type에 맞는 쉐이더 세팅 실시
 	void Setting() override;
+	void Reset() override;
 };
 
 // 샘플러 세팅 헬퍼 클래스
@@ -112,4 +114,6 @@ public:
 
 	// 상수 버퍼 세팅을 ParentShader로 구분하고, Type에 맞는 쉐이더 세팅 실시
 	void Setting();
+	
+	void AllResourcesReset();
 };

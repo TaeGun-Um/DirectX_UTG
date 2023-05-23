@@ -110,6 +110,32 @@ void GameEngineSamplerSetter::Setting()
 	}
 }
 
+void GameEngineTextureSetter::Reset()
+{
+	ShaderType Type = ParentShader->GetType();
+
+	switch (Type)
+	{
+	case ShaderType::None:
+	{
+		MsgAssert("어떤 쉐이더에 세팅될지 알수없는 상수버퍼 입니다.");
+		break;
+	}
+	case ShaderType::Vertex:
+	{
+		Res->VSReset(BindPoint);
+		break;
+	}
+	case ShaderType::Pixel:
+	{
+		Res->PSReset(BindPoint);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 // ~Setter는 세팅된 리소스(상수 버퍼, 텍스쳐 등)를 가지고 있다.
 // 여기서 상수 버퍼는 문제가 조금 있는데, 모든 쉐이더에서 사용하기 때문이다.
 // 이를 구분하기 위해, 멀티맵에서 어떤 쉐이더인지 구분하고, 그에 따라 Setting이 되도록 switch문 실시
@@ -279,4 +305,18 @@ std::vector<GameEngineTextureSetter*> GameEngineShaderResHelper::GetTextureSette
 	}
 
 	return Result;
+}
+
+void GameEngineShaderResHelper::AllResourcesReset()
+{
+	{
+		std::multimap<std::string, GameEngineTextureSetter>::iterator StartIter = TextureSetters.begin();
+		std::multimap<std::string, GameEngineTextureSetter>::iterator EndIter = TextureSetters.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			GameEngineTextureSetter& Setter = StartIter->second;
+			Setter.Reset();
+		}
+	}
 }

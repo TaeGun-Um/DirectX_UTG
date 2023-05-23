@@ -197,6 +197,9 @@
     <ClInclude Include="Overworld_ColMap.h">
       <Filter>Levels\4. Overworld\Object</Filter>
     </ClInclude>
+    <ClInclude Include="ContentsSpriteRenderer.h">
+      <Filter>ContentsCore</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="Overworld_ColMap.cpp">
       <Filter>Levels\4. Overworld\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsSpriteRenderer.cpp">
+      <Filter>ContentsCore</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
