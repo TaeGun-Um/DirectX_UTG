@@ -179,7 +179,7 @@ void TutorialLevel::LevelChangeStart()
 	}
 	// ScreenSFX
 	{
-		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
+		std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
 		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
 	}
 
