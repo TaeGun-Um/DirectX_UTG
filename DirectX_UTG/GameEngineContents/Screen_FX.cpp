@@ -33,10 +33,10 @@ void Screen_FX::Start()
 		RenderPtr->GetTransform()->SetLocalScale({ 1280, 720 });
 		RenderPtr->ChangeAnimation("Screen_FX");
 
-		RenderPtr->ColorOptionValue.MulColor.r = 1.f;
-		RenderPtr->ColorOptionValue.MulColor.g = 1.f;
-		RenderPtr->ColorOptionValue.MulColor.b = 1.f;
-		RenderPtr->ColorOptionValue.MulColor.a = 0.5f;
+		RenderPtr->ColorOptionValue.MulColor.r = .7f;
+		RenderPtr->ColorOptionValue.MulColor.g = .7f;
+		RenderPtr->ColorOptionValue.MulColor.b = .7f;
+		RenderPtr->ColorOptionValue.MulColor.a = .45f;
 	}
 }
 void Screen_FX::Update(float _DeltaTime)
