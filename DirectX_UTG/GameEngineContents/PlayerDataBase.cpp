@@ -86,17 +86,28 @@ void PlayerDataBase::OverwolrdCameraPivotCheck()
 	// 현재 위치에서 카메라의 이동 가능 영역 필요
 	float XLeftEnd = ColMapWidth_Half - CameraXEnd;
 	float XRightEnd = ColMapWidth_Half + CameraXEnd;
-	float YUpEnd = ColMapHegiht_Half + CameraYEnd;
+	float YUpEnd = ColMapHegiht_Half + CameraYEnd - 15.0f;
 	float YDownEnd = ColMapHegiht_Half - CameraYEnd;
 
 	if (XLeftEnd >= TargetPosition.x)
 	{
+		TargetPosition.x = XLeftEnd;
 	}
 
 	if (XRightEnd <= TargetPosition.x)
 	{
+		TargetPosition.x = XRightEnd;
 	}
 
+	if (YUpEnd <= TargetPosition.y)
+	{
+		TargetPosition.y = YUpEnd;
+	}
+
+	if (YDownEnd >= TargetPosition.y)
+	{
+		TargetPosition.y = YDownEnd;
+	}
 }
 
 void PlayerDataBase::MoveCamera(float _DeltaTime)
@@ -127,11 +138,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		float4 Movedir = float4::Zero;
 		FieldCameraPivotCheck();
 
-		if (true == IsLeftEndPosition)
-		{
-			Movedir = (CameraEndPosition - PrevCameraPosition);
-		}
-		else if (true == IsRightEndPosition)
+		if (true == IsLeftEndPosition || true == IsRightEndPosition)
 		{
 			Movedir = (CameraEndPosition - PrevCameraPosition);
 		}
@@ -154,10 +161,11 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		float CameraPosY = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition().y;
 
 		PrevCameraPosition = { CameraPosX, CameraPosY };
+		float4 Movedir = float4::Zero;
 
 		OverwolrdCameraPivotCheck();
 
-		float4 Movedir = (TargetPosition - PrevCameraPosition);
+		Movedir = (TargetPosition - PrevCameraPosition);
 
 		MoveDistance = Movedir * 4.5f * _DeltaTime;
 
