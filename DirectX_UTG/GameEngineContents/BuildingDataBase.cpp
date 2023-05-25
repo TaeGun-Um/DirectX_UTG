@@ -32,9 +32,56 @@ void BuildingDataBase::Update(float _DeltaTime)
 
 }
 
-void BuildingDataBase::BuildingSetting()
+void BuildingDataBase::BuildingSetting(Building _BuildingValue)
 {
+	BuildingValue = _BuildingValue;
 
+	switch (BuildingValue)
+	{
+	case Building::Home:
+	{
+
+	}
+		break;
+	case Building::Tutorial_Fly:
+	{
+
+	}
+		break;
+	case Building::Mouse:
+	{
+
+	}
+		break;
+	case Building::Frog:
+	{
+
+	}
+		break;
+	case Building::Dragon:
+	{
+
+	}
+		break;
+	case Building::Zeplin:
+	{
+
+	}
+		break;
+	case Building::Djimmi:
+	{
+
+	}
+		break;
+	case Building::Unknown:
+	{
+		MsgAssert("BuildingSetting()를 실시하지 않았습니다. BuildingValue가 Unknown입니다.");
+		return;
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void BuildingDataBase::CreateFlag()

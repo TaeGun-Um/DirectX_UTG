@@ -171,6 +171,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="BuildingDataBase.h" />
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="ContentsSpriteRenderer.h">
       <SubType>
@@ -228,6 +229,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="NPCDataBase.h" />
     <ClInclude Include="OverworldLevel.h">
       <SubType>
       </SubType>
@@ -335,6 +337,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BuildingDataBase.cpp" />
     <ClCompile Include="ContentsSpriteRenderer.cpp">
       <SubType>
       </SubType>
@@ -391,6 +394,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="NPCDataBase.cpp" />
     <ClCompile Include="OverworldLevel.cpp">
       <SubType>
       </SubType>

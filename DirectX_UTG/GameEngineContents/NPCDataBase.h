@@ -24,7 +24,7 @@ public:
 	NPCDataBase& operator=(const NPCDataBase& _Other) = delete;
 	NPCDataBase& operator=(NPCDataBase&& _Other) noexcept = delete;
 
-	void NPCSetting();
+	void NPCSetting(NPCValue _Value);
 
 protected:
 	void Start();

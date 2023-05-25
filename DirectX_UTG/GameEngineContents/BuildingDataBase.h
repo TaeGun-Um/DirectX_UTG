@@ -26,7 +26,7 @@ public:
 	BuildingDataBase& operator=(const BuildingDataBase& _Other) = delete;
 	BuildingDataBase& operator=(BuildingDataBase&& _Other) noexcept = delete;
 
-	void BuildingSetting();
+	void BuildingSetting(Building _BuildingValue);
 
 	void FlagUpSetting()
 	{

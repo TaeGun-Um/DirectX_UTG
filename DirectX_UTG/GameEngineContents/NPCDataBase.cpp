@@ -38,7 +38,44 @@ void NPCDataBase::Update(float _DeltaTime)
 
 }
 
-void NPCDataBase::NPCSetting() 
+void NPCDataBase::NPCSetting(NPCValue _Value)
 {
+	NPCValue = _Value;
 
+	switch (NPCValue)
+	{
+	case NPC::AppleTraveller:
+	{
+
+	}
+		break;
+	case NPC::Axeman:
+	{
+
+	}
+		break;
+	case NPC::Canteen:
+	{
+
+	}
+		break;
+	case NPC::Coin:
+	{
+
+	}
+		break;
+	case NPC::FishGirl:
+	{
+
+	}
+		break;
+	case NPC::Unknown:
+	{
+		MsgAssert("NPCSetting()을 실시하지 않았습니다. NPCValue가 Unknown입니다.");
+		return;
+	}
+		break;
+	default:
+		break;
+	}
 }
