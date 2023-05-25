@@ -200,6 +200,9 @@
     <ClInclude Include="ContentsSpriteRenderer.h">
       <Filter>ContentsCore</Filter>
     </ClInclude>
+    <ClInclude Include="Overworld_Upper.h">
+      <Filter>Levels\4. Overworld\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -319,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="ContentsSpriteRenderer.cpp">
       <Filter>ContentsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="Overworld_Upper.cpp">
+      <Filter>Levels\4. Overworld\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
