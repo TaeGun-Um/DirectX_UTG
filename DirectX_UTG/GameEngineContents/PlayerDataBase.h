@@ -80,6 +80,7 @@ protected:
 
 	float CameraXEnd = 0.0f;
 	float CameraYEnd = 0.0f;
+	float CameraMoveTime = 0.0f;
 
 	bool IsLeftEndPosition = false;
 	bool IsRightEndPosition = false;

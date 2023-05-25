@@ -148,6 +148,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		}
 
 		MoveDistance = Movedir * 2.0f * _DeltaTime;
+		MoveDistance.z = 0.0f;
 		MoveDistance.y = 0.0f;
 
 		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(MoveDistance);
@@ -155,10 +156,10 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		break;
 	case PlayerDataBase::CameraFollowType::Overworld:
 	{
-		TargetPosition = GetTransform()->GetWorldPosition();
+		TargetPosition = GetTransform()->GetLocalPosition();
 
-		float CameraPosX = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition().x;
-		float CameraPosY = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition().y;
+		float CameraPosX = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().x;
+		float CameraPosY = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().y;
 
 		PrevCameraPosition = { CameraPosX, CameraPosY };
 		float4 Movedir = float4::Zero;
@@ -168,6 +169,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		Movedir = (TargetPosition - PrevCameraPosition);
 
 		MoveDistance = Movedir * 4.5f * _DeltaTime;
+		MoveDistance.z = 0.0f;
 
 		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(MoveDistance);
 	}
