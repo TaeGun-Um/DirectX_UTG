@@ -55,14 +55,10 @@ void Overworld_Map::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\0.Small_Island\\MainBridge\\MainBridge_FrontTopper.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\1.Left\\Bridges\\ClipBridge\\ClipBridge_FrontTopper.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\1.Left\\Bridges\\ForestBridge\\ForestBridge_FrontTopper.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\2.Right\\Bridge\\PlaneBridge\\PlaneBridge_FrontTopper.png").GetFullPath());
-
 
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\1.Left\\Stairs\\BotanicStair\\BotanicStair_FrontTopper.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\1.Left\\Stairs\\RuseStair\\RuseStair_Topper.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\1.Left\\Stairs\\TreetopStair\\TreetopStair_FrontTopper.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\2.Right\\Stairs\\HouseStair\\HouseStair_FrontTopper.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("\\Upper\\2.Right\\Stairs\\ZeppelinStair\\ZeppelinStair_Topper.png").GetFullPath());
 	}
 
 	if (nullptr == Overworld_Bush_LeftRenderPtr) // 왼쪽 섬 수풀들
@@ -141,31 +137,52 @@ void Overworld_Map::Start()
 	if (nullptr == ForestBridge_FrontTopperRenderPtr) // 다리 어퍼
 	{
 		ForestBridge_FrontTopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ForestBridge_FrontTopperRenderPtr->SetScaleToTexture("ForestBridge_FrontTopper.png");
+		ForestBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 375, 172, -10 });
+		ForestBridge_FrontTopperRenderPtr->CameraCullingOn();
 	}
 	if (nullptr == PlaneBridge_FrontTopperRenderPtr) // 다리 어퍼
 	{
 		PlaneBridge_FrontTopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		PlaneBridge_FrontTopperRenderPtr->SetScaleToTexture("ForestBridge_FrontTopper.png");
+		PlaneBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 997, 747, -10 });
+		PlaneBridge_FrontTopperRenderPtr->CameraCullingOn();
 	}
 
 	if (nullptr == BotanicStair_FrontTopperRenderPtr) // 계단 어퍼
 	{
 		BotanicStair_FrontTopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BotanicStair_FrontTopperRenderPtr->SetScaleToTexture("BotanicStair_FrontTopper.png");
+		BotanicStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 123, -475, -10 });
+		BotanicStair_FrontTopperRenderPtr->CameraCullingOn();
 	}
 	if (nullptr == RuseStair_TopperRenderPtr) // 계단 어퍼
 	{
 		RuseStair_TopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RuseStair_TopperRenderPtr->SetScaleToTexture("RuseStair_Topper.png");
+		RuseStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 47, 617, -10 });
+		RuseStair_TopperRenderPtr->CameraCullingOn();
 	}
 	if (nullptr == TreetopStair_FrontTopperRenderPtr) // 계단 어퍼
 	{
 		TreetopStair_FrontTopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		TreetopStair_FrontTopperRenderPtr->SetScaleToTexture("TreetopStair_FrontTopper.png");
+		TreetopStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 772, 278, -10 });
+		TreetopStair_FrontTopperRenderPtr->CameraCullingOn();
 	}
 	if (nullptr == HouseStair_FrontTopperRenderPtr) // 계단 어퍼
 	{
 		HouseStair_FrontTopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		HouseStair_FrontTopperRenderPtr->SetScaleToTexture("BotanicStair_FrontTopper.png");
+		HouseStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 1432, 35, -10 });
+		HouseStair_FrontTopperRenderPtr->CameraCullingOn();
 	}
 	if (nullptr == ZeppelinStair_TopperRenderPtr) // 계단 어퍼
 	{
 		ZeppelinStair_TopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ZeppelinStair_TopperRenderPtr->SetScaleToTexture("RuseStair_Topper.png");
+		ZeppelinStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 1320, 642, -10 });
+		ZeppelinStair_TopperRenderPtr->CameraCullingOn();
 	}
 }
 void Overworld_Map::Update(float _DeltaTime)

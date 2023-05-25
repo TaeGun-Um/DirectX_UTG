@@ -150,7 +150,7 @@ void OverworldLevel::LevelChangeStart()
 	if (nullptr == ThisColMap)
 	{
 		ThisColMap = CreateActor<Overworld_ColMap>();
-		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -2 });
+		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -15 });
 	}
 	// Layer
 	{
