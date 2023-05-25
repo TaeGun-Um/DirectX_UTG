@@ -135,13 +135,13 @@ void OverworldLevel::LevelChangeStart()
 	if (nullptr == PlayerObject)
 	{
 		PlayerObject = CreateActor<Player_Overworld>();
-		PlayerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half , PlayMapHeight_Half, -1 });
+		PlayerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half , PlayMapHeight_Half, 1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 	}
 	// UpperMap
 	{
 		std::shared_ptr<class Overworld_Upper> UpperObject = CreateActor<Overworld_Upper>();
-		UpperObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 100 });
+		UpperObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	// Portal
 	{

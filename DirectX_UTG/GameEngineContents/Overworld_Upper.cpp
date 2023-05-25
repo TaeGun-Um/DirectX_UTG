@@ -13,7 +13,7 @@ Overworld_Upper::~Overworld_Upper()
 
 void Overworld_Upper::Start()
 {
-	if (nullptr == GameEngineTexture::Find("Overworld_Map.png"))
+	if (nullptr == GameEngineTexture::Find("Overworld_Bush_Left.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -123,4 +123,8 @@ void Overworld_Upper::Start()
 	{
 		ZeppelinStair_TopperRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	}
+}
+void Overworld_Upper::Update(float _DeltaTime)
+{
+
 }
