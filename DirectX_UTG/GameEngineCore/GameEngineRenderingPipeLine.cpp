@@ -278,3 +278,20 @@ void GameEngineRenderingPipeLine::Render()
 	// 3. Vertex InputData  : 인풋레이아웃 낫셋. 쉐이더의 시멘틱에게 버텍스 구성이 어떻게 되어있는지의 인풋데이터를 생성 후 전달 필요
 	//                        GameEngineVertex로 이동하여 인풋 레이아웃 생성 함수 만들기
 }
+
+std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderingPipeLine::Clone()
+{
+	std::shared_ptr<GameEngineRenderingPipeLine> ClonePipe = std::make_shared<GameEngineRenderingPipeLine>();
+
+	ClonePipe->InputLayOutPtr = InputLayOutPtr;
+	ClonePipe->VertexBufferPtr = VertexBufferPtr;
+	ClonePipe->IndexBufferPtr = IndexBufferPtr;
+	ClonePipe->VertexShaderPtr = VertexShaderPtr;
+	ClonePipe->RasterizerPtr = RasterizerPtr;
+	ClonePipe->PixelShaderPtr = PixelShaderPtr;
+	ClonePipe->BlendStatePtr = BlendStatePtr;
+	ClonePipe->DepthStatePtr = DepthStatePtr;
+	ClonePipe->IsCloneValue = true;
+
+	return ClonePipe;
+}

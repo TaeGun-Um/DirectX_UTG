@@ -18,29 +18,7 @@ GameEngineTexture::GameEngineTexture()
 
 GameEngineTexture::~GameEngineTexture()
 {
-	if (nullptr != DSV)
-	{
-		DSV->Release();
-		DSV = nullptr;
-	}
-
-	if (nullptr != SRV)
-	{
-		SRV->Release();
-		SRV = nullptr;
-	}
-
-	if (nullptr != RTV)
-	{
-		RTV->Release();
-		RTV = nullptr;
-	}
-
-	if (nullptr != Texture2D)
-	{
-		Texture2D->Release();
-		Texture2D = nullptr;
-	}
+	Release();
 }
 
 
@@ -175,7 +153,7 @@ void GameEngineTexture::VSReset(UINT _Slot)
 {
 	static ID3D11ShaderResourceView* Nullptr = nullptr;
 
-	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &Nullptr);
+	GameEngineDevice::GetContext()->VSSetShaderResources(_Slot, 1, &Nullptr);
 }
 void GameEngineTexture::PSReset(UINT _Slot)
 {
@@ -533,4 +511,33 @@ void GameEngineTexture::PathCheck(const std::string_view& _Path, const std::stri
 		return;
 	}
 	GameEngineCore::CurLoadLevel->TexturePath[_Name.data()] = _Path.data();
+}
+
+void GameEngineTexture::Release()
+{
+	Image.Release();
+
+	if (nullptr != DSV)
+	{
+		DSV->Release();
+		DSV = nullptr;
+	}
+
+	if (nullptr != SRV)
+	{
+		SRV->Release();
+		SRV = nullptr;
+	}
+
+	if (nullptr != RTV)
+	{
+		RTV->Release();
+		RTV = nullptr;
+	}
+
+	if (nullptr != Texture2D)
+	{
+		Texture2D->Release();
+		Texture2D = nullptr;
+	}
 }

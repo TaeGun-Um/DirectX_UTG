@@ -13,6 +13,7 @@
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
 std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;
+
 GameEngineLevel* GameEngineCore::CurLoadLevel = nullptr;
 
 GameEngineCore::GameEngineCore()
@@ -23,14 +24,18 @@ GameEngineCore::~GameEngineCore()
 {
 }
 
-// Core의 시작 구간 (리소스, 액터, 레벨 Start)
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	GameEngineDevice::Initialize();
+	// 코어이니셜라이즈
+	// Rect Box
 
-	// 메쉬는 CreateLevel 전에 만들어져 있어야 한다.
-	// 보통 엔진에서 박스나 구, 렉트 정도는 지원해줘야 한다.
-	// 릭은 안남지만 내가 원하는 타이밍에 제거시키기 위해 CoreResourcesEnd에서 삭제
+	if (false == GameEngineInput::IsKey("GUISwitch"))
+	{
+		GameEngineInput::CreateKey("GUISwitch", VK_F8);
+	}
+
+
+	GameEngineDevice::Initialize();
 
 	CoreResourcesInit();
 
@@ -43,7 +48,6 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	_ContentsStart();
 }
 
-// Core의 루프 구간
 void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
@@ -52,7 +56,9 @@ void GameEngineCore::EngineUpdate()
 
 		if (nullptr != MainLevel)
 		{
+			CurLoadLevel = MainLevel.get();
 			MainLevel->LevelChangeEnd();
+			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeEnd();
 		}
 
@@ -60,7 +66,9 @@ void GameEngineCore::EngineUpdate()
 
 		if (nullptr != MainLevel)
 		{
+			CurLoadLevel = MainLevel.get();
 			MainLevel->LevelChangeStart();
+			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeStart();
 		}
 
@@ -78,9 +86,6 @@ void GameEngineCore::EngineUpdate()
 		// 레퍼런스 카운트 관리해볼것이다.
 
 		// Prev레벨에서 사용한 텍스처들
-
-		PrevLevel;
-		MainLevel;
 		NextLevel = nullptr;
 		GameEngineTime::GlobalTime.Reset();
 	}
@@ -91,36 +96,38 @@ void GameEngineCore::EngineUpdate()
 		return;
 	}
 
-	// 델타타임 체크
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
 
+	// 별로 좋은건 아닙니다.
 	if (TimeDeltaTime > 1 / 30.0f)
 	{
 		TimeDeltaTime = 1 / 30.0f;
 	}
 
-	GameEngineInput::Update(TimeDeltaTime);       // 할당 후 변동된 Key 값 업데이트
-	GameEngineSound::SoundUpdate();               // FMOD Sound 업데이트
+	GameEngineInput::Update(TimeDeltaTime);
+	GameEngineSound::SoundUpdate();
 
-	MainLevel->TimeEvent.Update(TimeDeltaTime);   // Level의 TimeEvent 변동 값 업데이트
+	// 업데이트가 일어나는 동안 로드가 된애들
+
+	CurLoadLevel = MainLevel.get();
+	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
-	MainLevel->Update(TimeDeltaTime);             
-	MainLevel->ActorUpdate(TimeDeltaTime);        // Level의 Actor 변동 값 업데이트
-	GameEngineDevice::RenderStart();              // 백버퍼 클리어
+	MainLevel->Update(TimeDeltaTime);
+	MainLevel->ActorUpdate(TimeDeltaTime);
+	CurLoadLevel = nullptr;
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
-
 	if (State != GameEngineVideo::VideoState::Running)
 	{
+		GameEngineDevice::RenderStart();
 		MainLevel->Render(TimeDeltaTime);
-		MainLevel->ActorRender(TimeDeltaTime);    // Render를 실시며 HDC를 활용하여 이미지 수정
-		GameEngineDevice::RenderEnd();            // 백버퍼에 이미지 랜더
+		MainLevel->ActorRender(TimeDeltaTime);
+		GameEngineDevice::RenderEnd();
 	}
 
-	MainLevel->ActorRelease(); // 릴리즈구조
+	MainLevel->ActorRelease();
 }
 
-// Core의 종료 구간 (Level(map) clear, 할당된 shared_ptr 명시적 해제, DirectX 명시적 해제(Release))
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 {
 	if (nullptr == _ContentsEnd)
@@ -131,8 +138,11 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	_ContentsEnd();
 
 	GameEngineGUI::Release();
+
 	LevelMap.clear();
 	CoreResourcesEnd();
+
+
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
 }
@@ -170,3 +180,4 @@ void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 	_Level->Start();
 	CurLoadLevel = nullptr;
 }
+

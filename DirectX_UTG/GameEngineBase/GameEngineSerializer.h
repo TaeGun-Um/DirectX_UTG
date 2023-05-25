@@ -54,6 +54,8 @@ public:
 	void Read(std::string& _Value);             // 텍스트 자료형 불러오기 (텍스트)
 	void Read(void* _Ptr, size_t _Size);        // 불러오기 함수
 
+	std::string GetString();
+
 protected:
 
 private:

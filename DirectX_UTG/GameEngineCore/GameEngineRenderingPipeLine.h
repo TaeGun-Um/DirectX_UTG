@@ -43,9 +43,18 @@ public:
 	void RenderingPipeLineSetting();
 	void Render();
 
+	std::shared_ptr<GameEngineRenderingPipeLine> Clone();
+
+	bool IsClone()
+	{
+		return IsCloneValue;
+	}
+
 protected:
 
 private:
+	bool IsCloneValue = false;
+
 	// DirectX RenderingPipeLine °úÁ¤
 	void InputAssembler1();
 	void VertexShader();

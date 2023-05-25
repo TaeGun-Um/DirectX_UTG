@@ -3,10 +3,25 @@
 #include "GameEngineRenderer.h"
 #include "GameEngineCore.h"
 
+class GameEngineRenderTarget;
+class GameEnginePostProcess
+	: std::enable_shared_from_this<GameEnginePostProcess>
+{
+	friend GameEngineRenderTarget;
+
+public:
+	std::shared_ptr<GameEngineRenderTarget> ResultTarget;
+
+protected:
+	virtual void Start(std::shared_ptr<GameEngineRenderTarget> _Target) = 0;
+	virtual void Effect(std::shared_ptr<GameEngineRenderTarget> _Target) = 0;
+};
+
 class GameEngineTexture;
 
 // Ό³Έν :
-class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
+class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>,
+	std::enable_shared_from_this<GameEngineRenderTarget>
 {
 	friend class GameEngineCore;
 public:
@@ -48,6 +63,18 @@ public:
 
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
+	template<typename EffectType>
+	std::shared_ptr<EffectType> CreateEffect()
+	{
+		std::shared_ptr<EffectType> Effect = std::make_shared<EffectType>();
+		std::shared_ptr<GameEnginePostProcess> UpCast = std::dynamic_pointer_cast<GameEnginePostProcess>(Effect);
+		// UpCast->Start((shared_from_this()));
+		Effects.push_back(Effect);
+		return Effect;
+	}
+
+	void Effect();
+
 protected:
 
 private:
@@ -55,6 +82,8 @@ private:
 	static GameEngineRenderUnit MergeUnit;
 
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	std::vector<std::shared_ptr<GameEnginePostProcess>> Effects;
 
 	std::vector<std::shared_ptr<GameEngineTexture>> Textures;
 	std::vector<ID3D11RenderTargetView*> RTVs;

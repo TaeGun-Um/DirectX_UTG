@@ -31,6 +31,11 @@ public:
 	void SaveBin(const GameEngineSerializer& _Data); // 데이터를 바이너리 형태로 저장
 	void SaveText(const std::string_view& _View);    // 데이터를 텍스트 형태로 저장
 	void LoadBin(GameEngineSerializer& _Data);       // 데이터를 바이너리로 불러오기
+	void LoadText(GameEngineSerializer& _Data);
+
+	std::string GetString();
+
+	uintmax_t GetFileSize();
 
 protected:
 

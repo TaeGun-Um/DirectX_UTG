@@ -170,5 +170,5 @@ void Overworld_Map::Start()
 }
 void Overworld_Map::Update(float _DeltaTime)
 {
-	Player_Overworld::MainPlayer->GetTransform()->GetWorldPosition();
+	// Player_Overworld::MainPlayer->GetTransform()->GetWorldPosition();
 }
