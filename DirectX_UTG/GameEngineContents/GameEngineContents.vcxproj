@@ -240,10 +240,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Overworld_Upper.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ParryEffect.h">
       <SubType>
       </SubType>
@@ -404,10 +400,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Overworld_Map.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Overworld_Upper.cpp">
       <SubType>
       </SubType>
     </ClCompile>

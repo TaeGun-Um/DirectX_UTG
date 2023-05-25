@@ -9,7 +9,6 @@
 
 #include "Overworld_Map.h"
 #include "Overworld_ColMap.h"
-#include "Overworld_Upper.h"
 #include "Player_Overworld.h"
 #include "PortalDoor.h"
 
@@ -129,7 +128,7 @@ void OverworldLevel::LevelChangeStart()
 	// Map
 	{
 		MapObject = CreateActor<Overworld_Map>();
-		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 100 });
+		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 5 });
 	}
 	// Character
 	if (nullptr == PlayerObject)
@@ -137,11 +136,6 @@ void OverworldLevel::LevelChangeStart()
 		PlayerObject = CreateActor<Player_Overworld>();
 		PlayerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half , PlayMapHeight_Half, 1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-	}
-	// UpperMap
-	{
-		std::shared_ptr<class Overworld_Upper> UpperObject = CreateActor<Overworld_Upper>();
-		UpperObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	// Portal
 	{

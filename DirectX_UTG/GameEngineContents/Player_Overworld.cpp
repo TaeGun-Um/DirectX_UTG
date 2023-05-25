@@ -17,7 +17,7 @@ void Player_Overworld::Start()
 	PlayerInitialSetting();
 	DebugRendererSetting();
 	SetCameraFollowType(CameraFollowType::Overworld);
-	SetPlayerMoveSpeed(230.0f);
+	SetPlayerMoveSpeed(500.0f); // 230
 }
 void Player_Overworld::Update(float _DeltaTime)
 {
