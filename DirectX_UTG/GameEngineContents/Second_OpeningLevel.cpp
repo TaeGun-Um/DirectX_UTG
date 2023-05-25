@@ -73,6 +73,5 @@ void Second_OpeningLevel::LevelChangeStart()
 }
 void Second_OpeningLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }

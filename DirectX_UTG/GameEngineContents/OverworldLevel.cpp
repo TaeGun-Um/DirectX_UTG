@@ -176,6 +176,5 @@ void OverworldLevel::LevelChangeStart()
 }
 void OverworldLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }

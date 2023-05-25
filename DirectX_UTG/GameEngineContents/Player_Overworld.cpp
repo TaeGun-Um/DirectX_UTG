@@ -4,6 +4,8 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+Player_Overworld* Player_Overworld::MainPlayer = nullptr;
+
 Player_Overworld::Player_Overworld() 
 {
 }
@@ -14,6 +16,8 @@ Player_Overworld::~Player_Overworld()
 
 void Player_Overworld::Start()
 {
+	MainPlayer = this;
+
 	PlayerInitialSetting();
 	DebugRendererSetting();
 	SetCameraFollowType(CameraFollowType::Overworld);

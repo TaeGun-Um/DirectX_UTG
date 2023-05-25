@@ -66,6 +66,5 @@ void FrogLevel::LevelChangeStart()
 }
 void FrogLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }

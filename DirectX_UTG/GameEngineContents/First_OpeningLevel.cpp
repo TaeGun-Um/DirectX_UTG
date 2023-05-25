@@ -80,6 +80,5 @@ void First_OpeningLevel::LevelChangeStart()
 }
 void First_OpeningLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }

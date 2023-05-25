@@ -49,6 +49,5 @@ void MouseLevel::LevelChangeStart()
 }
 void MouseLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }

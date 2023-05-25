@@ -49,6 +49,5 @@ void DragonLevel::LevelChangeStart()
 }
 void DragonLevel::LevelChangeEnd()
 {
-	GameEngineSprite::ResourcesClear();
-	GameEngineTexture::ResourcesClear();
+
 }
