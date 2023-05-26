@@ -58,6 +58,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
 
+	std::shared_ptr<class GameEngineCollision> CollisionPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr;
+
 	bool IsDebugRender = false;
 	bool Directbool = true;
 
@@ -72,6 +75,7 @@ private:
 
 	void PlayerInitialSetting();
 	void DebugRendererSetting();
+	void PlayerCollisionSetting();
 	void PlayerDebugRenderer();
 	void DirectCheck();
 	void MoveDirectCheck();

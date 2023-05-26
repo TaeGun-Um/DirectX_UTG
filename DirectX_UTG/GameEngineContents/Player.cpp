@@ -1624,19 +1624,6 @@ void Player::AttackDirectCheck()
 
 void Player::PlayerInitialSetting()
 {
-	if (nullptr == RenderPtr)
-	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	}
-	if (nullptr == PeashooterRenderPtr)
-	{
-		PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	}
-	if (nullptr == ChargeUpRenderPtr)
-	{
-		ChargeUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	}
-	
 	if (nullptr == GameEngineSprite::Find("Idle"))
 	{
 		GameEngineDirectory NewDir;
@@ -1772,6 +1759,19 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EX_ChargeUp").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("HitSFX").GetFullPath());
+	}
+
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	if (nullptr == PeashooterRenderPtr)
+	{
+		PeashooterRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	if (nullptr == ChargeUpRenderPtr)
+	{
+		ChargeUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	}
 
 	if (nullptr != RenderPtr)

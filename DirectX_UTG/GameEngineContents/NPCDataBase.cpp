@@ -12,64 +12,123 @@ NPCDataBase::~NPCDataBase()
 {
 }
 
-void NPCDataBase::Start()
+void NPCDataBase::CollisionCheck(std::shared_ptr<class GameEngineCollision> _Collision)
 {
-	if (nullptr == GameEngineTexture::Find("Overworld_Map.png"))
+	if (nullptr != _Collision->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Overworld");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Overworld_Map.png").GetFullPath());
-	}
-
-	if (nullptr == RenderPtr)
-	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->SetScaleToTexture("Overworld_Map.png");
+		int a = 0;
 	}
 }
 
-void NPCDataBase::Update(float _DeltaTime)
+void NPCDataBase::NPCLoad(NPCValue _NValue)
 {
+	NValue = _NValue;
 
-}
-
-void NPCDataBase::NPCSetting(NPCValue _Value)
-{
-	NPCValue = _Value;
-
-	switch (NPCValue)
+	switch (NValue)
 	{
-	case NPC::AppleTraveller:
+	case NPCValue::AppleTraveller:
 	{
+		if (nullptr == GameEngineSprite::Find("AppleTraveller_Blink"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("CupHead_Resource");
+			NewDir.Move("CupHead_Resource");
+			NewDir.Move("Image");
+			NewDir.Move("Character");
+			NewDir.Move("Overworld_NPCs");
+			NewDir.Move("AppleTraveller");
 
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_Blink").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_HoboStick").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_Idle").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_Wave").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_Wave_Intro").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AppleTraveller_Wave_Outro").GetFullPath());
+		}
 	}
 		break;
-	case NPC::Axeman:
+	case NPCValue::Axeman:
 	{
+		if (nullptr == GameEngineSprite::Find("Axeman_Idle"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("CupHead_Resource");
+			NewDir.Move("CupHead_Resource");
+			NewDir.Move("Image");
+			NewDir.Move("Character");
+			NewDir.Move("Overworld_NPCs");
+			NewDir.Move("Axeman");
 
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Axeman_Idle").GetFullPath());
+		}
 	}
 		break;
-	case NPC::Canteen:
+	case NPCValue::Canteen:
 	{
+		if (nullptr == GameEngineSprite::Find("Canteen_Idle"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("CupHead_Resource");
+			NewDir.Move("CupHead_Resource");
+			NewDir.Move("Image");
+			NewDir.Move("Character");
+			NewDir.Move("Overworld_NPCs");
+			NewDir.Move("Canteen");
 
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Canteen_Idle").GetFullPath());
+		}
 	}
 		break;
-	case NPC::Coin:
+	case NPCValue::Coin:
 	{
+		if (nullptr == GameEngineSprite::Find("Coin_Blink"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("CupHead_Resource");
+			NewDir.Move("CupHead_Resource");
+			NewDir.Move("Image");
+			NewDir.Move("Character");
+			NewDir.Move("Overworld_NPCs");
+			NewDir.Move("Coin");
 
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Blink").GetFullPath());
+
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Boil_A").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Boil_B").GetFullPath());
+
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_A").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_B").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_C").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_D").GetFullPath());
+
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_A").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_B").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_C").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_D").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_E").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_F").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_G").GetFullPath());
+		}
 	}
 		break;
-	case NPC::FishGirl:
+	case NPCValue::FishGirl:
 	{
+		if (nullptr == GameEngineSprite::Find("FishGirl_Idle"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("CupHead_Resource");
+			NewDir.Move("CupHead_Resource");
+			NewDir.Move("Image");
+			NewDir.Move("Character");
+			NewDir.Move("Overworld_NPCs");
+			NewDir.Move("FishGirl");
 
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("FishGirl_Idle").GetFullPath());
+			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("FishGirl_Blink").GetFullPath());
+		}
 	}
 		break;
-	case NPC::Unknown:
+	case NPCValue::Unknown:
 	{
 		MsgAssert("NPCSetting()을 실시하지 않았습니다. NPCValue가 Unknown입니다.");
 		return;

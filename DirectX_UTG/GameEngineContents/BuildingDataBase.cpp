@@ -32,48 +32,48 @@ void BuildingDataBase::Update(float _DeltaTime)
 
 }
 
-void BuildingDataBase::BuildingSetting(Building _BuildingValue)
+void BuildingDataBase::BuildingSetting(BuildingValue _BValue)
 {
-	BuildingValue = _BuildingValue;
+	BValue = _BValue;
 
-	switch (BuildingValue)
+	switch (BValue)
 	{
-	case Building::Home:
-	{
-
-	}
-		break;
-	case Building::Tutorial_Fly:
+	case BuildingValue::Home:
 	{
 
 	}
 		break;
-	case Building::Mouse:
+	case BuildingValue::Tutorial_Fly:
 	{
 
 	}
 		break;
-	case Building::Frog:
+	case BuildingValue::Mouse:
 	{
 
 	}
 		break;
-	case Building::Dragon:
+	case BuildingValue::Frog:
 	{
 
 	}
 		break;
-	case Building::Zeplin:
+	case BuildingValue::Dragon:
 	{
 
 	}
 		break;
-	case Building::Djimmi:
+	case BuildingValue::Zeplin:
 	{
 
 	}
 		break;
-	case Building::Unknown:
+	case BuildingValue::Djimmi:
+	{
+
+	}
+		break;
+	case BuildingValue::Unknown:
 	{
 		MsgAssert("BuildingSetting()를 실시하지 않았습니다. BuildingValue가 Unknown입니다.");
 		return;

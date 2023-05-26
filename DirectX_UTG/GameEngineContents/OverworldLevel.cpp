@@ -10,7 +10,12 @@
 #include "Overworld_Map.h"
 #include "Overworld_ColMap.h"
 #include "Player_Overworld.h"
-#include "PortalDoor.h"
+
+#include "AppleTraveller.h"
+#include "Axeman.h"
+#include "Canteen.h"
+#include "Coin.h"
+#include "Fishgirl.h"
 
 #include "TransformGUI.h"
 #include "Screen_FX.h"
@@ -82,24 +87,7 @@ void OverworldLevel::Update(float _DeltaTime)
 
 void OverworldLevel::LevelChangeStart()
 {
-	if (nullptr == GameEngineSprite::Find("BlueBox"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("DebugImage");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-	// 레벨 리소스 로드
+	// 콜맵용
 	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -129,6 +117,23 @@ void OverworldLevel::LevelChangeStart()
 	{
 		MapObject = CreateActor<Overworld_Map>();
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 5 });
+	}
+	// NPC
+	{
+		std::shared_ptr<AppleTraveller> NPCObject0 = CreateActor<AppleTraveller>();
+		NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 1 });
+
+		std::shared_ptr<Axeman> NPCObject1 = CreateActor<Axeman>();
+		NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 1 });
+
+		std::shared_ptr<Canteen> NPCObject2 = CreateActor<Canteen>();
+		NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 1 });
+
+		std::shared_ptr<Coin> NPCObject3 = CreateActor<Coin>();
+		NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 1 });
+
+		std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
+		NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, 1 });
 	}
 	// Character
 	if (nullptr == PlayerObject)

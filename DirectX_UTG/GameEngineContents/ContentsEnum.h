@@ -16,22 +16,6 @@ enum class AttackDirection
 	Left_Down,			
 };
 
-enum class RenderOrder
-{
-	Background,
-	Platform,
-	MonsterEffect,
-	Monster,
-	MonsterAttack,
-	PlayerEffect,
-	Player,
-	PlayerAttack,
-	Layer,
-	UI,
-	Debug,
-	SFX,
-};
-
 enum class CollisionOrder
 {
 	Player,         
@@ -41,7 +25,9 @@ enum class CollisionOrder
 	Spread,
 	SpreadEX,
 	Monster,			
-	MonsterAttack,		
+	MonsterAttack,
+	NPC,
+	Building,
 	Platform,			
 	ParrySpot,		    
 	Portal,				

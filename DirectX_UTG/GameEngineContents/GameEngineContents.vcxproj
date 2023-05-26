@@ -167,11 +167,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AppleTraveller.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Axeman.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BookRender.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="BuildingDataBase.h" />
+    <ClInclude Include="Canteen.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="ContentsSpriteRenderer.h">
       <SubType>
@@ -198,6 +214,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="First_OpeningLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Fishgirl.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -333,11 +353,27 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppleTraveller.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Axeman.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BookRender.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="BuildingDataBase.cpp" />
+    <ClCompile Include="Canteen.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ContentsSpriteRenderer.cpp">
       <SubType>
       </SubType>
@@ -363,6 +399,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="First_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Fishgirl.cpp">
       <SubType>
       </SubType>
     </ClCompile>

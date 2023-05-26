@@ -3,6 +3,7 @@
 
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 Player_Overworld* Player_Overworld::MainPlayer = nullptr;
 
@@ -20,6 +21,7 @@ void Player_Overworld::Start()
 
 	PlayerInitialSetting();
 	DebugRendererSetting();
+	PlayerCollisionSetting();
 	SetCameraFollowType(CameraFollowType::Overworld);
 	SetPlayerMoveSpeed(230.0f); // 230
 }
@@ -45,6 +47,7 @@ void Player_Overworld::PlayerDebugRenderer()
 		DebugRenderPtr2->On();
 		DebugRenderPtr3->On();
 		DebugRenderPtr4->On();
+		CollisionRenderPtr->On();
 	}
 	else
 	{
@@ -53,6 +56,7 @@ void Player_Overworld::PlayerDebugRenderer()
 		DebugRenderPtr2->Off();
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
+		CollisionRenderPtr->Off();
 	}
 }
 
@@ -540,8 +544,11 @@ void Player_Overworld::WinEnd()
 
 void Player_Overworld::PlayerInitialSetting()
 {
-	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+	
 	if (nullptr == GameEngineSprite::Find("DashDust"))
 	{
 		GameEngineDirectory NewDir;
@@ -632,5 +639,31 @@ void Player_Overworld::DebugRendererSetting()
 		DebugRenderPtr2->Off();
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
+	}
+}
+
+void Player_Overworld::PlayerCollisionSetting()
+{
+	if (nullptr == CollisionRenderPtr)
+	{
+		CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+
+	if (nullptr == CollisionPtr)
+	{
+		CollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+	}
+
+	if (nullptr != CollisionPtr)
+	{
+		CollisionPtr->GetTransform()->SetLocalScale({ 50, 75, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 25, -17 });
+	}
+
+	if (nullptr != CollisionRenderPtr)
+	{
+		CollisionRenderPtr->SetTexture("GreenLine.png");
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
 	}
 }

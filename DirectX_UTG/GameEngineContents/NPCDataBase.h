@@ -1,6 +1,6 @@
 #pragma once
 
-enum class NPC
+enum class NPCValue
 {
 	AppleTraveller,
 	Axeman,
@@ -24,20 +24,17 @@ public:
 	NPCDataBase& operator=(const NPCDataBase& _Other) = delete;
 	NPCDataBase& operator=(NPCDataBase&& _Other) noexcept = delete;
 
-	void NPCSetting(NPCValue _Value);
 
 protected:
-	void Start();
-	void Update(float _DeltaTime) override;
+	void Start() override {}
+	void Update(float _DeltaTime) override {}
 	void Render(float _DeltaTime) override {}
+	
+	void CollisionCheck(std::shared_ptr<class GameEngineCollision> _Collision);
+	void NPCLoad(NPCValue _NValue);
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> AssitantRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
-
-	NPC NPCValue = NPC::Unknown;
+	NPCValue NValue = NPCValue::Unknown;
 
 };
 

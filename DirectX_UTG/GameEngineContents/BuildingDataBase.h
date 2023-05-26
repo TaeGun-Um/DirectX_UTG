@@ -1,6 +1,6 @@
 #pragma once
 
-enum class Building
+enum class BuildingValue
 {
 	Home,
 	Tutorial_Fly,
@@ -26,7 +26,7 @@ public:
 	BuildingDataBase& operator=(const BuildingDataBase& _Other) = delete;
 	BuildingDataBase& operator=(BuildingDataBase&& _Other) noexcept = delete;
 
-	void BuildingSetting(Building _BuildingValue);
+	void BuildingSetting(BuildingValue _BValue);
 
 	void FlagUpSetting()
 	{
@@ -44,7 +44,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
 
-	Building BuildingValue = Building::Unknown;
+	BuildingValue BValue = BuildingValue::Unknown;
 
 	bool FlagCall = false;
 

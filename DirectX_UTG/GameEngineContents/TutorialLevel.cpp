@@ -93,24 +93,7 @@ void TutorialLevel::Update(float _DeltaTime)
 
 void TutorialLevel::LevelChangeStart()
 {
-	if (nullptr == GameEngineSprite::Find("BlueBox"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("DebugImage");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-	// 레벨 리소스 로드
+	// 콜맵용
 	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;

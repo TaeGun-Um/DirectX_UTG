@@ -82,6 +82,12 @@
     <Filter Include="Levels\7. Player\PlayerEffect\SFX">
       <UniqueIdentifier>{6a16e610-ac08-4126-a4c3-bee679670fca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\4. Overworld\Object\NPC">
+      <UniqueIdentifier>{dc096554-2001-4dd3-957c-eec4fe5d2a5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\4. Overworld\Object\Building">
+      <UniqueIdentifier>{43f1b0fb-3806-4ebb-a788-1d18635d7e26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -201,10 +207,25 @@
       <Filter>ContentsCore</Filter>
     </ClInclude>
     <ClInclude Include="NPCDataBase.h">
-      <Filter>Levels\4. Overworld\Object</Filter>
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClInclude>
     <ClInclude Include="BuildingDataBase.h">
-      <Filter>Levels\4. Overworld\Object</Filter>
+      <Filter>Levels\4. Overworld\Object\Building</Filter>
+    </ClInclude>
+    <ClInclude Include="AppleTraveller.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Axeman.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Canteen.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Fishgirl.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,10 +348,25 @@
       <Filter>ContentsCore</Filter>
     </ClCompile>
     <ClCompile Include="NPCDataBase.cpp">
-      <Filter>Levels\4. Overworld\Object</Filter>
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClCompile>
     <ClCompile Include="BuildingDataBase.cpp">
-      <Filter>Levels\4. Overworld\Object</Filter>
+      <Filter>Levels\4. Overworld\Object\Building</Filter>
+    </ClCompile>
+    <ClCompile Include="AppleTraveller.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Axeman.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Canteen.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Fishgirl.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
