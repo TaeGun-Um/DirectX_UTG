@@ -121,7 +121,7 @@ void OverworldLevel::LevelChangeStart()
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half - 300, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	// CreateActor
@@ -151,17 +151,8 @@ void OverworldLevel::LevelChangeStart()
 	if (nullptr == PlayerObject)
 	{
 		PlayerObject = CreateActor<Player_Overworld>();
-		PlayerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half , PlayMapHeight_Half - 300, 1 });
+		PlayerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half , PlayMapHeight_Half, 1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
-	}
-	// Portal
-	{
-		//PortalDoorObject = CreateActor<PortalDoor>();
-		//PortalDoorObject->GetTransform()->SetLocalPosition({ 5840, 150 });
-		//PortalDoorObject->SetPortalValue(PortalValue::Overworld);
-	}
-	// Wall Actor
-	{
 	}
 	// ColMap
 	if (nullptr == ThisColMap)

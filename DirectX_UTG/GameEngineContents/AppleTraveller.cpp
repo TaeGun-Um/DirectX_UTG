@@ -170,7 +170,7 @@ void AppleTraveller::InitCollisionSetting()
 
 	if (nullptr != WaveCollisionPtr)
 	{
-		WaveCollisionPtr->GetTransform()->SetLocalScale({ 900, 900, 1 });
+		WaveCollisionPtr->GetTransform()->SetLocalScale({ 950, 500, 1 });
 		WaveCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
 	}
 

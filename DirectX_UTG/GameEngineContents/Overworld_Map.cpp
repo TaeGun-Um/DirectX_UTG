@@ -185,6 +185,113 @@ void Overworld_Map::Start()
 		ZeppelinStair_TopperRenderPtr->CameraCullingOn();
 	}
 }
+
 void Overworld_Map::Update(float _DeltaTime)
 {
+	RendererWorldPositionCheck();
+}
+
+void Overworld_Map::RendererWorldPositionCheck()
+{
+	float PlayerYPos = Player_Overworld::MainPlayer->GetTransform()->GetWorldPosition().y;
+	float PlayerXPos = Player_Overworld::MainPlayer->GetTransform()->GetWorldPosition().x;
+
+	float MainBridgeYPos = MainBridge_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float ClipBridgeYPos = ClipBridge_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float ClipBridgeXPos = ClipBridge_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().x;
+	float ForestBridgeYPos = ForestBridge_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float PlaneBridgeYpos = PlaneBridge_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+
+	float BotanicStairYPos = BotanicStair_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float BotanicStairXPos = BotanicStair_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().x;
+	float RuseStairYPos = RuseStair_TopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float TreetopStairYPos = TreetopStair_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float HouseStairYPos = HouseStair_FrontTopperRenderPtr->GetTransform()->GetWorldPosition().y;
+	float ZeppelinStairYPos = ZeppelinStair_TopperRenderPtr->GetTransform()->GetWorldPosition().y;
+
+	if ((MainBridgeYPos - 20) <= PlayerYPos)
+	{
+		MainBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ -395, 25, -10 });
+	}
+	else
+	{
+		MainBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ -395, 25, 10 });
+	}
+
+	if ((ClipBridgeYPos - 80) <= PlayerYPos)
+	{
+		ClipBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 763, -303, -10 });
+
+		if ((ClipBridgeXPos + 80) <= PlayerXPos)
+		{
+			ClipBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 763, -303, 10 });
+		}
+	}
+	else
+	{
+		ClipBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 763, -303, 10 });
+	}
+
+	if ((ForestBridgeYPos - 5) <= PlayerYPos)
+	{
+		ForestBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 375, 172, -10 });
+	}
+	else
+	{
+		ForestBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 375, 172, 10 });
+	}
+
+	if ((PlaneBridgeYpos - 5) <= PlayerYPos)
+	{
+		PlaneBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 997, 747, -10 });
+	}
+	else
+	{
+		PlaneBridge_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 997, 747, 10 });
+	}
+
+	if ((BotanicStairYPos - 60) <= PlayerYPos)
+	{
+		BotanicStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 123, -475, -10 });
+	}
+	else
+	{
+		BotanicStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 123, -475, 10 });
+	}
+
+	if ((RuseStairYPos + 10) <= PlayerYPos)
+	{
+		RuseStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 47, 617, -10 });
+	}
+	else
+	{
+		RuseStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 47, 617, 10 });
+	}
+
+	if ((ZeppelinStairYPos + 10) <= PlayerYPos)
+	{
+		ZeppelinStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 1320, 642, -10 });
+	}
+	else
+	{
+		ZeppelinStair_TopperRenderPtr->GetTransform()->SetLocalPosition({ 1320, 642, 10 });
+	}
+
+	if ((TreetopStairYPos - 35) <= PlayerYPos)
+	{
+		TreetopStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 772, 278, -10 });
+	}
+	else
+	{
+		TreetopStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 772, 278, 10 });
+	}
+
+	if ((HouseStairYPos - 40) <= PlayerYPos)
+	{
+		HouseStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 1432, 35, -10 });
+	}
+	else
+	{
+		HouseStair_FrontTopperRenderPtr->GetTransform()->SetLocalPosition({ 1432, 35, 10 });
+	}
 }

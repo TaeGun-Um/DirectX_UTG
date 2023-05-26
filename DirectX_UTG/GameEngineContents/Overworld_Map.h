@@ -45,5 +45,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RuseStair_TopperRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> TreetopStair_FrontTopperRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> HouseStair_FrontTopperRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> ZeppelinStair_TopperRenderPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ZeppelinStair_TopperRenderPtr = nullptr;
+
+	void RendererWorldPositionCheck();
 };
