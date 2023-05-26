@@ -47,6 +47,10 @@ void Player_Overworld::PlayerDebugRenderer()
 		DebugRenderPtr2->On();
 		DebugRenderPtr3->On();
 		DebugRenderPtr4->On();
+		DebugRenderPtr5->On();
+		DebugRenderPtr6->On();
+		DebugRenderPtr7->On();
+		DebugRenderPtr8->On();
 		CollisionRenderPtr->On();
 	}
 	else
@@ -56,6 +60,10 @@ void Player_Overworld::PlayerDebugRenderer()
 		DebugRenderPtr2->Off();
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+		DebugRenderPtr7->Off();
+		DebugRenderPtr8->Off();
 		CollisionRenderPtr->Off();
 	}
 }
@@ -74,15 +82,30 @@ void Player_Overworld::PixelCheck(float _DeltaTime)
 	float4 RightDownPos = PlayerPos + float4{ 10, -10 };
 	float4 LeftDownPos = PlayerPos + float4{ -10, -10 };
 
+	float4 LeftPos = PlayerPos + float4{ -10, 0 };
+	float4 RightPos = PlayerPos + float4{ 10, 0 };
+	float4 UpPos = PlayerPos + float4{ 0, 10 };
+	float4 DownPos = PlayerPos + float4{ 0, -10 };
+
 	GameEnginePixelColor LeftUpPixel = PixelCollisionCheck.PixelCheck(LeftUpPos);
 	GameEnginePixelColor RightUpPixel = PixelCollisionCheck.PixelCheck(RightUpPos);
 	GameEnginePixelColor RightDownPixel = PixelCollisionCheck.PixelCheck(RightDownPos);
 	GameEnginePixelColor LeftDownPixel = PixelCollisionCheck.PixelCheck(LeftDownPos);
 
+	GameEnginePixelColor LeftPixel = PixelCollisionCheck.PixelCheck(LeftPos);
+	GameEnginePixelColor RightPixel = PixelCollisionCheck.PixelCheck(RightPos);
+	GameEnginePixelColor UpPixel = PixelCollisionCheck.PixelCheck(UpPos);
+	GameEnginePixelColor DownPixel = PixelCollisionCheck.PixelCheck(DownPos);
+
 	float4 LeftUp_DD = float4{ 10, -10 }.NormalizeReturn();
 	float4 RightUp_DD = float4{ -10, -10 }.NormalizeReturn();
 	float4 RightDown_DD = float4{ -10, 10 }.NormalizeReturn();
 	float4 LeftDown_DD = float4{ 10, 10 }.NormalizeReturn();
+
+	float4 Left_B = float4{ 10, 0 }.NormalizeReturn();
+	float4 Right_B = float4{ -10, 0 }.NormalizeReturn();
+	float4 Up_B = float4{ 0, -10 }.NormalizeReturn();
+	float4 Down_B = float4{ 0, 10 }.NormalizeReturn();
 
 	float Speed = (MoveSpeed) * _DeltaTime;
 
@@ -91,35 +114,76 @@ void Player_Overworld::PixelCheck(float _DeltaTime)
 	RDD = RightDown_DD * Speed;
 	LDD = LeftDown_DD * Speed;
 
+	LD = Left_B * Speed;
+	RD = Right_B * Speed;
+	UD = Up_B * Speed;
+	DD = Down_B * Speed;
+
 	if (AttackDirection::Right_DiagonalUp == ADValue)
 	{
-		if (true == PixelCollisionCheck.IsBlack(RightUpPixel))
+		if (true == PixelCollisionCheck.IsBlack(UpPixel)
+			&& true == PixelCollisionCheck.IsBlack(RightPixel))
 		{
 			GetTransform()->AddLocalPosition(RUD);
+		}
+		else if (true == PixelCollisionCheck.IsBlack(UpPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ 0, -Speed });
+		}
+		else if (true == PixelCollisionCheck.IsBlack(RightPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ -Speed, 0 });
 		}
 	}
 	else if (AttackDirection::Right_DiagonalDown == ADValue)
 	{
-		if (true == PixelCollisionCheck.IsBlack(RightDownPixel))
+		if (true == PixelCollisionCheck.IsBlack(DownPixel)
+			&& true == PixelCollisionCheck.IsBlack(RightPixel))
 		{
 			GetTransform()->AddLocalPosition(RDD);
+		}
+		else if (true == PixelCollisionCheck.IsBlack(DownPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ 0, Speed });
+		}
+		else if (true == PixelCollisionCheck.IsBlack(RightPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ -Speed, 0 });
 		}
 	}
 	else if (AttackDirection::Left_DiagonalUp == ADValue)
 	{
-		if (true == PixelCollisionCheck.IsBlack(LeftUpPixel))
+		if (true == PixelCollisionCheck.IsBlack(UpPixel)
+			&& true == PixelCollisionCheck.IsBlack(LeftPixel))
 		{
 			GetTransform()->AddLocalPosition(LUD);
+		}
+		else if (true == PixelCollisionCheck.IsBlack(UpPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ 0, -Speed });
+		}
+		else if (true == PixelCollisionCheck.IsBlack(LeftPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ Speed, 0 });
 		}
 	}
 	else if (AttackDirection::Left_DiagonalDown == ADValue)
 	{
-		if (true == PixelCollisionCheck.IsBlack(LeftDownPixel))
+		if (true == PixelCollisionCheck.IsBlack(DownPixel)
+			&& true == PixelCollisionCheck.IsBlack(LeftPixel))
 		{
 			GetTransform()->AddLocalPosition(LDD);
 		}
+		else if (true == PixelCollisionCheck.IsBlack(DownPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ 0, Speed });
+		}
+		else if (true == PixelCollisionCheck.IsBlack(LeftPixel))
+		{
+			GetTransform()->AddLocalPosition(float4{ Speed, 0 });
+		}
 	}
-	if (AttackDirection::Right_Up == ADValue || AttackDirection::Left_Up == ADValue)
+	else if (AttackDirection::Right_Up == ADValue || AttackDirection::Left_Up == ADValue)
 	{
 		if (true == PixelCollisionCheck.IsBlack(LeftUpPixel)
 			&& true == PixelCollisionCheck.IsBlack(RightUpPixel))
@@ -602,7 +666,7 @@ void Player_Overworld::DebugRendererSetting()
 	if (nullptr == DebugRenderPtr0)
 	{
 		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr0->SetScaleToTexture("GreenDot.png");
+		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
 	}
 	if (nullptr == DebugRenderPtr1)
 	{
@@ -625,6 +689,27 @@ void Player_Overworld::DebugRendererSetting()
 		DebugRenderPtr4->SetScaleToTexture("BlueDot.png");
 	}
 
+	if (nullptr == DebugRenderPtr5)
+	{
+		DebugRenderPtr5 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr5->SetScaleToTexture("GreenDot.png");
+	}
+	if (nullptr == DebugRenderPtr6)
+	{
+		DebugRenderPtr6 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr6->SetScaleToTexture("GreenDot.png");
+	}
+	if (nullptr == DebugRenderPtr7)
+	{
+		DebugRenderPtr7 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr7->SetScaleToTexture("GreenDot.png");
+	}
+	if (nullptr == DebugRenderPtr8)
+	{
+		DebugRenderPtr8 = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr8->SetScaleToTexture("GreenDot.png");
+	}
+
 	if (nullptr != DebugRenderPtr1
 		&& nullptr != DebugRenderPtr2
 		&& nullptr != DebugRenderPtr3
@@ -634,11 +719,19 @@ void Player_Overworld::DebugRendererSetting()
 		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 10, 10, -3 });		// 오른쪽 상단
 		DebugRenderPtr3->GetTransform()->SetLocalPosition({ 10, -10, -3 });		// 오른쪽 하단
 		DebugRenderPtr4->GetTransform()->SetLocalPosition({ -10, -10, -3 });    // 왼쪽 하단
+		DebugRenderPtr5->GetTransform()->SetLocalPosition({ -10, 0, -3 });		// 왼쪽
+		DebugRenderPtr6->GetTransform()->SetLocalPosition({ 10, 0, -3 });		// 오른쪽
+		DebugRenderPtr7->GetTransform()->SetLocalPosition({ 0, 10, -3 });		// 상단
+		DebugRenderPtr8->GetTransform()->SetLocalPosition({ 0, -10, -3 });      // 하단
 
 		DebugRenderPtr1->Off();
 		DebugRenderPtr2->Off();
 		DebugRenderPtr3->Off();
 		DebugRenderPtr4->Off();
+		DebugRenderPtr5->Off();
+		DebugRenderPtr6->Off();
+		DebugRenderPtr7->Off();
+		DebugRenderPtr8->Off();
 	}
 }
 

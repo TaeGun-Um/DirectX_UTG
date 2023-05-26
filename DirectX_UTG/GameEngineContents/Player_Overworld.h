@@ -57,6 +57,10 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr2 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr3 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr4 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr5 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr6 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr7 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr8 = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> CollisionPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr;
@@ -88,6 +92,10 @@ private:
 	float4 RUD = float4::Zero;
 	float4 RDD = float4::Zero;
 	float4 LDD = float4::Zero;
+	float4 LD = float4::Zero;
+	float4 RD = float4::Zero;
+	float4 UD = float4::Zero;
+	float4 DD = float4::Zero;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;
