@@ -2,6 +2,22 @@
 
 #include "NPCDataBase.h"
 
+enum class CoinState
+{
+	Idle,
+	LeftTurn,
+	LeftIdle_EyeLeft,
+	TurnIdle_L,
+	LeftIdle_EyeTurn,
+	LeftIdle_EyeRight,
+	RightTurn,
+	RightTurn_EyeRight,
+	RightTurn_EyeTurn,
+	RightTurn_EyeLeft,
+	TurnIdle,
+};
+
+
 // Ό³Έν :
 class Coin : public NPCDataBase
 {
@@ -29,26 +45,54 @@ private:
 	void InitRenderSetting();
 	void InitCollisionSetting();
 
-	float TransitionTime = 0.0f;
-	float WaitTime1 = 0.0f;
-	float WaitTime2 = 0.0f;
-	float WaitTime3 = 0.0f;
-	float WaitTime4 = 0.0f;
-	float WaitTime5 = 0.0f;
-	float WaitTime6 = 0.0f;
-	float WaitTime7 = 0.0f;
-	float WaitTime8 = 0.0f;
-	float WaitTime9 = 0.0f;
+	float AccTime = 0.0f;
 
-	int Count1 = 1;
-	int Count2 = 1;
-	int Count3 = 1;
-	int Count4 = 1;
-	int Count5 = 1;
-	int Count6 = 1;
-	int Count7 = 1;
-	int Count8 = 1;
-	int Count9 = 1;
-	int Count10 = 1;
+	void ChangeState(CoinState _StateValue);
+	void UpdateState(float _DeltaTime);
+	CoinState StateValue = CoinState::Idle;
+
+	void IdleStart();
+	void IdleUpdate(float _DeltaTime);
+	void IdleEnd();
+
+	void LeftTurnStart();
+	void LeftTurnUpdate(float _DeltaTime);
+	void LeftTurnEnd();
+
+	void LeftIdle_EyeLeftStart();
+	void LeftIdle_EyeLeftUpdate(float _DeltaTime);
+	void LeftIdle_EyeLeftEnd();
+
+	void TurnIdle_LStart();
+	void TurnIdle_LUpdate(float _DeltaTime);
+	void TurnIdle_LEnd();
+
+	void LeftIdle_EyeTurnStart();
+	void LeftIdle_EyeTurnUpdate(float _DeltaTime);
+	void LeftIdle_EyeTurnEnd();
+
+	void LeftIdle_EyeRightStart();
+	void LeftIdle_EyeRightUpdate(float _DeltaTime);
+	void LeftIdle_EyeRightEnd();
+
+	void RightTurnStart();
+	void RightTurnUpdate(float _DeltaTime);
+	void RightTurnEnd();
+
+	void RightTurn_EyeRightStart();
+	void RightTurn_EyeRightUpdate(float _DeltaTime);
+	void RightTurn_EyeRightEnd();
+
+	void RightTurn_EyeTurnStart();
+	void RightTurn_EyeTurnUpdate(float _DeltaTime);
+	void RightTurn_EyeTurnEnd();
+
+	void RightTurn_EyeLeftStart();
+	void RightTurn_EyeLeftUpdate(float _DeltaTime);
+	void RightTurn_EyeLeftEnd();
+
+	void TurnIdleStart();
+	void TurnIdleUpdate(float _DeltaTime);
+	void TurnIdleEnd();
 };
 
