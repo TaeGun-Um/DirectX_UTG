@@ -20,6 +20,9 @@ PlayerDataBase::PlayerDataBase()
 		GameEngineInput::CreateKey("EX", 'V');
 		GameEngineInput::CreateKey("Dash", VK_SHIFT);
 		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
+
+		GameEngineInput::CreateKey("FadeIn", '1');
+		GameEngineInput::CreateKey("FadeOut", '2');
 	}
 }
 

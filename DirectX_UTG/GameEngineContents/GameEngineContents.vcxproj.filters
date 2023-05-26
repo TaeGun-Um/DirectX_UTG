@@ -88,6 +88,12 @@
     <Filter Include="Levels\4. Overworld\Object\Building">
       <UniqueIdentifier>{43f1b0fb-3806-4ebb-a788-1d18635d7e26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{7863a82e-ba97-40e0-9cb4-366813015fe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{9d19c7c5-22bb-4006-8aa3-ab1580db093b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -226,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Fishgirl.h">
       <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <Filter>PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +376,12 @@
     </ClCompile>
     <ClCompile Include="Fishgirl.cpp">
       <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="CupheadCore_Resources.cpp">
+      <Filter>ContentsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

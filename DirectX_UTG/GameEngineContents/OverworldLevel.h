@@ -14,6 +14,8 @@ public:
 	OverworldLevel& operator=(const OverworldLevel& _Other) = delete;
 	OverworldLevel& operator=(OverworldLevel&& _Other) noexcept = delete;
 
+	std::shared_ptr<class FadeEffect> FEffect = nullptr;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

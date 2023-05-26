@@ -28,12 +28,16 @@ void AnimationInfo::Update(float _DeltaTime)
 		IsEndValue = false;
 	}
 
+	// 1;
+	// 
+
 	if (true == IsPauseValue)
 	{
 		return;
 	}
 
 	size_t CurFrameIndex = FrameIndex[CurFrame];
+
 
 	if (UpdateEventFunction.end() != UpdateEventFunction.find(CurFrameIndex))
 	{
@@ -45,6 +49,9 @@ void AnimationInfo::Update(float _DeltaTime)
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
+
+
+
 
 		if (FrameIndex.size() <= CurFrame)
 		{
@@ -60,19 +67,29 @@ void AnimationInfo::Update(float _DeltaTime)
 				--CurFrame;
 			}
 		}
+
+		//다음프레임이 존재하면서
 		else
 		{
 			CurFrameIndex = FrameIndex[CurFrame];
 
+			//Start콜백이 있다면 콜백을 호출
 			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
 			{
 				StartEventFunction[CurFrameIndex]();
 			}
 		}
 
+
 		CurTime += FrameTime[CurFrame];
+
+		// 0 ~ 9
+
+		// 9
 	}
 }
+
+// SpriteRenderer
 
 GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 {
@@ -81,6 +98,7 @@ GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 GameEngineSpriteRenderer::~GameEngineSpriteRenderer()
 {
 }
+
 
 void GameEngineSpriteRenderer::Start()
 {
@@ -182,6 +200,9 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	}
 	else
 	{
+		// 프레임 인덱스 미 입력시
+
+		// 시작 프레임 지정
 		if (-1 != _Paramter.Start)
 		{
 			if (_Paramter.Start < 0)
@@ -194,9 +215,10 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 시작프레임 0
 			NewAnimation->StartFrame = 0;
 		}
-
+		// 끝 프레임 지정
 		if (-1 != _Paramter.End)
 		{
 			if (_Paramter.End >= Sprite->GetSpriteCount())
@@ -209,6 +231,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 끝프레임은 마지막
 			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
@@ -226,6 +249,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 	}
 
+	// 타임 데이터가 있다면
 	if (0 != _Paramter.FrameTime.size())
 	{
 		NewAnimation->FrameTime = _Paramter.FrameTime;
@@ -239,6 +263,8 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 	}
 
+
+
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
@@ -246,6 +272,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 
 	return NewAnimation;
 }
+
 
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
@@ -269,6 +296,7 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 	{
 		CurAnimation->CurFrame = _Frame;
 	}
+
 }
 
 void GameEngineSpriteRenderer::Update(float _Delta)
@@ -276,13 +304,7 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 	if (nullptr != CurAnimation)
 	{
 		CurAnimation->Update(_Delta);
-	}
-}
 
-void GameEngineSpriteRenderer::Render(float _Delta)
-{
-	if (nullptr != CurAnimation)
-	{
 		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
 
 		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
@@ -302,8 +324,11 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 
 			GetTransform()->SetLocalScale(Scale);
 		}
-
 	}
+}
+
+void GameEngineSpriteRenderer::Render(float _Delta)
+{
 
 	GameEngineRenderer::Render(_Delta);
 }
@@ -319,6 +344,7 @@ void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _
 
 	Info->UpdateEventFunction[_Frame] = _Event;
 }
+
 
 void GameEngineSpriteRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
 {
@@ -341,6 +367,7 @@ std::string GameEngineSpriteRenderer::GetTexName()
 
 void GameEngineSpriteRenderer::SpriteRenderInit()
 {
+
 	SetPipeLine("2DTexture");
 
 	AtlasData.x = 0.0f;

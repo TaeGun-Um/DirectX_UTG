@@ -119,7 +119,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
-		Cam->CamTarget->Effect();
+		Cam->CamTarget->Effect(_DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -132,9 +132,31 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		LastTarget->Merge(Target);
 	}
 
+	LastTarget->Effect(_DeltaTime);
+
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
 	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+
+	static bool GUIRender = true;
+
+	if (true == GameEngineInput::IsDown("GUISwitch"))
+	{
+		GUIRender = !GUIRender;
+
+		if (false == GUIRender)
+		{
+			GameEngineGUI::Release();
+		}
+		else {
+			GameEngineGUI::Initialize();
+		}
+	}
+
+	if (true == GUIRender)
+	{
+		GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	}
 
 }
 

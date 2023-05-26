@@ -17,6 +17,7 @@
 #include "Coin.h"
 #include "Fishgirl.h"
 
+#include "FadeEffect.h"
 #include "TransformGUI.h"
 #include "Screen_FX.h"
 #include "Loading.h"
@@ -83,10 +84,21 @@ void OverworldLevel::LevelDebugOff()
 
 void OverworldLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("FadeIn"))
+	{
+		FEffect->FadeIn();
+	}
+
+	if (true == GameEngineInput::IsDown("FadeOut"))
+	{
+		FEffect->FadeOut();
+	}
 }
 
 void OverworldLevel::LevelChangeStart()
 {
+	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+
 	// ÄÝ¸Ê¿ë
 	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
 	{

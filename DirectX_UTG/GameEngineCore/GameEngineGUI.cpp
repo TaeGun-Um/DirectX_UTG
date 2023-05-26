@@ -18,9 +18,16 @@ GameEngineGUI::~GameEngineGUI()
 {
 }
 
+bool GameEngineGUI::IsInit = false;
+
 // IMGUI 이니셜라이즈
 void GameEngineGUI::Initialize()
 {
+    if (true == IsInit)
+    {
+        return;
+    }
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -81,6 +88,7 @@ void GameEngineGUI::Initialize()
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
+    IsInit = true;
 }
 
 // 생성된 IMGUI Render
@@ -123,7 +131,14 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
 // IMGUI 릴리즈
 void GameEngineGUI::Release()
 {
+    if (false == IsInit)
+    {
+        return;
+    }
+
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+
+    IsInit = false;
 }
