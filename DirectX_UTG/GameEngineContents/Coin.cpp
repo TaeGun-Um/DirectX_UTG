@@ -32,7 +32,12 @@ void Coin::Update(float _DeltaTime)
 			RenderPtr->ChangeAnimation("Coin_Transition_A");
 		}
 
-		if (1 == Count2 && RenderPtr->FindAnimation("Coin_Transition_A")->IsEnd())
+		if (0 == Count1)
+		{
+			WaitTime1 += _DeltaTime;
+		}
+
+		if (1 == Count2 && 4.5f <= WaitTime1 && RenderPtr->IsAnimationEnd())
 		{
 			Count2 = 0;
 			RenderPtr->ChangeAnimation("Coin_Hold_A");
@@ -40,16 +45,21 @@ void Coin::Update(float _DeltaTime)
 
 		if (0 == Count2)
 		{
-			EyeTime += _DeltaTime;
+			WaitTime2 += _DeltaTime;
 		}
 
-		if (1 == Count3 && 1.0f <= EyeTime)
+		if (1 == Count3 && 2.0f <= WaitTime2 && RenderPtr->IsAnimationEnd())
 		{
 			Count3 = 0;
 			RenderPtr->ChangeAnimation("Coin_Transition_B");
 		}
 
-		if (1 == Count4 && RenderPtr->FindAnimation("Coin_Transition_B")->IsEnd())
+		if (0 == Count3)
+		{
+			WaitTime3 += _DeltaTime;
+		}
+
+		if (1 == Count4 && 1.8f <= WaitTime3 && RenderPtr->IsAnimationEnd())
 		{
 			Count4 = 0;
 			RenderPtr->ChangeAnimation("Coin_Hold_B");
@@ -57,22 +67,21 @@ void Coin::Update(float _DeltaTime)
 
 		if (0 == Count4)
 		{
-			WaitTime1 += _DeltaTime;
+			WaitTime4 += _DeltaTime;
 		}
 
-		if (1 == Count5 && 1.0f <= WaitTime1)
+		if (1 == Count5 && 2.0f <= WaitTime4 && RenderPtr->IsAnimationEnd())
 		{
 			Count5 = 0;
 			RenderPtr->ChangeAnimation("Coin_Transition_D");
 		}
 
-		if (1 == Count6 && RenderPtr->FindAnimation("Coin_Transition_D")->IsEnd())
+		if (0 == Count5)
 		{
-			Count6 = 0;
-			RenderPtr->ChangeAnimation("Coin_Hold_C");
+			WaitTime5 += _DeltaTime;
 		}
 
-		if (1 == Count6 && RenderPtr->FindAnimation("Coin_Transition_D")->IsEnd())
+		if (1 == Count6 && 3.6f <= WaitTime5 && RenderPtr->IsAnimationEnd())
 		{
 			Count6 = 0;
 			RenderPtr->ChangeAnimation("Coin_Hold_C");
@@ -80,16 +89,21 @@ void Coin::Update(float _DeltaTime)
 
 		if (0 == Count6)
 		{
-			WaitTime2 += _DeltaTime;
+			WaitTime6 += _DeltaTime;
 		}
 
-		if (1 == Count7 && 1.0f <= WaitTime2)
+		if (1 == Count7 && 2.0f <= WaitTime6 && RenderPtr->IsAnimationEnd())
 		{
 			Count7 = 0;
 			RenderPtr->ChangeAnimation("Coin_Transition_E");
 		}
 
-		if (1 == Count8 && RenderPtr->FindAnimation("Coin_Transition_E")->IsEnd())
+		if (0 == Count7)
+		{
+			WaitTime7 += _DeltaTime;
+		}
+
+		if (1 == Count8 && 1.8f <= WaitTime7 && RenderPtr->IsAnimationEnd())
 		{
 			Count8 = 0;
 			RenderPtr->ChangeAnimation("Coin_Hold_D");
@@ -97,36 +111,46 @@ void Coin::Update(float _DeltaTime)
 
 		if (0 == Count8)
 		{
-			WaitTime3 += _DeltaTime;
+			WaitTime8 += _DeltaTime;
 		}
 
-		if (1 == Count9 && 1.0f <= WaitTime3)
+		if (1 == Count9 && 2.0f <= WaitTime8 && RenderPtr->IsAnimationEnd())
 		{
 			Count9 = 0;
 			RenderPtr->ChangeAnimation("Coin_Transition_F");
 		}
 
-		if (1 == Count10 && RenderPtr->FindAnimation("Coin_Transition_F")->IsEnd())
+		if (0 == Count9)
 		{
-			TransitionTime = 0.0f;
-			EyeTime = 0.0f;
-			WaitTime1 = 0.0f;
-			WaitTime2 = 0.0f;
-			WaitTime3 = 0.0f;
+			WaitTime9 += _DeltaTime;
+		}
 
-			Count1 = 1;
-			Count2 = 1;
-			Count3 = 1;
-			Count4 = 1;
-			Count5 = 1;
-			Count6 = 1;
-			Count7 = 1;
-			Count8 = 1;
-			Count9 = 1;
-			Count10 = 1;
-
+		if (1 == Count9 && 1.8f <= WaitTime3 && RenderPtr->IsAnimationEnd())
+		{
+			Count9 = 0;
 			RenderPtr->ChangeAnimation("Coin_Boil_A");
 		}
+
+		//if (1 == Count10 && RenderPtr->IsAnimationEnd())
+		//{
+		//	TransitionTime = 0.0f;
+		//	WaitTime1 = 0.0f;
+		//	WaitTime2 = 0.0f;
+		//	WaitTime3 = 0.0f;
+
+		//	Count1 = 1;
+		//	Count2 = 1;
+		//	Count3 = 1;
+		//	Count4 = 1;
+		//	Count5 = 1;
+		//	Count6 = 1;
+		//	Count7 = 1;
+		//	Count8 = 1;
+		//	Count9 = 1;
+		//	Count10 = 1;
+
+		//	RenderPtr->ChangeAnimation("Coin_Boil_A");
+		//}
 	}
 }
 
@@ -156,6 +180,7 @@ void Coin::InitRenderSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_F", .SpriteName = "Coin_Transition_F", .FrameInter = 0.09f, .ScaleToTexture = true });
 		
 		RenderPtr->ChangeAnimation("Coin_Boil_A");
+		RenderPtr->CameraCullingOn();
 	}
 }
 

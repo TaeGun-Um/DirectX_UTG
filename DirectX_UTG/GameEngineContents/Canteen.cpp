@@ -34,6 +34,7 @@ void Canteen::InitRenderSetting()
 	{
 		RenderPtr->CreateAnimation({ .AnimationName = "Canteen_Idle", .SpriteName = "Canteen_Idle", .FrameInter = 0.09f, .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("Canteen_Idle");
+		RenderPtr->CameraCullingOn();
 	}
 }
 

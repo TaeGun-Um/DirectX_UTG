@@ -34,6 +34,7 @@ void Axeman::InitRenderSetting()
 	{
 		RenderPtr->CreateAnimation({ .AnimationName = "Axeman_Idle", .SpriteName = "Axeman_Idle", .FrameInter = 0.09f, .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("Axeman_Idle");
+		RenderPtr->CameraCullingOn();
 	}
 }
 

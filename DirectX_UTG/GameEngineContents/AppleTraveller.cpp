@@ -123,6 +123,7 @@ void AppleTraveller::InitRenderSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "AppleTraveller_Wave_Intro", .SpriteName = "AppleTraveller_Wave_Intro", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "AppleTraveller_Wave_Outro", .SpriteName = "AppleTraveller_Wave_Outro", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("AppleTraveller_Idle");
+		RenderPtr->CameraCullingOn();
 	}
 
 	if (nullptr != AssitantRenderPtr)

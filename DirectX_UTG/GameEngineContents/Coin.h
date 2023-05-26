@@ -30,10 +30,15 @@ private:
 	void InitCollisionSetting();
 
 	float TransitionTime = 0.0f;
-	float EyeTime = 0.0f;
 	float WaitTime1 = 0.0f;
 	float WaitTime2 = 0.0f;
 	float WaitTime3 = 0.0f;
+	float WaitTime4 = 0.0f;
+	float WaitTime5 = 0.0f;
+	float WaitTime6 = 0.0f;
+	float WaitTime7 = 0.0f;
+	float WaitTime8 = 0.0f;
+	float WaitTime9 = 0.0f;
 
 	int Count1 = 1;
 	int Count2 = 1;
