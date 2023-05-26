@@ -94,7 +94,6 @@ void NPCDataBase::NPCLoad(NPCValue _NValue)
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Blink").GetFullPath());
 
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Boil_A").GetFullPath());
-			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Boil_B").GetFullPath());
 
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_A").GetFullPath());
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Hold_B").GetFullPath());
@@ -107,7 +106,6 @@ void NPCDataBase::NPCLoad(NPCValue _NValue)
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_D").GetFullPath());
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_E").GetFullPath());
 			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_F").GetFullPath());
-			GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Transition_G").GetFullPath());
 		}
 	}
 		break;

@@ -26,46 +26,106 @@ void Coin::Update(float _DeltaTime)
 
 	if (TransitionTime >= 1.0f)
 	{
-		if (false == TransA)
+		if (1 == Count1)
 		{
-			RenderPtr->ChangeAnimation("Coin_Transition_A", false);
+			Count1 = 0;
+			RenderPtr->ChangeAnimation("Coin_Transition_A");
 		}
 
-		if (RenderPtr->IsAnimationEnd() && false == TransA)
+		if (1 == Count2 && RenderPtr->FindAnimation("Coin_Transition_A")->IsEnd())
 		{
-			TransA = true;
+			Count2 = 0;
+			RenderPtr->ChangeAnimation("Coin_Hold_A");
 		}
 
-		if (true == TransA && false == Set1)
-		{
-			EyeTime += _DeltaTime;
-			RenderPtr->ChangeAnimation("Coin_Hold_A", false);
-		}
-
-		if (true == TransA)
+		if (0 == Count2)
 		{
 			EyeTime += _DeltaTime;
 		}
 
-		if (RenderPtr->IsAnimationEnd() && false == Set1)
+		if (1 == Count3 && 1.0f <= EyeTime)
 		{
-			Set1 = true;
+			Count3 = 0;
+			RenderPtr->ChangeAnimation("Coin_Transition_B");
 		}
 
-		if (EyeTime >= 1.0f && false == TransB)
+		if (1 == Count4 && RenderPtr->FindAnimation("Coin_Transition_B")->IsEnd())
 		{
-			RenderPtr->ChangeAnimation("Coin_Transition_B", false);
+			Count4 = 0;
+			RenderPtr->ChangeAnimation("Coin_Hold_B");
 		}
 
-		if (RenderPtr->IsAnimationEnd() && EyeTime >= 2.8f && false == TransB)
+		if (0 == Count4)
 		{
-			TransB = true;
+			WaitTime1 += _DeltaTime;
 		}
 
-		if (true == TransB && Count == 1)
+		if (1 == Count5 && 1.0f <= WaitTime1)
 		{
-			Count = 0;
-			RenderPtr->ChangeAnimation("Coin_Hold_B", true);
+			Count5 = 0;
+			RenderPtr->ChangeAnimation("Coin_Transition_D");
+		}
+
+		if (1 == Count6 && RenderPtr->FindAnimation("Coin_Transition_D")->IsEnd())
+		{
+			Count6 = 0;
+			RenderPtr->ChangeAnimation("Coin_Hold_C");
+		}
+
+		if (1 == Count6 && RenderPtr->FindAnimation("Coin_Transition_D")->IsEnd())
+		{
+			Count6 = 0;
+			RenderPtr->ChangeAnimation("Coin_Hold_C");
+		}
+
+		if (0 == Count6)
+		{
+			WaitTime2 += _DeltaTime;
+		}
+
+		if (1 == Count7 && 1.0f <= WaitTime2)
+		{
+			Count7 = 0;
+			RenderPtr->ChangeAnimation("Coin_Transition_E");
+		}
+
+		if (1 == Count8 && RenderPtr->FindAnimation("Coin_Transition_E")->IsEnd())
+		{
+			Count8 = 0;
+			RenderPtr->ChangeAnimation("Coin_Hold_D");
+		}
+
+		if (0 == Count8)
+		{
+			WaitTime3 += _DeltaTime;
+		}
+
+		if (1 == Count9 && 1.0f <= WaitTime3)
+		{
+			Count9 = 0;
+			RenderPtr->ChangeAnimation("Coin_Transition_F");
+		}
+
+		if (1 == Count10 && RenderPtr->FindAnimation("Coin_Transition_F")->IsEnd())
+		{
+			TransitionTime = 0.0f;
+			EyeTime = 0.0f;
+			WaitTime1 = 0.0f;
+			WaitTime2 = 0.0f;
+			WaitTime3 = 0.0f;
+
+			Count1 = 1;
+			Count2 = 1;
+			Count3 = 1;
+			Count4 = 1;
+			Count5 = 1;
+			Count6 = 1;
+			Count7 = 1;
+			Count8 = 1;
+			Count9 = 1;
+			Count10 = 1;
+
+			RenderPtr->ChangeAnimation("Coin_Boil_A");
 		}
 	}
 }
@@ -82,20 +142,18 @@ void Coin::InitRenderSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Blink", .SpriteName = "Coin_Blink", .FrameInter = 0.09f, .ScaleToTexture = true });
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Boil_A", .SpriteName = "Coin_Boil_A", .FrameInter = 0.09f, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Boil_B", .SpriteName = "Coin_Boil_B", .FrameInter = 0.09f, .ScaleToTexture = true });
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Hold_A", .SpriteName = "Coin_Hold_A", .FrameInter = 0.09f, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Hold_B", .SpriteName = "Coin_Hold_B", .FrameInter = 0.09f, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Hold_C", .SpriteName = "Coin_Hold_C", .FrameInter = 0.09f, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Hold_D", .SpriteName = "Coin_Hold_D", .FrameInter = 0.09f, .ScaleToTexture = true });
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_A", .SpriteName = "Coin_Transition_A", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_B", .SpriteName = "Coin_Transition_B", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_C", .SpriteName = "Coin_Transition_C", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_D", .SpriteName = "Coin_Transition_D", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_E", .SpriteName = "Coin_Transition_E", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_F", .SpriteName = "Coin_Transition_F", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_G", .SpriteName = "Coin_Transition_G", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_A", .SpriteName = "Coin_Transition_A", .FrameInter = 0.09f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_B", .SpriteName = "Coin_Transition_B", .FrameInter = 0.09f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_C", .SpriteName = "Coin_Transition_C", .FrameInter = 0.09f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_D", .SpriteName = "Coin_Transition_D", .FrameInter = 0.09f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_E", .SpriteName = "Coin_Transition_E", .FrameInter = 0.09f, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Coin_Transition_F", .SpriteName = "Coin_Transition_F", .FrameInter = 0.09f, .ScaleToTexture = true });
 		
 		RenderPtr->ChangeAnimation("Coin_Boil_A");
 	}

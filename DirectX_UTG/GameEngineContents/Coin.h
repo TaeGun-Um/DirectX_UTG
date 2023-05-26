@@ -31,12 +31,19 @@ private:
 
 	float TransitionTime = 0.0f;
 	float EyeTime = 0.0f;
+	float WaitTime1 = 0.0f;
+	float WaitTime2 = 0.0f;
+	float WaitTime3 = 0.0f;
 
-	bool Set1 = false;
-	bool Set2 = false;
-	bool TransA = false;
-	bool TransB = false;
-
-	int Count = 1;
+	int Count1 = 1;
+	int Count2 = 1;
+	int Count3 = 1;
+	int Count4 = 1;
+	int Count5 = 1;
+	int Count6 = 1;
+	int Count7 = 1;
+	int Count8 = 1;
+	int Count9 = 1;
+	int Count10 = 1;
 };
 
