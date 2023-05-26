@@ -168,7 +168,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 
 		Movedir = (TargetPosition - PrevCameraPosition);
 
-		MoveDistance = Movedir * 4.5f * _DeltaTime;
+		MoveDistance = Movedir * 5.0f * _DeltaTime;
 		MoveDistance.z = 0.0f;
 
 		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(MoveDistance);

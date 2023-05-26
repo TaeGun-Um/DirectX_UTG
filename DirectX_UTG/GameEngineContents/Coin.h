@@ -29,5 +29,14 @@ private:
 	void InitRenderSetting();
 	void InitCollisionSetting();
 
+	float TransitionTime = 0.0f;
+	float EyeTime = 0.0f;
+
+	bool Set1 = false;
+	bool Set2 = false;
+	bool TransA = false;
+	bool TransB = false;
+
+	int Count = 1;
 };
 
