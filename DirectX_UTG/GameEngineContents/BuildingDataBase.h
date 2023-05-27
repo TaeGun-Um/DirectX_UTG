@@ -40,14 +40,17 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FlagRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> AssitantRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
+
 
 	BuildingValue BValue = BuildingValue::Unknown;
 
 	bool FlagCall = false;
 
+	void CollisionCheck();
 	void CreateFlag();
 
 };

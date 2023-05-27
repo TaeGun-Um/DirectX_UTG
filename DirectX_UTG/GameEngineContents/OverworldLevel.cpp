@@ -16,6 +16,7 @@
 #include "Canteen.h"
 #include "Coin.h"
 #include "Fishgirl.h"
+#include "BuildingDataBase.h"
 
 #include "FadeEffect.h"
 #include "TransformGUI.h"
@@ -145,7 +146,37 @@ void OverworldLevel::LevelChangeStart()
 		NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 1 });
 
 		std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
-		NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, 1 });
+		NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, -1 });
+	}
+	// Building
+	{
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject0 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject0->BuildingSetting(BuildingValue::Home);
+		BuildingDataBaseObject0->GetTransform()->SetLocalPosition({ 780 , 1560, 1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject1 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject1->BuildingSetting(BuildingValue::Zeplin);
+		BuildingDataBaseObject1->GetTransform()->SetLocalPosition({ 3370 , 2015, 1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject2 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject2->BuildingSetting(BuildingValue::Frog);
+		BuildingDataBaseObject2->GetTransform()->SetLocalPosition({ 2200 , 370, -1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject3 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject3->BuildingSetting(BuildingValue::Tutorial_Fly);
+		BuildingDataBaseObject3->GetTransform()->SetLocalPosition({ 2800 , 2030, 1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject4 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject4->BuildingSetting(BuildingValue::Mouse);
+		BuildingDataBaseObject4->GetTransform()->SetLocalPosition({ 3280 , 620, 1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject5 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject5->BuildingSetting(BuildingValue::Djimmi);
+		BuildingDataBaseObject5->GetTransform()->SetLocalPosition({ 3670 , 1480, 1 });
+
+		std::shared_ptr<BuildingDataBase> BuildingDataBaseObject6 = CreateActor<BuildingDataBase>();
+		BuildingDataBaseObject6->BuildingSetting(BuildingValue::Dragon);
+		BuildingDataBaseObject6->GetTransform()->SetLocalPosition({ 2280 , 1660, 1 });
 	}
 	// Character
 	if (nullptr == PlayerObject)
