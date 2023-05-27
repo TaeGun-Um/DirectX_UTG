@@ -79,6 +79,7 @@ void PortalDoor::LevelChange()
 	break;
 	case PortalValue::Overworld:
 	{
+		TutorialLevel::TutorialLevelPtr->LoadingOn();
 		GameEngineCore::ChangeLevel("OverworldLevel");
 	}
 	break;

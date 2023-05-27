@@ -1703,11 +1703,8 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Peashooter\\Peashooter_Spawn"))
+	if (nullptr == GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
-		// 스프레드 시트 애니메이션
-		// RenderPtr->CreateAnimation({ "Win", "TestAnimation.png", 0, 5, 0.1f, true, true });
-
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
@@ -1717,27 +1714,59 @@ void Player::PlayerInitialSetting()
 		NewDir.Move("Ground");
 		NewDir.Move("Effect");
 		NewDir.Move("Attack");
+		NewDir.Move("Peashooter");
 
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Spawn.png").GetFullPath(), 4, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Loop.png").GetFullPath(), 5, 2);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_Death.png").GetFullPath(), 5, 2);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_EX_Loop.png").GetFullPath(), 5, 2);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter\\Peashooter_EX_Death.png").GetFullPath(), 5, 2);
-
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Spawn.png").GetFullPath(), 4, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Loop.png").GetFullPath(), 4, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Death.png").GetFullPath(), 5, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Death_Enemyhit.png").GetFullPath(), 3, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Loop.png").GetFullPath(), 4, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Death.png").GetFullPath(), 5, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_Weak_Death_Enemyhit.png").GetFullPath(), 3, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Spawn.png").GetFullPath(), 5, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Loop.png").GetFullPath(), 4, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Flame.png").GetFullPath(), 5, 4);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread\\Spread_EX_Death.png").GetFullPath(), 6, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter_Spawn.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter_Loop.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter_Death.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter_EX_Loop.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Peashooter_EX_Death.png").GetFullPath(), 5, 2);
 	}
 
-	if (nullptr == GameEngineSprite::Find("Ex_SFX"))
+	if (nullptr == GameEngineTexture::Find("Spread_Spawn.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Effect");
+		NewDir.Move("Attack");
+		NewDir.Move("Spread");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Spawn.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Death.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Death_Enemyhit.png").GetFullPath(), 3, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Weak_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Weak_Death.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_Weak_Death_Enemyhit.png").GetFullPath(), 3, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_EX_Spawn.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_EX_Loop.png").GetFullPath(), 4, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_EX_Flame.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Spread_EX_Death.png").GetFullPath(), 6, 1);
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dust_A.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Effect");
+		NewDir.Move("SFX");
+		NewDir.Move("PlayerDust");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_A.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_B.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_C.png").GetFullPath(), 5, 4);
+	}
+	if (nullptr == GameEngineSprite::Find("JumpDust"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -1749,9 +1778,6 @@ void Player::PlayerInitialSetting()
 		NewDir.Move("Effect");
 		NewDir.Move("SFX");
 
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_A.png").GetFullPath(), 5, 4);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_B.png").GetFullPath(), 5, 4);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("PlayerDust\\Dust_C.png").GetFullPath(), 5, 4);
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("JumpDust").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DashDust").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EXDust").GetFullPath());

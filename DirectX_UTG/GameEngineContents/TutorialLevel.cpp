@@ -17,8 +17,11 @@
 #include "Player.h"
 #include "PortalDoor.h"
 #include "Screen_FX.h"
+#include "Loading.h"
 
 #include "TransformGUI.h"
+
+TutorialLevel* TutorialLevel::TutorialLevelPtr = nullptr;
 
 TutorialLevel::TutorialLevel() 
 {
@@ -30,6 +33,7 @@ TutorialLevel::~TutorialLevel()
 
 void TutorialLevel::Start()
 {
+	TutorialLevelPtr = this;
 }
 
 void TutorialLevel::Update(float _DeltaTime)
@@ -71,6 +75,7 @@ void TutorialLevel::LevelChangeStart()
 		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 	}
 	// Map
+	if (nullptr == MapObject)
 	{
 		MapObject = CreateActor<Tutorial_Map>();
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
@@ -84,12 +89,14 @@ void TutorialLevel::LevelChangeStart()
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 	}
 	// Portal
+	if (nullptr == PortalDoorObject)
 	{
 		PortalDoorObject = CreateActor<PortalDoor>();
 		PortalDoorObject->GetTransform()->SetLocalPosition({ 5840, 150 });
 		PortalDoorObject->SetPortalValue(PortalValue::Overworld);
 	}
 	// Wall Actor
+	if (nullptr == TargetObject)
 	{
 		TargetObject = CreateActor<Tutorial_Target>();
 		TargetObject->GetTransform()->SetLocalPosition({ 3447, 305 });
@@ -123,10 +130,15 @@ void TutorialLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&TutorialLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&TutorialLevel::LevelDebugOff, this);
 	}
+
+	if (nullptr == LoadingPtr)
+	{
+		LoadingPtr = CreateActor<Loading>();
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 void TutorialLevel::LevelChangeEnd()
 {
-
 }
 
 void TutorialLevel::PlayerDebugRenderOn()

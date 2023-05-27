@@ -1,9 +1,13 @@
 #pragma once
 
+#include "Loading.h"
+
 // Ό³Έν :
 class TutorialLevel : public GameEngineLevel
 {
 public:
+	static TutorialLevel* TutorialLevelPtr;
+
 	// constrcuter destructer
 	TutorialLevel();
 	~TutorialLevel();
@@ -14,6 +18,11 @@ public:
 	TutorialLevel& operator=(const TutorialLevel& _Other) = delete;
 	TutorialLevel& operator=(TutorialLevel&& _Other) noexcept = delete;
 
+	void LoadingOn()
+	{
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -22,6 +31,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class Loading> LoadingPtr = nullptr;
+
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Tutorial_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;

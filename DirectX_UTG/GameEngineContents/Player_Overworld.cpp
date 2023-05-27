@@ -630,7 +630,7 @@ void Player_Overworld::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DashDust").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Overworld"))
+	if (nullptr == GameEngineTexture::Find("Overworld.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");

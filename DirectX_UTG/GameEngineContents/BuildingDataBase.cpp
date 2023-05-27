@@ -2,10 +2,12 @@
 #include "BuildingDataBase.h"
 
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "Player_Overworld.h"
+#include "OverworldLevel.h"
 
 BuildingDataBase* BuildingDataBase::HomePtr = nullptr;
 BuildingDataBase* BuildingDataBase::Tutorial_FlyPtr = nullptr;
@@ -251,7 +253,8 @@ void BuildingDataBase::InterAction()
 	{
 	case BuildingValue::Home:
 	{
-		MsgTextBox("Home");
+		//MsgTextBox("Home");
+		GameEngineCore::ChangeLevel("WaitingRoomLevel");
 	}
 	break;
 	case BuildingValue::Tutorial_Fly:

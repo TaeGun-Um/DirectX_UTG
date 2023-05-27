@@ -69,6 +69,21 @@ public:
 		return Sprites[_Index];
 	}
 
+	//
+	static std::shared_ptr<GameEngineSprite> UnLoad(const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
+		}
+
+		NewTexture->ResourcesClear();
+		return NewTexture;
+	}
+	//
+
 protected:
 
 private:

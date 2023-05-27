@@ -2,6 +2,7 @@
 #include "Loading.h"
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 
 Loading::Loading() 
 {
@@ -25,7 +26,7 @@ void Loading::Start()
 {
 	if (nullptr == RenderPtr)
 	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RenderPtr = CreateComponent<GameEngineUIRenderer>();
 		RenderPtr->SetScaleToTexture("Loading.png");
 		RenderPtr->Off();
 	}

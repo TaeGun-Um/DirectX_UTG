@@ -50,10 +50,34 @@ void Second_OpeningLevel::LevelChangeStart()
 		//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
 	}
 
-	LoadingPtr = CreateActor<Loading>();
-	LoadingPtr->SetLoadingPtrOff();
+	if (nullptr == LoadingPtr)
+	{
+		LoadingPtr = CreateActor<Loading>();
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 void Second_OpeningLevel::LevelChangeEnd()
 {
+	if (nullptr != GameEngineSprite::Find("Page_01"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Opening2");
 
+		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineFile& File = AllFile[i];
+
+			std::filesystem::path Path = File.GetFullPath();
+
+			std::string Target = Path.filename().string();
+
+			GameEngineTexture::UnLoad(Target);
+		}
+	}
 }

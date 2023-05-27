@@ -1,9 +1,13 @@
 #pragma once
 
+#include "Loading.h"
+
 // Ό³Έν :
 class OverworldLevel : public GameEngineLevel
 {
 public:
+	static OverworldLevel* OverworldLevelPtr;
+
 	// constrcuter destructer
 	OverworldLevel();
 	~OverworldLevel();
@@ -16,6 +20,11 @@ public:
 
 	std::shared_ptr<class FadeEffect> FEffect = nullptr;
 
+	void LoadingOn()
+	{
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -24,6 +33,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class Loading> LoadingPtr = nullptr;
+
 	std::shared_ptr<class Player_Overworld> PlayerObject = nullptr;
 	std::shared_ptr<class Overworld_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;

@@ -23,6 +23,8 @@
 #include "Screen_FX.h"
 #include "Loading.h"
 
+OverworldLevel* OverworldLevel::OverworldLevelPtr = nullptr;
+
 OverworldLevel::OverworldLevel()
 {
 }
@@ -33,7 +35,7 @@ OverworldLevel::~OverworldLevel()
 
 void OverworldLevel::Start()
 {
-
+	OverworldLevelPtr = this;
 }
 
 void OverworldLevel::Update(float _DeltaTime)
@@ -54,7 +56,7 @@ void OverworldLevel::LevelChangeStart()
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	// ÄÝ¸Ê¿ë
-	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
+	if (nullptr == GameEngineTexture::Find("Overworld_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -80,6 +82,7 @@ void OverworldLevel::LevelChangeStart()
 
 	// CreateActor
 	// Map
+	if (nullptr == MapObject)
 	{
 		MapObject = CreateActor<Overworld_Map>();
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 5 });
@@ -165,10 +168,16 @@ void OverworldLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&OverworldLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&OverworldLevel::LevelDebugOff, this);
 	}
+
+	if (nullptr == LoadingPtr)
+	{
+		LoadingPtr = CreateActor<Loading>();
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 void OverworldLevel::LevelChangeEnd()
 {
-
+	
 }
 
 void OverworldLevel::PlayerDebugRenderOn()

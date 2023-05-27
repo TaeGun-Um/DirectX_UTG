@@ -30,7 +30,7 @@ void Tutorial_Target::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("tutorial_pyramid_topper.png").GetFullPath());
 	}
 
-	if (nullptr == GameEngineTexture::Find("Target"))
+	if (nullptr == GameEngineSprite::Find("Target"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
