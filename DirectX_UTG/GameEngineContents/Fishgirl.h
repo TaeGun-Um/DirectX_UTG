@@ -6,6 +6,8 @@
 class Fishgirl : public NPCDataBase
 {
 public:
+	static Fishgirl* FishgirlPtr;
+
 	// constrcuter destructer
 	Fishgirl();
 	~Fishgirl();
@@ -15,6 +17,16 @@ public:
 	Fishgirl(Fishgirl&& _Other) noexcept = delete;
 	Fishgirl& operator=(const Fishgirl& _Other) = delete;
 	Fishgirl& operator=(Fishgirl&& _Other) noexcept = delete;
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
+	}
 
 protected:
 	void Start() override;

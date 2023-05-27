@@ -384,6 +384,7 @@ void Player_Overworld::UpdateState(float _DeltaTime)
 
 void Player_Overworld::IdleStart()
 {
+	IsIdle = true;
 }
 void Player_Overworld::IdleUpdate(float _DeltaTime)
 {
@@ -454,6 +455,7 @@ void Player_Overworld::IdleUpdate(float _DeltaTime)
 }
 void Player_Overworld::IdleEnd()
 {
+	IsIdle = false;
 }
 
 void Player_Overworld::MoveStart()

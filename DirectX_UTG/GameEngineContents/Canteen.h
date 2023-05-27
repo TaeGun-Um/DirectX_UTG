@@ -6,6 +6,8 @@
 class Canteen : public NPCDataBase
 {
 public:
+	static Canteen* CanteenPtr;
+
 	// constrcuter destructer
 	Canteen();
 	~Canteen();
@@ -15,6 +17,16 @@ public:
 	Canteen(Canteen&& _Other) noexcept = delete;
 	Canteen& operator=(const Canteen& _Other) = delete;
 	Canteen& operator=(Canteen&& _Other) noexcept = delete;
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
+	}
 
 protected:
 	void Start() override;

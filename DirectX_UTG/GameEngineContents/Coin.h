@@ -22,6 +22,8 @@ enum class CoinState
 class Coin : public NPCDataBase
 {
 public:
+	static Coin* CoinPtr;
+
 	// constrcuter destructer
 	Coin();
 	~Coin();
@@ -31,6 +33,17 @@ public:
 	Coin(Coin&& _Other) noexcept = delete;
 	Coin& operator=(const Coin& _Other) = delete;
 	Coin& operator=(Coin&& _Other) noexcept = delete;
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
+
+	}
 
 protected:
 	void Start() override;

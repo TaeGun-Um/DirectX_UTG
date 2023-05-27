@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+Canteen* Canteen::CanteenPtr = nullptr;
+
 Canteen::Canteen() 
 {
 }
@@ -14,6 +16,7 @@ Canteen::~Canteen()
 
 void Canteen::Start()
 {
+	CanteenPtr = this;
 	NPCLoad(NPCValue::Canteen);
 	InitRenderSetting();
 	InitCollisionSetting();
@@ -52,7 +55,7 @@ void Canteen::InitCollisionSetting()
 
 	if (nullptr != CollisionPtr)
 	{
-		CollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
+		CollisionPtr->GetTransform()->SetLocalScale({ 60, 60, 1 });
 		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
 	}
 

@@ -16,6 +16,14 @@ enum class BuildingValue
 class BuildingDataBase : public GameEngineActor
 {
 public:
+	static BuildingDataBase* HomePtr;
+	static BuildingDataBase* Tutorial_FlyPtr;
+	static BuildingDataBase* MousePtr;
+	static BuildingDataBase* FrogPtr;
+	static BuildingDataBase* DragonPtr;
+	static BuildingDataBase* ZeplinPtr;
+	static BuildingDataBase* DjimmiPtr;
+
 	// constrcuter destructer
 	BuildingDataBase();
 	~BuildingDataBase();
@@ -30,7 +38,22 @@ public:
 
 	void FlagUpSetting()
 	{
+		if (BuildingValue::Home == BValue || BuildingValue::Tutorial_Fly == BValue)
+		{
+			return; 
+		}
+
 		FlagCall = true;
+	}
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
 	}
 
 protected:
@@ -49,9 +72,11 @@ private:
 	BuildingValue BValue = BuildingValue::Unknown;
 
 	bool FlagCall = false;
+	bool Isinteraction = false;
+
+	int AnimationCount = 1;
 
 	void CollisionCheck();
-	void CreateFlag();
-
+	void InterAction();
 };
 

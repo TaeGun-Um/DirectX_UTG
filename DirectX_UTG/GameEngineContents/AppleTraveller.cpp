@@ -6,6 +6,8 @@
 
 #include "Player.h"
 
+AppleTraveller* AppleTraveller::AppleTravellerPtr = nullptr;
+
 AppleTraveller::AppleTraveller() 
 {
 }
@@ -16,6 +18,7 @@ AppleTraveller::~AppleTraveller()
 
 void AppleTraveller::Start()
 {
+	AppleTravellerPtr = this;
 	NPCLoad(NPCValue::AppleTraveller);
 	InitRenderSetting();
 	InitCollisionSetting();
@@ -32,14 +35,12 @@ void AppleTraveller::Update(float _DeltaTime)
 	if (false == WaveInit && WaveAcc >= 30.0f)
 	{
 		WaveCollisionPtr->On();
-		WaveCollisionRenderPtr->On();
 	}
 
 	if (nullptr != WaveCollisionPtr->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		WaveInit = true;
 		WaveCollisionPtr->Off();
-		WaveCollisionRenderPtr->Off();
 	}
 
 	if (true == WaveInit)
@@ -158,7 +159,7 @@ void AppleTraveller::InitCollisionSetting()
 
 	if (nullptr != CollisionPtr)
 	{
-		CollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
+		CollisionPtr->GetTransform()->SetLocalScale({ 60, 60, 1 });
 		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
 	}
 

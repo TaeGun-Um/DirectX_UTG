@@ -6,6 +6,8 @@
 class AppleTraveller : public NPCDataBase
 {
 public:
+	static AppleTraveller* AppleTravellerPtr;
+
 	// constrcuter destructer
 	AppleTraveller();
 	~AppleTraveller();
@@ -15,6 +17,18 @@ public:
 	AppleTraveller(AppleTraveller&& _Other) noexcept = delete;
 	AppleTraveller& operator=(const AppleTraveller& _Other) = delete;
 	AppleTraveller& operator=(AppleTraveller&& _Other) noexcept = delete;
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+		WaveCollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
+		WaveCollisionRenderPtr->Off();
+	}
 
 protected:
 	void Start() override;

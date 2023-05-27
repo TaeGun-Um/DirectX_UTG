@@ -35,6 +35,8 @@ protected:
 
 private:
 	NPCValue NValue = NPCValue::Unknown;
+	bool Isinteraction = false;
 
+	void InterAction();
 };
 

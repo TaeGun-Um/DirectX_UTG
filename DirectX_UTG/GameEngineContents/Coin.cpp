@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+Coin* Coin::CoinPtr = nullptr;
+
 Coin::Coin() 
 {
 }
@@ -15,6 +17,7 @@ Coin::~Coin()
 
 void Coin::Start()
 {
+	CoinPtr = this;
 	NPCLoad(NPCValue::Coin);
 	InitRenderSetting();
 	InitCollisionSetting();
@@ -70,7 +73,7 @@ void Coin::InitCollisionSetting()
 
 	if (nullptr != CollisionPtr)
 	{
-		CollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
+		CollisionPtr->GetTransform()->SetLocalScale({ 60, 60, 1 });
 		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
 	}
 

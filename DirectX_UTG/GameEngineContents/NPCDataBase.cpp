@@ -1,8 +1,11 @@
 #include "PrecompileHeader.h"
 #include "NPCDataBase.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+
+#include "Player_Overworld.h"
 
 NPCDataBase::NPCDataBase() 
 {
@@ -16,7 +19,50 @@ void NPCDataBase::CollisionCheck(std::shared_ptr<class GameEngineCollision> _Col
 {
 	if (nullptr != _Collision->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
-		int a = 0;
+		Isinteraction = true;
+	}
+	else
+	{
+		Isinteraction = false;
+	}
+
+	if (true == Player_Overworld::MainPlayer->GetIsIdle()
+		&& true == Isinteraction
+		&& true == GameEngineInput::IsDown("Attack"))
+	{
+		InterAction();
+	}
+}
+
+void NPCDataBase::InterAction()
+{
+	switch (NValue)
+	{
+	case NPCValue::AppleTraveller:
+	{
+		MsgTextBox("AppleTraveller");
+	}
+	break;
+	case NPCValue::Axeman:
+	{
+		MsgTextBox("Axeman");
+	}
+	break;
+	case NPCValue::Canteen:
+	{
+		MsgTextBox("Canteen");
+	}
+	break;
+	case NPCValue::Coin:
+	{
+		MsgTextBox("Coin");
+	}
+	break;
+	case NPCValue::FishGirl:
+	{
+		MsgTextBox("FishGirl");
+	}
+	break;
 	}
 }
 

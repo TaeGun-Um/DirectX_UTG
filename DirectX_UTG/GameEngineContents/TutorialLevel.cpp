@@ -32,61 +32,6 @@ void TutorialLevel::Start()
 {
 }
 
-void TutorialLevel::PlayerDebugRenderOn()
-{
-	if (nullptr != PlayerObject)
-	{
-		PlayerObject->PlayerDebugRenderOn();
-	}
-}
-
-void TutorialLevel::PlayerDebugRenderOff()
-{
-	if (nullptr != PlayerObject)
-	{
-		PlayerObject->PlayerDebugRenderOff();
-	}
-}
-
-void TutorialLevel::LevelDebugOn()
-{
-	if (nullptr != ThisColMap)
-	{
-		ThisColMap->ColMapDebugRenderOn();
-	}
-	if (nullptr != MapObject)
-	{
-		MapObject->MapDebugRenderOn();
-	}
-	if (nullptr != PortalDoorObject)
-	{
-		PortalDoorObject->PortalDebugRenderOn();
-	}
-	if (nullptr != TargetObject)
-	{
-		TargetObject->TargetDebugRenderOn();
-	}
-}
-void TutorialLevel::LevelDebugOff()
-{
-	if (nullptr != ThisColMap)
-	{
-		ThisColMap->ColMapDebugRenderOff();
-	}
-	if (nullptr != MapObject)
-	{
-		MapObject->MapDebugRenderOff();
-	}
-	if (nullptr != PortalDoorObject)
-	{
-		PortalDoorObject->PortalDebugRenderOff();
-	}
-	if (nullptr != TargetObject)
-	{
-		TargetObject->TargetDebugRenderOff();
-	}
-}
-
 void TutorialLevel::Update(float _DeltaTime)
 {
 }
@@ -182,4 +127,59 @@ void TutorialLevel::LevelChangeStart()
 void TutorialLevel::LevelChangeEnd()
 {
 
+}
+
+void TutorialLevel::PlayerDebugRenderOn()
+{
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOn();
+	}
+}
+
+void TutorialLevel::PlayerDebugRenderOff()
+{
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOff();
+	}
+}
+
+void TutorialLevel::LevelDebugOn()
+{
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOn();
+	}
+	if (nullptr != MapObject)
+	{
+		MapObject->MapDebugRenderOn();
+	}
+	if (nullptr != PortalDoorObject)
+	{
+		PortalDoorObject->PortalDebugRenderOn();
+	}
+	if (nullptr != TargetObject)
+	{
+		TargetObject->TargetDebugRenderOn();
+	}
+}
+void TutorialLevel::LevelDebugOff()
+{
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOff();
+	}
+	if (nullptr != MapObject)
+	{
+		MapObject->MapDebugRenderOff();
+	}
+	if (nullptr != PortalDoorObject)
+	{
+		PortalDoorObject->PortalDebugRenderOff();
+	}
+	if (nullptr != TargetObject)
+	{
+		TargetObject->TargetDebugRenderOff();
+	}
 }

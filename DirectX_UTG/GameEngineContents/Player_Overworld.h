@@ -25,6 +25,11 @@ public:
 	Player_Overworld& operator=(const Player_Overworld& _Other) = delete;
 	Player_Overworld& operator=(Player_Overworld&& _Other) noexcept = delete;
 
+	bool GetIsIdle()
+	{
+		return IsIdle;
+	}
+
 	void PlayerDebugRenderOn()
 	{
 		IsDebugRender = true;
@@ -96,6 +101,8 @@ private:
 	float4 RD = float4::Zero;
 	float4 UD = float4::Zero;
 	float4 DD = float4::Zero;
+
+	bool IsIdle = false;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;

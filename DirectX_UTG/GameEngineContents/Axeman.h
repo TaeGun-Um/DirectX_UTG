@@ -6,6 +6,8 @@
 class Axeman : public NPCDataBase
 {
 public:
+	static Axeman* AxemanPtr;
+
 	// constrcuter destructer
 	Axeman();
 	~Axeman();
@@ -15,6 +17,16 @@ public:
 	Axeman(Axeman&& _Other) noexcept = delete;
 	Axeman& operator=(const Axeman& _Other) = delete;
 	Axeman& operator=(Axeman&& _Other) noexcept = delete;
+
+	void CollisionRenderOn()
+	{
+		CollisionRenderPtr->On();
+	}
+
+	void CollisionRenderOff()
+	{
+		CollisionRenderPtr->Off();
+	}
 
 protected:
 	void Start() override;

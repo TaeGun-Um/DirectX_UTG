@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+Fishgirl* Fishgirl::FishgirlPtr = nullptr;
+
 Fishgirl::Fishgirl() 
 {
 }
@@ -14,6 +16,7 @@ Fishgirl::~Fishgirl()
 
 void Fishgirl::Start()
 {
+	FishgirlPtr = this;
 	NPCLoad(NPCValue::FishGirl);
 	InitRenderSetting();
 	InitCollisionSetting();
@@ -72,8 +75,8 @@ void Fishgirl::InitCollisionSetting()
 
 	if (nullptr != CollisionPtr)
 	{
-		CollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
+		CollisionPtr->GetTransform()->SetLocalScale({ 60, 60, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 25, 35, -17 });
 	}
 
 	if (nullptr != CollisionRenderPtr)
