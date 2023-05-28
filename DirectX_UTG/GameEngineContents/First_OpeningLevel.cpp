@@ -27,6 +27,11 @@ First_OpeningLevel::~First_OpeningLevel()
 
 void First_OpeningLevel::Start()
 {
+	if (false == GameEngineInput::IsKey("NextLevel"))
+	{
+		GameEngineInput::CreateKey("NextLevel", 'P');
+		GameEngineInput::CreateKey("PrevLevel", 'O');
+	}
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
@@ -39,6 +44,11 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	{
 		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("Second_OpeningLevel");
+	}
+
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("WaitingRoomLevel");
 	}
 }
 
@@ -106,7 +116,7 @@ void First_OpeningLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("Title_Background.png");
 	}
 
-	if (nullptr != GameEngineSprite::Find("MDHR_Logo"))
+	if (nullptr != GameEngineSprite::Find("MDHR_Logo.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -116,6 +126,6 @@ void First_OpeningLevel::LevelChangeEnd()
 		NewDir.Move("Opening1");
 		NewDir.Move("MDHR_Logo");
 
-		GameEngineTexture::UnLoad(NewDir.GetPlusFileName("MDHR_Logo.png").GetFullPath());
+		GameEngineTexture::UnLoad("MDHR_Logo.png");
 	}
 }

@@ -1644,14 +1644,6 @@ void Player::PlayerInitialSetting()
 		// Jump & Parry(Slap)
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Jump").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Parry").GetFullPath());
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_0.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_1.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_2.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_3.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_4.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_5.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_6.png").GetFullPath(), 1, 1);
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink\\Parry_Pink_7.png").GetFullPath(), 1, 1);
 
 		// Dash
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("AirDash").GetFullPath());
@@ -1701,6 +1693,28 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Flex").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Intro_Regular").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Portal").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Parry_Pink_0.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Action");
+		NewDir.Move("Parry_Pink");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_0.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_1.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_2.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_3.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_4.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_5.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_6.png").GetFullPath(), 1, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Parry_Pink_7.png").GetFullPath(), 1, 1);
 	}
 
 	if (nullptr == GameEngineTexture::Find("Peashooter_Spawn.png"))

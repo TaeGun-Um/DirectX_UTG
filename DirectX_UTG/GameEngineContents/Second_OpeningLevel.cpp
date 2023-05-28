@@ -33,6 +33,11 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("TutorialLevel");
 	}
+
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("First_OpeningLevel");
+	}
 }
 
 void Second_OpeningLevel::LevelChangeStart()

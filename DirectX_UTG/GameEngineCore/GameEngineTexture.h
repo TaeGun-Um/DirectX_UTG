@@ -110,7 +110,6 @@ public:
 		return ReLoad(_Path, NewPath.GetFileName());
 	}
 
-
 	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource<GameEngineTexture>::Find(_Name);
@@ -123,7 +122,6 @@ public:
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
-
 
 	ID3D11ShaderResourceView* GetSRV()
 	{

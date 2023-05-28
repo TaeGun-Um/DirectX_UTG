@@ -26,14 +26,10 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	// 코어이니셜라이즈
-	// Rect Box
-
 	if (false == GameEngineInput::IsKey("GUISwitch"))
 	{
 		GameEngineInput::CreateKey("GUISwitch", VK_F8);
 	}
-
 
 	GameEngineDevice::Initialize();
 
@@ -45,6 +41,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	{
 		MsgAssert("시작 컨텐츠가 존재하지 않습니다.");
 	}
+
 	_ContentsStart();
 }
 

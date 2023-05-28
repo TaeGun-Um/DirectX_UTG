@@ -17,7 +17,7 @@ MDHR_Logo::~MDHR_Logo()
 
 void MDHR_Logo::Start()
 {
-	if (nullptr == GameEngineSprite::Find("MDHR_Logo"))
+	if (nullptr == GameEngineSprite::Find("MDHR_Logo.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");

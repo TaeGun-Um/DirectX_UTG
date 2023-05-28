@@ -20,7 +20,10 @@ void WaitingRoomLevel::Start()
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {
-
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("First_OpeningLevel");
+	}
 }
 
 void WaitingRoomLevel::LevelChangeStart()
