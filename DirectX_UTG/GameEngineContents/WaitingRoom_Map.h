@@ -38,5 +38,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> NoteRenderPtr = nullptr;
 
 	bool IsDebugRender = false;
+	int NoteCount = 0;
 };
 

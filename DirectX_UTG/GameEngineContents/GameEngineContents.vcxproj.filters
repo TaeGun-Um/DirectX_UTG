@@ -94,6 +94,9 @@
     <Filter Include="PostEffect">
       <UniqueIdentifier>{9d19c7c5-22bb-4006-8aa3-ab1580db093b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\2. WaitingRoom\Object\NPC">
+      <UniqueIdentifier>{a6b1ed44-ba53-4ea2-b29f-037a4ca0b410}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="WaitingRoom_ColMap.h">
       <Filter>Levels\2. WaitingRoom\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ElderKettle.h">
+      <Filter>Levels\2. WaitingRoom\Object\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="WaitingRoom_ColMap.cpp">
       <Filter>Levels\2. WaitingRoom\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ElderKettle.cpp">
+      <Filter>Levels\2. WaitingRoom\Object\NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
