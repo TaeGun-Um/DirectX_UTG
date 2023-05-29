@@ -57,8 +57,8 @@ private:
 	float4 EnterMessageRenderDelayScale = float4::Zero;
 	float ScaleMaxTime = 0.0f;
 	float ScaleMinTime = 0.0f;
-	int ScaleCount = 1;
 	int BlackBoxCount = 1;
+	int ScaleCount = 1;
 
 	bool ScaleCheckStart = false;
 	bool IsDebugRender = false;

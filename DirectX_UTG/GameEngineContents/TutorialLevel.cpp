@@ -124,6 +124,7 @@ void TutorialLevel::LevelChangeStart()
 			BlackBoxPtr = CreateActor<RoundBlackBox>();
 		}
 
+		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
 	}
 

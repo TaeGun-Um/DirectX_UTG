@@ -57,6 +57,8 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr0 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr1 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr2 = nullptr;
@@ -88,6 +90,17 @@ private:
 	void PlayerDebugRenderer();
 	void DirectCheck();
 	void MoveDirectCheck();
+	void CollisionCheck(float _DeltaTime);
+	void EnterMessageScaleUp(float _DeltaTime);
+	void EnterMessageScaleDown(float _DeltaTime);
+
+	float4 EnterMessageRenderMaxScale = float4::Zero;
+	float4 EnterMessageRenderMinScale = float4::Zero;
+	float4 EnterMessageRenderDelayScale = float4::Zero;
+	float ScaleMaxTime = 0.0f;
+	float ScaleMinTime = 0.0f;
+	int ScaleCount = 1;
+	bool ScaleCheckStart = false;
 
 	void UpdateState(float _DeltaTime);
 	void ChangeState(OverworldState _StateValue);

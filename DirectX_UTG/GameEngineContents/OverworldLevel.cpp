@@ -22,6 +22,7 @@
 #include "TransformGUI.h"
 #include "Screen_FX.h"
 #include "Loading.h"
+#include "RoundBlackBox.h"
 
 OverworldLevel* OverworldLevel::OverworldLevelPtr = nullptr;
 
@@ -77,7 +78,7 @@ void OverworldLevel::LevelChangeStart()
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1450, -620.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	// CreateActor
@@ -138,7 +139,7 @@ void OverworldLevel::LevelChangeStart()
 	if (nullptr == PlayerObject)
 	{
 		PlayerObject = CreateActor<Player_Overworld>();
-		PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1450, 1 });
+		PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 	}
 	// ColMap
@@ -147,8 +148,14 @@ void OverworldLevel::LevelChangeStart()
 		ThisColMap = CreateActor<Overworld_ColMap>();
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -15 });
 	}
-	// Layer
 	{
+		if (BlackBoxPtr == nullptr)
+		{
+			BlackBoxPtr = CreateActor<RoundBlackBox>();
+		}
+
+		BlackBoxPtr->BoxSettingReset();
+		BlackBoxPtr->SetExit();
 	}
 	// ScreenSFX
 	{

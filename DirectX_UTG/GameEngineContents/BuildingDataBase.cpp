@@ -253,8 +253,7 @@ void BuildingDataBase::InterAction()
 	{
 	case BuildingValue::Home:
 	{
-		//MsgTextBox("Home");
-		GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		MsgTextBox("Home");
 	}
 	break;
 	case BuildingValue::Tutorial_Fly:

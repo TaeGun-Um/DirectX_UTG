@@ -29,6 +29,7 @@ void Player_Overworld::Update(float _DeltaTime)
 {
 	MoveCamera(_DeltaTime);
 	DirectCheck();
+	CollisionCheck(_DeltaTime);
 	PixelCheck(_DeltaTime);
 	UpdateState(_DeltaTime);
 	PlayerDebugRenderer();
@@ -65,6 +66,83 @@ void Player_Overworld::PlayerDebugRenderer()
 		DebugRenderPtr7->Off();
 		DebugRenderPtr8->Off();
 		CollisionRenderPtr->Off();
+	}
+}
+
+void Player_Overworld::EnterMessageScaleUp(float _DeltaTime)
+{
+	ScaleCheckStart = true;
+	ScaleMinTime = 0.0f;
+	EnterMessageRenderPtr->On();
+	ScaleCount = 1;
+
+	ScaleMaxTime += _DeltaTime;
+
+	float4 Scale = float4::LerpClamp(EnterMessageRenderMinScale, EnterMessageRenderMaxScale, ScaleMaxTime * 5.5f);
+
+	EnterMessageRenderPtr->GetTransform()->SetLocalScale(Scale);
+
+	if (true == Directbool)
+	{
+		EnterMessageRenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		EnterMessageRenderPtr->GetTransform()->SetLocalNegativeScaleX();
+	}
+}
+
+void Player_Overworld::EnterMessageScaleDown(float _DeltaTime)
+{
+	if (false == ScaleCheckStart)
+	{
+		return;
+	}
+
+	ScaleMaxTime = 0.0f;
+	EnterMessageRenderPtr->On();
+
+	ScaleMinTime += _DeltaTime;
+
+	if (1 == ScaleCount)
+	{
+		ScaleCount = 0;
+		EnterMessageRenderDelayScale = EnterMessageRenderMaxScale * 1.35f;
+	}
+
+	float4 Scale = float4::LerpClamp(EnterMessageRenderDelayScale, EnterMessageRenderMinScale, ScaleMinTime * 5.f);
+
+	EnterMessageRenderPtr->GetTransform()->SetLocalScale(Scale);
+
+	if (EnterMessageRenderMinScale == EnterMessageRenderPtr->GetTransform()->GetLocalScale())
+	{
+		EnterMessageRenderPtr->Off();
+	}
+
+	if (true == Directbool)
+	{
+		EnterMessageRenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		EnterMessageRenderPtr->GetTransform()->SetLocalNegativeScaleX();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                   CollisionCheck                     //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player_Overworld::CollisionCheck(float _DeltaTime)
+{
+	if (nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::NPC), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		|| nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Building), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		EnterMessageScaleUp(_DeltaTime);
+	}
+	else
+	{
+		EnterMessageScaleDown(_DeltaTime);
 	}
 }
 
@@ -661,6 +739,17 @@ void Player_Overworld::PlayerInitialSetting()
 	RenderPtr->GetTransform()->SetLocalScale({103, 113});
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 30 });
 	RenderPtr->ChangeAnimation("Down_Idle");
+
+	if (nullptr == EnterMessageRenderPtr)
+	{
+		EnterMessageRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		EnterMessageRenderPtr->SetScaleToTexture("EnterMessage.png");
+		EnterMessageRenderMaxScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
+		EnterMessageRenderPtr->GetTransform()->SetLocalScale(float4{ 1, 1, 1 });
+		EnterMessageRenderMinScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
+		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 0, 80, -20 });
+		EnterMessageRenderPtr->Off();
+	}
 }
 
 void Player_Overworld::DebugRendererSetting()
