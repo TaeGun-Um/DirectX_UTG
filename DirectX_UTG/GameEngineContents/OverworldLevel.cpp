@@ -91,16 +91,16 @@ void OverworldLevel::LevelChangeStart()
 	// NPC
 	{
 		std::shared_ptr<AppleTraveller> NPCObject0 = CreateActor<AppleTraveller>();
-		NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 1 });
+		NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 3 });
 
 		std::shared_ptr<Axeman> NPCObject1 = CreateActor<Axeman>();
-		NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 1 });
+		NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 3 });
 
 		std::shared_ptr<Canteen> NPCObject2 = CreateActor<Canteen>();
-		NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 1 });
+		NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 3 });
 
 		std::shared_ptr<Coin> NPCObject3 = CreateActor<Coin>();
-		NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 1 });
+		NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 3 });
 
 		std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
 		NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, -1 });
@@ -109,11 +109,11 @@ void OverworldLevel::LevelChangeStart()
 	{
 		std::shared_ptr<BuildingDataBase> HomeObject = CreateActor<BuildingDataBase>();
 		HomeObject->BuildingSetting(BuildingValue::Home);
-		HomeObject->GetTransform()->SetLocalPosition({ 780 , 1560, 1 });
+		HomeObject->GetTransform()->SetLocalPosition({ 780 , 1560, 3 });
 
 		std::shared_ptr<BuildingDataBase> ZeplinObject = CreateActor<BuildingDataBase>();
 		ZeplinObject->BuildingSetting(BuildingValue::Zeplin);
-		ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 1 });
+		ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 3 });
 
 		std::shared_ptr<BuildingDataBase> FrogObject = CreateActor<BuildingDataBase>();
 		FrogObject->BuildingSetting(BuildingValue::Frog);
@@ -121,19 +121,19 @@ void OverworldLevel::LevelChangeStart()
 
 		std::shared_ptr<BuildingDataBase> Tutorial_FlyObject = CreateActor<BuildingDataBase>();
 		Tutorial_FlyObject->BuildingSetting(BuildingValue::Tutorial_Fly);
-		Tutorial_FlyObject->GetTransform()->SetLocalPosition({ 2800 , 2030, 1 });
+		Tutorial_FlyObject->GetTransform()->SetLocalPosition({ 2800 , 2030, 3 });
 
 		std::shared_ptr<BuildingDataBase> MouseObject = CreateActor<BuildingDataBase>();
 		MouseObject->BuildingSetting(BuildingValue::Mouse);
-		MouseObject->GetTransform()->SetLocalPosition({ 3280 , 620, 1 });
+		MouseObject->GetTransform()->SetLocalPosition({ 3280 , 620, 3 });
 
 		std::shared_ptr<BuildingDataBase> DjimmiObject = CreateActor<BuildingDataBase>();
 		DjimmiObject->BuildingSetting(BuildingValue::Djimmi);
-		DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 1 });
+		DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 3 });
 
 		std::shared_ptr<BuildingDataBase> DragonObject = CreateActor<BuildingDataBase>();
 		DragonObject->BuildingSetting(BuildingValue::Dragon);
-		DragonObject->GetTransform()->SetLocalPosition({ 2280 , 1650, 1 });
+		DragonObject->GetTransform()->SetLocalPosition({ 2280 , 1650, 3 });
 	}
 	// Character
 	if (nullptr == PlayerObject)

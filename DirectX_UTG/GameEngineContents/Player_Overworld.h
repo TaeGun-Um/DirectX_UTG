@@ -90,6 +90,7 @@ private:
 	void PlayerDebugRenderer();
 	void DirectCheck();
 	void MoveDirectCheck();
+	void CreateMoveDust();
 	void CollisionCheck(float _DeltaTime);
 	void EnterMessageScaleUp(float _DeltaTime);
 	void EnterMessageScaleDown(float _DeltaTime);
@@ -99,6 +100,7 @@ private:
 	float4 EnterMessageRenderDelayScale = float4::Zero;
 	float ScaleMaxTime = 0.0f;
 	float ScaleMinTime = 0.0f;
+	float MoveTime = 0.0f;
 	int ScaleCount = 1;
 	bool ScaleCheckStart = false;
 

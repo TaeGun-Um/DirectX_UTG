@@ -1794,6 +1794,7 @@ void Player::PlayerInitialSetting()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_B.png").GetFullPath(), 5, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_C.png").GetFullPath(), 5, 4);
 	}
+
 	if (nullptr == GameEngineSprite::Find("JumpDust"))
 	{
 		GameEngineDirectory NewDir;

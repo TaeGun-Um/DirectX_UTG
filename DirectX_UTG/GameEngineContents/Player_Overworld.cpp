@@ -1,9 +1,12 @@
 #include "PrecompileHeader.h"
 #include "Player_Overworld.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "MoveDust.h"
 
 Player_Overworld* Player_Overworld::MainPlayer = nullptr;
 
@@ -32,6 +35,7 @@ void Player_Overworld::Update(float _DeltaTime)
 	CollisionCheck(_DeltaTime);
 	PixelCheck(_DeltaTime);
 	UpdateState(_DeltaTime);
+	CreateMoveDust();
 	PlayerDebugRenderer();
 }
 
@@ -328,6 +332,55 @@ void Player_Overworld::PixelCheck(float _DeltaTime)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     CreateActor                   /////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player_Overworld::CreateMoveDust()
+{
+	if (0.4f >= MoveTime)
+	{
+		return;
+	}
+
+	int RandValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	MoveTime = 0.0f;
+
+	std::shared_ptr<MoveDust> Dust = GetLevel()->CreateActor<MoveDust>();
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = PlayerPosition;
+
+	if (0 == RandValue)
+	{
+		DustPosition += float4{ 0, 35 };
+
+	}
+	else if (1 == RandValue)
+	{
+		DustPosition += float4{ 0, 40 };
+	}
+	else if (2 == RandValue)
+	{
+		DustPosition += float4{ 0, 45 };
+	}
+
+	if (true == Directbool)
+	{
+		DustPosition += float4{ -20, 0 };
+	}
+	else
+	{
+		DustPosition += float4{ 20, 0 };
+	}
+
+	DustPosition += float4{ 0, 0, 1 };
+
+	Dust->SetStartPosition(DustPosition);
+	Dust->SetDirection(Directbool);
+	Dust->SetDustType(static_cast<DustType>(RandValue));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -541,6 +594,8 @@ void Player_Overworld::MoveStart()
 }
 void Player_Overworld::MoveUpdate(float _DeltaTime)
 {
+	MoveTime += _DeltaTime;
+
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
@@ -667,6 +722,7 @@ void Player_Overworld::MoveUpdate(float _DeltaTime)
 }
 void Player_Overworld::MoveEnd()
 {
+	MoveTime = 0.0f;
 }
 
 void Player_Overworld::WinStart()
@@ -693,21 +749,6 @@ void Player_Overworld::PlayerInitialSetting()
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 	}
 	
-	if (nullptr == GameEngineSprite::Find("DashDust"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("Ground");
-		NewDir.Move("Effect");
-		NewDir.Move("SFX");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("DashDust").GetFullPath());
-	}
-
 	if (nullptr == GameEngineTexture::Find("Overworld.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -719,6 +760,24 @@ void Player_Overworld::PlayerInitialSetting()
 		NewDir.Move("Overworld");
 
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Overworld.png").GetFullPath(), 16, 8);
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dust_A.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("Ground");
+		NewDir.Move("Effect");
+		NewDir.Move("SFX");
+		NewDir.Move("PlayerDust");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_A.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_B.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Dust_C.png").GetFullPath(), 5, 4);
 	}
 
 	// Idle
