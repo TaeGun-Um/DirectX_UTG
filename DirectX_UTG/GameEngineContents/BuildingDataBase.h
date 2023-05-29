@@ -56,6 +56,12 @@ public:
 		CollisionRenderPtr->Off();
 	}
 
+	void IsLevelChangeReset()
+	{
+		IsLevelChange = false;
+		BlackBoxCount = 1;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -73,8 +79,10 @@ private:
 
 	bool FlagCall = false;
 	bool Isinteraction = false;
+	bool IsLevelChange = false;
 
 	int AnimationCount = 1;
+	int BlackBoxCount = 1;
 
 	void CollisionCheck();
 	void InterAction();

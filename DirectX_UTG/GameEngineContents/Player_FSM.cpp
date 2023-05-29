@@ -1989,4 +1989,5 @@ void Player::ElderKettleInterActionUpdate(float _DeltaTime)
 void Player::ElderKettleInterActionEnd()
 {
 	ElderKettleInterActioning = false;
+	IsElderKettleEnd = true;
 }

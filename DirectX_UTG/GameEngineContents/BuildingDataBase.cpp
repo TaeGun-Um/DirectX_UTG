@@ -8,6 +8,7 @@
 
 #include "Player_Overworld.h"
 #include "OverworldLevel.h"
+#include "RoundBlackBox.h"
 
 BuildingDataBase* BuildingDataBase::HomePtr = nullptr;
 BuildingDataBase* BuildingDataBase::Tutorial_FlyPtr = nullptr;
@@ -90,6 +91,11 @@ void BuildingDataBase::Update(float _DeltaTime)
 	{
 		AnimationCount = 0;
 		FlagRenderPtr->ChangeAnimation("FlagOn");
+	}
+
+	if (true == IsLevelChange)
+	{
+		InterAction();
 	}
 }
 
@@ -243,12 +249,19 @@ void BuildingDataBase::CollisionCheck()
 		&& true == Isinteraction
 		&& true == GameEngineInput::IsDown("Attack"))
 	{
-		InterAction();
+		IsLevelChange = true;
 	}
 }
 
 void BuildingDataBase::InterAction()
 {
+	if (1 == BlackBoxCount)
+	{
+		BlackBoxCount = 0;
+		OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+		OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
+	}
+
 	switch (BValue)
 	{
 	case BuildingValue::Home:
@@ -268,7 +281,11 @@ void BuildingDataBase::InterAction()
 	break;
 	case BuildingValue::Frog:
 	{
-		MsgTextBox("Frog");
+		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
+		{
+			OverworldLevel::OverworldLevelPtr->LoadingOn();
+			GameEngineCore::ChangeLevel("FrogLevel");
+		}
 	}
 	break;
 	case BuildingValue::Dragon:

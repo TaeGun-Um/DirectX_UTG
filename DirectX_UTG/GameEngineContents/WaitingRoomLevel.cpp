@@ -36,6 +36,19 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 	float Mount = PlayerDist - PlusDist;
 
 	GetMainCamera()->GetTransform()->SetLocalPosition(CameraOriginPos + float4{-Mount / 25 , 0});
+
+	if (true == PlayerObject->GetIsElderKettleEnd() && 1 == PortalCount)
+	{
+		PortalCount = 0;
+
+		if (nullptr == PortalDoorObject)
+		{
+			PortalDoorObject = CreateActor<PortalDoor>();
+			PortalDoorObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half - 100, -5 });
+			PortalDoorObject->SetPortalValue(PortalValue::Tutorial);
+			PortalDoorObject->SetEnterMessageRenderPtrPos({ -5, -150 });
+		}
+	}
 }
 
 void WaitingRoomLevel::LevelChangeStart()
@@ -56,7 +69,7 @@ void WaitingRoomLevel::LevelChangeStart()
 	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("WaitingRoom_ColMap.png");
 	int PlayMapWidth = PlayMap->GetWidth();
 	int PlayMapHeight = PlayMap->GetHeight();
-	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
+	PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
 	PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
 
 	// 카메라 세팅
@@ -94,13 +107,6 @@ void WaitingRoomLevel::LevelChangeStart()
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 
 		PlayerDist = PlayerObject->GetTransform()->GetLocalPosition().x;
-	}
-	if (nullptr == PortalDoorObject)
-	{
-		PortalDoorObject = CreateActor<PortalDoor>();
-		PortalDoorObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half - 100, -5 });
-		PortalDoorObject->SetPortalValue(PortalValue::Tutorial);
-		PortalDoorObject->SetEnterMessageRenderPtrPos({-5, -150});
 	}
 	if (nullptr == ThisColMap)
 	{

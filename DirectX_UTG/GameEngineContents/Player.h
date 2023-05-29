@@ -45,6 +45,11 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	bool GetIsElderKettleEnd()
+	{
+		return IsElderKettleEnd;
+	}
+
 	void SetCorrectionTrue()
 	{
 		IsCorrection = true;
@@ -302,6 +307,7 @@ private:
 	bool Portaling = false;
 	bool ElderKettleInterAction = false;
 	bool ElderKettleInterActioning = false;
+	bool IsElderKettleEnd = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
