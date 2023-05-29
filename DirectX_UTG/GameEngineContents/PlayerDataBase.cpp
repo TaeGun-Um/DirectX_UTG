@@ -150,7 +150,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 			Movedir = (TargetPosition - PrevCameraPosition);
 		}
 
-		MoveDistance = Movedir * 2.0f * _DeltaTime;
+		MoveDistance = Movedir * CameraSpeedRatio * _DeltaTime;
 		MoveDistance.z = 0.0f;
 		MoveDistance.y = 0.0f;
 

@@ -242,6 +242,12 @@
     <ClInclude Include="TitleMenu.h">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClInclude>
+    <ClInclude Include="WaitingRoom_Map.h">
+      <Filter>Levels\2. WaitingRoom\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitingRoom_ColMap.h">
+      <Filter>Levels\2. WaitingRoom\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -394,6 +400,12 @@
     <ClCompile Include="RoundBlackBox.cpp" />
     <ClCompile Include="TitleMenu.cpp">
       <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitingRoom_Map.cpp">
+      <Filter>Levels\2. WaitingRoom\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitingRoom_ColMap.cpp">
+      <Filter>Levels\2. WaitingRoom\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

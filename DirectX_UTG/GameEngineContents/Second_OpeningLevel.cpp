@@ -39,7 +39,7 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
 		LoadingPtr->SetLoadingPtrOn();
-		GameEngineCore::ChangeLevel("TutorialLevel");
+		GameEngineCore::ChangeLevel("WaitingRoomLevel");
 	}
 }
 

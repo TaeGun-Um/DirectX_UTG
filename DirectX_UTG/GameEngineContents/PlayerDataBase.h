@@ -30,6 +30,11 @@ public:
 		MoveSpeed = _Value;
 	}
 
+	void SetCameraSpeedRatio(float _Ratio)
+	{
+		CameraSpeedRatio = _Ratio;
+	}
+
 protected:
 	void Start() override {}
 	void Update(float _DeltaTime) override {}
@@ -72,6 +77,7 @@ protected:
 	CameraFollowType CameraType = CameraFollowType::None;
 	float CameraMoveSpeed = 0.0f;
 	float CameraAccessTime = 0.0f;
+	float CameraSpeedRatio = 2.0f;
 
 	float CameraWidth_Half = 640.0f;
 	float CameraHegiht_Half = 360.0f;

@@ -96,17 +96,54 @@ void PortalDoor::CollisionCheck(float _DeltaTime)
 
 void PortalDoor::LevelChange()
 {
-	if (1 == BlackBoxCount)
+	switch (PV)
 	{
-		BlackBoxCount = 0;
-		TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
-		TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->SetEnter();
+	case PortalValue::Tutorial:
+	{
+		if (1 == BlackBoxCount)
+		{
+			BlackBoxCount = 0;
+			WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+			WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->SetEnter();
+		}
+
+		if (WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
+		{
+			WaitingRoomLevel::WaitingRoomLevelPtr->LoadingOn();
+			GameEngineCore::ChangeLevel("TutorialLevel");
+		}
 	}
-	
-	if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
+	break;
+	case PortalValue::Overworld:
 	{
-		TutorialLevel::TutorialLevelPtr->LoadingOn();
-		GameEngineCore::ChangeLevel("OverworldLevel");
+		if (1 == BlackBoxCount)
+		{
+			BlackBoxCount = 0;
+			TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+			TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->SetEnter();
+		}
+
+		if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
+		{
+			TutorialLevel::TutorialLevelPtr->LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
+	}
+	break;
+	case PortalValue::WaitingRoom:
+	{
+		MsgAssert("미설정 포탈 밸류");
+		return;
+	}
+	break;
+	case PortalValue::Unknown:
+	{
+		MsgAssert("포탈 밸류를 설정하지 않았습니다.");
+		return;
+	}
+	break;
+	default:
+	break;
 	}
 }
 

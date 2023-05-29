@@ -5,9 +5,6 @@ enum class PortalValue
 	WaitingRoom,
 	Tutorial,
 	Overworld,
-	Frog,
-	Dragon,
-	Mouse,
 	Unknown,
 };
 
@@ -38,6 +35,11 @@ public:
 	void PortalDebugRenderOff()
 	{
 		IsDebugRender = false;
+	}
+
+	void SetEnterMessageRenderPtrPos(float4 _AddValue)
+	{
+		EnterMessageRenderPtr->GetTransform()->AddLocalPosition(_AddValue);
 	}
 
 protected:

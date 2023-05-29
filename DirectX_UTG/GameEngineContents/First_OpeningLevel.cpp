@@ -32,12 +32,6 @@ First_OpeningLevel::~First_OpeningLevel()
 void First_OpeningLevel::Start()
 {
 	First_OpeningLevelPtr = this;
-
-	if (false == GameEngineInput::IsKey("NextLevel"))
-	{
-		GameEngineInput::CreateKey("NextLevel", 'P');
-		GameEngineInput::CreateKey("PrevLevel", 'O');
-	}
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
@@ -92,11 +86,6 @@ void First_OpeningLevel::Update(float _DeltaTime)
 		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("Second_OpeningLevel");
 	}
-
-	//if (true == GameEngineInput::IsDown("NextLevel"))
-	//{
-	//	GameEngineCore::ChangeLevel("WaitingRoomLevel");
-	//}
 }
 
 void First_OpeningLevel::LevelChangeStart()
@@ -130,8 +119,6 @@ void First_OpeningLevel::LevelChangeStart()
 }
 void First_OpeningLevel::LevelChangeEnd()
 {
-	//BlackBoxPtr->BoxSettingReset();
-
 	if (nullptr != GameEngineSprite::Find("Cuphead_and_Mugman"))
 	{
 		GameEngineDirectory NewDir;
@@ -158,43 +145,26 @@ void First_OpeningLevel::LevelChangeEnd()
 
 	if (nullptr != GameEngineTexture::Find("PressAnyButton.png"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Opening1");
-		NewDir.Move("Title");
-
 		GameEngineTexture::UnLoad("PressAnyButton.png");
 		GameEngineTexture::UnLoad("Title_Background.png");
 	}
 
 	if (nullptr != GameEngineSprite::Find("MDHR_Logo.png"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Opening1");
-		NewDir.Move("MDHR_Logo");
-
 		GameEngineTexture::UnLoad("MDHR_Logo.png");
 	}
 
 	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Opening1");
-		NewDir.Move("Title");
-
 		GameEngineTexture::UnLoad("PressAnyButton.png");
 		GameEngineTexture::UnLoad("Title_Background.png");
+	}
+
+	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
+	{
+		GameEngineTexture::UnLoad("cuphead_startscreen.png");
+		GameEngineTexture::UnLoad("START.png");
+		GameEngineTexture::UnLoad("EXIT.png");
 	}
 
 	TitleMenuObject = nullptr;

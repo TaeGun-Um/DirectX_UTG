@@ -17,8 +17,8 @@ void RoundBlackBox::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineUIRenderer>();
 		RenderPtr->GetTransform()->SetLocalScale({1300, 735});
-		RenderPtr->CreateAnimation({ .AnimationName = "Enter", .SpriteName = "Enter", .FrameInter = 0.06f, .Loop = false});
-		RenderPtr->CreateAnimation({ .AnimationName = "Exit", .SpriteName = "Exit", .FrameInter = 0.06f, .Loop = false });
+		RenderPtr->CreateAnimation({ .AnimationName = "Enter", .SpriteName = "Enter", .FrameInter = 0.05f, .Loop = false});
+		RenderPtr->CreateAnimation({ .AnimationName = "Exit", .SpriteName = "Exit", .FrameInter = 0.05f, .Loop = false });
 
 		RenderPtr->ChangeAnimation("Enter");
 		RenderPtr->Off();

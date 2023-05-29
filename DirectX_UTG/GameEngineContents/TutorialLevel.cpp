@@ -66,7 +66,6 @@ void TutorialLevel::LevelChangeStart()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half - 100, -620.0f });
-	//GetMainCamera()->GetTransform()->SetLocalPosition({ 5500, PlayMapHeight_Half - 100, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	// CreateActor
@@ -86,8 +85,8 @@ void TutorialLevel::LevelChangeStart()
 	{
 		PlayerObject = CreateActor<Player>();
 		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half });
-		//PlayerObject->GetTransform()->SetLocalPosition({ 5500 , PlayMapHeight_Half, 1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		PlayerObject->SetCameraSpeedRatio(2.f);
 	}
 	// Portal
 	if (nullptr == PortalDoorObject)
@@ -149,6 +148,74 @@ void TutorialLevel::LevelChangeStart()
 }
 void TutorialLevel::LevelChangeEnd()
 {
+	if (nullptr != GameEngineTexture::Find("Tutorial_BackLayer_001.png"))
+	{
+		GameEngineTexture::UnLoad("Tutorial_BackLayer_001.png");
+		GameEngineTexture::UnLoad("Tutorial_BackLayer_002.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Tutorial_ColMap.png"))
+	{
+		GameEngineTexture::UnLoad("Tutorial_ColMap.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Tutorial_Map.png"))
+	{
+		GameEngineTexture::UnLoad("Tutorial_Map.png");
+	}
+	if (nullptr != GameEngineTexture::Find("tutorial_pink_sphere_1.png"))
+	{
+		GameEngineTexture::UnLoad("tutorial_pink_sphere_1.png");
+		GameEngineTexture::UnLoad("tutorial_pink_sphere_2.png");
+	}
+	if (nullptr != GameEngineTexture::Find("tutorial_pyramid_topper.png"))
+	{
+		GameEngineTexture::UnLoad("tutorial_pyramid_topper.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Target"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+		NewDir.Move("Target");
+
+		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineFile& File = AllFile[i];
+
+			std::filesystem::path Path = File.GetFullPath();
+
+			std::string Target = Path.filename().string();
+
+			GameEngineTexture::UnLoad(Target);
+		}
+	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+		NewDir.Move("Explosion");
+
+		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineFile& File = AllFile[i];
+
+			std::filesystem::path Path = File.GetFullPath();
+
+			std::string Target = Path.filename().string();
+
+			GameEngineTexture::UnLoad(Target);
+		}
+	}
 }
 
 void TutorialLevel::PlayerDebugRenderOn()

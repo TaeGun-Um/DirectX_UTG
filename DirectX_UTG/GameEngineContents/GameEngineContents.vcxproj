@@ -360,6 +360,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="WaitingRoom_ColMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="WaitingRoom_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppleTraveller.cpp">
@@ -561,6 +569,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="WaitingRoomLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WaitingRoom_ColMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WaitingRoom_Map.cpp">
       <SubType>
       </SubType>
     </ClCompile>
