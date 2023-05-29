@@ -58,9 +58,11 @@ private:
 	float ScaleMaxTime = 0.0f;
 	float ScaleMinTime = 0.0f;
 	int ScaleCount = 1;
+	int BlackBoxCount = 1;
 
 	bool ScaleCheckStart = false;
 	bool IsDebugRender = false;
+	bool IsTurn = false;
 
 	void LevelChange();
 	void CollisionCheck(float _DeltaTime);

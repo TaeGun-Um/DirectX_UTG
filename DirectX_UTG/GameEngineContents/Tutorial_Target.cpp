@@ -121,6 +121,7 @@ void Tutorial_Target::Update(float _DeltaTime)
 
 	SetDeath();
 	CollisionCheck();
+	BlinkSetting(_DeltaTime);
 }
 
 void Tutorial_Target::CollisionCheck()
@@ -131,6 +132,7 @@ void Tutorial_Target::CollisionCheck()
 		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::SPHERE2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
+		ColorSet = true;
 		--HP;
 
 		if (0 >= HP)
@@ -154,6 +156,42 @@ void Tutorial_Target::CollisionCheck()
 	}
 }
 
+void Tutorial_Target::BlinkSetting(float _DeltaTime)
+{
+	if (false == ColorSet)
+	{
+		return;
+	}
+
+	ColorSetTime += _DeltaTime;
+
+	if (ColorCount == 1)
+	{
+		ColorCount = 0;
+
+		BoxRenderPtr->ColorOptionValue.PlusColor.r += 0.25f;
+		BoxRenderPtr->ColorOptionValue.PlusColor.g += 0.35f;
+		BoxRenderPtr->ColorOptionValue.PlusColor.b += 0.55f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.r += 0.25f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.g += 0.35f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.b += 0.55f;
+	}
+
+	if (ColorSetTime >= 0.1f)
+	{
+		ColorCount = 1;
+		ColorSetTime = 0.0f;
+		ColorSet = false;
+
+		BoxRenderPtr->ColorOptionValue.PlusColor.r -= 0.25f;
+		BoxRenderPtr->ColorOptionValue.PlusColor.g -= 0.35f;
+		BoxRenderPtr->ColorOptionValue.PlusColor.b -= 0.55f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.r -= 0.25f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.g -= 0.35f;
+		TargetRenderPtr->ColorOptionValue.PlusColor.b -= 0.55f;
+	}
+}
+
 void Tutorial_Target::SetDeath()
 {
 	if (false == IsDeath)
@@ -167,7 +205,7 @@ void Tutorial_Target::SetDeath()
 	TargetCollisionRenderPtr->Death();
 	TargetCollisionPtr->Death();
 
-	TargetRenderPtr->GetTransform()->SetLocalScale({ 350, 350, 1 });
+	TargetRenderPtr->GetTransform()->SetLocalScale({ 450, 450, 1 });
 	TargetRenderPtr->GetTransform()->SetLocalPosition({ -3, 50 });
 
 	TargetRenderPtr->ChangeAnimation("Explosion", false);

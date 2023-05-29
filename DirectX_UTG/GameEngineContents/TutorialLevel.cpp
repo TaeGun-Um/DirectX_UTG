@@ -18,6 +18,7 @@
 #include "PortalDoor.h"
 #include "Screen_FX.h"
 #include "Loading.h"
+#include "RoundBlackBox.h"
 
 #include "TransformGUI.h"
 
@@ -116,6 +117,14 @@ void TutorialLevel::LevelChangeStart()
 	{
 		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
 		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+	}
+	{
+		if (BlackBoxPtr == nullptr)
+		{
+			BlackBoxPtr = CreateActor<RoundBlackBox>();
+		}
+
+		BlackBoxPtr->SetExit();
 	}
 
 	// GUI

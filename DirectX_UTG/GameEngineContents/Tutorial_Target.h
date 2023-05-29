@@ -39,9 +39,13 @@ private:
 
 	bool IsDebugRender = false;
 	bool IsDeath = false;
+	bool ColorSet = false;
+	float ColorSetTime = 0.0f;
+	int ColorCount = 1;
 	int HP = 10;
 
 	void CollisionCheck();
+	void BlinkSetting(float _DeltaTime);
 	void SetDeath();
 
 };

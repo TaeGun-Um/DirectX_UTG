@@ -13,6 +13,7 @@
 #include "MouseLevel.h"
 
 #include "Player.h"
+#include "RoundBlackBox.h"
 
 PortalDoor::PortalDoor() 
 {
@@ -64,6 +65,11 @@ void PortalDoor::Update(float _DeltaTime)
 
 	CollisionCheck(_DeltaTime);
 
+	if (true == IsTurn)
+	{
+		LevelChange();
+	}
+
 	if (false == Player::MainPlayer->GetPlayerPortalAble())
 	{
 		return;
@@ -72,7 +78,7 @@ void PortalDoor::Update(float _DeltaTime)
 	if (true == Player::MainPlayer->GetPlayerPortaling()
 		&& Player::MainPlayer->GetPlayerMainRenderPtr()->FindAnimation("Portal")->IsEnd())
 	{
-		LevelChange();
+		IsTurn = true;
 	}
 }
 
@@ -90,8 +96,18 @@ void PortalDoor::CollisionCheck(float _DeltaTime)
 
 void PortalDoor::LevelChange()
 {
-	TutorialLevel::TutorialLevelPtr->LoadingOn();
-	GameEngineCore::ChangeLevel("OverworldLevel");
+	if (1 == BlackBoxCount)
+	{
+		BlackBoxCount = 0;
+		TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+		TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->SetEnter();
+	}
+	
+	if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
+	{
+		TutorialLevel::TutorialLevelPtr->LoadingOn();
+		GameEngineCore::ChangeLevel("OverworldLevel");
+	}
 }
 
 void PortalDoor::EnterMessageScaleUp(float _DeltaTime)

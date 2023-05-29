@@ -10,6 +10,7 @@
 #include "WaitingRoomLevel.h"
 #include "TutorialLevel.h"
 
+#include "RoundBlackBox.h"
 #include "Screen_FX.h"
 #include "BookRender.h"
 #include "Loading.h"
@@ -28,15 +29,17 @@ void Second_OpeningLevel::Start()
 }
 void Second_OpeningLevel::Update(float _DeltaTime)
 {
-	if (true == BookRender::GetBookAnimationIsEnd())
+	if (true == BookRender::GetBookAnimationIsEnd() && false == IsEnd)
+	{
+		IsEnd = true;
+		BlackBoxPtr->BoxSettingReset();
+		BlackBoxPtr->SetEnter();
+	}
+	
+	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
 		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("TutorialLevel");
-	}
-
-	if (true == GameEngineInput::IsDown("PrevLevel"))
-	{
-		GameEngineCore::ChangeLevel("First_OpeningLevel");
 	}
 }
 
@@ -48,11 +51,12 @@ void Second_OpeningLevel::LevelChangeStart()
 
 	// CreateActor
 	{
-		std::shared_ptr<BookRender> Object = CreateActor<BookRender>();
-		Object->GetTransform()->AddWorldPosition({ 0, -3 });
+		BookRenderObject = CreateActor<BookRender>();
+		BookRenderObject->GetTransform()->AddWorldPosition({ 0, -3 });
 	}
 	{
-		//std::shared_ptr<Screen_FX> Object2 = CreateActor<Screen_FX>();
+		BlackBoxPtr = CreateActor<RoundBlackBox>();
+		BlackBoxPtr->SetExit();
 	}
 
 	if (nullptr == LoadingPtr)
@@ -85,4 +89,6 @@ void Second_OpeningLevel::LevelChangeEnd()
 			GameEngineTexture::UnLoad(Target);
 		}
 	}
+
+	BookRenderObject = nullptr;
 }

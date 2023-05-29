@@ -23,6 +23,11 @@ public:
 		LoadingPtr->SetLoadingPtrOn();
 	}
 
+	std::shared_ptr<class RoundBlackBox> GetBlackBoxPtr()
+	{
+		return BlackBoxPtr;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -40,6 +45,7 @@ private:
 	std::shared_ptr<class Tutorial_Map> MapObject = nullptr;
 	std::shared_ptr<class Tutorial_Target> TargetObject = nullptr;
 	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
+	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
