@@ -46,6 +46,10 @@ private:
 	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 
+	float PlayMapHeight_Half = 0.0f;
+	float PlayerDist = 0.0f;
+	float4 CameraOriginPos = float4::Zero;
+
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();

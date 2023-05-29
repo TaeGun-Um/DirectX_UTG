@@ -35,8 +35,13 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> ChairRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> VignetteRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> NoteRenderPtr = nullptr;
+	
+	float4 CouchOriginPos = float4::Zero;
+	float4 ChairOriginPos = float4::Zero;
 
+	float PlayerDist = 0.0f;
 	bool IsDebugRender = false;
 	int NoteCount = 0;
+	int PlayerDistCount = 1;
 };
 

@@ -20,6 +20,16 @@ public:
 	ElderKettle& operator=(const ElderKettle& _Other) = delete;
 	ElderKettle& operator=(ElderKettle&& _Other) noexcept = delete;
 
+	void DebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void DebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -30,6 +40,8 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
+
+	bool IsDebugRender = false;
 
 	void CollisionCheck(float _DeltaTime);
 	void EnterMessageScaleUp(float _DeltaTime);

@@ -21,6 +21,11 @@ public:
 		return TitleMove;
 	}
 
+	std::shared_ptr<class RoundBlackBox> GetBlackBoxPtr()
+	{
+		return BlackBoxPtr;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

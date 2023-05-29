@@ -49,6 +49,7 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	if (true == NextStep1 && 1 == NextStep1Count)
 	{
 		NextStep1Count = 0;
+		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
 
@@ -57,8 +58,12 @@ void First_OpeningLevel::Update(float _DeltaTime)
 		BackgroundObject->Off();
 		TitleMenuObject->On();
 		NextStep2Count = 0;
+		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
+	}
 
+	if (true == BlackBoxPtr->GetIsEnd() && 0 == NextStep2Count)
+	{
 		TitleMove = true;
 	}
 

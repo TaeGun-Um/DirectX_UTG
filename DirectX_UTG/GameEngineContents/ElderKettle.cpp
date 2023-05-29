@@ -72,6 +72,15 @@ void ElderKettle::Start()
 
 void ElderKettle::Update(float _DeltaTime)
 {
+	if (true == IsDebugRender)
+	{
+		CollisionRenderPtr->On();
+	}
+	else
+	{
+		CollisionRenderPtr->Off();
+	}
+
 	CollisionCheck(_DeltaTime);
 	UpdateState(_DeltaTime);
 }

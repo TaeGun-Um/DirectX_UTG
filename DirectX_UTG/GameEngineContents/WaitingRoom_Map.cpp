@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
+
 WaitingRoom_Map::WaitingRoom_Map() 
 {
 }
@@ -52,12 +54,14 @@ void WaitingRoom_Map::Start()
 		CouchRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		CouchRenderPtr->SetScaleToTexture("WaitingRoom_Couch.png");
 		CouchRenderPtr->GetTransform()->SetLocalPosition({ 460, -230, -20 });
+		CouchOriginPos = CouchRenderPtr->GetTransform()->GetLocalPosition();
 	}
 	if (ChairRenderPtr == nullptr)
 	{
 		ChairRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		ChairRenderPtr->SetScaleToTexture("WaitingRoom_Chair.png");
 		ChairRenderPtr->GetTransform()->SetLocalPosition({ -320, -270, -20 });
+		ChairOriginPos = ChairRenderPtr->GetTransform()->GetLocalPosition();
 	}
 	if (VignetteRenderPtr == nullptr)
 	{
@@ -78,6 +82,12 @@ void WaitingRoom_Map::Start()
 
 void WaitingRoom_Map::Update(float _DeltaTime)
 {
+	if (1 == PlayerDistCount)
+	{
+		PlayerDistCount = 0;
+		PlayerDist = Player::MainPlayer->GetTransform()->GetLocalPosition().x;
+	}
+	
 	if (0 == NoteCount)
 	{
 		NoteCount = 1;
@@ -94,4 +104,10 @@ void WaitingRoom_Map::Update(float _DeltaTime)
 	{
 		NoteCount = 0;
 	}
+
+	float PlusDist = Player::MainPlayer->GetTransform()->GetLocalPosition().x;
+	float Mount = PlayerDist - PlusDist;
+
+	CouchRenderPtr->GetTransform()->SetLocalPosition(CouchOriginPos + float4{ Mount / 50 , 0 });
+	ChairRenderPtr->GetTransform()->SetLocalPosition(ChairOriginPos + float4{ Mount / 50 , 0 });
 }

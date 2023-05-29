@@ -32,14 +32,14 @@ void WaitingRoomLevel::Start()
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {
+	float PlusDist = PlayerObject->GetTransform()->GetLocalPosition().x;
+	float Mount = PlayerDist - PlusDist;
+
+	GetMainCamera()->GetTransform()->SetLocalPosition(CameraOriginPos + float4{-Mount / 25 , 0});
 }
 
 void WaitingRoomLevel::LevelChangeStart()
 {
-	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
-
 	if (nullptr == GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -57,12 +57,14 @@ void WaitingRoomLevel::LevelChangeStart()
 	int PlayMapWidth = PlayMap->GetWidth();
 	int PlayMapHeight = PlayMap->GetHeight();
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
-	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
+	PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
 
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half + 10, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
+
+	CameraOriginPos = GetMainCamera()->GetTransform()->GetLocalPosition();
 
 	{
 		if (BlackBoxPtr == nullptr)
@@ -90,6 +92,8 @@ void WaitingRoomLevel::LevelChangeStart()
 		PlayerObject->GetTransform()->SetLocalPosition({ 385 , PlayMapHeight_Half });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
+
+		PlayerDist = PlayerObject->GetTransform()->GetLocalPosition().x;
 	}
 	if (nullptr == PortalDoorObject)
 	{
@@ -173,6 +177,10 @@ void WaitingRoomLevel::LevelDebugOn()
 	{
 		PortalDoorObject->PortalDebugRenderOn();
 	}
+	if (nullptr != KettleObject)
+	{
+		KettleObject->DebugRenderOn();
+	}
 }
 void WaitingRoomLevel::LevelDebugOff()
 {
@@ -187,5 +195,9 @@ void WaitingRoomLevel::LevelDebugOff()
 	if (nullptr != PortalDoorObject)
 	{
 		PortalDoorObject->PortalDebugRenderOff();
+	}
+	if (nullptr != KettleObject)
+	{
+		KettleObject->DebugRenderOff();
 	}
 }

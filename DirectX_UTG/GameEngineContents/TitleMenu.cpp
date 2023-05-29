@@ -64,7 +64,7 @@ void TitleMenu::Update(float _DeltaTime)
 	{
 		return;
 	}
-
+	
 	if (true == GameEngineInput::IsDown("TitleUp") && 0 == SelectCount)
 	{
 		Delaytiem = 0.0f;
