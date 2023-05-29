@@ -27,6 +27,7 @@ enum class CollisionOrder
 	Monster,			
 	MonsterAttack,
 	NPC,
+	ElderKettle,
 	Building,
 	Platform,			
 	ParrySpot,		    

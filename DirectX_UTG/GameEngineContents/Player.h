@@ -22,6 +22,9 @@ enum class PlayerState
 	Hit,
 	Portal,
 	Death,
+	ElderKettleMove,
+	ElderKettleIdle,
+	ElderKettleInterAction,
 };
 
 // 설명 : Field 플레이어
@@ -244,6 +247,7 @@ private:
 	void ParryCollisionCheck();
 	void HitCollisionCheck(float _DeltaTime);
 	void WallCollisionCheck(float _DeltaTime);
+	void ElderKettleCheck();
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);
@@ -296,6 +300,8 @@ private:
 	bool IsDeath = false;
 	bool PortalAble = false;
 	bool Portaling = false;
+	bool ElderKettleInterAction = false;
+	bool ElderKettleInterActioning = false;
 
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
@@ -304,6 +310,7 @@ private:
 	float MoveTime = 0.0f;
 	float HitTime = 0.0f;
 	float NormalDeltaTime = 0.0f;
+	float ElderKettleinterActionTime = 0.0f;
 
 	int CreateEXCount = 1;
 	int ParryCountSet = 1;
@@ -385,5 +392,17 @@ private:
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);
 	void DeathEnd();
+
+	void ElderKettleMoveStart();
+	void ElderKettleMoveUpdate(float _DeltaTime);
+	void ElderKettleMoveEnd();
+
+	void ElderKettleIdleStart();
+	void ElderKettleIdleUpdate(float _DeltaTime);
+	void ElderKettleIdleEnd();
+
+	void ElderKettleInterActionStart();
+	void ElderKettleInterActionUpdate(float _DeltaTime);
+	void ElderKettleInterActionEnd();
 };
 

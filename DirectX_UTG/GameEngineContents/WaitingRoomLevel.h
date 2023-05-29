@@ -37,7 +37,7 @@ protected:
 
 private:
 	std::shared_ptr<class Loading> LoadingPtr = nullptr;
-
+	std::shared_ptr<class ElderKettle> KettleObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class WaitingRoom_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;

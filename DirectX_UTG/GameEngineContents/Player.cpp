@@ -180,6 +180,8 @@ void Player::CollisionCalculation(float _DeltaTime)
 	PortalCheck();
 
 	WallCollisionCheck(_DeltaTime);
+
+	ElderKettleCheck();
 }
 
 void Player::HitBlink(float _DeltaTime)
@@ -231,6 +233,18 @@ void Player::PortalCheck()
 	else
 	{
 		PortalAble = false;
+	}
+}
+
+void Player::ElderKettleCheck()
+{
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::ElderKettle), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		ElderKettleInterAction = true;
+	}
+	else
+	{
+		ElderKettleInterAction = false;
 	}
 }
 
@@ -583,7 +597,7 @@ void Player::WallCollisionCheck(float _DeltaTime)
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
-	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit || true == PortalAble)
+	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit || true == PortalAble || true == ElderKettleInterAction || true == ElderKettleInterActioning)
 	{
 		PeashooterRenderPtr->Off();
 		return;
@@ -1526,7 +1540,7 @@ void Player::CreateHitEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash || true == IsEXAttack || true == Portaling || true == ParryCheck)
+	if (true == IsDash || true == IsEXAttack || true == Portaling || true == ParryCheck || true == ElderKettleInterActioning)
 	{
 		return;
 	}

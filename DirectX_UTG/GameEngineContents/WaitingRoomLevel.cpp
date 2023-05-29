@@ -10,6 +10,7 @@
 #include "PortalDoor.h"
 #include "Loading.h"
 #include "Player.h"
+#include "ElderKettle.h"
 #include "WaitingRoom_Map.h"
 #include "WaitingRoom_ColMap.h"
 #include "RoundBlackBox.h"
@@ -78,7 +79,11 @@ void WaitingRoomLevel::LevelChangeStart()
 		MapObject = CreateActor<WaitingRoom_Map>();
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 10 });
 	}
-
+	if (nullptr == KettleObject)
+	{
+		KettleObject = CreateActor<ElderKettle>();
+		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 480 , PlayMapHeight_Half - 250 });
+	}
 	if (nullptr == PlayerObject)
 	{
 		PlayerObject = CreateActor<Player>();

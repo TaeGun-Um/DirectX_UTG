@@ -34,7 +34,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CouchRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ChairRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> VignetteRenderPtr = nullptr;
-
 	std::shared_ptr<class GameEngineSpriteRenderer> NoteRenderPtr = nullptr;
 
 	bool IsDebugRender = false;

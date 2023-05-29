@@ -70,6 +70,15 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Death:
 		DeathStart();
 		break;
+	case PlayerState::ElderKettleMove:
+		ElderKettleMoveStart();
+		break;
+	case PlayerState::ElderKettleIdle:
+		ElderKettleIdleStart();
+		break;
+	case PlayerState::ElderKettleInterAction:
+		ElderKettleInterActionStart();
+		break;
 	default:
 		break;
 	}
@@ -129,6 +138,14 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Death:
 		DeathEnd();
+	case PlayerState::ElderKettleMove:
+		ElderKettleMoveEnd();
+		break;
+	case PlayerState::ElderKettleIdle:
+		ElderKettleIdleEnd();
+		break;
+	case PlayerState::ElderKettleInterAction:
+		ElderKettleInterActionEnd();
 		break;
 	default:
 		break;
@@ -192,6 +209,15 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::Death:
 		DeathUpdate(_DeltaTime);
+		break;
+	case PlayerState::ElderKettleMove:
+		ElderKettleMoveUpdate(_DeltaTime);
+		break;
+	case PlayerState::ElderKettleIdle:
+		ElderKettleIdleUpdate(_DeltaTime);
+		break;
+	case PlayerState::ElderKettleInterAction:
+		ElderKettleInterActionUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -354,6 +380,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("Attack") && true == ElderKettleInterAction)
+	{
+		ChangeState(PlayerState::ElderKettleMove);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Attack") && true == PortalAble)
 	{
 		ChangeState(PlayerState::Portal);
@@ -451,6 +483,12 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack") && true == ElderKettleInterAction)
+	{
+		ChangeState(PlayerState::ElderKettleMove);
 		return;
 	}
 
@@ -1881,4 +1919,74 @@ void Player::DeathUpdate(float _DeltaTime)
 void Player::DeathEnd()
 {
 
+}
+
+void Player::ElderKettleMoveStart()
+{
+	Directbool = false;
+	GetTransform()->SetLocalNegativeScaleX();
+	RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
+	ElderKettleInterActioning = true;
+	RenderPtr->ChangeAnimation("Move");
+	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
+}
+void Player::ElderKettleMoveUpdate(float _DeltaTime)
+{
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+
+	if (880 >= GetTransform()->GetWorldPosition().x)
+	{
+		int a = 0;
+		ChangeState(PlayerState::ElderKettleIdle);
+		return;
+	}
+}
+void Player::ElderKettleMoveEnd()
+{
+
+}
+
+void Player::ElderKettleIdleStart()
+{
+	Directbool = true;
+	GetTransform()->SetLocalPositiveScaleX();
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	RenderPtr->ChangeAnimation("Idle", false);
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+}
+void Player::ElderKettleIdleUpdate(float _DeltaTime)
+{
+	ElderKettleinterActionTime += _DeltaTime;
+
+	if (ElderKettleinterActionTime >= 1.0f)
+	{
+		ChangeState(PlayerState::ElderKettleInterAction);
+		return;
+	}
+
+}
+void Player::ElderKettleIdleEnd()
+{
+	ElderKettleinterActionTime = 0.0f;
+}
+
+void Player::ElderKettleInterActionStart()
+{
+	RenderPtr->ChangeAnimation("ElderKettleInteraction");
+	RenderPtr->GetTransform()->SetLocalPosition({ -55, 140 });
+}
+void Player::ElderKettleInterActionUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+void Player::ElderKettleInterActionEnd()
+{
+	ElderKettleInterActioning = false;
 }
