@@ -47,11 +47,24 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-	std::shared_ptr<class GameEngineCollision> RenderPtrCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> RenderCollisionPtr = nullptr;
 
 	PortalValue PV = PortalValue::Unknown;
 
-	void LevelChange();
+	float4 EnterMessageRenderMaxScale = float4::Zero;
+	float4 EnterMessageRenderMinScale = float4::Zero;
+	float4 EnterMessageRenderDelayScale = float4::Zero;
+	float ScaleMaxTime = 0.0f;
+	float ScaleMinTime = 0.0f;
+	int ScaleCount = 1;
+
+	bool ScaleCheckStart = false;
 	bool IsDebugRender = false;
+
+	void LevelChange();
+	void CollisionCheck(float _DeltaTime);
+	void EnterMessageScaleUp(float _DeltaTime);
+	void EnterMessageScaleDown(float _DeltaTime);
 };
 

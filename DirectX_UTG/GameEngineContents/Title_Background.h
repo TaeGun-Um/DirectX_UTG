@@ -14,6 +14,13 @@ public:
 	Title_Background& operator=(const Title_Background& _Other) = delete;
 	Title_Background& operator=(Title_Background&& _Other) noexcept = delete;
 
+	void SetRenderOff()
+	{
+		RenderPtr0->Off();
+		RenderPtr1->Off();
+		RenderPtr2->Off();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;

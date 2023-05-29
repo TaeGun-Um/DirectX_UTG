@@ -363,13 +363,13 @@ void Player::CollisionSetting()
 	{
 		if (true == Directbool)
 		{
-			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
-			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 85 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 100, 100, 1 });
 		}
 		else
 		{
-			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 80 });
-			ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, -1 });
+			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 85 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 100, 100, -1 });
 		}
 	}
 

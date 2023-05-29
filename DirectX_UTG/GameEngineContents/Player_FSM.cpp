@@ -853,7 +853,6 @@ void Player::SlapStart()
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
 	ParryCollisionPtr->On();
-	ParryCollisionRenderPtr->On();
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
@@ -960,7 +959,6 @@ void Player::SlapEnd()
 	NormalDeltaTime = 0.0f;
 	ParryCheck = false;
 	ParryCollisionPtr->Off();
-	ParryCollisionRenderPtr->Off();
 }
 
 // Idle에서 MoveUp 입력 시 상태 체크

@@ -294,11 +294,12 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PortalDoor.h">
+    <ClInclude Include="PortalDoor.h" />
+    <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="RoundBlackBox.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="Screen_FX.h">
       <SubType>
       </SubType>
@@ -316,6 +317,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TestPlatform.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleMenu.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -488,15 +493,16 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PortalDoor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="PortalDoor.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="RoundBlackBox.cpp">
+      <SubType>
+      </SubType>
     </ClCompile>
     <ClCompile Include="Screen_FX.cpp">
       <SubType>
@@ -515,6 +521,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TestPlatform.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleMenu.cpp">
       <SubType>
       </SubType>
     </ClCompile>

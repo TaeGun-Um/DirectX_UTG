@@ -55,6 +55,32 @@ void CupheadCore::ContentsResourcesCreate()
 		}
 	}
 
+	if (nullptr == GameEngineTexture::Find("EnterMessage.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("EnterMessage.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Enter"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("Camera");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Enter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Exit").GetFullPath());
+	}
+
 	// IMGUI Create
 	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
 
