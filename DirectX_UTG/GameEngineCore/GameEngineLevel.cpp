@@ -6,6 +6,8 @@
 #include "GameEngineCollision.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
+bool GameEngineLevel::IsDebugRender = false;
+
 GameEngineLevel::GameEngineLevel()
 {
 	MainCamera = CreateActor<GameEngineCamera>();
@@ -110,8 +112,50 @@ void GameEngineLevel::ActorLevelChangeEnd()
 	}
 }
 
+void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
+{
+
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+			{
+				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+
+				if (nullptr == CollisionObject)
+				{
+					continue;
+				}
+
+				if (false == CollisionObject->IsUpdate())
+				{
+					continue;
+				}
+
+				if (CollisionObject->DebugCamera != _Camera)
+				{
+					continue;
+				}
+
+				CollisionObject->DebugRender(_Delta);
+			}
+		}
+	}
+}
+
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
+	// GetMainCamera()->Setting();
+	// GetMainCamera()->CameraTransformUpdate();
+	// GetMainCamera()->Render(_DeltaTime);
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
@@ -120,6 +164,13 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
 		Cam->CamTarget->Effect(_DeltaTime);
+
+		if (false == IsDebugRender)
+		{
+			continue;
+		}
+
+		CollisionDebugRender(Cam.get(), _DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -134,9 +185,38 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 	LastTarget->Effect(_DeltaTime);
 
+	LastTarget->Setting();
+
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
-	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+
+	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+	//for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	//{
+	//	std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+	//	for (; ActorStart != ActorEnd; ++ActorStart)
+	//	{
+	//		std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+
+	//		Actor->AllRender(_DeltaTime);
+
+
+	//		/*if (false == Actor->IsUpdate())
+	//		{
+	//			continue;
+	//		}
+
+	//		GameEngineTransform* Transform = Actor->GetTransform();
+	//		Transform->AllRender(_DeltaTime);*/
+	//	}
+	//}
 
 	static bool GUIRender = true;
 

@@ -80,7 +80,12 @@ public:
 		SortValues[_Index] = _Sort;
 	}
 
-	void AddZoomRatio(float _Value)
+	inline void SetZoomRatio(float _Value)
+	{
+		ZoomRatio = _Value;
+	}
+
+	inline void AddZoomRatio(float _Value)
 	{
 		ZoomRatio -= _Value;
 	}

@@ -92,10 +92,15 @@ void OverworldLevel::LevelChangeStart()
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
 	float PlayMapHeight_Half = static_cast<float>(PlayMapHeight / 2);
 
-	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
-	GetMainCamera()->SetSortType(0, SortType::ZSort);
+	if (false == IsSet1)
+	{
+		// 카메라 세팅
+		GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+		GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
+		GetMainCamera()->SetSortType(0, SortType::ZSort);
+
+		IsSet1 = true;
+	}
 
 	// CreateActor
 	// Map
@@ -104,59 +109,67 @@ void OverworldLevel::LevelChangeStart()
 		MapObject = CreateActor<Overworld_Map>();
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 5 });
 	}
-	// NPC
+
+	if (false == IsSet2)
 	{
-		std::shared_ptr<AppleTraveller> NPCObject0 = CreateActor<AppleTraveller>();
-		NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 3 });
+		// NPC
+		{
+			std::shared_ptr<AppleTraveller> NPCObject0 = CreateActor<AppleTraveller>();
+			NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 3 });
 
-		std::shared_ptr<Axeman> NPCObject1 = CreateActor<Axeman>();
-		NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 3 });
+			std::shared_ptr<Axeman> NPCObject1 = CreateActor<Axeman>();
+			NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 3 });
 
-		std::shared_ptr<Canteen> NPCObject2 = CreateActor<Canteen>();
-		NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 3 });
+			std::shared_ptr<Canteen> NPCObject2 = CreateActor<Canteen>();
+			NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 3 });
 
-		std::shared_ptr<Coin> NPCObject3 = CreateActor<Coin>();
-		NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 3 });
+			std::shared_ptr<Coin> NPCObject3 = CreateActor<Coin>();
+			NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 3 });
 
-		std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
-		NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, -1 });
-	}
-	// Building
-	{
-		std::shared_ptr<BuildingDataBase> HomeObject = CreateActor<BuildingDataBase>();
-		HomeObject->BuildingSetting(BuildingValue::Home);
-		HomeObject->GetTransform()->SetLocalPosition({ 780 , 1560, 3 });
+			std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
+			NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, -1 });
+		}
+		// Building
+		{
+			std::shared_ptr<BuildingDataBase> HomeObject = CreateActor<BuildingDataBase>();
+			HomeObject->BuildingSetting(BuildingValue::Home);
+			HomeObject->GetTransform()->SetLocalPosition({ 780 , 1560, 3 });
 
-		std::shared_ptr<BuildingDataBase> ZeplinObject = CreateActor<BuildingDataBase>();
-		ZeplinObject->BuildingSetting(BuildingValue::Zeplin);
-		ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 3 });
+			std::shared_ptr<BuildingDataBase> ZeplinObject = CreateActor<BuildingDataBase>();
+			ZeplinObject->BuildingSetting(BuildingValue::Zeplin);
+			ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 3 });
 
-		std::shared_ptr<BuildingDataBase> FrogObject = CreateActor<BuildingDataBase>();
-		FrogObject->BuildingSetting(BuildingValue::Frog);
-		FrogObject->GetTransform()->SetLocalPosition({ 2200 , 370, -1 });
+			std::shared_ptr<BuildingDataBase> FrogObject = CreateActor<BuildingDataBase>();
+			FrogObject->BuildingSetting(BuildingValue::Frog);
+			FrogObject->GetTransform()->SetLocalPosition({ 2200 , 370, -1 });
 
-		std::shared_ptr<BuildingDataBase> Tutorial_FlyObject = CreateActor<BuildingDataBase>();
-		Tutorial_FlyObject->BuildingSetting(BuildingValue::Tutorial_Fly);
-		Tutorial_FlyObject->GetTransform()->SetLocalPosition({ 2800 , 2030, 3 });
+			std::shared_ptr<BuildingDataBase> Tutorial_FlyObject = CreateActor<BuildingDataBase>();
+			Tutorial_FlyObject->BuildingSetting(BuildingValue::Tutorial_Fly);
+			Tutorial_FlyObject->GetTransform()->SetLocalPosition({ 2800 , 2030, 3 });
 
-		std::shared_ptr<BuildingDataBase> MouseObject = CreateActor<BuildingDataBase>();
-		MouseObject->BuildingSetting(BuildingValue::Mouse);
-		MouseObject->GetTransform()->SetLocalPosition({ 3280 , 620, 3 });
+			std::shared_ptr<BuildingDataBase> MouseObject = CreateActor<BuildingDataBase>();
+			MouseObject->BuildingSetting(BuildingValue::Mouse);
+			MouseObject->GetTransform()->SetLocalPosition({ 3280 , 620, 3 });
 
-		std::shared_ptr<BuildingDataBase> DjimmiObject = CreateActor<BuildingDataBase>();
-		DjimmiObject->BuildingSetting(BuildingValue::Djimmi);
-		DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 3 });
+			std::shared_ptr<BuildingDataBase> DjimmiObject = CreateActor<BuildingDataBase>();
+			DjimmiObject->BuildingSetting(BuildingValue::Djimmi);
+			DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 3 });
 
-		std::shared_ptr<BuildingDataBase> DragonObject = CreateActor<BuildingDataBase>();
-		DragonObject->BuildingSetting(BuildingValue::Dragon);
-		DragonObject->GetTransform()->SetLocalPosition({ 2280 , 1650, 3 });
+			std::shared_ptr<BuildingDataBase> DragonObject = CreateActor<BuildingDataBase>();
+			DragonObject->BuildingSetting(BuildingValue::Dragon);
+			DragonObject->GetTransform()->SetLocalPosition({ 2280 , 1650, 3 });
+		}
+
+		IsSet2 = true;
 	}
 	// Character
-	if (nullptr == PlayerObject)
 	{
-		PlayerObject = CreateActor<Player_Overworld>();
-		PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
-		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		if (nullptr == PlayerObject)
+		{
+			PlayerObject = CreateActor<Player_Overworld>();
+			PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
+			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
+		}
 	}
 	// ColMap
 	if (nullptr == ThisColMap)
@@ -191,10 +204,11 @@ void OverworldLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&OverworldLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&OverworldLevel::LevelDebugOff, this);
 	}
-
-	if (nullptr == LoadingPtr)
 	{
-		LoadingPtr = CreateActor<Loading>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
 		LoadingPtr->SetLoadingPtrOff();
 	}
 }

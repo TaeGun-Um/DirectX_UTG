@@ -96,7 +96,7 @@ void FrogLevel::LevelChangeStart()
 		}
 		
 		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half });
-		PlayerObject->SetCorrectionTrue();
+		PlayerObject->SetCorrectionFalse();
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 	}
@@ -154,6 +154,7 @@ void FrogLevel::LevelChangeStart()
 void FrogLevel::LevelChangeEnd()
 {
 	DebugBoxCount = 1;
+	PlayerObject->PlayerStatusReset();
 }
 
 void FrogLevel::PlayerDebugRenderOn()

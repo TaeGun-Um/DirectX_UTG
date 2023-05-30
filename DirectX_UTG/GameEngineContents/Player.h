@@ -45,14 +45,21 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void PlayerStatusReset()
+	{
+		PlayerHP = 0;
+		PlayerEXGauge = 0;
+		PlayerEXStack = 0;
+	}
+
 	bool GetIsElderKettleEnd()
 	{
 		return IsElderKettleEnd;
 	}
 
-	void SetCorrectionTrue()
+	void SetCorrectionFalse()
 	{
-		IsCorrection = true;
+		IsCorrection = false;
 	}
 
 	bool GetParryCheck()

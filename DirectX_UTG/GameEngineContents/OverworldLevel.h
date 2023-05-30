@@ -52,6 +52,9 @@ private:
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();
 	void LevelDebugOff();
+	
+	bool IsSet1 = false;
+	bool IsSet2 = false;
 
 	int DebugBoxCount = 1;
 };
