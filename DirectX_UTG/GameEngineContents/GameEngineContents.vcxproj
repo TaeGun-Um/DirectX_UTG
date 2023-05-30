@@ -184,15 +184,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CardUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Coin.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
-    <ClInclude Include="ContentsSpriteRenderer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="CupheadCore.h">
       <SubType>
       </SubType>
@@ -238,6 +238,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Frog_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="HealthUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -403,11 +407,11 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Coin.cpp">
+    <ClCompile Include="CardUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="ContentsSpriteRenderer.cpp">
+    <ClCompile Include="Coin.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -457,6 +461,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Frog_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HealthUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>

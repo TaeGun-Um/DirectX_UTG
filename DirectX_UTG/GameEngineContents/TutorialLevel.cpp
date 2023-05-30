@@ -15,6 +15,8 @@
 #include "Tutorial_Target.h"
 
 #include "Player.h"
+#include "CardUI.h"
+#include "HealthUI.h"
 #include "PortalDoor.h"
 #include "Screen_FX.h"
 #include "Loading.h"
@@ -111,6 +113,17 @@ void TutorialLevel::LevelChangeStart()
 	{
 		std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
 		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+	}
+	{
+		if (nullptr == HealthObject)
+		{
+			HealthObject = CreateActor<HealthUI>();
+		}
+		
+		if (nullptr == CardObject)
+		{
+			CardObject = CreateActor<CardUI>();
+		}
 	}
 	// ScreenSFX
 	{

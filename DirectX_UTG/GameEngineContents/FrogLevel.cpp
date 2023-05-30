@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "FrogLevel.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
@@ -8,11 +9,15 @@
 #include "Frog_Map.h"
 #include "Frog_ColMap.h"
 #include "Player.h"
+#include "CardUI.h"
+#include "HealthUI.h"
 #include "Ribby.h"
 
 #include "Loading.h"
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
+
+FrogLevel* FrogLevel::FrogLevelPtr = nullptr;
 
 FrogLevel::FrogLevel() 
 {
@@ -24,11 +29,22 @@ FrogLevel::~FrogLevel()
 
 void FrogLevel::Start()
 {
-
+	FrogLevelPtr = this;
 }
 void FrogLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("PrevLevel") && 1 == DebugBoxCount)
+	{
+		DebugBoxCount = 0;
+		BlackBoxPtr->BoxSettingReset();
+		BlackBoxPtr->SetEnter();
+	}
 
+	if (true == BlackBoxPtr->GetIsEnd() && 0 == DebugBoxCount)
+	{
+		LoadingOn();
+		GameEngineCore::ChangeLevel("OverworldLevel");
+	}
 }
 
 void FrogLevel::LevelChangeStart()
@@ -56,16 +72,6 @@ void FrogLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half + 10, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
-
-	{
-		if (BlackBoxPtr == nullptr)
-		{
-			BlackBoxPtr = CreateActor<RoundBlackBox>();
-		}
-
-		BlackBoxPtr->BoxSettingReset();
-		BlackBoxPtr->SetExit();
-	}
 
 	{
 		if (nullptr == MapObject)
@@ -102,6 +108,26 @@ void FrogLevel::LevelChangeStart()
 		
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
+	{
+		if (nullptr == HealthObject)
+		{
+			HealthObject = CreateActor<HealthUI>();
+		}
+
+		if (nullptr == CardObject)
+		{
+			CardObject = CreateActor<CardUI>();
+		}
+	}
+	{
+		if (BlackBoxPtr == nullptr)
+		{
+			BlackBoxPtr = CreateActor<RoundBlackBox>();
+		}
+
+		BlackBoxPtr->BoxSettingReset();
+		BlackBoxPtr->SetExit();
+	}
 
 	// GUI
 	if (nullptr == GUI)
@@ -127,7 +153,7 @@ void FrogLevel::LevelChangeStart()
 }
 void FrogLevel::LevelChangeEnd()
 {
-
+	DebugBoxCount = 1;
 }
 
 void FrogLevel::PlayerDebugRenderOn()

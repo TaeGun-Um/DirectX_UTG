@@ -26,6 +26,7 @@ void CupheadCore::GameStart()
 	new int(); // ½Å·ÚÀÇ ¸¯
 
 	ContentsResourcesCreate();
+	ContentsKeyBind();
 
 	GameEngineCore::CreateLevel<First_OpeningLevel>();
 	GameEngineCore::CreateLevel<Second_OpeningLevel>();

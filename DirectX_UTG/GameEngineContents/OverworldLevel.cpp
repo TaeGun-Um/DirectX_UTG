@@ -50,12 +50,28 @@ void OverworldLevel::Update(float _DeltaTime)
 	{
 		FEffect->FadeOut();
 	}
+
+	if (true == GameEngineInput::IsDown("NextLevel") && 1 == DebugBoxCount)
+	{
+		DebugBoxCount = 0;
+		BlackBoxPtr->BoxSettingReset();
+		BlackBoxPtr->SetEnter();
+	}
+
+	if (true == BlackBoxPtr->GetIsEnd() && 0 == DebugBoxCount)
+	{
+		LoadingOn();
+		GameEngineCore::ChangeLevel("FrogLevel");
+	}
 }
 
 void OverworldLevel::LevelChangeStart()
 {
-	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
-
+	if (nullptr == FEffect)
+	{
+		FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+	}
+	
 	// ÄÝ¸Ê¿ë
 	if (nullptr == GameEngineTexture::Find("Overworld_ColMap.png"))
 	{
@@ -184,7 +200,7 @@ void OverworldLevel::LevelChangeStart()
 }
 void OverworldLevel::LevelChangeEnd()
 {
-	
+	DebugBoxCount = 1;
 }
 
 void OverworldLevel::PlayerDebugRenderOn()

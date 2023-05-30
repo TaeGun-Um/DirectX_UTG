@@ -103,6 +103,9 @@
     <Filter Include="Levels\5. Bosses\1. Frog\Object\NPC">
       <UniqueIdentifier>{88366f87-4e3b-4514-8b00-be20467619bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\7. Player\UI">
+      <UniqueIdentifier>{d1630414-f013-4375-ae95-2be2292f0692}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -217,9 +220,6 @@
     <ClInclude Include="Overworld_ColMap.h">
       <Filter>Levels\4. Overworld\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ContentsSpriteRenderer.h">
-      <Filter>ContentsCore</Filter>
-    </ClInclude>
     <ClInclude Include="NPCDataBase.h">
       <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClInclude>
@@ -268,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="Ribby.h">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CardUI.h">
+      <Filter>Levels\7. Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthUI.h">
+      <Filter>Levels\7. Player\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,9 +391,6 @@
     <ClCompile Include="Overworld_ColMap.cpp">
       <Filter>Levels\4. Overworld\Object</Filter>
     </ClCompile>
-    <ClCompile Include="ContentsSpriteRenderer.cpp">
-      <Filter>ContentsCore</Filter>
-    </ClCompile>
     <ClCompile Include="NPCDataBase.cpp">
       <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClCompile>
@@ -439,6 +442,12 @@
     </ClCompile>
     <ClCompile Include="Ribby.cpp">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CardUI.cpp">
+      <Filter>Levels\7. Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthUI.cpp">
+      <Filter>Levels\7. Player\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

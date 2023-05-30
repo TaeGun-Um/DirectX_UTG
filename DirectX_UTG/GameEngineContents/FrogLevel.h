@@ -1,9 +1,13 @@
 #pragma once
 
+#include "Loading.h"
+
 // Ό³Έν :
 class FrogLevel : public GameEngineLevel
 {
 public:
+	static FrogLevel* FrogLevelPtr;
+
 	// constrcuter destructer
 	FrogLevel();
 	~FrogLevel();
@@ -13,6 +17,11 @@ public:
 	FrogLevel(FrogLevel&& _Other) noexcept = delete;
 	FrogLevel& operator=(const FrogLevel& _Other) = delete;
 	FrogLevel& operator=(FrogLevel&& _Other) noexcept = delete;
+
+	void LoadingOn()
+	{
+		LoadingPtr->SetLoadingPtrOn();
+	}
 
 protected:
 	void Start() override;
@@ -25,6 +34,8 @@ private:
 	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
+	std::shared_ptr<class HealthUI> HealthObject = nullptr;
+	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Ribby> RibbyObject = nullptr;
 
@@ -36,5 +47,6 @@ private:
 	void LevelDebugOn();
 	void LevelDebugOff();
 
+	int DebugBoxCount = 1;
 };
 

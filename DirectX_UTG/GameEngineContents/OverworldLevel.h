@@ -53,5 +53,6 @@ private:
 	void LevelDebugOn();
 	void LevelDebugOff();
 
+	int DebugBoxCount = 1;
 };
 

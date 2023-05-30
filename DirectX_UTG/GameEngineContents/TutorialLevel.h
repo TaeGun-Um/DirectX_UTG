@@ -38,6 +38,8 @@ protected:
 private:
 	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 
+	std::shared_ptr<class HealthUI> HealthObject = nullptr;
+	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Tutorial_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class TransformGUI> GUI = nullptr;

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CupheadCore.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineVertexShader.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
@@ -8,6 +9,32 @@
 #include <GameEngineCore/GameEngineGUI.h>
 
 #include "TransformGUI.h"
+
+void CupheadCore::ContentsKeyBind()
+{
+	if (false == GameEngineInput::IsKey("MoveUp"))
+	{
+		GameEngineInput::CreateKey("MoveUp", VK_UP);
+		GameEngineInput::CreateKey("MoveDown", VK_DOWN);
+		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
+		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
+		GameEngineInput::CreateKey("Attack", 'Z');
+		GameEngineInput::CreateKey("Jump", 'X');
+		GameEngineInput::CreateKey("Hold", 'C');
+		GameEngineInput::CreateKey("EX", 'V');
+		GameEngineInput::CreateKey("Dash", VK_SHIFT);
+		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
+	}
+
+	if (false == GameEngineInput::IsKey("FadeIn"))
+	{
+		GameEngineInput::CreateKey("FadeIn", '1');
+		GameEngineInput::CreateKey("FadeOut", '2');
+
+		GameEngineInput::CreateKey("NextLevel", 'L');
+		GameEngineInput::CreateKey("PrevLevel", 'K');
+	}
+}
 
 void CupheadCore::ContentsResourcesCreate()
 {
