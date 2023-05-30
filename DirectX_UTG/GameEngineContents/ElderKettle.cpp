@@ -16,7 +16,7 @@ ElderKettle::~ElderKettle()
 
 void ElderKettle::Start()
 {
-	if (nullptr == GameEngineTexture::Find("Kettle_Idle.png"))
+	if (nullptr == GameEngineSprite::Find("Kettle_Idle"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -25,13 +25,13 @@ void ElderKettle::Start()
 		NewDir.Move("Character");
 		NewDir.Move("ElderKettle");
 
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Kettle_Idle.png").GetFullPath(), 7, 1);
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Kettle_Idle").GetFullPath());
 	}
 
 	if (RenderPtr == nullptr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ "Kettle_Idle", "Kettle_Idle.png", 0, 6, 0.1f, true, true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Kettle_Idle", .SpriteName = "Kettle_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("Kettle_Idle");
 	}
 
@@ -48,7 +48,7 @@ void ElderKettle::Start()
 	if (nullptr != CollisionPtr)
 	{
 		CollisionPtr->GetTransform()->SetLocalScale({ 120, 200, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ -20, 100, -17 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 10, -20, -17 });
 	}
 
 	if (nullptr != CollisionRenderPtr)
@@ -65,7 +65,7 @@ void ElderKettle::Start()
 		EnterMessageRenderMaxScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
 		EnterMessageRenderPtr->GetTransform()->SetLocalScale(float4{ 1, 1, 1 });
 		EnterMessageRenderMinScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
-		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 0, 300, -20 });
+		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 15, 150, -20 });
 		EnterMessageRenderPtr->Off();
 	}
 }

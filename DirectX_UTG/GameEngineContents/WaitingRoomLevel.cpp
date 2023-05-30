@@ -97,7 +97,7 @@ void WaitingRoomLevel::LevelChangeStart()
 	if (nullptr == KettleObject)
 	{
 		KettleObject = CreateActor<ElderKettle>();
-		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 480 , PlayMapHeight_Half - 250 });
+		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 470 , PlayMapHeight_Half - 110});
 	}
 	if (nullptr == PlayerObject)
 	{
