@@ -97,6 +97,12 @@
     <Filter Include="Levels\2. WaitingRoom\Object\NPC">
       <UniqueIdentifier>{a6b1ed44-ba53-4ea2-b29f-037a4ca0b410}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\5. Bosses\1. Frog\Object\Boss">
+      <UniqueIdentifier>{c203f704-736e-423b-a236-c67d14645892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\5. Bosses\1. Frog\Object\NPC">
+      <UniqueIdentifier>{88366f87-4e3b-4514-8b00-be20467619bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -253,6 +259,15 @@
     </ClInclude>
     <ClInclude Include="ElderKettle.h">
       <Filter>Levels\2. WaitingRoom\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog_ColMap.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog_Map.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Ribby.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +430,15 @@
     </ClCompile>
     <ClCompile Include="ElderKettle.cpp">
       <Filter>Levels\2. WaitingRoom\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog_ColMap.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog_Map.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Ribby.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

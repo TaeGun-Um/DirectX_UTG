@@ -233,6 +233,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Frog_ColMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Frog_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HitSFX.h">
       <SubType>
       </SubType>
@@ -300,6 +308,10 @@
     </ClInclude>
     <ClInclude Include="PortalDoor.h" />
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="Ribby.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="RoundBlackBox.h">
       <SubType>
       </SubType>
@@ -440,6 +452,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Frog_ColMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Frog_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="HitSFX.cpp">
       <SubType>
       </SubType>
@@ -515,6 +535,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Ribby.cpp">
+      <SubType>
+      </SubType>
     </ClCompile>
     <ClCompile Include="RoundBlackBox.cpp">
       <SubType>

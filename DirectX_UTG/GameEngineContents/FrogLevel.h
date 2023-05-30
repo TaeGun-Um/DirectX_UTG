@@ -22,6 +22,19 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class Loading> LoadingPtr = nullptr;
+	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
+	std::shared_ptr<class TransformGUI> GUI = nullptr;
+	std::shared_ptr<class Player> PlayerObject = nullptr;
+	std::shared_ptr<class Ribby> RibbyObject = nullptr;
+
+	std::shared_ptr<class Frog_Map> MapObject = nullptr;
+	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
+
+	void PlayerDebugRenderOn();
+	void PlayerDebugRenderOff();
+	void LevelDebugOn();
+	void LevelDebugOff();
 
 };
 
