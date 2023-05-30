@@ -811,7 +811,7 @@ void Player_Overworld::PlayerInitialSetting()
 
 	// Setting
 	RenderPtr->GetTransform()->SetLocalScale({103, 113});
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 30 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 40 });
 	RenderPtr->ChangeAnimation("Down_Idle");
 
 	if (nullptr == EnterMessageRenderPtr)
