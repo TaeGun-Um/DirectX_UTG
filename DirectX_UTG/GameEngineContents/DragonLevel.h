@@ -22,6 +22,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	std::shared_ptr<class GrimMatchstick> DragonObject = nullptr;
+	std::shared_ptr<class TestActor> TestActorObject = nullptr;
 
 };
 

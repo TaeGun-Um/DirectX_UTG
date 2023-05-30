@@ -275,6 +275,12 @@
     <ClInclude Include="HealthUI.h">
       <Filter>Levels\7. Player\UI</Filter>
     </ClInclude>
+    <ClInclude Include="GrimMatchstick.h">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestActor.h">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -448,6 +454,12 @@
     </ClCompile>
     <ClCompile Include="HealthUI.cpp">
       <Filter>Levels\7. Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GrimMatchstick.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestActor.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

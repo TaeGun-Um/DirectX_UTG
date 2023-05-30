@@ -69,6 +69,11 @@ public:
 		return Sprites[_Index];
 	}
 
+	static void TargetSpriteRelease(const std::string_view& _Name)
+	{
+		GameEngineResource::TargetResourceRelase(_Name);
+	}
+
 protected:
 
 private:

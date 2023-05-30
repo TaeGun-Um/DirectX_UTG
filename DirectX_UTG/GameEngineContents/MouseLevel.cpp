@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "MouseLevel.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
@@ -19,7 +20,10 @@ void MouseLevel::Start()
 }
 void MouseLevel::Update(float _DeltaTime)
 {
-
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("DragonLevel");
+	}
 }
 
 void MouseLevel::LevelChangeStart()
@@ -28,7 +32,6 @@ void MouseLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
-
 }
 void MouseLevel::LevelChangeEnd()
 {

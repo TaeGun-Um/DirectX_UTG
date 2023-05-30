@@ -241,6 +241,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GrimMatchstick.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HealthUI.h">
       <SubType>
       </SubType>
@@ -333,6 +337,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Spread_EX.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestActor.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -464,6 +472,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GrimMatchstick.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="HealthUI.cpp">
       <SubType>
       </SubType>
@@ -565,6 +577,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Spread_EX.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
