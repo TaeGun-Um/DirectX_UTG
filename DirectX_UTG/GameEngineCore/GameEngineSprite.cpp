@@ -9,7 +9,6 @@ GameEngineSprite::~GameEngineSprite()
 {
 }
 
-// 폴더 내 파일들을 프레임 애니메이션으로
 void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 {
 	GameEngineDirectory Dir = _Path;
@@ -41,15 +40,17 @@ void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 		Sprites[i].CutData.SizeX = 1.0f;
 		Sprites[i].CutData.SizeY = 1.0f;
 	}
+
+	return;
 }
 
-// 스프라이트 시트를 프레임 애니메이션으로(기존)
+
+
 void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 {
 	GameEnginePath NewPath(_Path);
 
 	std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(NewPath.GetFileName());
-
 	if (nullptr == Texture)
 	{
 		Texture = GameEngineTexture::Load(_Path);
@@ -60,6 +61,8 @@ void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, si
 	float4 UVScale = { 1.0f / static_cast<float>(_X), 1.0f / static_cast<float>(_Y) };
 
 	float4 Start = float4::Zero;
+
+	// 2 2
 
 	for (size_t y = 0; y < _Y; y++)
 	{
@@ -77,5 +80,21 @@ void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, si
 
 		Start.x = 0.0f;
 		Start.y += UVScale.y;
+	}
+
+}
+
+void GameEngineSprite::Release()
+{
+	for (size_t i = 0; i < Sprites.size(); i++)
+	{
+		Sprites[i].Texture->Release();
+	}
+}
+void GameEngineSprite::ReLoad()
+{
+	for (size_t i = 0; i < Sprites.size(); i++)
+	{
+		Sprites[i].Texture->ReLoad();
 	}
 }

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "GameEngineTexture.h"
 
 class SpriteInfo
@@ -8,9 +7,9 @@ public:
 	std::shared_ptr<GameEngineTexture> Texture;
 	float4 CutData;
 };
+// 이걸 만들때 그 텍스처가 로딩이 안되어있으면 텍스처의 로딩도 겸합니다.
 
-// 설명 : 스프라이트는 무조건 1개 이상의 이미지 정보가 들어있음
-// 이걸 만들때 그 텍스처가 로딩이 안되어있으면 텍스처의 로딩도 겸함
+// 설명 : 스프라이트는 무조건 1개 이상의 이미지 정복사 들어있는
 class GameEngineSprite : public GameEngineResource<GameEngineSprite>
 {
 public:
@@ -24,14 +23,13 @@ public:
 	GameEngineSprite& operator=(const GameEngineSprite& _Other) = delete;
 	GameEngineSprite& operator=(GameEngineSprite&& _Other) noexcept = delete;
 
-	// 폴더 내 파일들을 프레임 애니메이션으로(Path만)
+
 	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath = std::string(_Path);
 		return LoadFolder(NewPath.GetFileName(), _Path);
 	}
 
-	// 폴더 내 파일들을 프레임 애니메이션으로
 	static std::shared_ptr<GameEngineSprite> LoadFolder(std::string _Spritename, const std::string_view& _Path)
 	{
 		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(_Spritename);
@@ -39,7 +37,7 @@ public:
 		return NewTexture;
 	}
 
-	// 스프라이트 시트를 프레임 애니메이션으로(기존)
+
 	static std::shared_ptr<GameEngineSprite> LoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 	{
 		GameEnginePath NewPath = std::string(_Path);
@@ -69,10 +67,43 @@ public:
 		return Sprites[_Index];
 	}
 
-	static void TargetSpriteRelease(const std::string_view& _Name)
+	static std::shared_ptr<GameEngineSprite> UnLoad(const std::string_view& _Name)
 	{
-		GameEngineResource::TargetResourceRelase(_Name);
+		std::shared_ptr<GameEngineSprite> FindSprite = GameEngineResource::Find(_Name);
+
+		if (nullptr == FindSprite)
+		{
+			MsgAssert("존재하지 않는 스프라이트를 언로드 하려고 했습니다.");
+		}
+
+		FindSprite->Release();
+		return FindSprite;
 	}
+
+
+	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path)
+	{
+		GameEnginePath NewPath(_Path);
+		return ReLoad(_Path, NewPath.GetFileName());
+	}
+
+
+	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource<GameEngineSprite>::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
+		}
+
+		NewTexture->ReLoad();
+		return NewTexture;
+	}
+
+
+	void ReLoad();
+	void Release();
 
 protected:
 
@@ -83,3 +114,4 @@ private:
 	std::vector<SpriteInfo> Sprites;
 
 };
+
