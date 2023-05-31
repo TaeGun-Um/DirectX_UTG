@@ -191,7 +191,7 @@ void TutorialLevel::LevelChangeStart()
 		LoadingPtr->SetLoadingPtrOff();
 	}
 
-	//ReLoadSetting();
+	ReLoadSetting();
 }
 void TutorialLevel::LevelChangeEnd()
 {

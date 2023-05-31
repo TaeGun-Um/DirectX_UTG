@@ -134,6 +134,12 @@ void WaitingRoomLevel::LevelChangeStart()
 		
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
+	{
+		if (nullptr != PortalDoorObject)
+		{
+			PortalDoorObject->BlackBoxCountReset();
+		}
+	}
 
 	// GUI
 	{
@@ -158,6 +164,8 @@ void WaitingRoomLevel::LevelChangeStart()
 		
 		LoadingPtr->SetLoadingPtrOff();
 	}
+
+	ReLoadSetting();
 }
 
 void WaitingRoomLevel::LevelChangeEnd()
@@ -191,7 +199,6 @@ void WaitingRoomLevel::LevelChangeEnd()
 		PlayMapHeight_Half = 0.0f;
 		PlayerDist = 0.0f;
 		CameraOriginPos = float4::Zero;
-		PortalCount = 1;
 	}
 }
 
@@ -207,13 +214,13 @@ void WaitingRoomLevel::ReLoadSetting()
 
 	if (nullptr != GameEngineSprite::Find("Note_One"))
 	{
-		GameEngineTexture::ReLoad("Note_One");
-		GameEngineTexture::ReLoad("Note_Two");
+		GameEngineSprite::ReLoad("Note_One");
+		GameEngineSprite::ReLoad("Note_Two");
 	}
 
 	if (nullptr != GameEngineSprite::Find("Kettle_Idle"))
 	{
-		GameEngineTexture::ReLoad("Kettle_Idle");
+		GameEngineSprite::ReLoad("Kettle_Idle");
 	}
 
 	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))

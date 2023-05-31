@@ -42,6 +42,12 @@ public:
 		EnterMessageRenderPtr->GetTransform()->AddLocalPosition(_AddValue);
 	}
 
+	void BlackBoxCountReset()
+	{
+		BlackBoxCount = 1;
+		IsTurn = false;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
