@@ -56,9 +56,14 @@ public:
 		CollisionRenderPtr->Off();
 	}
 
+	void InterActionOff()
+	{
+		IsCollisionOff = true;
+	}
+
 	void IsLevelChangeReset()
 	{
-		IsLevelChange = false;
+		NextLevelPortal = false;
 		BlackBoxCount = 1;
 	}
 
@@ -79,7 +84,8 @@ private:
 
 	bool FlagCall = false;
 	bool Isinteraction = false;
-	bool IsLevelChange = false;
+	bool NextLevelPortal = false;
+	bool IsCollisionOff = false;
 
 	int AnimationCount = 1;
 	int BlackBoxCount = 1;

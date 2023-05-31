@@ -30,6 +30,26 @@ public:
 		return IsIdle;
 	}
 
+	void MoveAbleTimeReset()
+	{
+		MoveAbleTime = 0.0f;
+	}
+
+	void WinFSMSetting()
+	{
+		WinSetting = true;
+	}
+
+	void PlayerCollisionPtrOn()
+	{
+		IsCollisionOn = true;
+	}
+
+	void PlayerCollisionPtrOff()
+	{
+		IsCollisionOn = false;
+	}
+
 	void PlayerDebugRenderOn()
 	{
 		IsDebugRender = true;
@@ -98,11 +118,14 @@ private:
 	float4 EnterMessageRenderMaxScale = float4::Zero;
 	float4 EnterMessageRenderMinScale = float4::Zero;
 	float4 EnterMessageRenderDelayScale = float4::Zero;
+	float MoveAbleTime = 0.0f;
 	float ScaleMaxTime = 0.0f;
 	float ScaleMinTime = 0.0f;
 	float MoveTime = 0.0f;
+	float WinTime = 0.0f;
 	int ScaleCount = 1;
 	bool ScaleCheckStart = false;
+	bool IsCollisionOn = true;
 
 	void UpdateState(float _DeltaTime);
 	void ChangeState(OverworldState _StateValue);
@@ -118,6 +141,8 @@ private:
 	float4 DD = float4::Zero;
 
 	bool IsIdle = false;
+	bool IsWin = false;
+	bool WinSetting = false;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;

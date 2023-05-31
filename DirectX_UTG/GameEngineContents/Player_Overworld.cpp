@@ -31,6 +31,14 @@ void Player_Overworld::Start()
 void Player_Overworld::Update(float _DeltaTime)
 {
 	MoveCamera(_DeltaTime);
+
+	MoveAbleTime += _DeltaTime;
+
+	if (MoveAbleTime <= 0.5f)
+	{
+		return;
+	}
+
 	DirectCheck();
 	CollisionCheck(_DeltaTime);
 	PixelCheck(_DeltaTime);
@@ -140,7 +148,8 @@ void Player_Overworld::EnterMessageScaleDown(float _DeltaTime)
 void Player_Overworld::CollisionCheck(float _DeltaTime)
 {
 	if (nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::NPC), ColType::AABBBOX2D, ColType::AABBBOX2D)
-		|| nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Building), ColType::AABBBOX2D, ColType::AABBBOX2D))
+		|| nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Building), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		&& true == IsCollisionOn)
 	{
 		EnterMessageScaleUp(_DeltaTime);
 	}
@@ -386,6 +395,11 @@ void Player_Overworld::CreateMoveDust()
 
 void Player_Overworld::DirectCheck()
 {
+	if (true == IsWin)
+	{
+		return;
+	}
+
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
 		Directbool = true;
@@ -409,6 +423,11 @@ void Player_Overworld::DirectCheck()
 
 void Player_Overworld::MoveDirectCheck()
 {
+	if (true == IsWin)
+	{
+		return;
+	}
+
 	if (true == Directbool)
 	{
 		if (true == GameEngineInput::IsPress("MoveUp") && true == GameEngineInput::IsPress("MoveRight"))
@@ -519,6 +538,12 @@ void Player_Overworld::IdleStart()
 }
 void Player_Overworld::IdleUpdate(float _DeltaTime)
 {
+	if (true == WinSetting)
+	{
+		ChangeState(OverworldState::Win);
+		return;
+	}
+
 	switch (ADValue)
 	{
 	case AttackDirection::Right_Up:
@@ -727,15 +752,24 @@ void Player_Overworld::MoveEnd()
 
 void Player_Overworld::WinStart()
 {
-
+	WinSetting = false;
+	IsWin = true;
+	RenderPtr->ChangeAnimation("InterAction_Win");
 }
 void Player_Overworld::WinUpdate(float _DeltaTime)
 {
+	WinTime += _DeltaTime;
 
+	if (WinTime >= 3.0f)
+	{
+		ChangeState(OverworldState::Idle);
+		return;
+	}
 }
 void Player_Overworld::WinEnd()
 {
-
+	IsWin = false;
+	WinTime = 0.0f;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -808,6 +842,9 @@ void Player_Overworld::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+
+	// Win
+	RenderPtr->CreateAnimation({ .AnimationName = "InterAction_Win", .SpriteName = "InterAction_Win", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 
 	// Setting
 	RenderPtr->GetTransform()->SetLocalScale({103, 113});
@@ -923,5 +960,6 @@ void Player_Overworld::PlayerCollisionSetting()
 		CollisionRenderPtr->SetTexture("GreenLine.png");
 		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
 		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+		CollisionRenderPtr->Off();
 	}
 }

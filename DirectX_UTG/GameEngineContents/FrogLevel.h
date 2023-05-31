@@ -68,7 +68,8 @@ private:
 	float ReadyWallopTime = 0.0f;
 	float EndTime = 0.0f;
 
-	bool IsLevelEnd = false;
+	bool IsBossEnd = false;
+	bool IsFrogLevelEnd = false;
 
 	int DebugBoxCount = 1;
 	int ReadyWallopCount = 1;

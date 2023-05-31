@@ -80,8 +80,6 @@ void BuildingDataBase::Start()
 
 void BuildingDataBase::Update(float _DeltaTime)
 {
-	CollisionCheck();
-
 	if (true == FlagCall)
 	{
 		FlagRenderPtr->On();
@@ -93,8 +91,17 @@ void BuildingDataBase::Update(float _DeltaTime)
 		FlagRenderPtr->ChangeAnimation("FlagOn");
 	}
 
-	if (true == IsLevelChange)
+	if (true == IsCollisionOff)
 	{
+		CollisionPtr->Off();
+		return;
+	}
+
+	CollisionCheck();
+
+	if (true == NextLevelPortal)
+	{
+		NextLevelPortal = false;
 		InterAction();
 	}
 }
@@ -249,18 +256,18 @@ void BuildingDataBase::CollisionCheck()
 		&& true == Isinteraction
 		&& true == GameEngineInput::IsDown("Attack"))
 	{
-		IsLevelChange = true;
+		NextLevelPortal = true;
 	}
 }
 
 void BuildingDataBase::InterAction()
 {
-	if (1 == BlackBoxCount)
-	{
-		BlackBoxCount = 0;
-		OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
-		OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
-	}
+	//if (1 == BlackBoxCount)
+	//{
+	//	BlackBoxCount = 0;
+	//	OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+	//	OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
+	//}
 
 	switch (BValue)
 	{
@@ -281,11 +288,15 @@ void BuildingDataBase::InterAction()
 	break;
 	case BuildingValue::Frog:
 	{
-		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
-		{
-			OverworldLevel::OverworldLevelPtr->LoadingOn();
-			GameEngineCore::ChangeLevel("FrogLevel");
-		}
+		//if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
+		//{
+		//	Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+		//	OverworldLevel::OverworldLevelPtr->LoadingOn();
+		//	GameEngineCore::ChangeLevel("FrogLevel");
+		//}
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+		OverworldLevel::OverworldLevelPtr->LoadingOn();
+		GameEngineCore::ChangeLevel("FrogLevel");
 	}
 	break;
 	case BuildingValue::Dragon:

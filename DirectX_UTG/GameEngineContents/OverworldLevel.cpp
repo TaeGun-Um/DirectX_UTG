@@ -41,6 +41,8 @@ void OverworldLevel::Start()
 
 void OverworldLevel::Update(float _DeltaTime)
 {
+	BuildingFlagOn();
+
 	if (true == GameEngineInput::IsDown("FadeIn"))
 	{
 		FEffect->FadeIn();
@@ -62,6 +64,17 @@ void OverworldLevel::Update(float _DeltaTime)
 	{
 		LoadingOn();
 		GameEngineCore::ChangeLevel("FrogLevel");
+	}
+}
+
+void OverworldLevel::BuildingFlagOn()
+{
+	if (true == FrogEnd && 1 == FrogEndCount)
+	{
+		FrogEndCount = 0;
+		BuildingDataBase::FrogPtr->InterActionOff();
+		BuildingDataBase::FrogPtr->FlagUpSetting();
+		PlayerObject->WinFSMSetting();
 	}
 }
 
@@ -170,6 +183,8 @@ void OverworldLevel::LevelChangeStart()
 			PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
 			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		}
+		
+		PlayerObject->PlayerCollisionPtrOn();
 	}
 	// ColMap
 	if (nullptr == ThisColMap)
@@ -193,9 +208,12 @@ void OverworldLevel::LevelChangeStart()
 	}
 
 	// GUI
-	if (nullptr == GUI)
 	{
-		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		if (nullptr == GUI)
+		{
+			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		}
+		
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetOverworldPalyer(PlayerObject);
 
@@ -215,6 +233,7 @@ void OverworldLevel::LevelChangeStart()
 void OverworldLevel::LevelChangeEnd()
 {
 	DebugBoxCount = 1;
+	PlayerObject->MoveAbleTimeReset();
 }
 
 void OverworldLevel::PlayerDebugRenderOn()

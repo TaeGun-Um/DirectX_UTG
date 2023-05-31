@@ -85,6 +85,7 @@ void CupheadCore::ContentsKeyBind()
 		GameEngineInput::CreateKey("Jump", 'X');
 		GameEngineInput::CreateKey("Hold", 'C');
 		GameEngineInput::CreateKey("EX", 'V');
+		GameEngineInput::CreateKey("Test", 'Q');
 		GameEngineInput::CreateKey("Dash", VK_SHIFT);
 		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
 	}

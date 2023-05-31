@@ -30,6 +30,21 @@ public:
 		return BlackBoxPtr;
 	}
 
+	void SetFrogEnd()
+	{
+		FrogEnd = true;
+	}
+
+	void SetDragonEnd()
+	{
+		DragonEnd = true;
+	}
+
+	void SetMouseEnd()
+	{
+		MouseEnd = true;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -48,6 +63,7 @@ private:
 	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 
+	void BuildingFlagOn();
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();
@@ -55,6 +71,13 @@ private:
 	
 	bool IsSet1 = false;
 	bool IsSet2 = false;
+
+	bool FrogEnd = false;
+	bool DragonEnd = false;
+	bool MouseEnd = false;
+	int FrogEndCount = 1;
+	int DragonEndCount = 1;
+	int MouseEndCount = 1;
 
 	int DebugBoxCount = 1;
 };

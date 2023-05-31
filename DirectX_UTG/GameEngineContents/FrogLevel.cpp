@@ -13,6 +13,8 @@
 #include "HealthUI.h"
 #include "Ribby.h"
 
+#include "OverworldLevel.h"
+
 #include "Loading.h"
 #include "RoundBlackBox.h"
 #include "Knockout.h"
@@ -40,11 +42,11 @@ void FrogLevel::Update(float _DeltaTime)
 	{
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
-		IsLevelEnd = true;
+		IsBossEnd = true;
 		GameEngineTime::GlobalTime.SetTimeScale(0.0f);
 	}
 
-	if (true == IsLevelEnd)
+	if (true == IsBossEnd)
 	{
 		//NormalDeltaTime += GameEngineTime::GlobalTime.GetNormalDeltaTime();
 
@@ -64,6 +66,8 @@ void FrogLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
+			IsFrogLevelEnd = true;
+			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
 			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
@@ -206,9 +210,11 @@ void FrogLevel::LevelChangeStart()
 	}
 
 	// GUI
-	if (nullptr == GUI)
 	{
-		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		if (nullptr == GUI)
+		{
+			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		}
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
 		GUI->SetForgBoss(RibbyObject);
