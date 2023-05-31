@@ -112,7 +112,7 @@ void TutorialLevel::LevelChangeStart()
 	// Layer
 	{
 		std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
-		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half -200, -10 });
 	}
 	{
 		if (nullptr == HealthObject)
