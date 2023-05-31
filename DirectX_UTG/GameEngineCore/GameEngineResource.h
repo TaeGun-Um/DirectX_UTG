@@ -117,19 +117,6 @@ protected:
 		return NewRes;
 	}
 
-	static void TargetResourceRelase(const std::string_view& _Name)
-	{
-		std::string UpperName = GameEngineString::ToUpper(_Name);
-
-		if (NamedResources.end() != NamedResources.find(UpperName))
-		{
-			MsgAssert("존재하지 않는 리소스");
-			return;
-		}
-
-		NamedResources.erase(UpperName);
-	}
-
 private:
 	std::string Path;  // 상속받은 클래스의 Path
 	std::string Name;  // 상속받은 클래스의 Name

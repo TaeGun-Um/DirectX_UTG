@@ -46,7 +46,7 @@ GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
 		int ColCheckY = static_cast<int>(_Value.y - Height_Half);
 
-		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
+		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, BlackColor);
 	}
 		break;
 	case PixelCollision::Coordinate::DirectOrigin:
@@ -55,7 +55,7 @@ GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 		int ColCheckX = static_cast<int>(_Value.x + Width_Half);
 		int ColCheckY = static_cast<int>(_Value.y - Height);
 
-		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
+		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, BlackColor);
 	}
 	case PixelCollision::Coordinate::Custom:
 	{
@@ -63,7 +63,7 @@ GameEnginePixelColor PixelCollision::PixelCheck(const float4& _Value)
 		int ColCheckX = static_cast<int>(_Value.x);
 		int ColCheckY = static_cast<int>(_Value.y - Height);
 
-		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, DebugColor);
+		ColMapPixel = ColMap->GetPixel(ColCheckX, -ColCheckY, BlackColor);
 	}
 		break;
 	default:

@@ -43,18 +43,16 @@ void FrogLevel::Update(float _DeltaTime)
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
 		IsBossEnd = true;
-		GameEngineTime::GlobalTime.SetTimeScale(0.0f);
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
 	}
 
 	if (true == IsBossEnd)
 	{
-		//NormalDeltaTime += GameEngineTime::GlobalTime.GetNormalDeltaTime();
-
 		EndTime += _DeltaTime;
 
 		if (true == KnockoutPtr->GetIsEnd())
 		{
-			GameEngineTime::GlobalTime.SetTimeScale(1.0f);
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
 			if (EndTime >= 3.0f && 1 == EndSetCount2)
 			{
@@ -187,7 +185,7 @@ void FrogLevel::LevelChangeStart()
 	{
 		if (KnockoutPtr == nullptr)
 		{
-			KnockoutPtr = CreateActor<Knockout>();
+			KnockoutPtr = CreateActor<Knockout>(1);
 		}
 
 		KnockoutPtr->MessageReset();

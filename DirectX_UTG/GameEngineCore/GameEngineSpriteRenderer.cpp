@@ -41,14 +41,7 @@ void AnimationInfo::Update(float _DeltaTime)
 		UpdateEventFunction[CurFrameIndex]();
 	}
 
-	if (false == IsNormalDeltaTime)
-	{
-		CurTime -= _DeltaTime;
-	}
-	else
-	{
-		CurTime -= GameEngineTime::GlobalTime.GetNormalDeltaTime();
-	}
+	CurTime -= _DeltaTime;
 
 	if (0.0f >= CurTime)
 	{

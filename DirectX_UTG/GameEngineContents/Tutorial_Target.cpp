@@ -147,6 +147,7 @@ void Tutorial_Target::CollisionCheck()
 		GameEngineActor* Projectile = TargetCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::SPHERE2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
+		ColorSet = true;
 		--HP;
 
 		if (0 >= HP)
