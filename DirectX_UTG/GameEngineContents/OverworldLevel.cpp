@@ -41,6 +41,15 @@ void OverworldLevel::Start()
 
 void OverworldLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("TutorialLevel");
+	}
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("FrogLevel");
+	}
+
 	BuildingFlagOn();
 
 	if (true == GameEngineInput::IsDown("FadeIn"))

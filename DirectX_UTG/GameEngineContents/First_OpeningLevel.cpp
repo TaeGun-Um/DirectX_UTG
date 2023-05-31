@@ -35,6 +35,11 @@ void First_OpeningLevel::Start()
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("Second_OpeningLevel");
+	}
+
 	if (true == MDHR_Logo::LogoPtr->GetLogoAnimationIsEnd())
 	{
 		AccessTime += _DeltaTime;
@@ -121,31 +126,14 @@ void First_OpeningLevel::LevelChangeStart()
 		LoadingPtr = CreateActor<Loading>();
 		LoadingPtr->SetLoadingPtrOff();
 	}
+
+	ReLoadSetting();
 }
 void First_OpeningLevel::LevelChangeEnd()
 {
 	if (nullptr != GameEngineSprite::Find("Cuphead_and_Mugman"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Opening1");
-		NewDir.Move("Cuphead_and_Mugman");
-
-		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
-
-		for (size_t i = 0; i < AllFile.size(); i++)
-		{
-			GameEngineFile& File = AllFile[i];
-
-			std::filesystem::path Path = File.GetFullPath();
-
-			std::string Target = Path.filename().string();
-
-			GameEngineTexture::UnLoad(Target);
-		}
+		GameEngineSprite::UnLoad("Cuphead_and_Mugman");
 	}
 
 	if (nullptr != GameEngineTexture::Find("PressAnyButton.png"))
@@ -156,7 +144,7 @@ void First_OpeningLevel::LevelChangeEnd()
 
 	if (nullptr != GameEngineSprite::Find("MDHR_Logo.png"))
 	{
-		GameEngineTexture::UnLoad("MDHR_Logo.png");
+		GameEngineSprite::UnLoad("MDHR_Logo.png");
 	}
 
 	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
@@ -174,4 +162,36 @@ void First_OpeningLevel::LevelChangeEnd()
 
 	TitleMenuObject = nullptr;
 	BackgroundObject = nullptr;
+}
+
+void First_OpeningLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineSprite::Find("Cuphead_and_Mugman"))
+	{
+		GameEngineSprite::ReLoad("Cuphead_and_Mugman");
+	}
+
+	if (nullptr != GameEngineTexture::Find("PressAnyButton.png"))
+	{
+		GameEngineTexture::ReLoad("PressAnyButton.png");
+		GameEngineTexture::ReLoad("Title_Background.png");
+	}
+
+	if (nullptr != GameEngineSprite::Find("MDHR_Logo.png"))
+	{
+		GameEngineSprite::ReLoad("MDHR_Logo.png");
+	}
+
+	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
+	{
+		GameEngineTexture::ReLoad("PressAnyButton.png");
+		GameEngineTexture::ReLoad("Title_Background.png");
+	}
+
+	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
+	{
+		GameEngineTexture::ReLoad("cuphead_startscreen.png");
+		GameEngineTexture::ReLoad("START.png");
+		GameEngineTexture::ReLoad("EXIT.png");
+	}
 }

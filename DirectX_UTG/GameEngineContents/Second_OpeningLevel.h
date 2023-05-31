@@ -14,6 +14,8 @@ public:
 	Second_OpeningLevel& operator=(const Second_OpeningLevel& _Other) = delete;
 	Second_OpeningLevel& operator=(Second_OpeningLevel&& _Other) noexcept = delete;
 
+	void ReLoadSetting();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

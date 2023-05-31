@@ -41,6 +41,14 @@ void TutorialLevel::Start()
 
 void TutorialLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("WaitingRoomLevel");
+	}
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("OverworldLevel");
+	}
 }
 
 void TutorialLevel::LevelChangeStart()

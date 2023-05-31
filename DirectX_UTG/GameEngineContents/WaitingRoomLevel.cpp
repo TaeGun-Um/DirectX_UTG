@@ -32,6 +32,15 @@ void WaitingRoomLevel::Start()
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("Second_OpeningLevel");
+	}
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("TutorialLevel");
+	}
+
 	float PlusDist = PlayerObject->GetTransform()->GetLocalPosition().x;
 	float Mount = PlayerDist - PlusDist;
 

@@ -29,6 +29,15 @@ void Second_OpeningLevel::Start()
 }
 void Second_OpeningLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("First_OpeningLevel");
+	}
+	if (true == GameEngineInput::IsDown("NextLevel"))
+	{
+		GameEngineCore::ChangeLevel("WaitingRoomLevel");
+	}
+
 	if (true == BookRender::GetBookAnimationIsEnd() && false == IsEnd)
 	{
 		IsEnd = true;
@@ -41,6 +50,8 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("WaitingRoomLevel");
 	}
+
+	ReLoadSetting();
 }
 
 void Second_OpeningLevel::LevelChangeStart()
@@ -69,26 +80,36 @@ void Second_OpeningLevel::LevelChangeEnd()
 {
 	if (nullptr != GameEngineSprite::Find("Page_01"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Opening2");
-
-		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
-
-		for (size_t i = 0; i < AllFile.size(); i++)
-		{
-			GameEngineFile& File = AllFile[i];
-
-			std::filesystem::path Path = File.GetFullPath();
-
-			std::string Target = Path.filename().string();
-
-			GameEngineTexture::UnLoad(Target);
-		}
+		GameEngineSprite::UnLoad("Page_01");
+		GameEngineSprite::UnLoad("Page_01-02");
+		GameEngineSprite::UnLoad("Page_02-03");
+		GameEngineSprite::UnLoad("Page_03-04");
+		GameEngineSprite::UnLoad("Page_04-05");
+		GameEngineSprite::UnLoad("Page_05-06");
+		GameEngineSprite::UnLoad("Page_06-07");
+		GameEngineSprite::UnLoad("Page_07-08");
+		GameEngineSprite::UnLoad("Page_08-09");
+		GameEngineSprite::UnLoad("Page_09-10");
+		GameEngineSprite::UnLoad("Page_10-11");
 	}
 
 	BookRenderObject = nullptr;
+}
+
+void Second_OpeningLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineSprite::Find("Page_01"))
+	{
+		GameEngineSprite::ReLoad("Page_01");
+		GameEngineSprite::ReLoad("Page_01-02");
+		GameEngineSprite::ReLoad("Page_02-03");
+		GameEngineSprite::ReLoad("Page_03-04");
+		GameEngineSprite::ReLoad("Page_04-05");
+		GameEngineSprite::ReLoad("Page_05-06");
+		GameEngineSprite::ReLoad("Page_06-07");
+		GameEngineSprite::ReLoad("Page_07-08");
+		GameEngineSprite::ReLoad("Page_08-09");
+		GameEngineSprite::ReLoad("Page_09-10");
+		GameEngineSprite::ReLoad("Page_10-11");
+	}
 }
