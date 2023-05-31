@@ -119,6 +119,7 @@ void BuildingDataBase::BuildingSetting(BuildingValue _BValue)
 		
 		CollisionPtr->GetTransform()->SetLocalScale({ 200, 100, 1 });
 		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
+		CollisionPtr->Off();
 
 		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
 		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());

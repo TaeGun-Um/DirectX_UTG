@@ -32,7 +32,7 @@ void Tutorial_BackGround::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		RenderPtr->SetTexture("Tutorial_BackLayer_001.png");
-		RenderPtr->GetTransform()->SetLocalScale({ 1280, 720, 1 });
+		RenderPtr->GetTransform()->SetLocalScale({ 1350, 759, 1 });
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 1 });
 	}
 }
