@@ -97,36 +97,51 @@ void WaitingRoomLevel::LevelChangeStart()
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
 	}
-
-	if (nullptr == MapObject)
 	{
-		MapObject = CreateActor<WaitingRoom_Map>();
+		if (nullptr == MapObject)
+		{
+			MapObject = CreateActor<WaitingRoom_Map>();
+		}
+		
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 10 });
 	}
-	if (nullptr == KettleObject)
 	{
-		KettleObject = CreateActor<ElderKettle>();
+		if (nullptr == KettleObject)
+		{
+			KettleObject = CreateActor<ElderKettle>();
+		}
+		
 		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 470 , PlayMapHeight_Half - 110});
 	}
-	if (nullptr == PlayerObject)
 	{
-		PlayerObject = CreateActor<Player>();
+		if (nullptr == PlayerObject)
+		{
+			PlayerObject = CreateActor<Player>();
+		}
+		
 		PlayerObject->GetTransform()->SetLocalPosition({ 385 , PlayMapHeight_Half });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
+		PlayerObject->SetCorrectionFalse();
 
 		PlayerDist = PlayerObject->GetTransform()->GetLocalPosition().x;
 	}
-	if (nullptr == ThisColMap)
 	{
-		ThisColMap = CreateActor<WaitingRoom_ColMap>();
+		if (nullptr == ThisColMap)
+		{
+			ThisColMap = CreateActor<WaitingRoom_ColMap>();
+		}
+		
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 
 	// GUI
-	if (nullptr == GUI)
 	{
-		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		if (nullptr == GUI)
+		{
+			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		}
+		
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
 
@@ -135,10 +150,12 @@ void WaitingRoomLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&WaitingRoomLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&WaitingRoomLevel::LevelDebugOff, this);
 	}
-
-	if (nullptr == LoadingPtr)
 	{
-		LoadingPtr = CreateActor<Loading>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+		
 		LoadingPtr->SetLoadingPtrOff();
 	}
 }
@@ -153,13 +170,56 @@ void WaitingRoomLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("WaitingRoom_Vignette.png");
 	}
 
+	if (nullptr != GameEngineSprite::Find("Note_One"))
+	{
+		GameEngineSprite::UnLoad("Note_One");
+		GameEngineSprite::UnLoad("Note_Two");
+	}
+
+	if (nullptr != GameEngineSprite::Find("Kettle_Idle"))
+	{
+		GameEngineSprite::UnLoad("Kettle_Idle");
+	}
+
 	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))
 	{
 		GameEngineTexture::UnLoad("WaitingRoom_ColMap.png");
 	}
 
-	ThisColMap = nullptr;
-	MapObject = nullptr;
+	{
+		PlayMapWidth_Half = 0.0f;
+		PlayMapHeight_Half = 0.0f;
+		PlayerDist = 0.0f;
+		CameraOriginPos = float4::Zero;
+		PortalCount = 1;
+	}
+}
+
+void WaitingRoomLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineTexture::Find("WaitingRoom_Background.png"))
+	{
+		GameEngineTexture::ReLoad("WaitingRoom_Background.png");
+		GameEngineTexture::ReLoad("WaitingRoom_Chair.png");
+		GameEngineTexture::ReLoad("WaitingRoom_Couch.png");
+		GameEngineTexture::ReLoad("WaitingRoom_Vignette.png");
+	}
+
+	if (nullptr != GameEngineSprite::Find("Note_One"))
+	{
+		GameEngineTexture::ReLoad("Note_One");
+		GameEngineTexture::ReLoad("Note_Two");
+	}
+
+	if (nullptr != GameEngineSprite::Find("Kettle_Idle"))
+	{
+		GameEngineTexture::ReLoad("Kettle_Idle");
+	}
+
+	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))
+	{
+		GameEngineTexture::ReLoad("WaitingRoom_ColMap.png");
+	}
 }
 
 void WaitingRoomLevel::PlayerDebugRenderOn()

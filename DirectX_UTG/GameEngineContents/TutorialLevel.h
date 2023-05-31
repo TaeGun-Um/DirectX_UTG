@@ -28,6 +28,8 @@ public:
 		return BlackBoxPtr;
 	}
 
+	void ReLoadSetting();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -45,6 +47,8 @@ private:
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 
 	std::shared_ptr<class Tutorial_Map> MapObject = nullptr;
+	std::shared_ptr<class Tutorial_BackLayer> LayerObject = nullptr;
+	std::shared_ptr<class Tutorial_BackGround> BGObject = nullptr;
 	std::shared_ptr<class Tutorial_Target> TargetObject = nullptr;
 	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;

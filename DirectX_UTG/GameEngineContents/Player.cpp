@@ -43,6 +43,7 @@ void Player::Update(float _DeltaTime)
 	if (false == IsCorrection)
 	{
 		On();
+		RenderPtr->ChangeAnimation("Idle", false);
 		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());

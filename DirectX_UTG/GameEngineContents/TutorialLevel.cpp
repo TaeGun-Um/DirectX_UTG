@@ -81,46 +81,70 @@ void TutorialLevel::LevelChangeStart()
 	// CreateActor
 	// Background
 	{
-		std::shared_ptr<Tutorial_BackGround> Object = CreateActor<Tutorial_BackGround>();
-		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
+		if (nullptr == BGObject)
+		{
+			BGObject = CreateActor<Tutorial_BackGround>();
+		}
+		
+		BGObject->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, 100 });
 	}
 	// Map
-	if (nullptr == MapObject)
 	{
-		MapObject = CreateActor<Tutorial_Map>();
+		if (nullptr == MapObject)
+		{
+			MapObject = CreateActor<Tutorial_Map>();
+		}
+		
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 50 });
 	}
 	// Character
-	if (nullptr == PlayerObject)
 	{
-		PlayerObject = CreateActor<Player>();
+		if (nullptr == PlayerObject)
+		{
+			PlayerObject = CreateActor<Player>();
+		}
+		
 		PlayerObject->GetTransform()->SetLocalPosition({ 300 , PlayMapHeight_Half });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(2.f);
+		PlayerObject->SetCorrectionFalse();
 	}
 	// Portal
-	if (nullptr == PortalDoorObject)
 	{
-		PortalDoorObject = CreateActor<PortalDoor>();
+		if (nullptr == PortalDoorObject)
+		{
+			PortalDoorObject = CreateActor<PortalDoor>();
+		}
+		
 		PortalDoorObject->GetTransform()->SetLocalPosition({ 5840, 150 });
 		PortalDoorObject->SetPortalValue(PortalValue::Overworld);
 	}
 	// Wall Actor
-	if (nullptr == TargetObject)
 	{
-		TargetObject = CreateActor<Tutorial_Target>();
+		if (nullptr == TargetObject)
+		{
+			TargetObject = CreateActor<Tutorial_Target>();
+		}
+		
 		TargetObject->GetTransform()->SetLocalPosition({ 3447, 305 });
 	}
 	// ColMap
-	if (nullptr == ThisColMap)
 	{
-		ThisColMap = CreateActor<Tutorial_ColMap>();
+		if (nullptr == ThisColMap)
+		{
+			ThisColMap = CreateActor<Tutorial_ColMap>();
+		}
+		
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	// Layer
 	{
-		std::shared_ptr<Tutorial_BackLayer> Object = CreateActor<Tutorial_BackLayer>();
-		Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
+		if (nullptr == LayerObject)
+		{
+			LayerObject = CreateActor<Tutorial_BackLayer>();
+		}
+		
+		LayerObject->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
 	}
 	{
 		if (nullptr == HealthObject)
@@ -133,11 +157,6 @@ void TutorialLevel::LevelChangeStart()
 			CardObject = CreateActor<CardUI>();
 		}
 	}
-	// ScreenSFX
-	{
-		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
-		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
-	}
 	{
 		if (BlackBoxPtr == nullptr)
 		{
@@ -149,9 +168,12 @@ void TutorialLevel::LevelChangeStart()
 	}
 
 	// GUI
-	if (nullptr == GUI)
 	{
-		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		if (nullptr == GUI)
+		{
+			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+		}
+		
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
 
@@ -160,12 +182,16 @@ void TutorialLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&TutorialLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&TutorialLevel::LevelDebugOff, this);
 	}
-
-	if (nullptr == LoadingPtr)
 	{
-		LoadingPtr = CreateActor<Loading>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+		
 		LoadingPtr->SetLoadingPtrOff();
 	}
+
+	//ReLoadSetting();
 }
 void TutorialLevel::LevelChangeEnd()
 {
@@ -193,49 +219,45 @@ void TutorialLevel::LevelChangeEnd()
 	}
 	if (nullptr != GameEngineSprite::Find("Target"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Tutorial_Normal");
-		NewDir.Move("Target");
-
-		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
-
-		for (size_t i = 0; i < AllFile.size(); i++)
-		{
-			GameEngineFile& File = AllFile[i];
-
-			std::filesystem::path Path = File.GetFullPath();
-
-			std::string Target = Path.filename().string();
-
-			GameEngineTexture::UnLoad(Target);
-		}
+		GameEngineSprite::UnLoad("Target");
 	}
 	if (nullptr != GameEngineSprite::Find("Explosion"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("Tutorial_Normal");
-		NewDir.Move("Explosion");
+		GameEngineSprite::UnLoad("Explosion");
+	}
+}
 
-		std::vector<GameEngineFile> AllFile = NewDir.GetAllFile({ ".png" });
-
-		for (size_t i = 0; i < AllFile.size(); i++)
-		{
-			GameEngineFile& File = AllFile[i];
-
-			std::filesystem::path Path = File.GetFullPath();
-
-			std::string Target = Path.filename().string();
-
-			GameEngineTexture::UnLoad(Target);
-		}
+void TutorialLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineTexture::Find("Tutorial_BackLayer_001.png"))
+	{
+		GameEngineTexture::ReLoad("Tutorial_BackLayer_001.png");
+		GameEngineTexture::ReLoad("Tutorial_BackLayer_002.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Tutorial_ColMap.png"))
+	{
+		GameEngineTexture::ReLoad("Tutorial_ColMap.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Tutorial_Map.png"))
+	{
+		GameEngineTexture::ReLoad("Tutorial_Map.png");
+	}
+	if (nullptr != GameEngineTexture::Find("tutorial_pink_sphere_1.png"))
+	{
+		GameEngineTexture::ReLoad("tutorial_pink_sphere_1.png");
+		GameEngineTexture::ReLoad("tutorial_pink_sphere_2.png");
+	}
+	if (nullptr != GameEngineTexture::Find("tutorial_pyramid_topper.png"))
+	{
+		GameEngineTexture::ReLoad("tutorial_pyramid_topper.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Target"))
+	{
+		GameEngineSprite::ReLoad("Target");
+	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineSprite::ReLoad("Explosion");
 	}
 }
 

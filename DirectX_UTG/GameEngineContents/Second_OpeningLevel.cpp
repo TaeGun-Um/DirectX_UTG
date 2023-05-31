@@ -60,19 +60,30 @@ void Second_OpeningLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
-	// CreateActor
 	{
-		BookRenderObject = CreateActor<BookRender>();
+		if (nullptr == BookRenderObject)
+		{
+			BookRenderObject = CreateActor<BookRender>();
+		}
+		
 		BookRenderObject->GetTransform()->AddWorldPosition({ 0, -3 });
+		BookRenderObject->BookRenderEndReset();
 	}
 	{
-		BlackBoxPtr = CreateActor<RoundBlackBox>();
+		if (nullptr == BlackBoxPtr)
+		{
+			BlackBoxPtr = CreateActor<RoundBlackBox>();
+		}
+		
+		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
 	}
-
-	if (nullptr == LoadingPtr)
 	{
-		LoadingPtr = CreateActor<Loading>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+		
 		LoadingPtr->SetLoadingPtrOff();
 	}
 }
@@ -93,7 +104,10 @@ void Second_OpeningLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Page_10-11");
 	}
 
-	BookRenderObject = nullptr;
+	{
+		BlackBoxPtr->BoxSettingReset();
+		IsEnd = false;
+	}
 }
 
 void Second_OpeningLevel::ReLoadSetting()

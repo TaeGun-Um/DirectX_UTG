@@ -48,7 +48,6 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsAnyKey() && AccessTime >= 1.0f)
 	{
 		NextStep1 = true;
-
 	}
 
 	if (true == NextStep1 && 1 == NextStep1Count)
@@ -121,9 +120,12 @@ void First_OpeningLevel::LevelChangeStart()
 		BlackBoxPtr = CreateActor<RoundBlackBox>();
 	}
 
-	if (nullptr == LoadingPtr)
 	{
-		LoadingPtr = CreateActor<Loading>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+
 		LoadingPtr->SetLoadingPtrOff();
 	}
 
@@ -160,8 +162,17 @@ void First_OpeningLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("EXIT.png");
 	}
 
-	TitleMenuObject = nullptr;
-	BackgroundObject = nullptr;
+	{
+		NextStep1 = false;
+		NextStep1Count = 1;
+		NextStep2 = false;
+		NextStep2Count = 1;
+		TitleMove = false;
+		EndStep = false;
+		StartStep = false;
+		AccessTime = 0.0f;
+		BlackBoxPtr->BoxSettingReset();
+	}
 }
 
 void First_OpeningLevel::ReLoadSetting()

@@ -21,6 +21,12 @@ public:
 		return IsEnd;
 	}
 
+	void BookRenderEndReset()
+	{
+		IsEnd = false;
+		Page = 0;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
