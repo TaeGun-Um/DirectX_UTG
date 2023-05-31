@@ -36,6 +36,41 @@ void FrogLevel::Start()
 }
 void FrogLevel::Update(float _DeltaTime)
 {
+	if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
+	{
+		EndSetCount = 0;
+		KnockoutPtr->StartMessage();
+		IsLevelEnd = true;
+		GameEngineTime::GlobalTime.SetTimeScale(0.0f);
+	}
+
+	if (true == IsLevelEnd)
+	{
+		//NormalDeltaTime += GameEngineTime::GlobalTime.GetNormalDeltaTime();
+
+		EndTime += _DeltaTime;
+
+		if (true == KnockoutPtr->GetIsEnd())
+		{
+			GameEngineTime::GlobalTime.SetTimeScale(1.0f);
+
+			if (EndTime >= 3.0f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
+
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
+
+		return;
+	}
+
 	ReadyWallopTime += _DeltaTime;
 
 	if (1.0f <= ReadyWallopTime && 1 == ReadyWallopCount)
@@ -104,6 +139,7 @@ void FrogLevel::LevelChangeStart()
 		}
 		
 		RibbyObject->GetTransform()->SetLocalPosition({ 1000 , 250 });
+		RibbyObject->SetInitReset();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -175,6 +211,7 @@ void FrogLevel::LevelChangeStart()
 		GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
+		GUI->SetForgBoss(RibbyObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&FrogLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&FrogLevel::PlayerDebugRenderOff, this);

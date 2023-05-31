@@ -20,6 +20,7 @@ void Knockout::Start()
 		RenderPtr->CreateAnimation({ .AnimationName = "KNOCKOUT", .SpriteName = "KNOCKOUT", .FrameInter = 0.05f, .Loop = false });
 
 		RenderPtr->ChangeAnimation("KNOCKOUT");
+		RenderPtr->NormalDeltaTimeSet();
 		RenderPtr->Off();
 	}
 }

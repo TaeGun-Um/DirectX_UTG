@@ -28,9 +28,6 @@ void AnimationInfo::Update(float _DeltaTime)
 		IsEndValue = false;
 	}
 
-	// 1;
-	// 
-
 	if (true == IsPauseValue)
 	{
 		return;
@@ -44,14 +41,18 @@ void AnimationInfo::Update(float _DeltaTime)
 		UpdateEventFunction[CurFrameIndex]();
 	}
 
-	CurTime -= _DeltaTime;
+	if (false == IsNormalDeltaTime)
+	{
+		CurTime -= _DeltaTime;
+	}
+	else
+	{
+		CurTime -= GameEngineTime::GlobalTime.GetNormalDeltaTime();
+	}
 
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
-
-
-
 
 		if (FrameIndex.size() <= CurFrame)
 		{
@@ -68,24 +69,17 @@ void AnimationInfo::Update(float _DeltaTime)
 			}
 		}
 
-		//다음프레임이 존재하면서
 		else
 		{
 			CurFrameIndex = FrameIndex[CurFrame];
 
-			//Start콜백이 있다면 콜백을 호출
 			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
 			{
 				StartEventFunction[CurFrameIndex]();
 			}
 		}
 
-
 		CurTime += FrameTime[CurFrame];
-
-		// 0 ~ 9
-
-		// 9
 	}
 }
 

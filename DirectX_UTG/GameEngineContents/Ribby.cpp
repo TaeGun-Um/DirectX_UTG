@@ -74,20 +74,34 @@ void Ribby::Update(float _DeltaTime)
 
 void Ribby::CollisionCheck()
 {
-	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D))
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
+		--HP;
+
+		if (0 == HP)
+		{
+			IsStageEnd = true;
+		}
 
 		IsBlink = true;
 	}
 
-	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D))
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
+		--HP;
+
+		if (0 == HP)
+		{
+			IsStageEnd = true;
+		}
 
 		IsBlink = true;
 	}

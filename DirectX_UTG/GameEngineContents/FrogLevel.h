@@ -66,8 +66,13 @@ private:
 	void LevelDebugOff();
 
 	float ReadyWallopTime = 0.0f;
+	float EndTime = 0.0f;
+
+	bool IsLevelEnd = false;
 
 	int DebugBoxCount = 1;
 	int ReadyWallopCount = 1;
+	int EndSetCount = 1;
+	int EndSetCount2 = 1;
 };
 

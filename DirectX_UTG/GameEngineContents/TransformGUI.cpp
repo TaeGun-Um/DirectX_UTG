@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
+#include "Ribby.h"
 
 TransformGUI::TransformGUI() 
 {
@@ -153,7 +154,7 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ColMapRenderOff();
 	}
 
-	if (nullptr != Player::MainPlayer)
+	if (nullptr != MainPalyer)
 	{
 		ImGui::Text("PlayerHP : %d", MainPalyer->GetPlayerHP());
 		ImGui::Text("EXGauge : %f", MainPalyer->GetPlayerEXGauge());
@@ -172,6 +173,11 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		//}
 		//
 		//ImGui::Text("CollisionPtr : %s", CollisionPtr);
+	}
+
+	if (nullptr != FrogBoss)
+	{
+		ImGui::Text("BossHP : %d", FrogBoss->GetRibbyHP());
 	}
 }
 
@@ -214,6 +220,11 @@ void TransformGUI::SetMainPalyer(std::shared_ptr<class Player> _MainPalyer)
 void TransformGUI::SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer)
 {
 	OverworldPalyer = _OverworldPalyer;
+}
+
+void TransformGUI::SetForgBoss(std::shared_ptr<class Ribby> _FrogBoss)
+{
+	FrogBoss = _FrogBoss;
 }
 
 void TransformGUI::HelpMarker(const std::string_view& _Text)

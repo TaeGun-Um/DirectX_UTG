@@ -22,6 +22,7 @@ public:
 
 	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
 	void SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer);
+	void SetForgBoss(std::shared_ptr<class Ribby> _FrogBoss);
 
 	std::function<void()> PlayerDebugRenderOn;
 	std::function<void()> PlayerDebugRenderOff;
@@ -34,6 +35,7 @@ protected:
 private:
 	std::shared_ptr<class Player_Overworld> OverworldPalyer = nullptr;
 	std::shared_ptr<class Player> MainPalyer = nullptr;
+	std::shared_ptr<class Ribby> FrogBoss = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 
 	bool IsWorldPostion = false;

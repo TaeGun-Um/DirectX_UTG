@@ -47,6 +47,8 @@ public:
 	std::map<size_t, std::function<void()>> StartEventFunction;
 
 	bool IsEnd();
+
+	bool IsNormalDeltaTime = false;
 };
 
 
@@ -143,6 +145,11 @@ public:
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	std::string GetTexName();
+
+	inline void NormalDeltaTimeSet()
+	{
+		CurAnimation->IsNormalDeltaTime = true;
+	}
 
 protected:
 	void SpriteRenderInit();
