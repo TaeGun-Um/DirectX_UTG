@@ -18,6 +18,7 @@ public:
 	static void GameEnd();
 	static void ContentsResourcesCreate();
 	static void ContentsKeyBind();
+	static void ContentsResourcesLoad();
 
 protected:
 

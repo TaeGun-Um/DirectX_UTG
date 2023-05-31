@@ -1,6 +1,6 @@
 #pragma once
 
-// 설명 :
+// 설명 : 임시 액터, 지울것
 class GameEngineSpriteRenderer;
 class Loading : public GameEngineActor
 {

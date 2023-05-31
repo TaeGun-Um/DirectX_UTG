@@ -10,6 +10,69 @@
 
 #include "TransformGUI.h"
 
+void CupheadCore::ContentsResourcesLoad()
+{
+	if (nullptr == GameEngineSprite::Find("BlueBox"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("CupHead");
+		NewDir.Move("DebugImage");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
+	if (nullptr == GameEngineTexture::Find("EnterMessage.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("EnterMessage.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Enter"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("Camera");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Enter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Exit").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("KNOCKOUT"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("Font");
+		NewDir.Move("Message");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("KNOCKOUT").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ready_WALLOP").GetFullPath());
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("YOU_DIED.png").GetFullPath(), 3, 7);
+	}
+}
+
 void CupheadCore::ContentsKeyBind()
 {
 	if (false == GameEngineInput::IsKey("MoveUp"))
@@ -62,50 +125,6 @@ void CupheadCore::ContentsResourcesCreate()
 		Pipe->SetPixelShader("FadeShader.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
-	}
-
-	if (nullptr == GameEngineSprite::Find("BlueBox"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("CupHead");
-		NewDir.Move("DebugImage");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-
-	if (nullptr == GameEngineTexture::Find("EnterMessage.png"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("UI");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("EnterMessage.png").GetFullPath());
-	}
-
-	if (nullptr == GameEngineSprite::Find("Enter"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("UI");
-		NewDir.Move("Camera");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Enter").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Exit").GetFullPath());
 	}
 
 	// IMGUI Create

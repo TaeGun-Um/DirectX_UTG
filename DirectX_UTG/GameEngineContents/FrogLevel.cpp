@@ -15,6 +15,9 @@
 
 #include "Loading.h"
 #include "RoundBlackBox.h"
+#include "Knockout.h"
+#include "Ready_Wallop.h"
+#include "You_Died.h"
 #include "TransformGUI.h"
 
 FrogLevel* FrogLevel::FrogLevelPtr = nullptr;
@@ -33,6 +36,19 @@ void FrogLevel::Start()
 }
 void FrogLevel::Update(float _DeltaTime)
 {
+	ReadyWallopTime += _DeltaTime;
+
+	if (1.0f <= ReadyWallopTime && 1 == ReadyWallopCount)
+	{
+		ReadyWallopCount = 0;
+		ReadyWallopPtr->StartMessage();
+	}
+
+	if (true == ReadyWallopPtr->GetIsEnd())
+	{
+		int a = 0;
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel") && 1 == DebugBoxCount)
 	{
 		DebugBoxCount = 0;
@@ -128,6 +144,30 @@ void FrogLevel::LevelChangeStart()
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
 	}
+	{
+		if (KnockoutPtr == nullptr)
+		{
+			KnockoutPtr = CreateActor<Knockout>();
+		}
+
+		KnockoutPtr->MessageReset();
+	}
+	{
+		if (YouDiedPtr == nullptr)
+		{
+			YouDiedPtr = CreateActor<You_Died>();
+		}
+
+		YouDiedPtr->MessageReset();
+	}
+	{
+		if (ReadyWallopPtr == nullptr)
+		{
+			ReadyWallopPtr = CreateActor<Ready_Wallop>();
+		}
+
+		ReadyWallopPtr->MessageReset();
+	}
 
 	// GUI
 	if (nullptr == GUI)
@@ -154,6 +194,8 @@ void FrogLevel::LevelChangeStart()
 void FrogLevel::LevelChangeEnd()
 {
 	DebugBoxCount = 1;
+	ReadyWallopCount = 1;
+	ReadyWallopTime = 0.0f;
 	PlayerObject->PlayerStatusReset();
 }
 

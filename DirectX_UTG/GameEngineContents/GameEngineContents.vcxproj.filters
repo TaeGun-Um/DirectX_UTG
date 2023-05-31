@@ -106,6 +106,9 @@
     <Filter Include="Levels\7. Player\UI">
       <UniqueIdentifier>{d1630414-f013-4375-ae95-2be2292f0692}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\Message">
+      <UniqueIdentifier>{4767de92-3b96-4a95-97c8-7bb905896ece}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -213,7 +216,6 @@
     <ClInclude Include="HitSFX.h">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
-    <ClInclude Include="Loading.h" />
     <ClInclude Include="Tutorial_Target.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
@@ -280,6 +282,18 @@
     </ClInclude>
     <ClInclude Include="TestActor.h">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Knockout.h">
+      <Filter>Levels\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Ready_Wallop.h">
+      <Filter>Levels\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="You_Died.h">
+      <Filter>Levels\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>Levels\Message</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -390,7 +404,6 @@
     <ClCompile Include="HitSFX.cpp">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
-    <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Tutorial_Target.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
@@ -460,6 +473,18 @@
     </ClCompile>
     <ClCompile Include="TestActor.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Knockout.cpp">
+      <Filter>Levels\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Ready_Wallop.cpp">
+      <Filter>Levels\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="You_Died.cpp">
+      <Filter>Levels\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>Levels\Message</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
