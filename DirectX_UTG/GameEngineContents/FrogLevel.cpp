@@ -81,21 +81,14 @@ void FrogLevel::Update(float _DeltaTime)
 		ReadyWallopPtr->StartMessage();
 	}
 
+	// readywallop이 끝나는 시점에 게임 시작
 	if (true == ReadyWallopPtr->GetIsEnd())
 	{
 		int a = 0;
 	}
 
-	if (true == GameEngineInput::IsDown("PrevLevel") && 1 == DebugBoxCount)
+	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
-		DebugBoxCount = 0;
-		BlackBoxPtr->BoxSettingReset();
-		BlackBoxPtr->SetEnter();
-	}
-
-	if (true == BlackBoxPtr->GetIsEnd() && 0 == DebugBoxCount)
-	{
-		LoadingOn();
 		GameEngineCore::ChangeLevel("OverworldLevel");
 	}
 }
@@ -215,7 +208,7 @@ void FrogLevel::LevelChangeStart()
 		}
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
-		GUI->SetForgBoss(RibbyObject);
+		GUI->SetFrogBoss(RibbyObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&FrogLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&FrogLevel::PlayerDebugRenderOff, this);
@@ -297,7 +290,6 @@ void FrogLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
 
-	DebugBoxCount = 1;
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
 	PlayerObject->PlayerStatusReset();

@@ -348,10 +348,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="TestActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="TestPlatform.h">
       <SubType>
       </SubType>
@@ -401,6 +397,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="WaitingRoom_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Werner_Werman.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -600,10 +600,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="TestActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="TestPlatform.cpp">
       <SubType>
       </SubType>
@@ -653,6 +649,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="WaitingRoom_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Werner_Werman.cpp">
       <SubType>
       </SubType>
     </ClCompile>

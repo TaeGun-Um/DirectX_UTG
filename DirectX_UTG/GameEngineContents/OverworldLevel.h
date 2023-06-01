@@ -45,8 +45,6 @@ public:
 		MouseEnd = true;
 	}
 
-	void ReLoadSetting();
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -66,6 +64,7 @@ private:
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 
 	void BuildingFlagOn();
+	void ReLoadSetting();
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();

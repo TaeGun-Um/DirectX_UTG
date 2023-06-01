@@ -38,8 +38,6 @@ public:
 		return ReadyWallopPtr;
 	}
 
-	void ReLoadSetting();
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -62,6 +60,7 @@ private:
 	std::shared_ptr<class You_Died> YouDiedPtr = nullptr;
 	std::shared_ptr<class Ready_Wallop> ReadyWallopPtr = nullptr;
 
+	void ReLoadSetting();
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();
@@ -73,7 +72,6 @@ private:
 	bool IsBossEnd = false;
 	bool IsFrogLevelEnd = false;
 
-	int DebugBoxCount = 1;
 	int ReadyWallopCount = 1;
 	int EndSetCount = 1;
 	int EndSetCount2 = 1;

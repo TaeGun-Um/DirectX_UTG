@@ -6,6 +6,8 @@
 
 #include "Player.h"
 #include "Ribby.h"
+#include "GrimMatchstick.h"
+#include "Werner_Werman.h"
 
 TransformGUI::TransformGUI() 
 {
@@ -177,8 +179,16 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 	if (nullptr != FrogBoss)
 	{
-		ImGui::Text("BossHP : %d", FrogBoss->GetRibbyHP());
+		ImGui::Text("FrogBossHP : %d", FrogBoss->GetRibbyHP());
 	}
+	//if (nullptr != MouseBoss)
+	//{
+	//	ImGui::Text("MouseBossHP : %d", MouseBoss->GetMouseHP());
+	//}
+	//if (nullptr != DragonBoss)
+	//{
+	//	ImGui::Text("DragonBossHP : %d", DragonBoss->GetDragonHP());
+	//}
 }
 
 void TransformGUI::SetTarget(GameEngineTransform* _Target)
@@ -222,9 +232,19 @@ void TransformGUI::SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _O
 	OverworldPalyer = _OverworldPalyer;
 }
 
-void TransformGUI::SetForgBoss(std::shared_ptr<class Ribby> _FrogBoss)
+void TransformGUI::SetFrogBoss(std::shared_ptr<class Ribby> _FrogBoss)
 {
 	FrogBoss = _FrogBoss;
+}
+
+void TransformGUI::SetDragonBoss(std::shared_ptr<class GrimMatchstick> _DragonBoss)
+{
+	DragonBoss = _DragonBoss;
+}
+
+void TransformGUI::SetMouseBoss(std::shared_ptr<class Werner_Werman> _MouseBoss)
+{
+	MouseBoss = _MouseBoss;
 }
 
 void TransformGUI::HelpMarker(const std::string_view& _Text)

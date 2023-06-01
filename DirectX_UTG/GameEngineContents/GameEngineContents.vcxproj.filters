@@ -280,9 +280,6 @@
     <ClInclude Include="GrimMatchstick.h">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClInclude>
-    <ClInclude Include="TestActor.h">
-      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Knockout.h">
       <Filter>Levels\Message</Filter>
     </ClInclude>
@@ -294,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="Loading.h">
       <Filter>Levels\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Werner_Werman.h">
+      <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -471,9 +471,6 @@
     <ClCompile Include="GrimMatchstick.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClCompile>
-    <ClCompile Include="TestActor.cpp">
-      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Knockout.cpp">
       <Filter>Levels\Message</Filter>
     </ClCompile>
@@ -485,6 +482,9 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>Levels\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Werner_Werman.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
