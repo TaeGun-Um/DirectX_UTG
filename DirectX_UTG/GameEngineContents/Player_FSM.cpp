@@ -79,6 +79,9 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::ElderKettleInterAction:
 		ElderKettleInterActionStart();
 		break;
+	case PlayerState::Intro:
+		IntroStart();
+		break;
 	default:
 		break;
 	}
@@ -146,6 +149,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::ElderKettleInterAction:
 		ElderKettleInterActionEnd();
+		break;
+	case PlayerState::Intro:
+		IntroEnd();
 		break;
 	default:
 		break;
@@ -218,6 +224,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::ElderKettleInterAction:
 		ElderKettleInterActionUpdate(_DeltaTime);
+		break;
+	case PlayerState::Intro:
+		IntroUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -336,6 +345,12 @@ void Player::IdleStart()
 }
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsIntro)
+	{
+		ChangeState(PlayerState::Intro);
+		return;
+	}
+
 	if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
@@ -1904,7 +1919,7 @@ void Player::PortalUpdate(float _DeltaTime)
 }
 void Player::PortalEnd()
 {
-	Off();
+	RenderPtr->Off();
 	Portaling = false;
 }
 
@@ -1990,4 +2005,33 @@ void Player::ElderKettleInterActionEnd()
 {
 	ElderKettleInterActioning = false;
 	IsElderKettleEnd = true;
+}
+
+void Player::IntroStart()
+{
+	int RanC = GameEngineRandom::MainRandom.RandomInt(1, 2);
+
+	if (1 == RanC)
+	{
+		RenderPtr->ChangeAnimation("Intro_Flex");
+		RenderPtr->GetTransform()->SetLocalPosition({ -16, 138 });
+	}
+	else
+	{
+		RenderPtr->ChangeAnimation("Intro_Regular");
+		RenderPtr->GetTransform()->SetLocalPosition({ -8, 146 });
+	}
+}
+void Player::IntroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+}
+void Player::IntroEnd()
+{
+	IsIntro = false;
 }

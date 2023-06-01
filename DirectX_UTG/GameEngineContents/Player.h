@@ -25,6 +25,7 @@ enum class PlayerState
 	ElderKettleMove,
 	ElderKettleIdle,
 	ElderKettleInterAction,
+	Intro,
 };
 
 // 설명 : Field 플레이어
@@ -44,6 +45,16 @@ public:
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
+
+	void MoveAbleTimeReset()
+	{
+		MoveAbleTime = 0.0f;
+	}
+
+	void SetIntro()
+	{
+		IsIntro = true;
+	}
 
 	void PlayerStatusReset()
 	{
@@ -315,7 +326,9 @@ private:
 	bool ElderKettleInterAction = false;
 	bool ElderKettleInterActioning = false;
 	bool IsElderKettleEnd = false;
+	bool IsIntro = false;
 
+	float MoveAbleTime = 0.0f;
 	float JumpTime = 0.0f;
 	float DuckTime = 0.0f;
 	float DashTime = 0.0f;
@@ -417,5 +430,9 @@ private:
 	void ElderKettleInterActionStart();
 	void ElderKettleInterActionUpdate(float _DeltaTime);
 	void ElderKettleInterActionEnd();
+
+	void IntroStart();
+	void IntroUpdate(float _DeltaTime);
+	void IntroEnd();
 };
 

@@ -42,12 +42,19 @@ void Player::Update(float _DeltaTime)
 {
 	if (false == IsCorrection)
 	{
-		On();
+		RenderPtr->On();
 		RenderPtr->ChangeAnimation("Idle", false);
 		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());
 		SetPlayerEXStack(GetEXStack());
+		return;
+	}
+
+	MoveAbleTime += _DeltaTime;
+
+	if (MoveAbleTime <= 0.6f)
+	{
 		return;
 	}
 
@@ -124,6 +131,7 @@ void Player::PlayerDebugRenderer()
 		StandCollisionRenderPtr->On();
 		BottomSensorCollisionRenderPtr->On();
 		FrontSensorCollisionRenderPtr->On();
+		ParryCollisionRenderPtr->On();
 	}
 	else
 	{
@@ -137,6 +145,7 @@ void Player::PlayerDebugRenderer()
 		StandCollisionRenderPtr->Off();
 		BottomSensorCollisionRenderPtr->Off();
 		FrontSensorCollisionRenderPtr->Off();
+		ParryCollisionRenderPtr->Off();
 	}
 }
 
@@ -298,8 +307,13 @@ void Player::PixelCheck(float _DeltaTime)
 
 			if (false == PixelCollisionCheck.IsBlack(GravityPixel))
 			{
-				CreateLandDust();
 				IsFall = false;
+				
+				if (MoveAbleTime >= 1.0f)
+				{
+					CreateLandDust();
+				}
+
 				break;
 			}
 		}
@@ -598,7 +612,14 @@ void Player::WallCollisionCheck(float _DeltaTime)
 
 void Player::ProjectileCreate(float _DeltaTime)
 {
-	if (true == IsDash || true == IsSlap || true == IsEXAttack || true == IsHit || true == PortalAble || true == ElderKettleInterAction || true == ElderKettleInterActioning)
+	if (true == IsDash
+		|| true == IsSlap
+		|| true == IsEXAttack
+		|| true == IsHit
+		|| true == PortalAble
+		|| true == ElderKettleInterAction
+		|| true == ElderKettleInterActioning
+		|| true == IsIntro)
 	{
 		PeashooterRenderPtr->Off();
 		return;
@@ -1541,7 +1562,12 @@ void Player::CreateHitEffect()
 
 void Player::DirectCheck()
 {
-	if (true == IsDash || true == IsEXAttack || true == Portaling || true == ParryCheck || true == ElderKettleInterActioning)
+	if (true == IsDash
+		|| true == IsEXAttack
+		|| true == Portaling
+		|| true == ParryCheck 
+		|| true == ElderKettleInterActioning
+		|| true == IsIntro)
 	{
 		return;
 	}
@@ -1895,8 +1921,8 @@ void Player::PlayerInitialSetting()
 
 		// Interaction & Intro
 		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Portal", .SpriteName = "Portal", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 	}
 
@@ -1909,6 +1935,7 @@ void Player::PlayerInitialSetting()
 	if (nullptr != ChargeUpRenderPtr)
 	{
 		ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+		ChargeUpRenderPtr->Off();
 	}
 
 	// Setting
@@ -1933,6 +1960,7 @@ void Player::DebugRendererSetting()
 	{
 		DebugRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
 		DebugRenderPtr0->SetScaleToTexture("RedDot.png");
+		DebugRenderPtr0->Off();
 	}
 	if (nullptr == DebugRenderPtr1)
 	{
@@ -1968,8 +1996,8 @@ void Player::DebugRendererSetting()
 	{
 		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 }); // 왼쪽 벽
 		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, 10 });  // 오른쪽 벽
-		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, -2 }); // 왼쪽 낙하
-		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, -2 });  // 오른쪽 낙하
+		DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 }); // 왼쪽 낙하
+		DebugRenderPtr4->GetTransform()->SetLocalPosition({ 15, -2 });  // 오른쪽 낙하
 		DebugRenderPtr5->GetTransform()->SetLocalPosition({ 0, 0 });    // 플레이어 위치
 
 		DebugRenderPtr1->Off();
@@ -2025,6 +2053,7 @@ void Player::PlayerCollisionSetting()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		BodyCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == StandCollisionRenderPtr)
@@ -2034,6 +2063,7 @@ void Player::PlayerCollisionSetting()
 		StandCollisionRenderPtr->GetTransform()->SetLocalPosition(StandCollisionPtr->GetTransform()->GetLocalPosition());
 		StandCollisionRenderPtr->SetTexture("BlueBox.png");
 		StandCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		StandCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == BottomSensorCollisionRenderPtr)
@@ -2043,6 +2073,7 @@ void Player::PlayerCollisionSetting()
 		BottomSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(BottomSensorCollisionPtr->GetTransform()->GetLocalPosition());
 		BottomSensorCollisionRenderPtr->SetTexture("RedBox.png");
 		BottomSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		BottomSensorCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == FrontSensorCollisionRenderPtr)
@@ -2052,6 +2083,7 @@ void Player::PlayerCollisionSetting()
 		FrontSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(FrontSensorCollisionPtr->GetTransform()->GetLocalPosition());
 		FrontSensorCollisionRenderPtr->SetTexture("GreenBox.png");
 		FrontSensorCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		FrontSensorCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == ParryCollisionRenderPtr)

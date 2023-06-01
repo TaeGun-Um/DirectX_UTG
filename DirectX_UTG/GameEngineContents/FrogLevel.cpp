@@ -143,9 +143,10 @@ void FrogLevel::LevelChangeStart()
 		}
 		
 		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half });
-		PlayerObject->SetCorrectionFalse();
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
+		PlayerObject->SetCorrectionFalse();
+		PlayerObject->SetIntro();
 	}
 	{
 		if (nullptr == ThisColMap)
@@ -293,6 +294,7 @@ void FrogLevel::LevelChangeEnd()
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
 	PlayerObject->PlayerStatusReset();
+	PlayerObject->MoveAbleTimeReset();
 }
 
 void FrogLevel::ReLoadSetting()
