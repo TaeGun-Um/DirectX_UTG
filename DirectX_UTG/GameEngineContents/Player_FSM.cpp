@@ -1436,7 +1436,7 @@ void Player::EXAttackStart()
 
 	IsEXAttack = true;
 	AirEXAttackAble = false;
-	ChargeUpRenderPtr->ChangeAnimation("EX_ChargeUp", true);
+	ChargeUpRenderPtr->ChangeAnimation("EX_ChargeUp");
 	ChargeUpRenderPtr->On();
 	ChargeUpRenderPtr->GetTransform()->SetLocalPosition(float4{ -10, 80 });
 }

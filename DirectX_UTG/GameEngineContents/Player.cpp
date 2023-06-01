@@ -2085,7 +2085,7 @@ void Player::PlayerInitialSetting()
 
 	if (nullptr != ChargeUpRenderPtr)
 	{
-		ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .ScaleToTexture = true });
+		ChargeUpRenderPtr->CreateAnimation({ .AnimationName = "EX_ChargeUp", .SpriteName = "EX_ChargeUp", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		ChargeUpRenderPtr->Off();
 	}
 
