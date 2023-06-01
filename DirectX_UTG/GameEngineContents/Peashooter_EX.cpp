@@ -19,7 +19,7 @@ void Peashooter_EX::Start()
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 		RenderPtr->CreateAnimation({ "Loop", "Peashooter_EX_Loop.png", 0, 7, 0.07f, true, false });
-		RenderPtr->CreateAnimation({ "Death", "Peashooter_EX_Death.png", 0, 8, 0.05f, true, false });
+		RenderPtr->CreateAnimation({ "Death", "Peashooter_EX_Death.png", 0, 8, 0.05f, false, false });
 
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 750, 750 });
 		RenderPtr->ChangeAnimation("Loop");
@@ -65,7 +65,7 @@ void Peashooter_EX::MoveDirection(float _DeltaTime)
 
 void Peashooter_EX::DeathCheck()
 {
-	if (1.0f <= GetLiveTime())
+	if (3.0f <= GetLiveTime())
 	{
 		if (false == Check)
 		{
@@ -74,25 +74,19 @@ void Peashooter_EX::DeathCheck()
 		}
 	}
 
-	if (true == RenderPtr->FindAnimation("Death")->IsEnd())
+	if (true == Check && true == RenderPtr->IsAnimationEnd())
 	{
 		IsDeath = true;
-	}
-
-	if (true == IsDeath)
-	{
 		Death();
 	}
 }
 
 void Peashooter_EX::SetPeashooter_EXDeath()
 {
-	//Check = true;
+	Check = true;
 
-	//ProjectileCollisionRenderPtr->Death();
-	//ProjectileCollisionPtr->Death();
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
 
-	//RenderPtr->ChangeAnimation("Death", false);
-	//RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
-	//RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
+	RenderPtr->ChangeAnimation("Death", false);
 }

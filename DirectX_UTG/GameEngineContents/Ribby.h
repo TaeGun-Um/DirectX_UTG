@@ -22,7 +22,7 @@ public:
 	void SetInitReset()
 	{
 		IsStageEnd = false;
-		HP = 50;
+		GetRibbyHP();
 	}
 
 	int GetRibbyHP()
@@ -48,9 +48,11 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 
-	int HP = 50;
+	int HP = 500;
 	bool IsStageEnd = false;
 
 	void CollisionCheck();

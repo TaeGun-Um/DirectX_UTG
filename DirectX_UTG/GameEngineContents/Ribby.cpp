@@ -55,6 +55,22 @@ void Ribby::Start()
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 	}
+
+	if (nullptr == EXCollisionPtr)
+	{
+		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 130, 230, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -30 });
+	}
+
+	if (nullptr == EXCollisionRenderPtr)
+	{
+		EXCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
+		EXCollisionRenderPtr->SetTexture("RedLine.png");
+		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+	}
 }
 
 void Ribby::Update(float _DeltaTime)
@@ -62,10 +78,12 @@ void Ribby::Update(float _DeltaTime)
 	if (true == IsDebugRender)
 	{
 		BodyCollisionRenderPtr->On();
+		EXCollisionRenderPtr->On();
 	}
 	else
 	{
 		BodyCollisionRenderPtr->Off();
+		EXCollisionRenderPtr->Off();
 	}
 
 	CollisionCheck();
@@ -74,6 +92,7 @@ void Ribby::Update(float _DeltaTime)
 
 void Ribby::CollisionCheck()
 {
+	/////////////// Normal
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
 		&& HP > 0)
 	{
@@ -82,8 +101,9 @@ void Ribby::CollisionCheck()
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
 		--HP;
 
-		if (0 == HP)
+		if (0 >= HP)
 		{
+			HP = 0;
 			IsStageEnd = true;
 		}
 
@@ -98,8 +118,42 @@ void Ribby::CollisionCheck()
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
 		--HP;
 
-		if (0 == HP)
+		if (0 >= HP)
 		{
+			HP = 0;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	/////////////// EX
+	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0)
+	{
+		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Peashooter_EX*>(Projectile)->SetPeashooter_EXDeath();
+		HP -= 5;
+
+		if (0 >= HP)
+		{
+			HP = 0;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0)
+	{
+		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
+		HP -= 10;
+
+		if (0 >= HP)
+		{
+			HP = 0;
 			IsStageEnd = true;
 		}
 

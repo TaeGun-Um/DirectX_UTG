@@ -20,7 +20,7 @@ void Spread_EX::Start()
 
 		RenderPtr->CreateAnimation({ "Spawn", "Spread_EX_Spawn.png", 0, 4, 0.04f, true, true });
 		RenderPtr->CreateAnimation({ "Loop", "Spread_EX_Loop.png", 0, 3, 0.07f, true, true });
-		RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, false, true });
 
 		RenderPtr->ChangeAnimation("Spawn");
 	}
@@ -33,7 +33,7 @@ void Spread_EX::Start()
 
 		FalmeRenderPtr->CreateAnimation({ "FlameStart", "Spread_EX_Flame.png", 0, 4, 0.07f, true, true });
 		FalmeRenderPtr->CreateAnimation({ "FlameLoop", "Spread_EX_Flame.png", 5, 9, 0.07f, true, true });
-		FalmeRenderPtr->CreateAnimation({ "FlameEnd", "Spread_EX_Flame.png", 10, 16, 0.07f, true, true });
+		FalmeRenderPtr->CreateAnimation({ "FlameEnd", "Spread_EX_Flame.png", 10, 16, 0.07f, false, true });
 
 		FalmeRenderPtr->ChangeAnimation("FlameStart");
 	}
@@ -61,10 +61,10 @@ void Spread_EX::Update(float _DeltaTime)
 
 void Spread_EX::SetSpread_EXDeath()
 {
-	//Check = true;
+	IsDeath = true;
 
-	//ProjectileCollisionRenderPtr->Death();
-	//ProjectileCollisionPtr->Death();
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
 
 	//RenderPtr->ChangeAnimation("Death", false);
 	//RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
