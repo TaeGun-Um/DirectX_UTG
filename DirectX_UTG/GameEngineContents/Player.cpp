@@ -200,6 +200,12 @@ void Player::AddPlayerEXStack()
 	if (PlayerEXStack < 5)
 	{
 		++PlayerEXStack;
+
+		if (PlayerEXStack == 5)
+		{
+			PlayerEXGauge = 0.0f;
+			PlayerEXStack = 5;
+		}
 	}
 	else
 	{

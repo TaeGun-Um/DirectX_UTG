@@ -156,6 +156,9 @@ void TutorialLevel::LevelChangeStart()
 		{
 			CardObject = CreateActor<CardUI>();
 		}
+
+		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		HealthObject->SetMainPalyer(PlayerObject);
 	}
 	{
 		if (BlackBoxPtr == nullptr)

@@ -167,8 +167,8 @@ void FrogLevel::LevelChangeStart()
 			CardObject = CreateActor<CardUI>();
 		}
 
-		CardObject->GetTransform()->SetLocalPosition({-585, -335});
-		CardObject->SetMainPalyer(PlayerObject);
+		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		HealthObject->SetMainPalyer(PlayerObject);
 	}
 	{
 		if (BlackBoxPtr == nullptr)

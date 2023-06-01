@@ -14,7 +14,7 @@ public:
 	CardUI& operator=(const CardUI& _Other) = delete;
 	CardUI& operator=(CardUI&& _Other) noexcept = delete;
 
-	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
+	void SetMainPalyer(std::shared_ptr<class Player> _MainPlayer);
 
 protected:
 	void Start() override;
@@ -23,7 +23,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-	std::shared_ptr<class Player> MainPalyer = nullptr;
+	std::shared_ptr<class Player> MainPlayer = nullptr;
 
 };
 
