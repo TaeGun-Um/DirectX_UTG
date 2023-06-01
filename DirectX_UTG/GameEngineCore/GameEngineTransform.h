@@ -6,12 +6,11 @@
 
 enum class ColType
 {
-	// 2D에서의 충돌은 모두가 한 축이 같아야 한다.
-	POINT2D,   // z를 0으로 만들고 충돌
-	SPHERE2D,  // z를 0으로 만들고 충돌
+	// 캡슐
+	// 2D에서의 충돌은 모두가 한축이 같아야 한다.
+	SPHERE2D, // z를 0으로 만들고 충돌
 	AABBBOX2D, // z를 0으로 만들고 충돌
-	OBBBOX2D,  // z를 0으로 만들고 충돌
-	POINT3D,
+	OBBBOX2D, // z를 0으로 만들고 충돌
 	SPHERE3D,
 	AABBBOX3D,
 	OBBBOX3D,
@@ -35,7 +34,10 @@ public:
 		OBB.Extents.z = abs(OBB.Extents.z);
 	}
 
-	CollisionData() {}
+	CollisionData()
+	{
+
+	}
 };
 
 class CollisionParameter
@@ -46,51 +48,51 @@ public:
 	ColType OtherType = ColType::SPHERE3D;
 };
 
-// 일단, 프리카메라모드 시 이런 구조체를 선언하고 값을 저장한 뒤 불러오는 형식을 쓰면 편하다
 struct TransformData
 {
-	// 단순 계산을 위한 행렬
+	// 계산을 위한 편의용 스케일
 	float4 Scale;
 	float4 Rotation;
 	float4 Quaternion;
 	float4 Position;
 
-	// 로컬 크자(쿼)이
 	float4 LocalScale;
 	float4 LocalRotation;
-	float4 LocalQuaternion; // XMQuaternionIdentity() = 항등쿼터니온 생성
+	float4 LocalQuaternion;
 	float4 LocalPosition;
 
-	// 월드 크자(쿼)이
 	float4 WorldScale;
 	float4 WorldRotation;
 	float4 WorldQuaternion;
 	float4 WorldPosition;
 
-	float4x4 ScaleMatrix;                    // 로컬 크기 행렬
-	float4x4 RotationMatrix;                 // 로컬 회전 행렬
-	float4x4 PositionMatrix;                 // 로컬 이동 행렬
+	float4x4 ScaleMatrix;
+	float4x4 RotationMatrix;
+	float4x4 PositionMatrix;
+	float4x4 LocalWorldMatrix;
+	float4x4 WorldMatrix;
+	float4x4 View;
+	float4x4 Projection;
+	float4x4 ViewPort;
+	float4x4 WorldViewProjectionMatrix;
 
-	float4x4 LocalWorldMatrix;               // 로컬의 월드 행렬
-	float4x4 WorldMatrix;                    // 월드 행렬
 
-	float4x4 View;                           // 뷰행렬
-	float4x4 Projection;                     // 프로젝션 행렬
-	float4x4 ViewPort;                       // 뷰포트 행렬
-	float4x4 WorldViewProjectionMatrix;      // 뷰행렬 * 프로젝션행렬
-	
 public:
-	// 빈번하게 값을 변경할 수 있기 때문에 초기화는 생성자에서 실시
 	TransformData()
 	{
 		Scale = float4::One;
 		Rotation = float4::Null;
 		Quaternion = float4::Null;
 		Position = float4::Zero;
+		//WorldScale = float4::One;
+		//WorldRotation = float4::Null;
+		//WorldQuaternion = float4::Null;
+		//WorldPosition = float4::Zero;
 	}
 };
 
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
+class GameEngineObject;
 class GameEngineTransform : public GameEngineObjectBase
 {
 	friend class GameEngineObject;
@@ -107,236 +109,6 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
-	// 월드 크기 지정
-	void SetWorldScale(const float4& _Value)
-	{
-		AbsoluteScale = true;
-		TransData.Scale = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	// 월드 위치 지정
-	void SetWorldRotation(const float4& _Value)
-	{
-		AbsoluteRotation = true;
-		TransData.Rotation = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	// 월드 이동 지정
-	void SetWorldPosition(const float4& _Value)
-	{
-		AbsolutePosition = true;
-		TransData.Position = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	// 로컬 크기 지정
-	void SetLocalScale(const float4& _Value)
-	{
-		AbsoluteScale = false;
-		TransData.Scale = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	// 로컬 회전 지정
-	void SetLocalRotation(const float4& _Value)
-	{
-		AbsoluteRotation = false;
-		TransData.Rotation = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	// 로컬 이동 지정
-	void SetLocalPosition(const float4& _Value)
-	{
-		AbsolutePosition = false;
-		TransData.Position = _Value;
-
-		TransformUpdate();
-		CalChild();
-	}
-
-	float4 GetLocalScale();      // 로컬 크기 행렬 리턴
-	float4 GetLocalRotation();   // 로컬 회전 행렬 리턴
-	float4 GetLocalPosition();   // 로컬 이동 행렬 리턴
-	float4 GetLocalQuaternion(); // 로컬 쿼터니온 리턴
-	float4 GetWorldScale();      // 월드 크기 행렬 리턴
-	float4 GetWorldRotation();   // 월드 회전 행렬 리턴
-	float4 GetWorldPosition();   // 월드 이동 행렬 리턴
-	float4 GetWorldQuaternion(); // 월드 쿼터니온 리턴
-
-	// 월드 행렬 리턴
-	const float4x4 GetWorldMatrix()
-	{
-		return TransData.WorldMatrix;
-	}
-
-	// 월드 행렬 리턴(래퍼런스)
-	const float4x4& GetWorldMatrixRef()
-	{
-		return TransData.WorldMatrix;
-	}
-
-	// 로컬월드 행렬 리턴
-	float4x4 GetLocalWorldMatrix()
-	{
-		return TransData.LocalWorldMatrix;
-	}
-
-	// 로컬월드 행렬 리턴(래퍼런스)
-	const float4x4& GetLocalWorldMatrixRef()
-	{
-		return TransData.LocalWorldMatrix;
-	}
-
-	// 로컬 크기 Add
-	void AddLocalScale(const float4& _Value)
-	{
-		SetLocalScale(TransData.Scale + _Value);
-	}
-
-	// 로컬 회전 Add
-	void AddLocalRotation(const float4& _Value)
-	{
-		SetLocalRotation(TransData.Rotation + _Value);
-	}
-
-	// 로컬 이동 Add
-	void AddLocalPosition(const float4& _Value)
-	{
-		SetLocalPosition(TransData.Position + _Value);
-	}
-
-	// 월드 크기 Add
-	void AddWorldScale(const float4& _Value)
-	{
-		SetWorldScale(TransData.Scale + _Value);
-	}
-
-	// 월드 회전 Add
-	void AddWorldRotation(const float4& _Value)
-	{
-		SetWorldRotation(TransData.Rotation + _Value);
-	}
-
-	// 월드 이동 Add
-	void AddWorldPosition(const float4& _Value)
-	{
-		SetWorldPosition(TransData.Position + _Value);
-	}
-
-	// 월드에서 자신이 바라보는 방향 단위기저벡터 리턴
-	float4 GetWorldForwardVector()
-	{
-		return TransData.WorldMatrix.ArrVector[2].NormalizeReturn();
-	}
-
-	// 월드에서 자신의 뒤 방향 단위기저벡터 리턴
-	float4 GetWorldBackVector()
-	{
-		return -GetWorldForwardVector();
-	}
-
-	// 월드에서 자신의 위로 향하는 단위기저벡터 리턴
-	float4 GetWorldUpVector()
-	{
-		return TransData.WorldMatrix.ArrVector[1].NormalizeReturn();
-	}
-
-	// 월드에서 자신의 아래로로 향하는 단위기저벡터 리턴
-	float4 GetWorldDownVector()
-	{
-		return -GetWorldUpVector();
-	}
-
-	// 월드에서 자신의 오른쪽 방향 단위기저벡터 리턴
-	float4 GetWorldRightVector()
-	{
-		return TransData.WorldMatrix.ArrVector[0].NormalizeReturn();
-	}
-
-	// 월드에서 자신의 왼쪽 방향 단위기저벡터 리턴
-	float4 GetWorldLeftVector()
-	{
-		return -GetWorldRightVector();
-	}
-
-	// 로컬에서 자신이 바라보는 방향 월드 단위기저벡터 리턴
-	float4 GetLocalForwardVector()
-	{
-		return TransData.LocalWorldMatrix.ArrVector[2].NormalizeReturn();
-	}
-
-	// 로컬에서 자신의 위로 향하는 월드 단위기저벡터 리턴
-	float4 GetLocalUpVector()
-	{
-		return TransData.LocalWorldMatrix.ArrVector[1].NormalizeReturn();
-	}
-
-	// 로컬에서 자신의 오른쪽 방향 단위기저벡터 리턴
-	float4 GetLocalRightVector()
-	{
-		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
-	}
-
-	// 월드 프로젝션 행렬 리턴
-	const float4x4 GetWorldViewProjectionMatrix()
-	{
-		return TransData.WorldViewProjectionMatrix;
-	}
-
-	// 월드 프로젝션 행렬 리턴(래퍼런스)
-	const float4x4& GetWorldViewProjectionMatrixRef()
-	{
-		return TransData.WorldViewProjectionMatrix;
-	}
-
-	// 카메라 행렬(뷰, 프로젝션) 적용
-	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
-	{
-		TransData.View = _View;
-		TransData.Projection = _Projection;
-		TransData.WorldViewProjectionMatrix = TransData.WorldMatrix * TransData.View * TransData.Projection;
-	}
-
-	// 카메라 행렬(뷰포트) 적용
-	inline const void SetViewPort(const float4x4& _ViewPort)
-	{
-		TransData.ViewPort = _ViewPort;
-		TransData.WorldViewProjectionMatrix *= TransData.ViewPort;
-	}
-
-	// Transform 데이터를 레퍼런스로 리턴
-	const TransformData& GetTransDataRef()
-	{
-		return TransData;
-	}
-
-	// Transform 데이터 세팅
-	void SetTransformData(const TransformData& _Data)
-	{
-		TransData = _Data;
-	}
-
-	void SetParent(GameEngineTransform* _Parent, bool _IsParentWorld = true);
-	void CalChild();                              // 부모의 영향을 자식에게 적용
-
-	GameEngineTransform* GetParent()
-	{
-		return Parent;
-	}
-
 	void SetLocalPositiveScaleX()
 	{
 		TransData.Scale.x = abs(TransData.Scale.x);
@@ -349,16 +121,228 @@ public:
 		SetLocalScale(TransData.Scale);
 	}
 
+	void SetWorldScale(const float4& _Value)
+	{
+		AbsoluteScale = true;
+		TransData.Scale = _Value;
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetWorldRotation(const float4& _Value)
+	{
+		AbsoluteRotation = true;
+		TransData.Rotation = _Value;
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetWorldPosition(const float4& _Value)
+	{
+		AbsolutePosition = true;
+		TransData.Position = _Value;
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetLocalScale(const float4& _Value)
+	{
+
+		AbsoluteScale = false;
+		TransData.Scale = _Value;
+
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetLocalRotation(const float4& _Value)
+	{
+		AbsoluteRotation = false;
+		TransData.Rotation = _Value;
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void SetLocalPosition(const float4& _Value)
+	{
+		AbsolutePosition = false;
+		TransData.Position = _Value;
+
+
+		TransformUpdate();
+		CalChild();
+	}
+
+	void AddLocalScale(const float4& _Value)
+	{
+		SetLocalScale(TransData.Scale + _Value);
+	}
+
+	void AddLocalRotation(const float4& _Value)
+	{
+		SetLocalRotation(TransData.Rotation + _Value);
+	}
+
+	void AddLocalPosition(const float4& _Value)
+	{
+		SetLocalPosition(TransData.Position + _Value);
+	}
+
+	void AddWorldScale(const float4& _Value)
+	{
+		SetWorldScale(TransData.Scale + _Value);
+	}
+
+	void AddWorldRotation(const float4& _Value)
+	{
+		SetWorldRotation(TransData.Rotation + _Value);
+	}
+
+	void AddWorldPosition(const float4& _Value)
+	{
+		SetWorldPosition(TransData.Position + _Value);
+	}
+
+
+	float4 GetWorldForwardVector()
+	{
+		return TransData.WorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	float4 GetWorldUpVector()
+	{
+		return TransData.WorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	float4 GetWorldRightVector()
+	{
+		return TransData.WorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	float4 GetWorldBackVector()
+	{
+		return -GetWorldForwardVector();
+	}
+
+	float4 GetWorldDownVector()
+	{
+		return -GetWorldUpVector();
+	}
+
+	float4 GetWorldLeftVector()
+	{
+		return -GetWorldRightVector();
+	}
+
+	float4 GetLocalPosition();
+	float4 GetLocalScale();
+	float4 GetLocalRotation();
+	float4 GetLocalQuaternion();
+	float4 GetWorldPosition();
+	float4 GetWorldScale();
+	float4 GetWorldRotation();
+	float4 GetWorldQuaternion();
+
+
+	float4 GetLocalForwardVector()
+	{
+		return TransData.LocalWorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	float4 GetLocalUpVector()
+	{
+		return TransData.LocalWorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	float4 GetLocalRightVector()
+	{
+		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	float4x4 GetLocalWorldMatrix()
+	{
+		return TransData.LocalWorldMatrix;
+	}
+
+	const float4x4& GetLocalWorldMatrixRef()
+	{
+		return TransData.LocalWorldMatrix;
+	}
+
+	const float4x4 GetWorldMatrix()
+	{
+		return TransData.WorldMatrix;
+	}
+
+	const float4x4& GetWorldMatrixRef()
+	{
+		return TransData.WorldMatrix;
+	}
+
+	const float4x4 GetWorldViewProjectionMatrix()
+	{
+		return TransData.WorldViewProjectionMatrix;
+	}
+
+	const float4x4& GetWorldViewProjectionMatrixRef()
+	{
+		return TransData.WorldViewProjectionMatrix;
+	}
+
+	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
+	{
+		TransData.View = _View;
+		TransData.Projection = _Projection;
+		TransData.WorldViewProjectionMatrix = TransData.WorldMatrix * TransData.View * TransData.Projection;
+	}
+
+	inline const void SetViewPort(const float4x4& _ViewPort)
+	{
+		TransData.ViewPort = _ViewPort;
+		TransData.WorldViewProjectionMatrix *= TransData.ViewPort;
+	}
+
+	void CalChild();
+
+	void SetParent(GameEngineTransform* _Parent, bool _IsParentWorld = true);
+
+	GameEngineTransform* GetParent()
+	{
+		return Parent;
+	}
+
+	const TransformData& GetTransDataRef()
+	{
+		return TransData;
+	}
+
+	void SetTransformData(const TransformData& _Data)
+	{
+		TransData = _Data;
+	}
+
+	CollisionData GetCollisionData()
+	{
+		return ColData;
+	}
+
 protected:
 
 private:
-	// 행렬 곱이 실시되면 무조건 행렬 데이터가 최신화됨
-	void TransformUpdate();
-	void AbsoluteReset();
 
 	void WorldDecompose();
 	void LocalDecompose();
+
 	void WorldCalculation();
+
+	void AbsoluteReset();
+
+	void TransformUpdate();
 
 	TransformData TransData;
 
@@ -366,21 +350,29 @@ private:
 	bool AbsoluteRotation = false;
 	bool AbsolutePosition = false;
 
-	GameEngineTransform* Parent = nullptr;   // weak_ptr 구조
-	std::list<GameEngineTransform*> Child;   // 부모자식관계를 결정한다.
-	GameEngineObject* Master = nullptr;
+	GameEngineTransform* Parent = nullptr;
+	std::list<GameEngineTransform*> Child;
 
+private:
 	void AllAccTime(float _DeltaTime);
+
 	void AllUpdate(float _DeltaTime);
+
 	void AllRender(float _DeltaTime);
+
 	void AllRelease();
+
 	void ChildRelease();
+
 	void SetMaster(GameEngineObject* _Master);
 
 	GameEngineObject* GetMaster()
 	{
 		return Master;
 	}
+
+	GameEngineObject* Master = nullptr;
+
 
 public:
 	bool Collision(const CollisionParameter& Data);
@@ -390,29 +382,32 @@ private:
 
 	CollisionData ColData;
 
-	static std::function<bool(GameEngineTransform*, GameEngineTransform*)> ArrColFunction[static_cast<int>(ColType::MAX)][static_cast<int>(ColType::MAX)];
+	static std::function<bool(const CollisionData&, const CollisionData&)> ArrColFunction[static_cast<int>(ColType::MAX)][static_cast<int>(ColType::MAX)];
 
-	static bool SphereToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool SphereToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool SphereToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+public:
+	static bool SphereToSpehre(const CollisionData&, const CollisionData&);
+	static bool SphereToAABB(const CollisionData&, const CollisionData&);
+	static bool SphereToOBB(const CollisionData&, const CollisionData&);
 
-	static bool AABBToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool AABBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool AABBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABBToSpehre(const CollisionData&, const CollisionData&);
+	static bool AABBToAABB(const CollisionData&, const CollisionData&);
+	static bool AABBToOBB(const CollisionData&, const CollisionData&);
 
-	static bool OBBToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool OBBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool OBBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBBToSpehre(const CollisionData&, const CollisionData&);
+	static bool OBBToAABB(const CollisionData&, const CollisionData&);
+	static bool OBBToOBB(const CollisionData&, const CollisionData&);
 
-	static bool Sphere2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool Sphere2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool Sphere2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool Sphere2DToSpehre2D(const CollisionData&, const CollisionData&);
+	static bool Sphere2DToAABB2D(const CollisionData&, const CollisionData&);
+	static bool Sphere2DToOBB2D(const CollisionData&, const CollisionData&);
 
-	static bool AABB2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool AABB2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool AABB2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABB2DToSpehre2D(const CollisionData&, const CollisionData&);
+	static bool AABB2DToAABB2D(const CollisionData&, const CollisionData&);
+	static bool AABB2DToOBB2D(const CollisionData&, const CollisionData&);
 
-	static bool OBB2DToSpehre2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool OBB2DToAABB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
-	static bool OBB2DToOBB2D(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBB2DToSpehre2D(const CollisionData&, const CollisionData&);
+	static bool OBB2DToAABB2D(const CollisionData&, const CollisionData&);
+	static bool OBB2DToOBB2D(const CollisionData&, const CollisionData&);
+
 };
+

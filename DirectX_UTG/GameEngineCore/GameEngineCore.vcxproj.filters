@@ -213,6 +213,9 @@
     <ClInclude Include="GameEngineUIRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineButton.h">
+      <Filter>ContentPattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -349,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineUIRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineButton.cpp">
+      <Filter>ContentPattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
