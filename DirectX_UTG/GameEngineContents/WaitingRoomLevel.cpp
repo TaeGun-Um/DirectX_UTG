@@ -185,6 +185,12 @@ void WaitingRoomLevel::LevelChangeEnd()
 	if (nullptr != GameEngineSprite::Find("Kettle_Idle"))
 	{
 		GameEngineSprite::UnLoad("Kettle_Idle");
+		GameEngineSprite::UnLoad("Bottle_Pop");
+		GameEngineSprite::UnLoad("Bottle_Pop_Boil");
+		GameEngineSprite::UnLoad("Bottle_Pop_Trans_Idle");
+		GameEngineSprite::UnLoad("Talk_A");
+		GameEngineSprite::UnLoad("Talk_AToB");
+		GameEngineSprite::UnLoad("Talk_B");
 	}
 
 	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))

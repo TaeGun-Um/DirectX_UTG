@@ -30,6 +30,11 @@ public:
 		return IsIdle;
 	}
 
+	bool GetIsSpeedUp()
+	{
+		return IsSpeedUp;
+	}
+
 	void MoveAbleTimeReset()
 	{
 		MoveAbleTime = 0.0f;
@@ -95,6 +100,12 @@ private:
 	bool IsDebugRender = false;
 	bool Directbool = true;
 
+	// Assistant Function
+	void CheatKey();
+	void DebugRendererSetting();
+	void EnterMessageScaleUp(float _DeltaTime);
+	void EnterMessageScaleDown(float _DeltaTime);
+
 	// ÇÈ¼¿Ã¼Å©
 	void PixelCheck(float _DeltaTime);
 
@@ -105,15 +116,12 @@ private:
 	AttackDirection ADValue = AttackDirection::Right_Down;
 
 	void PlayerInitialSetting();
-	void DebugRendererSetting();
 	void PlayerCollisionSetting();
 	void PlayerDebugRenderer();
 	void DirectCheck();
 	void MoveDirectCheck();
 	void CreateMoveDust();
 	void CollisionCheck(float _DeltaTime);
-	void EnterMessageScaleUp(float _DeltaTime);
-	void EnterMessageScaleDown(float _DeltaTime);
 
 	float4 EnterMessageRenderMaxScale = float4::Zero;
 	float4 EnterMessageRenderMinScale = float4::Zero;
@@ -126,6 +134,7 @@ private:
 	int ScaleCount = 1;
 	bool ScaleCheckStart = false;
 	bool IsCollisionOn = true;
+	bool IsSpeedUp = false;
 
 	void UpdateState(float _DeltaTime);
 	void ChangeState(OverworldState _StateValue);

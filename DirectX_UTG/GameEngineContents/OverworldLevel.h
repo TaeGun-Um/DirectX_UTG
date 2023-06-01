@@ -57,7 +57,7 @@ private:
 
 	std::shared_ptr<class Player_Overworld> PlayerObject = nullptr;
 	std::shared_ptr<class Overworld_ColMap> ThisColMap = nullptr;
-	std::shared_ptr<class TransformGUI> GUI = nullptr;
+	std::shared_ptr<class OverworldGUI> GUI = nullptr;
 
 	std::shared_ptr<class Overworld_Map> MapObject = nullptr;
 	std::shared_ptr<class PortalDoor> PortalDoorObject = nullptr;

@@ -14,6 +14,8 @@ public:
 	HealthUI& operator=(const HealthUI& _Other) = delete;
 	HealthUI& operator=(HealthUI&& _Other) noexcept = delete;
 
+	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -21,6 +23,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class Player> MainPalyer = nullptr;
 
 };
 

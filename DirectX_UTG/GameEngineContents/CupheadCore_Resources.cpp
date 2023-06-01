@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineGUI.h>
 
 #include "TransformGUI.h"
+#include "OverworldGUI.h"
 
 void CupheadCore::ContentsResourcesLoad()
 {
@@ -72,6 +73,9 @@ void CupheadCore::ContentsKeyBind()
 		GameEngineInput::CreateKey("Test", 'Q');
 		GameEngineInput::CreateKey("Dash", VK_SHIFT);
 		GameEngineInput::CreateKey("WeaponSwap", VK_TAB);
+		GameEngineInput::CreateKey("HPMax", VK_F1);
+		GameEngineInput::CreateKey("EXMax", VK_F2);
+		GameEngineInput::CreateKey("SpeedUp", VK_F3);
 	}
 
 	if (false == GameEngineInput::IsKey("FadeIn"))
@@ -114,6 +118,7 @@ void CupheadCore::ContentsResourcesCreate()
 
 	// IMGUI Create
 	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
+	GameEngineGUI::GUIWindowCreate<OverworldGUI>("OverworldGUI");
 
 	// 자기만의 쉐이더 만드는법
 	//  1. 새로운 쉐이더를 만든다.

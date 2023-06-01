@@ -3,27 +3,24 @@
 #include <GameEngineCore/GameEngineGUI.h>
 
 // Ό³Έν :
-class TransformGUI : public GameEngineGUIWindow
+class OverworldGUI : public GameEngineGUIWindow
 {
 public:
 	// constrcuter destructer
-	TransformGUI();
-	~TransformGUI();
+	OverworldGUI();
+	~OverworldGUI();
 
 	// delete Function
-	TransformGUI(const TransformGUI& _Other) = delete;
-	TransformGUI(TransformGUI&& _Other) noexcept = delete;
-	TransformGUI& operator=(const TransformGUI& _Other) = delete;
-	TransformGUI& operator=(TransformGUI&& _Other) noexcept = delete;
-	
+	OverworldGUI(const OverworldGUI& _Other) = delete;
+	OverworldGUI(OverworldGUI&& _Other) noexcept = delete;
+	OverworldGUI& operator=(const OverworldGUI& _Other) = delete;
+	OverworldGUI& operator=(OverworldGUI&& _Other) noexcept = delete;
+
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
 	void SetTarget(GameEngineTransform* _Target);
 
-	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
-	void SetFrogBoss(std::shared_ptr<class Ribby> _FrogBoss);
-	void SetDragonBoss(std::shared_ptr<class GrimMatchstick> _FrogBoss);
-	void SetMouseBoss(std::shared_ptr<class Werner_Werman> _FrogBoss);
+	void SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer);
 
 	std::function<void()> PlayerDebugRenderOn;
 	std::function<void()> PlayerDebugRenderOff;
@@ -34,10 +31,7 @@ public:
 protected:
 
 private:
-	std::shared_ptr<class Player> MainPlayer = nullptr;
-	std::shared_ptr<class Ribby> FrogBoss = nullptr;
-	std::shared_ptr<class GrimMatchstick> DragonBoss = nullptr;
-	std::shared_ptr<class Werner_Werman> MouseBoss = nullptr;
+	std::shared_ptr<class Player_Overworld> OverworldPalyer = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 
 	bool IsWorldPostion = false;
@@ -60,6 +54,5 @@ private:
 	void HelpMarker(const std::string_view& _Text);
 
 	static float4 ConvertFloat4(float _FloatArr[4]);
-
 };
 

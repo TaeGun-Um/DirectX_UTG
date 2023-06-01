@@ -129,62 +129,21 @@ public:
 		return PlayerEXStack;
 	}
 
-	void MinusPlayerHP()
+	bool GetPlayerIsHPMax()
 	{
-		if (PlayerHP > 0)
-		{
-			--PlayerHP;
-		}
-		else
-		{
-			return;
-		}
+		return IsHPMax;
+	}
+	
+	bool GetPlayerIsEXMax()
+	{
+		return IsEXMax;
 	}
 
-	void AddPlayerEXStack()
-	{
-		if (PlayerEXStack < 5)
-		{
-			++PlayerEXStack;
-		}
-		else
-		{
-			return;
-		}
-	}
-
-	void AddPlayerEXGauge_Peashooter()
-	{
-		if (5 != PlayerEXStack)
-		{
-			++PlayerEXGauge;
-		}
-		
-		CheckPlayerEXGauge();
-	}
-
-	void AddPlayerEXGauge_Spread()
-	{
-		if (5 != PlayerEXStack)
-		{
-			PlayerEXGauge += 0.2f;
-		}
-
-		CheckPlayerEXGauge();
-	}
-
-	void CheckPlayerEXGauge()
-	{
-		if (PlayerEXGauge > 29.0f)
-		{
-			PlayerEXGauge = 0.0f;
-
-			if (PlayerEXStack < 5)
-			{
-				++PlayerEXStack;
-			}
-		}
-	}
+	void MinusPlayerHP();
+	void AddPlayerEXStack();
+	void AddPlayerEXGauge_Peashooter();
+	void AddPlayerEXGauge_Spread();
+	void CheckPlayerEXGauge();
 
 protected:
 	void Start();
@@ -245,8 +204,11 @@ private:
 	float Inter = 0.5f;
 
 	bool MulColorCheck = false;
+	bool IsHPMax = false;
+	bool IsEXMax = false;
 
 	// Assistant
+	void CheatKey();
 	void PositionCorrection();
 	void PlayerDebugRenderer();
 	void HitBlink(float _DeltaTime);

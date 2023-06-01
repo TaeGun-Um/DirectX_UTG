@@ -1,23 +1,20 @@
 #include "PrecompileHeader.h"
-#include "TransformGUI.h"
+#include "OverworldGUI.h"
 
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-#include "Player.h"
-#include "Ribby.h"
-#include "GrimMatchstick.h"
-#include "Werner_Werman.h"
+#include "Player_Overworld.h"
 
-TransformGUI::TransformGUI() 
+OverworldGUI::OverworldGUI() 
 {
 }
 
-TransformGUI::~TransformGUI() 
+OverworldGUI::~OverworldGUI() 
 {
 }
 
-void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
+void OverworldGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	if (nullptr == TargetTransform)
 	{
@@ -156,46 +153,26 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ColMapRenderOff();
 	}
 
-	if (nullptr != MainPlayer)
+	if (nullptr != OverworldPalyer)
 	{
-		ImGui::Text("PlayerHP : %d", MainPlayer->GetPlayerHP());
-		ImGui::Text("EXGauge : %f", MainPlayer->GetPlayerEXGauge());
-		ImGui::Text("EXStack : %d", MainPlayer->GetPlayerEXStack());
+		//ImGui::Text("IsSpeedUp : %s", OverworldPalyer->GetIsSpeedUp());
 
-		const char* IsHPMax = "false";
+		const char* IsSpeedUp = "false";
 
-		if (false == MainPlayer->GetPlayerIsHPMax())
+		if (false == OverworldPalyer->GetIsSpeedUp())
 		{
-			IsHPMax = "false";
+			IsSpeedUp = "false";
 		}
 		else
 		{
-			IsHPMax = "true";
-		}
-		
-		ImGui::Text("IsHPMax : %s", IsHPMax);
-
-		const char* IsEXMax = "false";
-
-		if (false == MainPlayer->GetPlayerIsEXMax())
-		{
-			IsEXMax = "false";
-		}
-		else
-		{
-			IsEXMax = "true";
+			IsSpeedUp = "true";
 		}
 
-		ImGui::Text("IsEXMax : %s", IsEXMax);
-	}
-
-	if (nullptr != FrogBoss)
-	{
-		ImGui::Text("FrogBossHP : %d", FrogBoss->GetRibbyHP());
+		ImGui::Text("IsSpeedUp : %s", IsSpeedUp);
 	}
 }
 
-void TransformGUI::SetTarget(GameEngineTransform* _Target)
+void OverworldGUI::SetTarget(GameEngineTransform* _Target)
 {
 	TargetTransform = _Target;
 
@@ -226,27 +203,12 @@ void TransformGUI::SetTarget(GameEngineTransform* _Target)
 	}
 }
 
-void TransformGUI::SetMainPalyer(std::shared_ptr<class Player> _MainPlayer)
+void OverworldGUI::SetOverworldPalyer(std::shared_ptr<class Player_Overworld> _OverworldPalyer)
 {
-	MainPlayer = _MainPlayer;
+	OverworldPalyer = _OverworldPalyer;
 }
 
-void TransformGUI::SetFrogBoss(std::shared_ptr<class Ribby> _FrogBoss)
-{
-	FrogBoss = _FrogBoss;
-}
-
-void TransformGUI::SetDragonBoss(std::shared_ptr<class GrimMatchstick> _DragonBoss)
-{
-	DragonBoss = _DragonBoss;
-}
-
-void TransformGUI::SetMouseBoss(std::shared_ptr<class Werner_Werman> _MouseBoss)
-{
-	MouseBoss = _MouseBoss;
-}
-
-void TransformGUI::HelpMarker(const std::string_view& _Text)
+void OverworldGUI::HelpMarker(const std::string_view& _Text)
 {
 	ImGui::TextDisabled("(?)");
 	if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort) && ImGui::BeginTooltip())
@@ -258,7 +220,7 @@ void TransformGUI::HelpMarker(const std::string_view& _Text)
 	}
 }
 
-float4 TransformGUI::ConvertFloat4(float _FloatArr[4])
+float4 OverworldGUI::ConvertFloat4(float _FloatArr[4])
 {
 	return float4(_FloatArr[0], _FloatArr[1], _FloatArr[2], _FloatArr[3]);
 }

@@ -166,6 +166,9 @@ void FrogLevel::LevelChangeStart()
 		{
 			CardObject = CreateActor<CardUI>();
 		}
+
+		CardObject->GetTransform()->SetLocalPosition({-585, -335});
+		CardObject->SetMainPalyer(PlayerObject);
 	}
 	{
 		if (BlackBoxPtr == nullptr)
@@ -207,6 +210,7 @@ void FrogLevel::LevelChangeStart()
 		{
 			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		}
+
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
 		GUI->SetFrogBoss(RibbyObject);

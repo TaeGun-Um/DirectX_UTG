@@ -26,12 +26,24 @@ void ElderKettle::Start()
 		NewDir.Move("ElderKettle");
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Kettle_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Boil").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Trans_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_AToB").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_B").GetFullPath());
 	}
 
 	if (RenderPtr == nullptr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		RenderPtr->CreateAnimation({ .AnimationName = "Kettle_Idle", .SpriteName = "Kettle_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop", .SpriteName = "Bottle_Pop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Boil", .SpriteName = "Bottle_Pop_Boil", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Trans_Idle", .SpriteName = "Bottle_Pop_Trans_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_A", .SpriteName = "Talk_A", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_AToB", .SpriteName = "Talk_AToB", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_B", .SpriteName = "Talk_B", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("Kettle_Idle");
 	}
 

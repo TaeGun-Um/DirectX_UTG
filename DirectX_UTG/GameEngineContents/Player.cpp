@@ -58,6 +58,8 @@ void Player::Update(float _DeltaTime)
 		return;
 	}
 
+	CheatKey();
+
 	MoveCamera(_DeltaTime);			    // 카메라 이동 연산
 	DirectCheck();					    // 플레이어 위치 판정
 	UpdateState(_DeltaTime);			// 플레이어 FSM 업데이트
@@ -146,6 +148,109 @@ void Player::PlayerDebugRenderer()
 		BottomSensorCollisionRenderPtr->Off();
 		FrontSensorCollisionRenderPtr->Off();
 		ParryCollisionRenderPtr->Off();
+	}
+}
+
+// 치트키 기능
+void Player::CheatKey()
+{
+	if (true == GameEngineInput::IsDown("HPMax"))
+	{
+		IsHPMax = !IsHPMax;
+	}
+	if (true == GameEngineInput::IsDown("EXMax"))
+	{
+		IsEXMax = !IsEXMax;
+	}
+
+	if (true == IsEXMax)
+	{
+		PlayerEXGauge = 0.0f;
+		PlayerEXStack = 5;
+	}
+}
+
+// 플레이어 치트키 모음
+void Player::MinusPlayerHP()
+{
+	if (true == IsHPMax)
+	{
+		return;
+	}
+
+	if (PlayerHP > 0)
+	{
+		--PlayerHP;
+	}
+	else
+	{
+		return;
+	}
+}
+
+void Player::AddPlayerEXStack()
+{
+	if (true == IsEXMax)
+	{
+		PlayerEXGauge = 0.0f;
+		PlayerEXStack = 5;
+		return;
+	}
+
+	if (PlayerEXStack < 5)
+	{
+		++PlayerEXStack;
+	}
+	else
+	{
+		return;
+	}
+}
+
+void Player::AddPlayerEXGauge_Peashooter()
+{
+	if (true == IsEXMax)
+	{
+		PlayerEXGauge = 0.0f;
+		PlayerEXStack = 5;
+		return;
+	}
+
+	if (5 != PlayerEXStack)
+	{
+		++PlayerEXGauge;
+	}
+
+	CheckPlayerEXGauge();
+}
+
+void Player::AddPlayerEXGauge_Spread()
+{
+	if (true == IsEXMax)
+	{
+		PlayerEXGauge = 0.0f;
+		PlayerEXStack = 5;
+		return;
+	}
+
+	if (5 != PlayerEXStack)
+	{
+		PlayerEXGauge += 0.2f;
+	}
+
+	CheckPlayerEXGauge();
+}
+
+void Player::CheckPlayerEXGauge()
+{
+	if (PlayerEXGauge > 29.0f)
+	{
+		PlayerEXGauge = 0.0f;
+
+		if (PlayerEXStack < 5)
+		{
+			++PlayerEXStack;
+		}
 	}
 }
 

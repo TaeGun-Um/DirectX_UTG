@@ -19,7 +19,7 @@
 #include "BuildingDataBase.h"
 
 #include "FadeEffect.h"
-#include "TransformGUI.h"
+#include "OverworldGUI.h"
 #include "Screen_FX.h"
 #include "Loading.h"
 #include "RoundBlackBox.h"
@@ -223,7 +223,7 @@ void OverworldLevel::LevelChangeStart()
 	{
 		if (nullptr == GUI)
 		{
-			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
+			GUI = GameEngineGUI::FindGUIWindowConvert<OverworldGUI>("OverworldGUI");
 		}
 		
 		GUI->SetTarget(PlayerObject->GetTransform());

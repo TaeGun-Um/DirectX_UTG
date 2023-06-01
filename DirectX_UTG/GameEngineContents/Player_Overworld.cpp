@@ -39,6 +39,8 @@ void Player_Overworld::Update(float _DeltaTime)
 		return;
 	}
 
+	CheatKey();
+
 	DirectCheck();
 	CollisionCheck(_DeltaTime);
 	PixelCheck(_DeltaTime);
@@ -50,6 +52,23 @@ void Player_Overworld::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player_Overworld::CheatKey()
+{
+	if (true == GameEngineInput::IsDown("SpeedUp"))
+	{
+		IsSpeedUp = !IsSpeedUp;
+	}
+
+	if (true == IsSpeedUp)
+	{
+		SetPlayerMoveSpeed(700.0f);
+	}
+	else
+	{
+		SetPlayerMoveSpeed(250.0f);
+	}
+}
 
 void Player_Overworld::PlayerDebugRenderer()
 {
