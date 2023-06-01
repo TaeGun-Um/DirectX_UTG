@@ -345,6 +345,12 @@ void Player::IdleStart()
 }
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Test"))
+	{
+		ChangeState(PlayerState::Death);
+		return;
+	}
+
 	if (true == IsIntro)
 	{
 		ChangeState(PlayerState::Intro);
@@ -1865,6 +1871,12 @@ void Player::HitStart()
 		RenderPtr->ChangeAnimation("Hit");
 	}
 
+	if (0 == PlayerHP)
+	{
+		ChangeState(PlayerState::Death);
+		return;
+	}
+
 	RenderPtr->GetTransform()->SetLocalScale({ 300, 330 });
 }
 void Player::HitUpdate(float _DeltaTime)
@@ -1925,11 +1937,25 @@ void Player::PortalEnd()
 
 void Player::DeathStart()
 {
-
+	RenderPtr->ChangeAnimation("Death");
+	RenderPtr->GetTransform()->SetLocalPosition({ -5, 70 });
+	BodyCollisionPtr->Off();
+	IsPlayerDeath = true;
+	CreateGhostEffect();
 }
 void Player::DeathUpdate(float _DeltaTime)
 {
+	if (15 <= RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->Off();
+	}
 
+	if (false == IsPlayerDeath)
+	{
+		RenderPtr->On();
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }
 void Player::DeathEnd()
 {
@@ -1953,7 +1979,6 @@ void Player::ElderKettleMoveUpdate(float _DeltaTime)
 
 	if (880 >= GetTransform()->GetWorldPosition().x)
 	{
-		int a = 0;
 		ChangeState(PlayerState::ElderKettleIdle);
 		return;
 	}

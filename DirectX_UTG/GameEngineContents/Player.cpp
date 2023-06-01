@@ -16,6 +16,7 @@
 #include "MoveDust.h"
 #include "LandDust.h"
 #include "ParryEffect.h"
+#include "PlayerGhost.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -42,8 +43,6 @@ void Player::Update(float _DeltaTime)
 {
 	if (false == IsCorrection)
 	{
-		RenderPtr->On();
-		RenderPtr->ChangeAnimation("Idle", false);
 		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());
@@ -73,6 +72,30 @@ void Player::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 플레이어 리셋
+void Player::PlayerReset()
+{
+	RenderPtr->On();
+	BodyCollisionPtr->On();
+	HitTime = 0.0f;
+	IsHit = false;
+	Directbool = true;
+	HitTimeCheck = false;
+	IsPlayerDeath = false;
+
+	GetTransform()->SetLocalPositiveScaleX();
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+
+	{
+		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
+		DebugRenderPtr2->GetTransform()->SetLocalPosition({ 15, 10 });
+		DebugRenderPtr3->GetTransform()->SetLocalPosition({ -25, -2 });
+		DebugRenderPtr4->GetTransform()->SetLocalPosition({ 15, -2 });
+	}
+
+	RenderPtr->ChangeAnimation("Idle", false);
+}
 
 // 플레이어 위치 보정 함수(최초 레벨 init 시 실시)
 void Player::PositionCorrection()
@@ -658,6 +681,11 @@ void Player::ParryCollisionCheck()
 
 void Player::HitCollisionCheck(float _DeltaTime)
 {
+	if (true == IsPlayerDeath)
+	{
+		return;
+	}
+
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::MonsterAttack), ColType::AABBBOX2D, ColType::AABBBOX2D)
 		|| nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Monster), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
@@ -730,7 +758,8 @@ void Player::ProjectileCreate(float _DeltaTime)
 		|| true == PortalAble
 		|| true == ElderKettleInterAction
 		|| true == ElderKettleInterActioning
-		|| true == IsIntro)
+		|| true == IsIntro
+		|| true == IsPlayerDeath)
 	{
 		PeashooterRenderPtr->Off();
 		return;
@@ -1667,6 +1696,17 @@ void Player::CreateHitEffect()
 	Effect->SetDirection(Directbool);
 }
 
+void Player::CreateGhostEffect()
+{
+	std::shared_ptr<PlayerGhost> GhostEffect = GetLevel()->CreateActor<PlayerGhost>();
+	float4 PlayerPosition = GetTransform()->GetLocalPosition();
+	float4 EffectPosition = PlayerPosition;
+
+	EffectPosition += float4{ -5, 70 };
+
+	GhostEffect->SetStartPosition(EffectPosition);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1678,7 +1718,8 @@ void Player::DirectCheck()
 		|| true == Portaling
 		|| true == ParryCheck 
 		|| true == ElderKettleInterActioning
-		|| true == IsIntro)
+		|| true == IsIntro
+		|| true == IsPlayerDeath)
 	{
 		return;
 	}
@@ -1998,8 +2039,7 @@ void Player::PlayerInitialSetting()
 		// Hit & Death
 		RenderPtr->CreateAnimation({ .AnimationName = "AirHit", .SpriteName = "AirHit", .FrameInter = 0.04f, .Loop = false });
 		RenderPtr->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Hit", .FrameInter = 0.04f, .Loop = false });
-		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f, .Loop = false });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ghost", .SpriteName = "Ghost", .FrameInter = 0.05f });
+		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Death", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		// Hold
 		RenderPtr->CreateAnimation({ .AnimationName = "Hold_Normal_DiagonalDown", .SpriteName = "Hold_Normal_DiagonalDown", .FrameInter = 0.07f });

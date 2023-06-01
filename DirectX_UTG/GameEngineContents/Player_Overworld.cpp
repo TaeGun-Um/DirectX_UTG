@@ -26,7 +26,7 @@ void Player_Overworld::Start()
 	DebugRendererSetting();
 	PlayerCollisionSetting();
 	SetCameraFollowType(CameraFollowType::Overworld);
-	SetPlayerMoveSpeed(250.0f); // 250.0f
+	SetPlayerMoveSpeed(250.0f);
 }
 void Player_Overworld::Update(float _DeltaTime)
 {

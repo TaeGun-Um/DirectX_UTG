@@ -38,6 +38,8 @@ void FrogLevel::Start()
 }
 void FrogLevel::Update(float _DeltaTime)
 {
+	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
+
 	if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
 	{
 		EndSetCount = 0;
@@ -72,6 +74,43 @@ void FrogLevel::Update(float _DeltaTime)
 
 		return;
 	}
+
+	////////////////////////////////////////// Player Death //////////////////////////////////////////
+
+	if (true == PlayerObject->GetIsPlayerDeath() && 1 == EndSetCount)
+	{
+		EndSetCount = 0;
+		YouDiedPtr->StartMessage();
+		IsPlayerEnd = true;
+		//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
+	}
+
+	if (true == IsPlayerEnd)
+	{
+		EndTime += _DeltaTime;
+
+		if (true == YouDiedPtr->GetIsEnd())
+		{
+			//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+
+			if (EndTime >= 3.0f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
+
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
+
+		return;
+	}
+
+	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
 	ReadyWallopTime += _DeltaTime;
 
@@ -146,6 +185,7 @@ void FrogLevel::LevelChangeStart()
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();
+		PlayerObject->PlayerReset();
 		PlayerObject->SetIntro();
 	}
 	{
@@ -295,10 +335,19 @@ void FrogLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
 
-	ReadyWallopCount = 1;
-	ReadyWallopTime = 0.0f;
-	PlayerObject->PlayerStatusReset();
-	PlayerObject->MoveAbleTimeReset();
+	{
+		ReadyWallopCount = 1;
+		ReadyWallopTime = 0.0f;
+		EndTime = 0.0f;
+		IsBossEnd = false;
+		IsFrogLevelEnd = false;
+		IsPlayerEnd = false;
+		EndSetCount = 1;
+		EndSetCount2 = 1;
+
+		PlayerObject->MoveAbleTimeReset();
+	}
+
 }
 
 void FrogLevel::ReLoadSetting()

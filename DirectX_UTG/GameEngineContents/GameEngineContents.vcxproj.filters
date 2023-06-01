@@ -298,6 +298,9 @@
     <ClInclude Include="OverworldGUI.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerGhost.h">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -491,6 +494,9 @@
     </ClCompile>
     <ClCompile Include="OverworldGUI.cpp">
       <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGhost.cpp">
+      <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

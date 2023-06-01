@@ -70,6 +70,7 @@ private:
 	float EndTime = 0.0f;
 
 	bool IsBossEnd = false;
+	bool IsPlayerEnd = false;
 	bool IsFrogLevelEnd = false;
 
 	int ReadyWallopCount = 1;

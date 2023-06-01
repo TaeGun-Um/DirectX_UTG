@@ -227,7 +227,6 @@ void TutorialLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Explosion");
 	}
 
-	PlayerObject->PlayerStatusReset();
 	PlayerObject->MoveAbleTimeReset();
 }
 

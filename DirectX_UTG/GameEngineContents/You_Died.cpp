@@ -31,7 +31,7 @@ void You_Died::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineUIRenderer>();
 		RenderPtr->GetTransform()->SetLocalScale({ 1079, 235 });
-		RenderPtr->CreateAnimation({ "YOU_DIED", "YOU_DIED.png", 0, 19, 0.05f, true });
+		RenderPtr->CreateAnimation({ "YOU_DIED", "YOU_DIED.png", 0, 19, 0.1f, true });
 
 		RenderPtr->ChangeAnimation("YOU_DIED");
 		RenderPtr->Off();

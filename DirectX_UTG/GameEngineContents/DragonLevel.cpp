@@ -288,7 +288,6 @@ void DragonLevel::LevelChangeEnd()
 
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
-	PlayerObject->PlayerStatusReset();
 	PlayerObject->MoveAbleTimeReset();
 }
 

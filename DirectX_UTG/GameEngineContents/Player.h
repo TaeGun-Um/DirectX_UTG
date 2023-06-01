@@ -53,16 +53,16 @@ public:
 		MoveAbleTime = 0.0f;
 	}
 
+	void PlayerReset();
+
 	void SetIntro()
 	{
 		IsIntro = true;
 	}
 
-	void PlayerStatusReset()
+	bool GetIsPlayerDeath()
 	{
-		PlayerHP = 0;
-		PlayerEXGauge = 0;
-		PlayerEXStack = 0;
+		return IsPlayerDeath;
 	}
 
 	bool GetIsElderKettleEnd()
@@ -224,6 +224,7 @@ private:
 	void CreateParryEffect();
 	void CreateLandDust();
 	void CreateHitEffect();
+	void CreateGhostEffect();
 
 	int ProjectileSet = 0;
 
@@ -266,6 +267,7 @@ private:
 	bool ElderKettleInterActioning = false;
 	bool IsElderKettleEnd = false;
 	bool IsIntro = false;
+	bool IsPlayerDeath = false;
 
 	float MoveAbleTime = 0.0f;
 	float JumpTime = 0.0f;
