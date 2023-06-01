@@ -13,6 +13,20 @@ Ready_Wallop::~Ready_Wallop()
 
 void Ready_Wallop::Start()
 {
+	if (nullptr == GameEngineSprite::Find("Ready_WALLOP"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("Font");
+		NewDir.Move("Message");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ready_WALLOP").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineUIRenderer>();

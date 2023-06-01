@@ -126,9 +126,12 @@ void OverworldLevel::LevelChangeStart()
 
 	// CreateActor
 	// Map
-	if (nullptr == MapObject)
 	{
-		MapObject = CreateActor<Overworld_Map>();
+		if (nullptr == MapObject)
+		{
+			MapObject = CreateActor<Overworld_Map>();
+		}
+		
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 5 });
 	}
 
@@ -238,11 +241,166 @@ void OverworldLevel::LevelChangeStart()
 		}
 		LoadingPtr->SetLoadingPtrOff();
 	}
+
+	ReLoadSetting();
 }
 void OverworldLevel::LevelChangeEnd()
 {
+	if (nullptr != GameEngineTexture::Find("Overworld_Map.png"))
+	{
+		GameEngineTexture::UnLoad("Overworld_Map.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Flag.png"))
+	{
+		GameEngineSprite::UnLoad("Flag.png");
+		GameEngineSprite::UnLoad("FlagShadow.png");
+		GameEngineSprite::UnLoad("To_Djimmi_The_Great.png");
+		GameEngineSprite::UnLoad("To_Grim_Matchstick.png");
+		GameEngineSprite::UnLoad("To_Hilda_Berg.png");
+		GameEngineSprite::UnLoad("To_Ribby_and_Croaks.png");
+		GameEngineSprite::UnLoad("To_Ribby_and_Croaks_Wave.png");
+		GameEngineSprite::UnLoad("To_Tutorial_Fly.png");
+		GameEngineSprite::UnLoad("To_WaittingRoom.png");
+		GameEngineSprite::UnLoad("To_Werner_Werman.png");
+	}
+	if (nullptr != GameEngineSprite::Find("AppleTraveller_Blink"))
+	{
+		GameEngineSprite::UnLoad("AppleTraveller_Blink");
+		GameEngineSprite::UnLoad("AppleTraveller_HoboStick");
+		GameEngineSprite::UnLoad("AppleTraveller_Idle");
+		GameEngineSprite::UnLoad("AppleTraveller_Wave");
+		GameEngineSprite::UnLoad("AppleTraveller_Wave_Intro");
+		GameEngineSprite::UnLoad("AppleTraveller_Wave_Outro");
+	}
+	if (nullptr != GameEngineSprite::Find("Axeman_Idle"))
+	{
+		GameEngineSprite::UnLoad("Axeman_Idle");
+	}
+	if (nullptr != GameEngineSprite::Find("Canteen_Idle"))
+	{
+		GameEngineSprite::UnLoad("Canteen_Idle");
+	}
+	if (nullptr != GameEngineSprite::Find("Coin_Blink"))
+	{
+		GameEngineSprite::UnLoad("Coin_Blink");
+		GameEngineSprite::UnLoad("Coin_Boil_A");
+		GameEngineSprite::UnLoad("Coin_Hold_A");
+		GameEngineSprite::UnLoad("Coin_Hold_B");
+		GameEngineSprite::UnLoad("Coin_Hold_C");
+		GameEngineSprite::UnLoad("Coin_Hold_D");
+		GameEngineSprite::UnLoad("Coin_Transition_A");
+		GameEngineSprite::UnLoad("Coin_Transition_B");
+		GameEngineSprite::UnLoad("Coin_Transition_C");
+		GameEngineSprite::UnLoad("Coin_Transition_D");
+		GameEngineSprite::UnLoad("Coin_Transition_E");
+		GameEngineSprite::UnLoad("Coin_Transition_F");
+	}
+	if (nullptr != GameEngineSprite::Find("FishGirl_Idle"))
+	{
+		GameEngineSprite::UnLoad("FishGirl_Idle");
+		GameEngineSprite::UnLoad("FishGirl_Blink");
+	}
+	if (nullptr != GameEngineSprite::Find("DD_Idle"))
+	{
+		GameEngineSprite::UnLoad("DD_Idle");
+		GameEngineSprite::UnLoad("DD_Move");
+		GameEngineSprite::UnLoad("Down_Idle");
+		GameEngineSprite::UnLoad("Down_Move");
+		GameEngineSprite::UnLoad("DU_Idle");
+		GameEngineSprite::UnLoad("DU_Move");
+		GameEngineSprite::UnLoad("Side_Idle");
+		GameEngineSprite::UnLoad("Side_Move");
+		GameEngineSprite::UnLoad("Up_Idle");
+		GameEngineSprite::UnLoad("Up_Move");
+		GameEngineSprite::UnLoad("InterAction_Win");
+	}
+	if (nullptr != GameEngineSprite::Find("Dust_A.png"))
+	{
+		GameEngineSprite::UnLoad("Dust_A.png");
+		GameEngineSprite::UnLoad("Dust_B.png");
+		GameEngineSprite::UnLoad("Dust_C.png");
+	}
+
 	DebugBoxCount = 1;
 	PlayerObject->MoveAbleTimeReset();
+}
+
+void OverworldLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineTexture::Find("Overworld_Map.png"))
+	{
+		GameEngineTexture::ReLoad("Overworld_Map.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Flag.png"))
+	{
+		GameEngineSprite::ReLoad("Flag.png");
+		GameEngineSprite::ReLoad("FlagShadow.png");
+		GameEngineSprite::ReLoad("To_Djimmi_The_Great.png");
+		GameEngineSprite::ReLoad("To_Grim_Matchstick.png");
+		GameEngineSprite::ReLoad("To_Hilda_Berg.png");
+		GameEngineSprite::ReLoad("To_Ribby_and_Croaks.png");
+		GameEngineSprite::ReLoad("To_Ribby_and_Croaks_Wave.png");
+		GameEngineSprite::ReLoad("To_Tutorial_Fly.png");
+		GameEngineSprite::ReLoad("To_WaittingRoom.png");
+		GameEngineSprite::ReLoad("To_Werner_Werman.png");
+	}
+	if (nullptr != GameEngineSprite::Find("AppleTraveller_Blink"))
+	{
+		GameEngineSprite::ReLoad("AppleTraveller_Blink");
+		GameEngineSprite::ReLoad("AppleTraveller_HoboStick");
+		GameEngineSprite::ReLoad("AppleTraveller_Idle");
+		GameEngineSprite::ReLoad("AppleTraveller_Wave");
+		GameEngineSprite::ReLoad("AppleTraveller_Wave_Intro");
+		GameEngineSprite::ReLoad("AppleTraveller_Wave_Outro");
+	}
+	if (nullptr != GameEngineSprite::Find("Axeman_Idle"))
+	{
+		GameEngineSprite::ReLoad("Axeman_Idle");
+	}
+	if (nullptr != GameEngineSprite::Find("Canteen_Idle"))
+	{
+		GameEngineSprite::ReLoad("Canteen_Idle");
+	}
+	if (nullptr != GameEngineSprite::Find("Coin_Blink"))
+	{
+		GameEngineSprite::ReLoad("Coin_Blink");
+		GameEngineSprite::ReLoad("Coin_Boil_A");
+		GameEngineSprite::ReLoad("Coin_Hold_A");
+		GameEngineSprite::ReLoad("Coin_Hold_B");
+		GameEngineSprite::ReLoad("Coin_Hold_C");
+		GameEngineSprite::ReLoad("Coin_Hold_D");
+		GameEngineSprite::ReLoad("Coin_Transition_A");
+		GameEngineSprite::ReLoad("Coin_Transition_B");
+		GameEngineSprite::ReLoad("Coin_Transition_C");
+		GameEngineSprite::ReLoad("Coin_Transition_D");
+		GameEngineSprite::ReLoad("Coin_Transition_E");
+		GameEngineSprite::ReLoad("Coin_Transition_F");
+	}
+	if (nullptr != GameEngineSprite::Find("FishGirl_Idle"))
+	{
+		GameEngineSprite::ReLoad("FishGirl_Idle");
+		GameEngineSprite::ReLoad("FishGirl_Blink");
+	}
+	if (nullptr != GameEngineSprite::Find("DD_Idle"))
+	{
+		GameEngineSprite::ReLoad("DD_Idle");
+		GameEngineSprite::ReLoad("DD_Move");
+		GameEngineSprite::ReLoad("Down_Idle");
+		GameEngineSprite::ReLoad("Down_Move");
+		GameEngineSprite::ReLoad("DU_Idle");
+		GameEngineSprite::ReLoad("DU_Move");
+		GameEngineSprite::ReLoad("Side_Idle");
+		GameEngineSprite::ReLoad("Side_Move");
+		GameEngineSprite::ReLoad("Up_Idle");
+		GameEngineSprite::ReLoad("Up_Move");
+		GameEngineSprite::ReLoad("InterAction_Win");
+	}
+	if (nullptr != GameEngineSprite::Find("Dust_A.png"))
+	{
+		GameEngineSprite::ReLoad("Dust_A.png");
+		GameEngineSprite::ReLoad("Dust_B.png");
+		GameEngineSprite::ReLoad("Dust_C.png");
+	}
 }
 
 void OverworldLevel::PlayerDebugRenderOn()

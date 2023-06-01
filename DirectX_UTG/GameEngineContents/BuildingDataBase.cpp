@@ -28,7 +28,7 @@ BuildingDataBase::~BuildingDataBase()
 
 void BuildingDataBase::Start()
 {
-	if (nullptr == GameEngineTexture::Find("Flag.png"))
+	if (nullptr == GameEngineSprite::Find("Flag.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");

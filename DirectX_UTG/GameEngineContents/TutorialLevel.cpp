@@ -190,8 +190,6 @@ void TutorialLevel::LevelChangeStart()
 		
 		LoadingPtr->SetLoadingPtrOff();
 	}
-
-	ReLoadSetting();
 }
 void TutorialLevel::LevelChangeEnd()
 {
@@ -224,40 +222,6 @@ void TutorialLevel::LevelChangeEnd()
 	if (nullptr != GameEngineSprite::Find("Explosion"))
 	{
 		GameEngineSprite::UnLoad("Explosion");
-	}
-}
-
-void TutorialLevel::ReLoadSetting()
-{
-	if (nullptr != GameEngineTexture::Find("Tutorial_BackLayer_001.png"))
-	{
-		GameEngineTexture::ReLoad("Tutorial_BackLayer_001.png");
-		GameEngineTexture::ReLoad("Tutorial_BackLayer_002.png");
-	}
-	if (nullptr != GameEngineTexture::Find("Tutorial_ColMap.png"))
-	{
-		GameEngineTexture::ReLoad("Tutorial_ColMap.png");
-	}
-	if (nullptr != GameEngineTexture::Find("Tutorial_Map.png"))
-	{
-		GameEngineTexture::ReLoad("Tutorial_Map.png");
-	}
-	if (nullptr != GameEngineTexture::Find("tutorial_pink_sphere_1.png"))
-	{
-		GameEngineTexture::ReLoad("tutorial_pink_sphere_1.png");
-		GameEngineTexture::ReLoad("tutorial_pink_sphere_2.png");
-	}
-	if (nullptr != GameEngineTexture::Find("tutorial_pyramid_topper.png"))
-	{
-		GameEngineTexture::ReLoad("tutorial_pyramid_topper.png");
-	}
-	if (nullptr != GameEngineSprite::Find("Target"))
-	{
-		GameEngineSprite::ReLoad("Target");
-	}
-	if (nullptr != GameEngineSprite::Find("Explosion"))
-	{
-		GameEngineSprite::ReLoad("Explosion");
 	}
 }
 

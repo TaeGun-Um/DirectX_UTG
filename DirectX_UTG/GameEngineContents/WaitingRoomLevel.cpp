@@ -164,8 +164,6 @@ void WaitingRoomLevel::LevelChangeStart()
 		
 		LoadingPtr->SetLoadingPtrOff();
 	}
-
-	ReLoadSetting();
 }
 
 void WaitingRoomLevel::LevelChangeEnd()
@@ -199,33 +197,6 @@ void WaitingRoomLevel::LevelChangeEnd()
 		PlayMapHeight_Half = 0.0f;
 		PlayerDist = 0.0f;
 		CameraOriginPos = float4::Zero;
-	}
-}
-
-void WaitingRoomLevel::ReLoadSetting()
-{
-	if (nullptr != GameEngineTexture::Find("WaitingRoom_Background.png"))
-	{
-		GameEngineTexture::ReLoad("WaitingRoom_Background.png");
-		GameEngineTexture::ReLoad("WaitingRoom_Chair.png");
-		GameEngineTexture::ReLoad("WaitingRoom_Couch.png");
-		GameEngineTexture::ReLoad("WaitingRoom_Vignette.png");
-	}
-
-	if (nullptr != GameEngineSprite::Find("Note_One"))
-	{
-		GameEngineSprite::ReLoad("Note_One");
-		GameEngineSprite::ReLoad("Note_Two");
-	}
-
-	if (nullptr != GameEngineSprite::Find("Kettle_Idle"))
-	{
-		GameEngineSprite::ReLoad("Kettle_Idle");
-	}
-
-	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))
-	{
-		GameEngineTexture::ReLoad("WaitingRoom_ColMap.png");
 	}
 }
 

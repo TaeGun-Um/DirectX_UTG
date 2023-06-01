@@ -55,22 +55,6 @@ void CupheadCore::ContentsResourcesLoad()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Enter").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Exit").GetFullPath());
 	}
-
-	if (nullptr == GameEngineSprite::Find("KNOCKOUT"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("UI");
-		NewDir.Move("Font");
-		NewDir.Move("Message");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("KNOCKOUT").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ready_WALLOP").GetFullPath());
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("YOU_DIED.png").GetFullPath(), 3, 7);
-	}
 }
 
 void CupheadCore::ContentsKeyBind()

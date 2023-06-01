@@ -13,6 +13,20 @@ Knockout::~Knockout()
 
 void Knockout::Start()
 {
+	if (nullptr == GameEngineSprite::Find("KNOCKOUT"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("Font");
+		NewDir.Move("Message");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("KNOCKOUT").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineUIRenderer>();

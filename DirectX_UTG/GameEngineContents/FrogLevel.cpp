@@ -231,13 +231,139 @@ void FrogLevel::LevelChangeStart()
 		
 		LoadingPtr->SetLoadingPtrOff();
 	}
+
+	ReLoadSetting();
 }
+
 void FrogLevel::LevelChangeEnd()
 {
+	if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
+	{
+		GameEngineTexture::UnLoad("Backstage_1_1.png");
+		GameEngineTexture::UnLoad("Backstage_2_2.png");
+		GameEngineTexture::UnLoad("Backstage_3_3.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
+	{
+		GameEngineSprite::UnLoad("Ribby_Idle");
+	}
+	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
+	{
+		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
+		GameEngineSprite::UnLoad("Peashooter_Loop.png");
+		GameEngineSprite::UnLoad("Peashooter_Death.png");
+		GameEngineSprite::UnLoad("Peashooter_EX_Loop.png");
+		GameEngineSprite::UnLoad("Peashooter_EX_Death.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Spread_Spawn.png"))
+	{
+		GameEngineSprite::UnLoad("Spread_Spawn.png");
+		GameEngineSprite::UnLoad("Spread_Loop.png");
+		GameEngineSprite::UnLoad("Spread_Death.png");
+		GameEngineSprite::UnLoad("Spread_Death_Enemyhit.png");
+		GameEngineSprite::UnLoad("Spread_Weak_Loop.png");
+		GameEngineSprite::UnLoad("Spread_Weak_Death.png");
+		GameEngineSprite::UnLoad("Spread_Weak_Death_Enemyhit.png");
+		GameEngineSprite::UnLoad("Spread_EX_Spawn.png");
+		GameEngineSprite::UnLoad("Spread_EX_Loop.png");
+		GameEngineSprite::UnLoad("Spread_EX_Flame.png");
+		GameEngineSprite::UnLoad("Spread_EX_Death.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dust_A.png"))
+	{
+		GameEngineSprite::UnLoad("Dust_A.png");
+		GameEngineSprite::UnLoad("Dust_B.png");
+		GameEngineSprite::UnLoad("Dust_C.png");
+	}
+	if (nullptr != GameEngineSprite::Find("JumpDust"))
+	{
+		GameEngineSprite::UnLoad("JumpDust");
+		GameEngineSprite::UnLoad("DashDust");
+		GameEngineSprite::UnLoad("EXDust");
+		GameEngineSprite::UnLoad("EX_ChargeUp");
+		GameEngineSprite::UnLoad("ParryEffect");
+		GameEngineSprite::UnLoad("HitSFX");
+	}
+	if (nullptr != GameEngineSprite::Find("KNOCKOUT"))
+	{
+		GameEngineSprite::UnLoad("KNOCKOUT");
+	}
+	if (nullptr != GameEngineSprite::Find("YOU_DIED.png"))
+	{
+		GameEngineSprite::UnLoad("YOU_DIED.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Ready_WALLOP"))
+	{
+		GameEngineSprite::UnLoad("Ready_WALLOP");
+	}
+
 	DebugBoxCount = 1;
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
 	PlayerObject->PlayerStatusReset();
+}
+
+void FrogLevel::ReLoadSetting()
+{
+	if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
+	{
+		GameEngineTexture::ReLoad("Backstage_1_1.png");
+		GameEngineTexture::ReLoad("Backstage_2_2.png");
+		GameEngineTexture::ReLoad("Backstage_3_3.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
+	{
+		GameEngineSprite::ReLoad("Ribby_Idle");
+	}
+	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
+	{
+		GameEngineSprite::ReLoad("Peashooter_Spawn.png");
+		GameEngineSprite::ReLoad("Peashooter_Loop.png");
+		GameEngineSprite::ReLoad("Peashooter_Death.png");
+		GameEngineSprite::ReLoad("Peashooter_EX_Loop.png");
+		GameEngineSprite::ReLoad("Peashooter_EX_Death.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Spread_Spawn.png"))
+	{
+		GameEngineSprite::ReLoad("Spread_Spawn.png");
+		GameEngineSprite::ReLoad("Spread_Loop.png");
+		GameEngineSprite::ReLoad("Spread_Death.png");
+		GameEngineSprite::ReLoad("Spread_Death_Enemyhit.png");
+		GameEngineSprite::ReLoad("Spread_Weak_Loop.png");
+		GameEngineSprite::ReLoad("Spread_Weak_Death.png");
+		GameEngineSprite::ReLoad("Spread_Weak_Death_Enemyhit.png");
+		GameEngineSprite::ReLoad("Spread_EX_Spawn.png");
+		GameEngineSprite::ReLoad("Spread_EX_Loop.png");
+		GameEngineSprite::ReLoad("Spread_EX_Flame.png");
+		GameEngineSprite::ReLoad("Spread_EX_Death.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dust_A.png"))
+	{
+		GameEngineSprite::ReLoad("Dust_A.png");
+		GameEngineSprite::ReLoad("Dust_B.png");
+		GameEngineSprite::ReLoad("Dust_C.png");
+	}
+	if (nullptr != GameEngineSprite::Find("JumpDust"))
+	{
+		GameEngineSprite::ReLoad("JumpDust");
+		GameEngineSprite::ReLoad("DashDust");
+		GameEngineSprite::ReLoad("EXDust");
+		GameEngineSprite::ReLoad("EX_ChargeUp");
+		GameEngineSprite::ReLoad("ParryEffect");
+		GameEngineSprite::ReLoad("HitSFX");
+	}
+	if (nullptr != GameEngineSprite::Find("KNOCKOUT"))
+	{
+		GameEngineSprite::ReLoad("KNOCKOUT");
+	}
+	if (nullptr != GameEngineSprite::Find("YOU_DIED.png"))
+	{
+		GameEngineSprite::ReLoad("YOU_DIED.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Ready_WALLOP"))
+	{
+		GameEngineSprite::ReLoad("Ready_WALLOP");
+	}
 }
 
 void FrogLevel::PlayerDebugRenderOn()
