@@ -272,7 +272,7 @@ void Player::AddPlayerEXGauge_Spread()
 
 void Player::CheckPlayerEXGauge()
 {
-	if (PlayerEXGauge > 29.0f)
+	if (PlayerEXGauge > 49.0f)
 	{
 		PlayerEXGauge = 0.0f;
 
