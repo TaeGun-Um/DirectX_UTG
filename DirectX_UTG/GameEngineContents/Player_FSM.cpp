@@ -292,7 +292,11 @@ void Player::FallUpdate(float _DeltaTime)
 
 	if (true == IsFall)
 	{
-		MoveDirect.y += -3300.0f * _DeltaTime;
+		if (MoveDirect.y >= -1600.0f)
+		{
+			MoveDirect.y += -3300.0f * _DeltaTime;
+		}
+		
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
 	else if (false == IsFall)
@@ -867,7 +871,11 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	if (true == IsJump)
 	{
-		MoveDirect.y += -3300.0f * _DeltaTime;
+		if (MoveDirect.y >= -1600.0f)
+		{
+			MoveDirect.y += -3300.0f * _DeltaTime;
+		}
+		
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
 	else if (false == IsJump)
