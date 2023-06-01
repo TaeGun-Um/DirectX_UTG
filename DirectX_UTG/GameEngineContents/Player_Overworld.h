@@ -12,6 +12,8 @@ enum class OverworldState
 // Ό³Έν :
 class Player_Overworld : public PlayerDataBase
 {
+	friend class OverworldGUI;
+
 public:
 	static Player_Overworld* MainPlayer;
 
@@ -28,11 +30,6 @@ public:
 	bool GetIsIdle()
 	{
 		return IsIdle;
-	}
-
-	bool GetIsSpeedUp()
-	{
-		return IsSpeedUp;
 	}
 
 	void MoveAbleTimeReset()

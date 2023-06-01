@@ -45,13 +45,13 @@ void HealthUI::Start()
 
 void HealthUI::Update(float _DeltaTime)
 {
-	if (true == MainPlayer->GetPlayerIsHPMax())
+	if (true == MainPlayer->IsHPMax)
 	{
 		RenderPtr->ChangeAnimation("MAX");
 		return;
 	}
 
-	int HP = MainPlayer->GetPlayerHP();
+	int HP = MainPlayer->PlayerHP;
 
 	switch (HP)
 	{

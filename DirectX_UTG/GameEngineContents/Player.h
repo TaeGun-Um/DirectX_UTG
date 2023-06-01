@@ -32,6 +32,8 @@ enum class PlayerState
 class Player : public PlayerDataBase
 {
 	friend class TransformGUI;
+	friend class CardUI;
+	friend class HealthUI;
 
 public:
 	static Player* MainPlayer;
@@ -112,31 +114,6 @@ public:
 	std::shared_ptr<class GameEngineSpriteRenderer> GetPlayerMainRenderPtr()
 	{
 		return RenderPtr;
-	}
-
-	int GetPlayerHP()
-	{
-		return PlayerHP;
-	}
-
-	float GetPlayerEXGauge()
-	{
-		return PlayerEXGauge;
-	}
-
-	int GetPlayerEXStack()
-	{
-		return PlayerEXStack;
-	}
-
-	bool GetPlayerIsHPMax()
-	{
-		return IsHPMax;
-	}
-	
-	bool GetPlayerIsEXMax()
-	{
-		return IsEXMax;
 	}
 
 	void MinusPlayerHP();

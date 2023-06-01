@@ -155,11 +155,9 @@ void OverworldGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 	if (nullptr != OverworldPalyer)
 	{
-		//ImGui::Text("IsSpeedUp : %s", OverworldPalyer->GetIsSpeedUp());
-
 		const char* IsSpeedUp = "false";
 
-		if (false == OverworldPalyer->GetIsSpeedUp())
+		if (false == OverworldPalyer->IsSpeedUp)
 		{
 			IsSpeedUp = "false";
 		}

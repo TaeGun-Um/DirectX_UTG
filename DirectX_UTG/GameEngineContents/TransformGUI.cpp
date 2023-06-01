@@ -158,13 +158,26 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 	if (nullptr != MainPlayer)
 	{
-		ImGui::Text("PlayerHP : %d", MainPlayer->GetPlayerHP());
-		ImGui::Text("EXGauge : %f", MainPlayer->GetPlayerEXGauge());
-		ImGui::Text("EXStack : %d", MainPlayer->GetPlayerEXStack());
+		const char* WeaponType = "Peashooter";
+
+		if (true == MainPlayer->WeaponType)
+		{
+			WeaponType = "Peashooter";
+		}
+		else
+		{
+			WeaponType = "Spread";
+		}
+
+		ImGui::Text("WeaponType : %s", WeaponType);
+
+		ImGui::Text("PlayerHP : %d", MainPlayer->PlayerHP);
+		ImGui::Text("EXGauge : %f", MainPlayer->PlayerEXGauge);
+		ImGui::Text("EXStack : %d", MainPlayer->PlayerEXStack);
 
 		const char* IsHPMax = "false";
 
-		if (false == MainPlayer->GetPlayerIsHPMax())
+		if (false == MainPlayer->IsHPMax)
 		{
 			IsHPMax = "false";
 		}
@@ -177,7 +190,7 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 		const char* IsEXMax = "false";
 
-		if (false == MainPlayer->GetPlayerIsEXMax())
+		if (false == MainPlayer->IsEXMax)
 		{
 			IsEXMax = "false";
 		}
