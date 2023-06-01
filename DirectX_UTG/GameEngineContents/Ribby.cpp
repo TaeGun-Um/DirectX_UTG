@@ -59,7 +59,7 @@ void Ribby::Start()
 	if (nullptr == EXCollisionPtr)
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 130, 230, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 250, 1 });
 		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -30 });
 	}
 
@@ -132,7 +132,7 @@ void Ribby::CollisionCheck()
 		&& HP > 0)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
-		dynamic_cast<Peashooter_EX*>(Projectile)->SetPeashooter_EXDeath();
+		dynamic_cast<Peashooter_EX*>(Projectile)->SetHitture();
 		HP -= 5;
 
 		if (0 >= HP)

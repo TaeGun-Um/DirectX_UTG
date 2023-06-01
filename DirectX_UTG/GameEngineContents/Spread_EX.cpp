@@ -41,8 +41,8 @@ void Spread_EX::Start()
 	if (nullptr == ProjectileCollisionPtr)
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::SpreadEX));
-		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
-		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 25, 0 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 70, 70, 1 });
+		//ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
 	if (nullptr == ProjectileCollisionRenderPtr)
@@ -65,10 +65,6 @@ void Spread_EX::SetSpread_EXDeath()
 
 	ProjectileCollisionRenderPtr->Death();
 	ProjectileCollisionPtr->Death();
-
-	//RenderPtr->ChangeAnimation("Death", false);
-	//RenderPtr->GetTransform()->SetLocalPosition(float4{ 20, 0 });
-	//RenderPtr->GetTransform()->SetLocalScale(float4{ 270, 270 });
 }
 
 void Spread_EX::ChangeState(Spread_EXState _StateValue)

@@ -1879,12 +1879,6 @@ void Player::HitStart()
 		RenderPtr->ChangeAnimation("Hit");
 	}
 
-	if (0 == PlayerHP)
-	{
-		ChangeState(PlayerState::Death);
-		return;
-	}
-
 	RenderPtr->GetTransform()->SetLocalScale({ 300, 330 });
 }
 void Player::HitUpdate(float _DeltaTime)
@@ -1904,8 +1898,16 @@ void Player::HitUpdate(float _DeltaTime)
 
 	if (true == RenderPtr->IsAnimationEnd())
 	{
-		ChangeState(PlayerState::Idle);
-		return;
+		if (0 == PlayerHP)
+		{
+			ChangeState(PlayerState::Death);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Idle);
+			return;
+		}
 	}
 }
 void Player::HitEnd()

@@ -37,6 +37,12 @@ public:
 		MoveSpeed = _MoveSpeed;
 	}
 
+	void SetHitture()
+	{
+		IsHit = true;
+		--Stack;
+	}
+
 	void SetPeashooter_EXDeath();
 
 	void SetCollisionRenderOn()
@@ -60,8 +66,11 @@ private:
 	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
 
 	float MoveSpeed = 600.0f;
+	float StopTime = 0.0f;
 	bool IsDeath = false;
 	bool Check = false;
+	bool IsHit = false;
+	int Stack = 3;
 
 	void MoveDirection(float _DeltaTime);
 	void DeathCheck();
