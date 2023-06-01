@@ -36,6 +36,11 @@ public:
 		return ReadyWallopPtr;
 	}
 
+	bool GetIsDragonLevelEnd()
+	{
+		return IsDragonLevelEnd;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -68,6 +73,7 @@ private:
 	float EndTime = 0.0f;
 
 	bool IsBossEnd = false;
+	bool IsPlayerEnd = false;
 	bool IsDragonLevelEnd = false;
 
 	int DebugBoxCount = 1;

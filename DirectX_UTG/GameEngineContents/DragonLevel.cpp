@@ -34,6 +34,8 @@ void DragonLevel::Start()
 }
 void DragonLevel::Update(float _DeltaTime)
 {
+	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
+
 	//if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
 	//{
 	//	EndSetCount = 0;
@@ -61,13 +63,50 @@ void DragonLevel::Update(float _DeltaTime)
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
 			IsDragonLevelEnd = true;
-			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
+			OverworldLevel::OverworldLevelPtr->SetDragonEnd();
 			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
 		return;
 	}
+
+	////////////////////////////////////////// Player Death //////////////////////////////////////////
+
+	if (true == PlayerObject->GetIsPlayerDeath() && 1 == EndSetCount)
+	{
+		EndSetCount = 0;
+		YouDiedPtr->StartMessage();
+		IsPlayerEnd = true;
+		//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
+	}
+
+	if (true == IsPlayerEnd)
+	{
+		EndTime += _DeltaTime;
+
+		if (true == YouDiedPtr->GetIsEnd())
+		{
+			//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+
+			if (EndTime >= 3.0f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
+
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
+
+		return;
+	}
+
+	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
 	ReadyWallopTime += _DeltaTime;
 

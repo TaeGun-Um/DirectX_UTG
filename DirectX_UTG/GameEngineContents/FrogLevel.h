@@ -38,6 +38,11 @@ public:
 		return ReadyWallopPtr;
 	}
 
+	bool GetIsFrogLevelEnd()
+	{
+		return IsFrogLevelEnd;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -321,8 +321,40 @@ void OverworldLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Dust_C.png");
 	}
 
-	DebugBoxCount = 1;
-	PlayerObject->MoveAbleTimeReset();
+	{
+		DebugBoxCount = 1;
+		PlayerObject->InitReset();
+
+		if (nullptr != BuildingDataBase::DjimmiPtr)
+		{
+			BuildingDataBase::DjimmiPtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::DragonPtr)
+		{
+			BuildingDataBase::DragonPtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::FrogPtr)
+		{
+			BuildingDataBase::FrogPtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::HomePtr)
+		{
+			BuildingDataBase::HomePtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::MousePtr)
+		{
+			BuildingDataBase::MousePtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::Tutorial_FlyPtr)
+		{
+			BuildingDataBase::Tutorial_FlyPtr->IsLevelChangeReset();
+		}
+		if (nullptr != BuildingDataBase::ZeplinPtr)
+		{
+			BuildingDataBase::ZeplinPtr->IsLevelChangeReset();
+		}
+	}
+
 }
 
 void OverworldLevel::ReLoadSetting()

@@ -101,7 +101,7 @@ void BuildingDataBase::Update(float _DeltaTime)
 
 	if (true == NextLevelPortal)
 	{
-		NextLevelPortal = false;
+		//NextLevelPortal = false;
 		InterAction();
 	}
 }
@@ -258,60 +258,78 @@ void BuildingDataBase::CollisionCheck()
 		&& true == GameEngineInput::IsDown("Attack"))
 	{
 		NextLevelPortal = true;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+		Player_Overworld::MainPlayer->SetIsPortalingTrue();
 	}
 }
 
+// Frog 이외에 임시
 void BuildingDataBase::InterAction()
 {
-	//if (1 == BlackBoxCount)
-	//{
-	//	BlackBoxCount = 0;
-	//	OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
-	//	OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
-	//}
-
 	switch (BValue)
 	{
 	case BuildingValue::Home:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Home");
 	}
 	break;
 	case BuildingValue::Tutorial_Fly:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Tutorial_Fly");
 	}
 	break;
 	case BuildingValue::Mouse:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Mouse");
 	}
 	break;
 	case BuildingValue::Frog:
 	{
-		//if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
-		//{
-		//	Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-		//	OverworldLevel::OverworldLevelPtr->LoadingOn();
-		//	GameEngineCore::ChangeLevel("FrogLevel");
-		//}
-		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-		OverworldLevel::OverworldLevelPtr->LoadingOn();
-		GameEngineCore::ChangeLevel("FrogLevel");
+		if (1 == BlackBoxCount)
+		{
+			BlackBoxCount = 0;
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
+		}
+
+		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
+		{
+			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+			OverworldLevel::OverworldLevelPtr->LoadingOn();
+			GameEngineCore::ChangeLevel("FrogLevel");
+		}
 	}
 	break;
 	case BuildingValue::Dragon:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Dragon");
 	}
 	break;
 	case BuildingValue::Zeplin:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Zeplin");
 	}
 	break;
 	case BuildingValue::Djimmi:
 	{
+		NextLevelPortal = false;
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		MsgTextBox("Djimmi");
 	}
 	break;

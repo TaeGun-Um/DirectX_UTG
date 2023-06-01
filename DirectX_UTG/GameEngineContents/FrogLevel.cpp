@@ -82,7 +82,6 @@ void FrogLevel::Update(float _DeltaTime)
 		EndSetCount = 0;
 		YouDiedPtr->StartMessage();
 		IsPlayerEnd = true;
-		//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
 	}
 
 	if (true == IsPlayerEnd)
@@ -91,8 +90,6 @@ void FrogLevel::Update(float _DeltaTime)
 
 		if (true == YouDiedPtr->GetIsEnd())
 		{
-			//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
-
 			if (EndTime >= 3.0f && 1 == EndSetCount2)
 			{
 				EndSetCount2 = 0;

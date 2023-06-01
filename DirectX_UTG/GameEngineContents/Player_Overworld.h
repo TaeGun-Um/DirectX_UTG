@@ -27,19 +27,13 @@ public:
 	Player_Overworld& operator=(const Player_Overworld& _Other) = delete;
 	Player_Overworld& operator=(Player_Overworld&& _Other) noexcept = delete;
 
+	void InitReset();
+
+	void WinFSMSetting();
+
 	bool GetIsIdle()
 	{
 		return IsIdle;
-	}
-
-	void MoveAbleTimeReset()
-	{
-		MoveAbleTime = 0.0f;
-	}
-
-	void WinFSMSetting()
-	{
-		WinSetting = true;
 	}
 
 	void PlayerCollisionPtrOn()
@@ -50,6 +44,17 @@ public:
 	void PlayerCollisionPtrOff()
 	{
 		IsCollisionOn = false;
+	}
+
+	void SetIsPortalingTrue()
+	{
+		IsPortaling = true;
+	}
+
+	// 임시 디버깅용 (빌딩에서 사용중)
+	void SetIsPortalingfalse()
+	{
+		IsPortaling = false;
 	}
 
 	void PlayerDebugRenderOn()
@@ -132,6 +137,7 @@ private:
 	bool ScaleCheckStart = false;
 	bool IsCollisionOn = true;
 	bool IsSpeedUp = false;
+	bool IsPortaling = false;
 
 	void UpdateState(float _DeltaTime);
 	void ChangeState(OverworldState _StateValue);

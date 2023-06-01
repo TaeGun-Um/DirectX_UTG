@@ -34,7 +34,8 @@ void MouseLevel::Start()
 }
 void MouseLevel::Update(float _DeltaTime)
 {
-	// 보스 체력 0 시 해당 함수 호출
+	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
+
 	//if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
 	//{
 	//	EndSetCount = 0;
@@ -62,13 +63,47 @@ void MouseLevel::Update(float _DeltaTime)
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
 			IsMouseLevelEnd = true;
-			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
+			OverworldLevel::OverworldLevelPtr->SetMouseEnd();
 			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
 		return;
 	}
+
+	////////////////////////////////////////// Player Death //////////////////////////////////////////
+
+	if (true == PlayerObject->GetIsPlayerDeath() && 1 == EndSetCount)
+	{
+		EndSetCount = 0;
+		YouDiedPtr->StartMessage();
+		IsPlayerEnd = true;
+	}
+
+	if (true == IsPlayerEnd)
+	{
+		EndTime += _DeltaTime;
+
+		if (true == YouDiedPtr->GetIsEnd())
+		{
+			if (EndTime >= 3.0f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
+
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
+
+		return;
+	}
+
+	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
 	ReadyWallopTime += _DeltaTime;
 

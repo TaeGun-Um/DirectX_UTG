@@ -53,6 +53,22 @@ void Player_Overworld::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Player_Overworld::WinFSMSetting()
+{
+	WinSetting = true;
+	Directbool = true;
+	EnterMessageRenderPtr->GetTransform()->SetLocalPositiveScaleX();
+	ADValue = AttackDirection::Right_Down;
+	RenderPtr->ChangeAnimation("Down_Idle", false);
+}
+
+void Player_Overworld::InitReset()
+{
+	MoveAbleTime = 0.0f;
+	IsPortaling = false;
+	CollisionPtr->On();
+}
+
 void Player_Overworld::CheatKey()
 {
 	if (true == GameEngineInput::IsDown("SpeedUp"))
@@ -166,6 +182,12 @@ void Player_Overworld::EnterMessageScaleDown(float _DeltaTime)
 
 void Player_Overworld::CollisionCheck(float _DeltaTime)
 {
+	if (true == IsPortaling)
+	{
+		EnterMessageScaleDown(_DeltaTime);
+		return;
+	}
+
 	if (nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::NPC), ColType::AABBBOX2D, ColType::AABBBOX2D)
 		|| nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Building), ColType::AABBBOX2D, ColType::AABBBOX2D)
 		&& true == IsCollisionOn)
@@ -779,7 +801,7 @@ void Player_Overworld::WinUpdate(float _DeltaTime)
 {
 	WinTime += _DeltaTime;
 
-	if (WinTime >= 3.0f)
+	if (true == RenderPtr->IsAnimationEnd() && WinTime >= 2.0f)
 	{
 		ChangeState(OverworldState::Idle);
 		return;
@@ -863,7 +885,7 @@ void Player_Overworld::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 
 	// Win
-	RenderPtr->CreateAnimation({ .AnimationName = "InterAction_Win", .SpriteName = "InterAction_Win", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "InterAction_Win", .SpriteName = "InterAction_Win", .FrameInter = 0.045f, .Loop = true, .ScaleToTexture = true });
 
 	// Setting
 	RenderPtr->GetTransform()->SetLocalScale({103, 113});
