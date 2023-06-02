@@ -94,16 +94,16 @@ void Ribby::CollisionCheck()
 {
 	/////////////// Normal
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0)
+		&& HP > 0.0f)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
-		--HP;
+		HP -= 1.0f;
 
 		if (0 >= HP)
 		{
-			HP = 0;
+			HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -111,16 +111,16 @@ void Ribby::CollisionCheck()
 	}
 
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0)
+		&& HP > 0.0f)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
-		--HP;
+		HP -= 0.5f;
 
 		if (0 >= HP)
 		{
-			HP = 0;
+			HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -129,15 +129,15 @@ void Ribby::CollisionCheck()
 
 	/////////////// EX
 	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0)
+		&& HP > 0.0f)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter_EX*>(Projectile)->SetHitture();
-		HP -= 5;
+		HP -= 5.0f;
 
 		if (0 >= HP)
 		{
-			HP = 0;
+			HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -145,15 +145,15 @@ void Ribby::CollisionCheck()
 	}
 
 	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0)
+		&& HP > 0.0f)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
-		HP -= 10;
+		HP -= 10.0f;
 
 		if (0 >= HP)
 		{
-			HP = 0;
+			HP = 0.0f;
 			IsStageEnd = true;
 		}
 

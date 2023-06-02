@@ -204,7 +204,7 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 	if (nullptr != FrogBoss)
 	{
-		ImGui::Text("FrogBossHP : %d", FrogBoss->GetRibbyHP());
+		ImGui::Text("FrogBossHP : %f", FrogBoss->GetRibbyHP());
 	}
 }
 

@@ -25,7 +25,7 @@ public:
 		GetRibbyHP();
 	}
 
-	int GetRibbyHP()
+	float GetRibbyHP()
 	{
 		return HP;
 	}
@@ -52,7 +52,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 
-	int HP = 500;
+	float HP = 500;
 	bool IsStageEnd = false;
 
 	void CollisionCheck();
