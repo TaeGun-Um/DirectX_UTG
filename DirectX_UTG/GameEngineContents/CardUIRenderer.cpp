@@ -42,3 +42,4 @@ void CardUIRenderer::SetScaleToCutTexture(const std::string_view& _Name, float _
 
 	GetTransform()->SetLocalScale(scale);
 }
+
