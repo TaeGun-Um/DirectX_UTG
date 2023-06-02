@@ -105,15 +105,6 @@ public:
 	void ReLoad();
 	void Release();
 
-	// юс╫ц
-	static void LoadCard(const std::string_view& _Path, size_t _X, size_t _Y)
-	{
-		GameEnginePath NewPath = std::string(_Path);
-
-		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(NewPath.GetFileName());
-		NewTexture->ResLoadCard(_Path, _X, _Y);
-	}
-
 protected:
 
 private:
@@ -122,6 +113,5 @@ private:
 
 	std::vector<SpriteInfo> Sprites;
 
-	void ResLoadCard(const std::string_view& _Path, size_t _X, size_t _Y);
 };
 

@@ -260,7 +260,6 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	return NewAnimation;
 }
 
-
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);

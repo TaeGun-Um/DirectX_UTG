@@ -2,6 +2,7 @@
 #include "CardUI.h"
 
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include "CardUIRenderer.h"
 
 #include "Player.h"
 
@@ -31,17 +32,13 @@ void CardUI::Start()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CardUI").GetFullPath());
 
-		NewDir.Move("CardUI");
-
-		GameEngineSprite::LoadCard(NewDir.GetPlusFileName("Card_001.png").GetFullPath(), 1, static_cast<int>(Player::MainPlayer->MaxEXGauge));
 	}
 
 	RenderPtr = CreateComponent<GameEngineUIRenderer>();
 
-	RenderPtr->CreateAnimation({ "Back", "Card_001.png", 0, 49, 0.05f, true, true });
-
+	RenderPtr->CreateAnimation({ .AnimationName = "Back", .SpriteName = "CardUI", .Start = 0, .End = 0, .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
 	RenderPtr->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Front", .SpriteName = "CardUI", .Start = 5, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Front", .SpriteName = "CardUI", .Start = 5, .End = 5, .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
 
 	RenderPtr->ChangeAnimation("Back");
 }
@@ -52,4 +49,5 @@ void CardUI::Update(float _DeltaTime)
 	{
 		RenderPtr->ChangeAnimation("Rotate");
 	}
+
 }
