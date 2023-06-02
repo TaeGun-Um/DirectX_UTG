@@ -98,3 +98,40 @@ void GameEngineSprite::ReLoad()
 		Sprites[i].Texture->ReLoad();
 	}
 }
+
+
+// юс╫ц
+void GameEngineSprite::ResLoadCard(const std::string_view& _Path, size_t _X, size_t _Y)
+{
+	GameEnginePath NewPath(_Path);
+
+	std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(NewPath.GetFileName());
+
+	if (nullptr == Texture)
+	{
+		Texture = GameEngineTexture::Load(_Path);
+	}
+
+	Sprites.resize(_Y * _X);
+
+	float4 UVScale = { 1.0f / static_cast<float>(_X), 1.0f / static_cast<float>(_Y) };
+
+	float4 Start = float4::Zero;
+
+	for (size_t y = 0; y < _Y; y++)
+	{
+		for (size_t x = 0; x < _X; x++)
+		{
+			size_t Index = (_X * y) + x;
+
+			Sprites[Index].Texture = Texture;
+			Sprites[Index].CutData.PosX = Start.x;
+			Sprites[Index].CutData.PosY = Start.y;
+			Sprites[Index].CutData.SizeX = UVScale.x;
+			Sprites[Index].CutData.SizeY = UVScale.y * (y + 1);
+			Start.x += UVScale.x;
+		}
+
+		Start.x = 0.0f;
+	}
+}

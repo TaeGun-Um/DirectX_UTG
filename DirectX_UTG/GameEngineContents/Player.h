@@ -169,6 +169,7 @@ private:
 	}
 
 	int PlayerHP = 0;
+	float MaxEXGauge = 50;
 	float PlayerEXGauge = 0;
 	int PlayerEXStack = 0;
 

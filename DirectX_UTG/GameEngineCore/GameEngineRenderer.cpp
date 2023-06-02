@@ -101,14 +101,8 @@ std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLineClon
 	return Units[_index]->Pipe;
 }
 
-
 void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
 {
-	//if (0 >= Units.size())
-	//{
-	//	MsgAssert("랜더 유니트가 존재하지 않습니다.");
-	//}
-
 	if (Units.size() + 1 <= _index)
 	{
 		MsgAssert("너무큰 랜더유니트 확장을 하려고 했습니다");
@@ -126,7 +120,6 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
 	{
 		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
 	}
-
 
 	Unit->Pipe = GameEngineRenderingPipeLine::Find(_Name);
 
