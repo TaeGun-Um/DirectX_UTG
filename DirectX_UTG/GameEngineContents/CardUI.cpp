@@ -20,6 +20,33 @@ void CardUI::SetMainPalyer(std::shared_ptr<class Player> _MainPlayer)
 	MainPlayer = _MainPlayer;
 }
 
+void CardUI::CartUIReset()
+{
+	Stack0 = 0.0f;
+	Stack1 = 0.0f;
+	Stack2 = 0.0f;
+	Stack3 = 0.0f;
+	Stack4 = 0.0f;
+
+	CardBackRenderPtr0->On();
+	CardBackRenderPtr1->On();
+	CardBackRenderPtr2->On();
+	CardBackRenderPtr3->On();
+	CardBackRenderPtr4->On();
+
+	CardBackRenderPtr0->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardBackRenderPtr1->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardBackRenderPtr2->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardBackRenderPtr3->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardBackRenderPtr4->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+
+	CardFrontRenderPtr0->Off();
+	CardFrontRenderPtr1->Off();
+	CardFrontRenderPtr2->Off();
+	CardFrontRenderPtr3->Off();
+	CardFrontRenderPtr4->Off();
+}
+
 void CardUI::Start()
 {
 	if (nullptr == GameEngineSprite::Find("CardUI"))
@@ -115,21 +142,6 @@ void CardUI::Update(float _DeltaTime)
 		CardFrontRenderPtr2->ChangeAnimation("Rotate", false);
 		CardFrontRenderPtr3->ChangeAnimation("Rotate", false);
 		CardFrontRenderPtr4->ChangeAnimation("Rotate", false);
-
-		CardBackRenderPtr0->GetTransform()->SetLocalPosition({ 0 , (Stack0 * CurHeight) / 2 });
-		CardFrontRenderPtr0->GetTransform()->SetLocalPosition({ 0 , (Stack0 * CurHeight) / 2 });
-
-		CardBackRenderPtr1->GetTransform()->SetLocalPosition({ 20 , (Stack1 * CurHeight) / 2 });
-		CardFrontRenderPtr1->GetTransform()->SetLocalPosition({ 20 , (Stack1 * CurHeight) / 2 });
-
-		CardBackRenderPtr2->GetTransform()->SetLocalPosition({ 40 , (Stack2 * CurHeight) / 2 });
-		CardFrontRenderPtr2->GetTransform()->SetLocalPosition({ 40 , (Stack2 * CurHeight) / 2 });
-
-		CardBackRenderPtr3->GetTransform()->SetLocalPosition({ 60 , (Stack3 * CurHeight) / 2 });
-		CardFrontRenderPtr3->GetTransform()->SetLocalPosition({ 60 , (Stack3 * CurHeight) / 2 });
-
-		CardBackRenderPtr4->GetTransform()->SetLocalPosition({ 80 , (Stack4 * CurHeight) / 2 });
-		CardFrontRenderPtr4->GetTransform()->SetLocalPosition({ 80 , (Stack4 * CurHeight) / 2 });
 	}
 
 	int StackCount = MainPlayer->PlayerEXStack;

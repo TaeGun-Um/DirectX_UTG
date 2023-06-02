@@ -16,6 +16,8 @@ public:
 
 	void SetMainPalyer(std::shared_ptr<class Player> _MainPlayer);
 
+	void CartUIReset();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

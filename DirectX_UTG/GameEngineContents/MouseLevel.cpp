@@ -197,6 +197,11 @@ void MouseLevel::LevelChangeStart()
 		{
 			CardObject = CreateActor<CardUI>();
 		}
+
+		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		HealthObject->SetMainPalyer(PlayerObject);
+		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });
+		CardObject->SetMainPalyer(PlayerObject);
 	}
 	{
 		if (BlackBoxPtr == nullptr)
@@ -324,6 +329,7 @@ void MouseLevel::LevelChangeEnd()
 
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
+	CardObject->CartUIReset();
 	PlayerObject->MoveAbleTimeReset();
 }
 

@@ -159,6 +159,7 @@ void TutorialLevel::LevelChangeStart()
 
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
+		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });
 		CardObject->SetMainPalyer(PlayerObject);
 	}
 	{
@@ -228,6 +229,7 @@ void TutorialLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Explosion");
 	}
 
+	CardObject->CartUIReset();
 	PlayerObject->MoveAbleTimeReset();
 }
 

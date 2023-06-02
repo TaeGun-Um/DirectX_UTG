@@ -344,6 +344,7 @@ void FrogLevel::LevelChangeEnd()
 		EndSetCount = 1;
 		EndSetCount2 = 1;
 
+		CardObject->CartUIReset();
 		PlayerObject->MoveAbleTimeReset();
 	}
 
