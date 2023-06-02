@@ -8,3 +8,5 @@
 
 #include "PixelCollision.h"
 #include "ContentsEnum.h"
+
+#include <GameEngineCore/GameEngineDebug3D.h>

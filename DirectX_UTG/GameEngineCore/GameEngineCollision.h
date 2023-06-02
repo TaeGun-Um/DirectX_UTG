@@ -43,6 +43,7 @@ public:
 		Type = _Type;
 	}
 
+	// 나를 디버깅해줄 카메라를 변경하는 기능.
 	void SetDebugCamera(GameEngineCamera* _DebugCamera)
 	{
 		DebugCamera = _DebugCamera;
@@ -50,12 +51,16 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _Delta) override;
 
 private:
 	ColType Type = ColType::SPHERE3D;
 
+	//#ifdef _DEBUG
 	GameEngineCamera* DebugCamera = nullptr;
 
-	void DebugRender(float _DeltaTime);
+	// void DebugRender(float _DeltaTime);
+//#endif
 };
+
 

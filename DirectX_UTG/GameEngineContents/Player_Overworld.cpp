@@ -988,6 +988,7 @@ void Player_Overworld::PlayerCollisionSetting()
 	if (nullptr == CollisionPtr)
 	{
 		CollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Player));
+		CollisionPtr->SetColType(ColType::AABBBOX2D);
 	}
 
 	if (nullptr != CollisionPtr)

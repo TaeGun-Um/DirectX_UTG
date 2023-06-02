@@ -304,6 +304,9 @@
     <ClInclude Include="FrogBossDataBase.h">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CardUIRenderer.h">
+      <Filter>Levels\7. Player\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -503,6 +506,9 @@
     </ClCompile>
     <ClCompile Include="FrogBossDataBase.cpp">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CardUIRenderer.cpp">
+      <Filter>Levels\7. Player\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

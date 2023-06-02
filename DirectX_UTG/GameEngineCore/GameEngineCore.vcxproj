@@ -199,6 +199,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h" />
     <ClInclude Include="GameEngineDepthState.h">
       <SubType>
       </SubType>
@@ -368,6 +369,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp" />
     <ClCompile Include="GameEngineDepthState.cpp">
       <SubType>
       </SubType>

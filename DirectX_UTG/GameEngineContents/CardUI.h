@@ -22,7 +22,7 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class CardUIRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class Player> MainPlayer = nullptr;
 
 	int Stack = 0;

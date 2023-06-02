@@ -41,8 +41,8 @@ void Spread_EX::Start()
 	if (nullptr == ProjectileCollisionPtr)
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::SpreadEX));
+		ProjectileCollisionPtr->SetColType(ColType::SPHERE2D);
 		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 70, 70, 1 });
-		//ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
 	if (nullptr == ProjectileCollisionRenderPtr)

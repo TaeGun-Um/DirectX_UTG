@@ -138,15 +138,16 @@ public:
 
 	ColorOption ColorOptionValue;
 
+
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	std::string GetTexName();
 
+
 protected:
 	void SpriteRenderInit();
-
 	float4 AtlasData;
 
 private:
@@ -158,8 +159,11 @@ private:
 
 	std::shared_ptr<AnimationInfo> CurAnimation;
 
+
+
 	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
 	size_t Frame = -1;
+
 
 	float ScaleRatio = 1.0f;
 

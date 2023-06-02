@@ -70,6 +70,9 @@
     <Filter Include="ContentPattern">
       <UniqueIdentifier>{8cced859-a6ec-4a55-b3a3-a7949cba6c3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{085540b7-5b46-44d7-99e5-0b7cd0c580bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -216,6 +219,9 @@
     <ClInclude Include="GameEngineButton.h">
       <Filter>ContentPattern</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -355,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineButton.cpp">
       <Filter>ContentPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp">
+      <Filter>Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
