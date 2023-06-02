@@ -118,7 +118,7 @@ void Ribby::CollisionCheck()
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
-		HP -= 0.5f;
+		HP -= 0.4f;
 
 		if (0 >= HP)
 		{

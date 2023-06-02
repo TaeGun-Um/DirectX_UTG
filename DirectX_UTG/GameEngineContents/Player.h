@@ -184,6 +184,7 @@ private:
 	bool MulColorCheck = false;
 	bool IsHPMax = false;
 	bool IsEXMax = false;
+	bool IsEXUse = false;
 
 	// Assistant
 	void CheatKey();

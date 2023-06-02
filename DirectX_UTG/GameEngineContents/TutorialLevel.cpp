@@ -159,6 +159,7 @@ void TutorialLevel::LevelChangeStart()
 
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
+		CardObject->SetMainPalyer(PlayerObject);
 	}
 	{
 		if (BlackBoxPtr == nullptr)

@@ -1426,6 +1426,7 @@ void Player::DuckAttackEnd()
 // EX Attack 상태 체크
 void Player::EXAttackStart()
 {
+	IsEXUse = true;
 	--PlayerEXStack;
 
 	if (0 > PlayerEXStack)
