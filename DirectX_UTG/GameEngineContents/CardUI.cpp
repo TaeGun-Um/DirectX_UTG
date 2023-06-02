@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CardUI.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "CardUIRenderer.h"
 
@@ -37,52 +38,130 @@ void CardUI::Start()
 		//GameEngineTexture::Load(NewDir.GetPlusFileName("Card_001.png").GetFullPath());
 	}
 
-	RenderPtr = CreateComponent<CardUIRenderer>();
+	CardRenderPtr0 = CreateComponent<CardUIRenderer>();
+	CardRenderPtr1 = CreateComponent<CardUIRenderer>();
+	CardRenderPtr2 = CreateComponent<CardUIRenderer>();
+	CardRenderPtr3 = CreateComponent<CardUIRenderer>();
+	CardRenderPtr4 = CreateComponent<CardUIRenderer>();
 
-	RenderPtr->SetScaleToTexture("Card_001.png");
+	CardRenderPtr0->SetScaleToTexture("Card_001.png");
+	CardRenderPtr1->SetScaleToTexture("Card_001.png");
+	CardRenderPtr2->SetScaleToTexture("Card_001.png");
+	CardRenderPtr3->SetScaleToTexture("Card_001.png");
+	CardRenderPtr4->SetScaleToTexture("Card_001.png");
 
-	RenderPtr->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Front", .SpriteName = "CardUI", .Start = 5, .End = 5, .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+	CardRenderPtr0->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+	CardRenderPtr1->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+	CardRenderPtr2->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+	CardRenderPtr3->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+	CardRenderPtr4->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 
-	//RenderPtr->ChangeAnimation("Back");
+	SizeY = 1.0f / (Player::MainPlayer->MaxEXGauge - 1);
+
+	CardRenderPtr0->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardRenderPtr1->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardRenderPtr2->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardRenderPtr3->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+	CardRenderPtr4->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.0f);
+
+	CardRenderPtr1->GetTransform()->SetLocalPosition({ 20, 0 });
+	CardRenderPtr2->GetTransform()->SetLocalPosition({ 40, 0 });
+	CardRenderPtr3->GetTransform()->SetLocalPosition({ 60, 0 });
+	CardRenderPtr4->GetTransform()->SetLocalPosition({ 80, 0 });
 }
 
 void CardUI::Update(float _DeltaTime)
 {
-	RenderPtr->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, 0.5f);
-}
+	int StackCount = MainPlayer->PlayerEXStack;
 
-//void GameEngineSprite::ResLoadCard(const std::string_view& _Path, size_t _X, size_t _Y)
-//{
-//	GameEnginePath NewPath(_Path);
-//
-//	std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(NewPath.GetFileName());
-//
-//	if (nullptr == Texture)
-//	{
-//		Texture = GameEngineTexture::Load(_Path);
-//	}
-//
-//	Sprites.resize(_Y * _X);
-//
-//	float4 UVScale = { 1.0f / static_cast<float>(_X), 1.0f / static_cast<float>(_Y) };
-//
-//	float4 Start = float4::Zero;
-//
-//	for (size_t y = 0; y < _Y; y++)
-//	{
-//		for (size_t x = 0; x < _X; x++)
-//		{
-//			size_t Index = (_X * y) + x;
-//
-//			Sprites[Index].Texture = Texture;
-//			Sprites[Index].CutData.PosX = Start.x;
-//			Sprites[Index].CutData.PosY = Start.y;
-//			Sprites[Index].CutData.SizeX = UVScale.x;
-//			Sprites[Index].CutData.SizeY = UVScale.y * (y + 1);
-//			Start.x += UVScale.x;
-//		}
-//
-//		Start.x = 0.0f;
-//	}
-//}
+	// ¾ÈµÊ
+	if (true == GameEngineInput::IsDown("EX") && 1 == StackCount)
+	{
+		int a = 0;
+	}
+
+	if (0 == StackCount)
+	{
+		if (49 > Stack0)
+		{
+			Stack0Full = false;
+			float CurGauege = MainPlayer->PlayerEXGauge;
+			Stack0 = CurGauege;
+
+			CardRenderPtr0->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, SizeY * Stack0);
+		}
+		else if (49 == Stack0)
+		{
+			Stack0Full = true;
+			CardRenderPtr0->ChangeAnimation("Rotate", false);
+		}
+	}
+
+	if (true == Stack0Full && 1 == StackCount)
+	{
+		if (49 > Stack1)
+		{
+			Stack1Full = false;
+			float CurGauege = MainPlayer->PlayerEXGauge;
+			Stack1 = CurGauege;
+
+			CardRenderPtr1->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, SizeY * Stack1);
+		}
+		else if (49 == Stack1)
+		{
+			Stack1Full = true;
+			CardRenderPtr1->ChangeAnimation("Rotate", false);
+		}
+	}
+
+	if (true == Stack1Full && 2 == StackCount)
+	{
+		if (49 > Stack2)
+		{
+			Stack2Full = false;
+			float CurGauege = MainPlayer->PlayerEXGauge;
+			Stack2 = CurGauege;
+
+			CardRenderPtr2->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, SizeY * Stack2);
+		}
+		else if (49 == Stack2)
+		{
+			Stack2Full = true;
+			CardRenderPtr2->ChangeAnimation("Rotate", false);
+		}
+	}
+
+	if (true == Stack2Full && 3 == StackCount)
+	{
+		if (49 > Stack3)
+		{
+			Stack3Full = false;
+			float CurGauege = MainPlayer->PlayerEXGauge;
+			Stack3 = CurGauege;
+
+			CardRenderPtr3->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, SizeY * Stack3);
+		}
+		else if (49 == Stack3)
+		{
+			Stack3Full = true;
+			CardRenderPtr3->ChangeAnimation("Rotate", false);
+		}
+	}
+
+	if (true == Stack3Full && 4 == StackCount)
+	{
+		if (49 > Stack4)
+		{
+			Stack4Full = false;
+			float CurGauege = MainPlayer->PlayerEXGauge;
+			Stack4 = CurGauege;
+
+			CardRenderPtr4->SetScaleToCutTexture("Card_001.png", 0.0f, 0.0f, 1.0f, SizeY * Stack4);
+		}
+		else if (49 == Stack4)
+		{
+			Stack4Full = true;
+			CardRenderPtr4->ChangeAnimation("Rotate", false);
+		}
+	}
+}
