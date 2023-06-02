@@ -44,8 +44,8 @@ void Ribby::Start()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 250, 1 });
-		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -30 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)
@@ -61,8 +61,8 @@ void Ribby::Start()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 250, 1 });
-		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -30 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
 	}
 
 	if (nullptr == EXCollisionRenderPtr)
