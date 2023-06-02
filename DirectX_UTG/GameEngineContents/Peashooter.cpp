@@ -21,7 +21,7 @@ void Peashooter::Start()
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 		RenderPtr->CreateAnimation({ "Loop", "Peashooter_Loop.png", 0, 7, 0.07f, true, false });
-		RenderPtr->CreateAnimation({ "Death", "Peashooter_Death.png", 0, 6, 0.05f, true, false });
+		RenderPtr->CreateAnimation({ "Death", "Peashooter_Death.png", 0, 6, 0.05f, false, false });
 
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 350, 350 });
 		RenderPtr->ChangeAnimation("Loop");
@@ -30,6 +30,7 @@ void Peashooter::Start()
 	if (nullptr == ProjectileCollisionPtr)
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Peashooter));
+		ProjectileCollisionPtr->SetColType(ColType::SPHERE2D);
 		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
 		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 25, 0 });
 	}

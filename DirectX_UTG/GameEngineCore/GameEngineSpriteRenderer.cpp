@@ -28,6 +28,9 @@ void AnimationInfo::Update(float _DeltaTime)
 		IsEndValue = false;
 	}
 
+	// 1;
+	// 
+
 	if (true == IsPauseValue)
 	{
 		return;
@@ -47,6 +50,9 @@ void AnimationInfo::Update(float _DeltaTime)
 	{
 		++CurFrame;
 
+
+
+
 		if (FrameIndex.size() <= CurFrame)
 		{
 			IsEndValue = true;
@@ -62,17 +68,24 @@ void AnimationInfo::Update(float _DeltaTime)
 			}
 		}
 
+		//다음프레임이 존재하면서
 		else
 		{
 			CurFrameIndex = FrameIndex[CurFrame];
 
+			//Start콜백이 있다면 콜백을 호출
 			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
 			{
 				StartEventFunction[CurFrameIndex]();
 			}
 		}
 
+
 		CurTime += FrameTime[CurFrame];
+
+		// 0 ~ 9
+
+		// 9
 	}
 }
 
@@ -260,6 +273,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	return NewAnimation;
 }
 
+
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
@@ -353,6 +367,8 @@ std::string GameEngineSpriteRenderer::GetTexName()
 
 void GameEngineSpriteRenderer::SpriteRenderInit()
 {
+
+	SetMesh("Rect");
 	SetPipeLine("2DTexture");
 
 	AtlasData.x = 0.0f;

@@ -44,7 +44,7 @@ void CardUI::Start()
 	RenderPtr->CreateAnimation({ .AnimationName = "Rotate", .SpriteName = "CardUI", .Start = 0, .End = 5, .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 	RenderPtr->CreateAnimation({ .AnimationName = "Front", .SpriteName = "CardUI", .Start = 5, .End = 5, .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
 
-	RenderPtr->ChangeAnimation("Back");
+	//RenderPtr->ChangeAnimation("Back");
 }
 
 void CardUI::Update(float _DeltaTime)

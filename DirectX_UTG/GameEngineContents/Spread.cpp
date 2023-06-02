@@ -21,11 +21,11 @@ void Spread::Start()
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 		RenderPtr->CreateAnimation({ "Loop", "Spread_Loop.png", 0, 3, 0.05f, true, false });
-		RenderPtr->CreateAnimation({ "Death", "Spread_Death.png", 1, 4, 0.05f, true, true });
-		RenderPtr->CreateAnimation({ "Death_Enemyhit", "Spread_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Death", "Spread_Death.png", 1, 4, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Death_Enemyhit", "Spread_Death_Enemyhit.png", 0, 2, 0.05f, false, true });
 		RenderPtr->CreateAnimation({ "Weak_Loop", "Spread_Weak_Loop.png", 0, 3, 0.05f, true, true });
-		RenderPtr->CreateAnimation({ "Weak_Death", "Spread_Weak_Death.png", 1, 4, 0.05f, true, true });
-		RenderPtr->CreateAnimation({ "Weak_Death_Enemyhit", "Spread_Weak_Death_Enemyhit.png", 0, 2, 0.05f, true, true });
+		RenderPtr->CreateAnimation({ "Weak_Death", "Spread_Weak_Death.png", 1, 4, 0.05f, false, true });
+		RenderPtr->CreateAnimation({ "Weak_Death_Enemyhit", "Spread_Weak_Death_Enemyhit.png", 0, 2, 0.05f, false, true });
 
 		RenderPtr->GetTransform()->SetLocalScale(float4{ 400, 400 });
 		RenderPtr->ChangeAnimation("Loop");
@@ -34,6 +34,7 @@ void Spread::Start()
 	if (nullptr == ProjectileCollisionPtr)
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Spread));
+		ProjectileCollisionPtr->SetColType(ColType::SPHERE2D);
 		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 20, 20, 1 });
 		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}

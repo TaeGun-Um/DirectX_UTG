@@ -3,6 +3,6 @@
   <ItemGroup>
     <FxCompile Include="..\EngineResources\Shader\TextureShader.hlsl" />
     <FxCompile Include="..\..\..\AR45\DirectX\DirectX45\EngineResources\Shader\MergeShader.hlsl" />
-    <FxCompile Include="..\EngineResources\Shader\CollisionDebugShader.hlsl" />
+    <FxCompile Include="..\EngineResources\Shader\DebugMeshRender.hlsl" />
   </ItemGroup>
 </Project>
