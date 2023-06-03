@@ -168,4 +168,46 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 	}
 		break;
 	}
+
+	CameraShake(_DeltaTime);
+}
+
+void PlayerDataBase::CameraShake(float _DeltaTime)
+{
+	if (false == IsCameraShaking)
+	{
+		return;
+	}
+
+	if (1 == ShakingCameraSetting)
+	{
+		ShakingCameraSetting = 0;
+		CurCameraPosition = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+	}
+
+	CameraShakeTime += _DeltaTime;
+
+	if (0.025f <= CameraShakeTime)
+	{
+		CameraShakeTime = 0.0f;
+
+		if (8 == ShakingCount)
+		{
+			ShakingCount = 0;
+			IsCameraShaking = false;
+			ShakingCameraSetting = 1;
+			CameraShakeTime = 0.0f;
+			GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(CurCameraPosition);
+		}
+		else if (0 == ShakingCount % 2)
+		{
+			++ShakingCount;
+			GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition({ CurCameraPosition.x  , CurCameraPosition.y - 2 });
+		}
+		else if (1 == ShakingCount % 2)
+		{
+			++ShakingCount;
+			GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition({ CurCameraPosition.x  , CurCameraPosition.y + 2 });
+		}
+	}
 }

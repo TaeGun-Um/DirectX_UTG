@@ -65,6 +65,7 @@ protected:
 
 	void SetCameraFollowType(CameraFollowType _Type);
 	void MoveCamera(float _DeltaTime);
+	void CameraShake(float _DeltaTime);
 
 	float MoveSpeed = 400.0f;
 
@@ -78,6 +79,7 @@ protected:
 	float CameraMoveSpeed = 0.0f;
 	float CameraAccessTime = 0.0f;
 	float CameraSpeedRatio = 2.0f;
+	float CameraShakeTime = 0.0f;
 
 	float CameraWidth_Half = 640.0f;
 	float CameraHegiht_Half = 360.0f;
@@ -87,17 +89,22 @@ protected:
 	float CameraXEnd = 0.0f;
 	float CameraYEnd = 0.0f;
 	float CameraMoveTime = 0.0f;
+	float ShakeSpeed = 1000.0f;  //
 
 	bool IsLeftEndPosition = false;
 	bool IsRightEndPosition = false;
+	bool IsCameraShaking = false;
 
 	int LeftCount = 1;
 	int RightCount = 1;
+	int ShakingCameraSetting = 1;
+	int ShakingCount = 0;
 
 	float4 TargetPosition = float4::Zero;
 	float4 PrevCameraPosition = float4::Zero;
 	float4 CameraEndPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
+	float4 CurCameraPosition = float4::Zero;
 
 	void FieldCameraPivotCheck();
 	void OverwolrdCameraPivotCheck();

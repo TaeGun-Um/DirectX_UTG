@@ -1597,6 +1597,7 @@ void Player::EXAttackUpdate(float _DeltaTime)
 
 	if (7 == RenderPtr->GetCurrentFrame() && 1 == CreateEXCount)
 	{
+		IsCameraShaking = true;
 		EXPushBack = true;
 		CreateEXCount = 0;
 		EXCreate();
@@ -1871,6 +1872,8 @@ void Player::HoldingAttackEnd()
 
 void Player::HitStart()
 {
+	IsCameraShaking = true;
+
 	if (true == IsJump || true == IsFall)
 	{
 		RenderPtr->ChangeAnimation("AirHit");
