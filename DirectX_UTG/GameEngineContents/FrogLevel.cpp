@@ -205,9 +205,9 @@ void FrogLevel::LevelChangeStart()
 			RibbyObject = CreateActor<Ribby>();
 		}
 		
-		RibbyObject->GetTransform()->SetLocalPosition({ 1000 , 250 });
+		RibbyObject->GetTransform()->SetLocalPosition({ 1020 , 280 });
 		RibbyObject->SetInitReset();
-		RibbyObject->Off();
+		//RibbyObject->Off();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -321,9 +321,9 @@ void FrogLevel::LevelChangeEnd()
 {
 	if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
 	{
-		GameEngineTexture::UnLoad("Backstage_1_1.png");
-		GameEngineTexture::UnLoad("Backstage_2_2.png");
-		GameEngineTexture::UnLoad("Backstage_3_3.png");
+		GameEngineTexture::UnLoad("Backstage_1.png");
+		GameEngineTexture::UnLoad("Backstage_2.png");
+		GameEngineTexture::UnLoad("Backstage_3.png");
 	}
 	if (nullptr != GameEngineSprite::Find("Cheerer"))
 	{
