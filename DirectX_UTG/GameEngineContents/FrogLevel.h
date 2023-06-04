@@ -52,6 +52,7 @@ protected:
 
 private:
 	std::shared_ptr<class Loading> LoadingPtr = nullptr;
+	std::shared_ptr<class Frog_FrontObject> FrontObject = nullptr;
 	std::shared_ptr<class Frog_Map> MapObject = nullptr;
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
@@ -64,6 +65,12 @@ private:
 	std::shared_ptr<class Knockout> KnockoutPtr = nullptr;
 	std::shared_ptr<class You_Died> YouDiedPtr = nullptr;
 	std::shared_ptr<class Ready_Wallop> ReadyWallopPtr = nullptr;
+
+	std::shared_ptr<class Cheerer> CheererObject = nullptr;
+	std::shared_ptr<class Craber> CraberObject = nullptr;
+	std::shared_ptr<class Crowd> CrowdObject = nullptr;
+	std::shared_ptr<class Dancer> DancerObject = nullptr;
+	std::shared_ptr<class Deliver> DeliverObject = nullptr;
 
 	void ReLoadSetting();
 	void PlayerDebugRenderOn();

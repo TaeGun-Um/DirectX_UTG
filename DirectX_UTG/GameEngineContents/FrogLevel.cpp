@@ -6,12 +6,19 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
+#include "Frog_FrontObject.h"
 #include "Frog_Map.h"
 #include "Frog_ColMap.h"
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
 #include "Ribby.h"
+
+#include "Cheerer.h"
+#include "Craber.h"
+#include "Crowd.h"
+#include "Dancer.h"
+#include "Deliver.h"
 
 #include "OverworldLevel.h"
 
@@ -164,6 +171,35 @@ void FrogLevel::LevelChangeStart()
 		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 10 });
 	}
 	{
+		if (nullptr == DancerObject)
+		{
+			DancerObject = CreateActor<Dancer>();
+		}
+		if (nullptr == CheererObject)
+		{
+			CheererObject = CreateActor<Cheerer>();
+		}
+		if (nullptr == CraberObject)
+		{
+			CraberObject = CreateActor<Craber>();
+		}
+		if (nullptr == DeliverObject)
+		{
+			DeliverObject = CreateActor<Deliver>();
+		}
+		if (nullptr == CrowdObject)
+		{
+			CrowdObject = CreateActor<Crowd>();
+		}
+
+		DancerObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half + 88, 10 });
+		CheererObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half - 210, PlayMapHeight_Half + 50, 10 });
+		CraberObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half - 530, PlayMapHeight_Half + 30, 10 });
+		DeliverObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half - 750, PlayMapHeight_Half + 30, 10 });
+		DeliverObject->SetStartPosition(DeliverObject->GetTransform()->GetLocalPosition());
+		CrowdObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 15, PlayMapHeight_Half, 7 });
+	}
+	{
 		if (nullptr == RibbyObject)
 		{
 			RibbyObject = CreateActor<Ribby>();
@@ -171,6 +207,7 @@ void FrogLevel::LevelChangeStart()
 		
 		RibbyObject->GetTransform()->SetLocalPosition({ 1000 , 250 });
 		RibbyObject->SetInitReset();
+		RibbyObject->Off();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -184,6 +221,14 @@ void FrogLevel::LevelChangeStart()
 		PlayerObject->SetCorrectionFalse();
 		PlayerObject->PlayerReset();
 		PlayerObject->SetIntro();
+	}
+	{
+		if (nullptr == FrontObject)
+		{
+			FrontObject = CreateActor<Frog_FrontObject>();
+		}
+
+		FrontObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
 	}
 	{
 		if (nullptr == ThisColMap)
@@ -280,6 +325,22 @@ void FrogLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("Backstage_2_2.png");
 		GameEngineTexture::UnLoad("Backstage_3_3.png");
 	}
+	if (nullptr != GameEngineSprite::Find("Cheerer"))
+	{
+		GameEngineSprite::UnLoad("Cheerer");
+		GameEngineSprite::UnLoad("Craber");
+		GameEngineSprite::UnLoad("Crowd");
+		GameEngineSprite::UnLoad("Dancer");
+		GameEngineSprite::UnLoad("Deliver");
+	}
+	if (nullptr != GameEngineTexture::Find("Plant_1.png"))
+	{
+		GameEngineTexture::UnLoad("Table_1.png");
+		GameEngineTexture::UnLoad("Table_2.png");
+		GameEngineTexture::UnLoad("Plant_1.png");
+		GameEngineTexture::UnLoad("Plant_2.png");
+		GameEngineTexture::UnLoad("Plant_3.png");
+	}
 	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
 	{
 		GameEngineSprite::UnLoad("Ribby_Idle");
@@ -354,9 +415,25 @@ void FrogLevel::ReLoadSetting()
 {
 	if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
 	{
-		GameEngineTexture::ReLoad("Backstage_1_1.png");
-		GameEngineTexture::ReLoad("Backstage_2_2.png");
-		GameEngineTexture::ReLoad("Backstage_3_3.png");
+		GameEngineTexture::ReLoad("Backstage_1.png");
+		GameEngineTexture::ReLoad("Backstage_2.png");
+		GameEngineTexture::ReLoad("Backstage_3.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Cheerer"))
+	{
+		GameEngineSprite::ReLoad("Cheerer");
+		GameEngineSprite::ReLoad("Craber");
+		GameEngineSprite::ReLoad("Crowd");
+		GameEngineSprite::ReLoad("Dancer");
+		GameEngineSprite::ReLoad("Deliver");
+	}
+	if (nullptr != GameEngineTexture::Find("Plant_1.png"))
+	{
+		GameEngineTexture::ReLoad("Table_1.png");
+		GameEngineTexture::ReLoad("Table_2.png");
+		GameEngineTexture::ReLoad("Plant_1.png");
+		GameEngineTexture::ReLoad("Plant_2.png");
+		GameEngineTexture::ReLoad("Plant_3.png");
 	}
 	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
 	{

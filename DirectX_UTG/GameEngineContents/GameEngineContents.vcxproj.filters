@@ -307,6 +307,24 @@
     <ClInclude Include="CardUIRenderer.h">
       <Filter>Levels\7. Player\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Frog_FrontObject.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Dancer.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Deliver.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheerer.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Craber.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Crowd.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -509,6 +527,24 @@
     </ClCompile>
     <ClCompile Include="CardUIRenderer.cpp">
       <Filter>Levels\7. Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog_FrontObject.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Dancer.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Deliver.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheerer.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Craber.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Crowd.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

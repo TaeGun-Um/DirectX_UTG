@@ -192,16 +192,36 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Cheerer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Coin.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="Craber.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Crowd.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CupheadCore.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Dancer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="DashDust.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Deliver.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -242,6 +262,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Frog_ColMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Frog_FrontObject.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -451,7 +475,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Cheerer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Coin.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Craber.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Crowd.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -460,7 +496,15 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="CupheadCore_Resources.cpp" />
+    <ClCompile Include="Dancer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="DashDust.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Deliver.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -501,6 +545,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Frog_ColMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Frog_FrontObject.cpp">
       <SubType>
       </SubType>
     </ClCompile>
