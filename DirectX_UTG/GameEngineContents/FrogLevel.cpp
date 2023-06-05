@@ -343,6 +343,9 @@ void FrogLevel::LevelChangeEnd()
 	}
 	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
 	{
+		GameEngineSprite::UnLoad("Ribby_Intro");
+		GameEngineSprite::UnLoad("Ribby_Intro_Loop");
+		GameEngineSprite::UnLoad("Ribby_Intro_End");
 		GameEngineSprite::UnLoad("Ribby_Idle");
 	}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
@@ -437,6 +440,9 @@ void FrogLevel::ReLoadSetting()
 	}
 	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
 	{
+		GameEngineSprite::ReLoad("Ribby_Intro");
+		GameEngineSprite::ReLoad("Ribby_Intro_Loop");
+		GameEngineSprite::ReLoad("Ribby_Intro_End");
 		GameEngineSprite::ReLoad("Ribby_Idle");
 	}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))

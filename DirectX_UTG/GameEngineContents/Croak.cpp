@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "Ribby.h"
+#include "Croak.h"
 
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -10,28 +10,21 @@
 #include "Spread.h"
 #include "Spread_EX.h"
 
-Ribby::Ribby() 
+Croak::Croak() 
 {
 }
 
-Ribby::~Ribby() 
+Croak::~Croak() 
 {
 }
 
-void Ribby::Start()
+void Croak::Start()
 {
 	ActorInitSetting();
 }
 
-void Ribby::Update(float _DeltaTime)
+void Croak::Update(float _DeltaTime)
 {
-	MoveAbleTime += _DeltaTime;
-
-	if (MoveAbleTime <= 1.f)
-	{
-		return;
-	}
-
 	if (true == IsDebugRender)
 	{
 		BodyCollisionRenderPtr->On();
@@ -43,25 +36,12 @@ void Ribby::Update(float _DeltaTime)
 		EXCollisionRenderPtr->Off();
 	}
 
-	DirectCheck();
 	UpdateState(_DeltaTime);
 	CollisionCheck();
 	HitBlink(_DeltaTime);
 }
 
-void Ribby::DirectCheck()
-{
-	if (false == Directbool)
-	{
-		GetTransform()->SetLocalPositiveScaleX();
-	}
-	else
-	{
-		GetTransform()->SetLocalNegativeScaleX();
-	}
-}
-
-void Ribby::CollisionCheck()
+void Croak::CollisionCheck()
 {
 	/////////////// Normal
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
@@ -132,7 +112,7 @@ void Ribby::CollisionCheck()
 	}
 }
 
-void Ribby::HitBlink(float _DeltaTime)
+void Croak::HitBlink(float _DeltaTime)
 {
 	if (false == IsBlink)
 	{
@@ -160,7 +140,7 @@ void Ribby::HitBlink(float _DeltaTime)
 	}
 }
 
-void Ribby::ActorInitSetting()
+void Croak::ActorInitSetting()
 {
 	if (nullptr == GameEngineSprite::Find("Ribby_Idle"))
 	{
@@ -173,8 +153,6 @@ void Ribby::ActorInitSetting()
 		NewDir.Move("Ribby");
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro_Loop").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro_End").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Idle").GetFullPath());
 	}
 
@@ -182,12 +160,10 @@ void Ribby::ActorInitSetting()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro", .SpriteName = "Ribby_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_Loop", .SpriteName = "Ribby_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_End", .SpriteName = "Ribby_Intro_End", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro", .SpriteName = "Ribby_Intro", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Idle", .SpriteName = "Ribby_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 
-		RenderPtr->ChangeAnimation("Ribby_Idle");
+		RenderPtr->ChangeAnimation("Ribby_Intro");
 	}
 
 	if (nullptr == BodyCollisionPtr)
@@ -205,7 +181,6 @@ void Ribby::ActorInitSetting()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
-		BodyCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == EXCollisionPtr)
@@ -223,6 +198,5 @@ void Ribby::ActorInitSetting()
 		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
 		EXCollisionRenderPtr->SetTexture("RedLine.png");
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
-		EXCollisionRenderPtr->Off();
 	}
 }
