@@ -52,7 +52,7 @@ void Player::Update(float _DeltaTime)
 
 	MoveAbleTime += _DeltaTime;
 
-	if (MoveAbleTime <= 1.f)
+	if (MoveAbleTime <= 0.9f)
 	{
 		return;
 	}
@@ -770,8 +770,8 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("WeaponSwap"))
 	{
+		IsWeaponChange = true;
 		WeaponType = !WeaponType;
-		bool Check = WeaponType;
 		ProjectileCreateTime = 0.06f;
 
 		if (true == WeaponType)
@@ -1441,14 +1441,14 @@ void Player::CreateSpread_EX()
 
 	float4 PlayerPosition = GetTransform()->GetLocalPosition();
 
-	float4 ProjectilePosition0 = PlayerPosition + float4{ 90, 60 };  
-	float4 ProjectilePosition1 = PlayerPosition + float4{ 40, 110 }; 
-	float4 ProjectilePosition2 = PlayerPosition + float4{ -10, 160 };
-	float4 ProjectilePosition3 = PlayerPosition + float4{ -60, 110 };
-	float4 ProjectilePosition4 = PlayerPosition + float4{ -110, 60 };
-	float4 ProjectilePosition5 = PlayerPosition + float4{ -60, 10 }; 
-	float4 ProjectilePosition6 = PlayerPosition + float4{ -10, -40 };
-	float4 ProjectilePosition7 = PlayerPosition + float4{ 40, 10 };  
+	float4 ProjectilePosition0 = PlayerPosition + float4{ 90, 80 };  
+	float4 ProjectilePosition1 = PlayerPosition + float4{ 40, 130 }; 
+	float4 ProjectilePosition2 = PlayerPosition + float4{ -10, 180 };
+	float4 ProjectilePosition3 = PlayerPosition + float4{ -60, 130 };
+	float4 ProjectilePosition4 = PlayerPosition + float4{ -110, 80 };
+	float4 ProjectilePosition5 = PlayerPosition + float4{ -60, 30 }; 
+	float4 ProjectilePosition6 = PlayerPosition + float4{ -10, -60 };
+	float4 ProjectilePosition7 = PlayerPosition + float4{ 40, 30 };  
 
 	float4 ProjectileRotation0 = float4::Zero;
 	float4 ProjectileRotation1 = float4::Zero;
@@ -2074,7 +2074,7 @@ void Player::PlayerInitialSetting()
 		// Interaction & Intro
 		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Portal", .SpriteName = "Portal", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 	}
 

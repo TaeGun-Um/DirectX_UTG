@@ -34,6 +34,7 @@ class Player : public PlayerDataBase
 	friend class TransformGUI;
 	friend class CardUI;
 	friend class HealthUI;
+	friend class WeaponUI;
 
 public:
 	static Player* MainPlayer;
@@ -185,6 +186,7 @@ private:
 	bool IsHPMax = false;
 	bool IsEXMax = false;
 	bool IsEXUse = false;
+	bool IsWeaponChange = false;
 
 	// Assistant
 	void CheatKey();

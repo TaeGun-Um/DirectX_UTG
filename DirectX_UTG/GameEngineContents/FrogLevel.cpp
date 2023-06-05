@@ -9,9 +9,8 @@
 #include "Frog_FrontObject.h"
 #include "Frog_Map.h"
 #include "Frog_ColMap.h"
+
 #include "Player.h"
-#include "CardUI.h"
-#include "HealthUI.h"
 #include "Croak.h"
 #include "Ribby.h"
 
@@ -21,13 +20,17 @@
 #include "Dancer.h"
 #include "Deliver.h"
 
-#include "OverworldLevel.h"
+#include "CardUI.h"
+#include "HealthUI.h"
+#include "WeaponUI.h"
 
-#include "Loading.h"
-#include "RoundBlackBox.h"
 #include "Knockout.h"
 #include "Ready_Wallop.h"
 #include "You_Died.h"
+
+#include "Loading.h"
+#include "RoundBlackBox.h"
+#include "OverworldLevel.h"
 #include "TransformGUI.h"
 
 FrogLevel* FrogLevel::FrogLevelPtr = nullptr;
@@ -213,7 +216,7 @@ void FrogLevel::LevelChangeStart()
 		RibbyObject->GetTransform()->SetLocalPosition({ 1020 , 280 });
 		RibbyObject->SetInitReset();
 
-		CroakObject->GetTransform()->SetLocalPosition({ 1120 , 450, 1 });
+		CroakObject->GetTransform()->SetLocalPosition({ 1120 , 440, 1 });
 		CroakObject->SetInitReset();
 	}
 	{
@@ -246,16 +249,22 @@ void FrogLevel::LevelChangeStart()
 		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	{
+		if (nullptr == WeaponObject)
+		{
+			WeaponObject = CreateActor<WeaponUI>();
+		}
 		if (nullptr == HealthObject)
 		{
 			HealthObject = CreateActor<HealthUI>();
 		}
-
 		if (nullptr == CardObject)
 		{
 			CardObject = CreateActor<CardUI>();
 		}
 
+		WeaponObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		WeaponObject->SetMainPalyer(PlayerObject);
+		WeaponObject->StartPositionSetting(WeaponObject->GetTransform()->GetLocalPosition());
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
 		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });

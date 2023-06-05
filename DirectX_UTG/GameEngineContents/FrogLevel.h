@@ -57,6 +57,7 @@ private:
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
 	std::shared_ptr<class CardUI> CardObject = nullptr;
+	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Ribby> RibbyObject = nullptr;
 	std::shared_ptr<class Croak> CroakObject = nullptr;

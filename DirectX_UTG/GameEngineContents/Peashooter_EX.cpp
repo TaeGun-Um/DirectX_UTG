@@ -50,7 +50,7 @@ void Peashooter_EX::Update(float _DeltaTime)
 
 void Peashooter_EX::MoveDirection(float _DeltaTime)
 {
-	if (0 == Stack)
+	if (0 >= Stack)
 	{
 		IsHit = false;
 		StopTime = 0.0f;
