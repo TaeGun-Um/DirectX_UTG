@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
+#include "Croak.h"
 #include "Ribby.h"
 
 #include "Cheerer.h"
@@ -118,7 +119,7 @@ void FrogLevel::Update(float _DeltaTime)
 
 	ReadyWallopTime += _DeltaTime;
 
-	if (1.0f <= ReadyWallopTime && 1 == ReadyWallopCount)
+	if (1.5f <= ReadyWallopTime && 1 == ReadyWallopCount)
 	{
 		ReadyWallopCount = 0;
 		ReadyWallopPtr->StartMessage();
@@ -204,10 +205,16 @@ void FrogLevel::LevelChangeStart()
 		{
 			RibbyObject = CreateActor<Ribby>();
 		}
+		if (nullptr == CroakObject)
+		{
+			CroakObject = CreateActor<Croak>();
+		}
 		
 		RibbyObject->GetTransform()->SetLocalPosition({ 1020 , 280 });
 		RibbyObject->SetInitReset();
-		//RibbyObject->Off();
+
+		CroakObject->GetTransform()->SetLocalPosition({ 1120 , 450, 1 });
+		CroakObject->SetInitReset();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -297,7 +304,7 @@ void FrogLevel::LevelChangeStart()
 
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
-		GUI->SetFrogBoss(RibbyObject);
+		GUI->SetFrogBoss(CroakObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&FrogLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&FrogLevel::PlayerDebugRenderOff, this);
@@ -518,9 +525,10 @@ void FrogLevel::LevelDebugOn()
 	{
 		ThisColMap->ColMapDebugRenderOn();
 	}
-	if (nullptr != ThisColMap)
+	if (nullptr != RibbyObject)
 	{
 		RibbyObject->DebugRenderOn();
+		CroakObject->DebugRenderOn();
 	}
 }
 void FrogLevel::LevelDebugOff()
@@ -529,8 +537,9 @@ void FrogLevel::LevelDebugOff()
 	{
 		ThisColMap->ColMapDebugRenderOff();
 	}
-	if (nullptr != ThisColMap)
+	if (nullptr != RibbyObject)
 	{
 		RibbyObject->DebugRenderOff();
+		CroakObject->DebugRenderOff();
 	}
 }

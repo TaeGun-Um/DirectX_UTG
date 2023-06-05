@@ -5,7 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
-#include "Ribby.h"
+#include "Croak.h"
 #include "GrimMatchstick.h"
 #include "Werner_Werman.h"
 
@@ -204,7 +204,7 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 	if (nullptr != FrogBoss)
 	{
-		ImGui::Text("FrogBossHP : %f", FrogBoss->GetRibbyHP());
+		ImGui::Text("FrogBossHP : %f", FrogBoss->GetBossHP());
 	}
 }
 
@@ -244,7 +244,7 @@ void TransformGUI::SetMainPalyer(std::shared_ptr<class Player> _MainPlayer)
 	MainPlayer = _MainPlayer;
 }
 
-void TransformGUI::SetFrogBoss(std::shared_ptr<class Ribby> _FrogBoss)
+void TransformGUI::SetFrogBoss(std::shared_ptr<class Croak> _FrogBoss)
 {
 	FrogBoss = _FrogBoss;
 }

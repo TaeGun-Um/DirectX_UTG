@@ -190,7 +190,7 @@ void Ribby::Intro_LoopUpdate(float _DeltaTime)
 {
 	IntroLoopTime += _DeltaTime;
 
-	if (true == RenderPtr->IsAnimationEnd() && 1.f <= IntroLoopTime)
+	if (true == RenderPtr->IsAnimationEnd() && 0.6f <= IntroLoopTime)
 	{
 		ChangeState(RibbyState::Intro_End);
 		return;
@@ -229,6 +229,8 @@ void Ribby::IdleUpdate(float _DeltaTime)
 		ChangeState(RibbyState::Intro);
 		return;
 	}
+
+
 }
 void Ribby::IdleEnd()
 {

@@ -59,6 +59,7 @@ private:
 	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Ribby> RibbyObject = nullptr;
+	std::shared_ptr<class Croak> CroakObject = nullptr;
 
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;

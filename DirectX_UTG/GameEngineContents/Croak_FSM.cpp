@@ -122,23 +122,32 @@ void Croak::UpdateState(float _DeltaTime)
 
 void Croak::IntroStart()
 {
-
+	RenderPtr->ChangeAnimation("Croaks_Intro");
 }
 void Croak::IntroUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Idle);
+		return;
+	}
 }
 void Croak::IntroEnd()
 {
-
+	IsIntro = false;
 }
 	 
 void Croak::IdleStart()
 {
-
+	RenderPtr->ChangeAnimation("Croaks_Idle");
 }
 void Croak::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsIntro)
+	{
+		ChangeState(CroakState::Intro);
+		return;
+	}
 
 }
 void Croak::IdleEnd()

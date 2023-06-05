@@ -17,7 +17,11 @@ enum class CroakState
 // Ό³Έν :
 class Croak : public GameEngineActor
 {
+	friend class Ribby;
+
 public:
+	static Croak* CroakPtr;
+
 	// constrcuter destructer
 	Croak();
 	~Croak();
@@ -35,8 +39,11 @@ public:
 
 	void SetInitReset()
 	{
+		MoveAbleTime = 0.0f;
+		StateValue = CroakState::Idle;
 		IsStageEnd = false;
-		GetBossHP();
+		IsIntro = true;
+		HP = 1000;
 	}
 
 	float GetBossHP()
@@ -66,15 +73,16 @@ private:
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 	
-	float HP = 500;
+	float MoveAbleTime = 0.0f;
+	float HP = 1000;
+
 	bool IsStageEnd = false;
+	bool IsDebugRender = false;
+	bool IsBlink = false;
 
 	void ActorInitSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
-
-	bool IsDebugRender = false;
-	bool IsBlink = false;
 
 	float BlinkTime = 0.0f;
 	float OriginMulColor = 0.0f;
@@ -82,6 +90,10 @@ private:
 	int BlinkCount = 1;
 
 	CroakState StateValue = CroakState::Intro;
+
+	float IntroLoopTime = 0.0f;
+
+	bool IsIntro = true;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);

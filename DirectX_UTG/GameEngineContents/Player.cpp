@@ -52,7 +52,7 @@ void Player::Update(float _DeltaTime)
 
 	MoveAbleTime += _DeltaTime;
 
-	if (MoveAbleTime <= 0.6f)
+	if (MoveAbleTime <= 1.f)
 	{
 		return;
 	}
@@ -86,6 +86,7 @@ void Player::PlayerReset()
 
 	GetTransform()->SetLocalPositiveScaleX();
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 
 	{
 		DebugRenderPtr1->GetTransform()->SetLocalPosition({ -25, 10 });
@@ -443,7 +444,7 @@ void Player::PixelCheck(float _DeltaTime)
 			{
 				IsFall = false;
 				
-				if (MoveAbleTime >= 1.0f)
+				if (MoveAbleTime >= 3.0f)
 				{
 					CreateLandDust();
 				}

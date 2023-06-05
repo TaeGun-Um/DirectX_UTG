@@ -44,12 +44,6 @@ public:
 		StateValue = RibbyState::Idle;
 		IsStageEnd = false;
 		IsIntro = true;
-		GetRibbyHP();
-	}
-
-	float GetRibbyHP()
-	{
-		return HP;
 	}
 
 	void DebugRenderOn()
@@ -75,7 +69,6 @@ private:
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 
 	float MoveAbleTime = 0.0f;
-	float HP = 500;
 
 	bool IsStageEnd = false;
 	bool IsDebugRender = false;

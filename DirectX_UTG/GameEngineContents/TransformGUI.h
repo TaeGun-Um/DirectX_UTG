@@ -21,7 +21,7 @@ public:
 	void SetTarget(GameEngineTransform* _Target);
 
 	void SetMainPalyer(std::shared_ptr<class Player> _MainPalyer);
-	void SetFrogBoss(std::shared_ptr<class Ribby> _FrogBoss);
+	void SetFrogBoss(std::shared_ptr<class Croak> _FrogBoss);
 	void SetDragonBoss(std::shared_ptr<class GrimMatchstick> _FrogBoss);
 	void SetMouseBoss(std::shared_ptr<class Werner_Werman> _FrogBoss);
 
@@ -35,7 +35,7 @@ protected:
 
 private:
 	std::shared_ptr<class Player> MainPlayer = nullptr;
-	std::shared_ptr<class Ribby> FrogBoss = nullptr;
+	std::shared_ptr<class Croak> FrogBoss = nullptr;
 	std::shared_ptr<class GrimMatchstick> DragonBoss = nullptr;
 	std::shared_ptr<class Werner_Werman> MouseBoss = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;

@@ -10,6 +10,8 @@
 #include "Spread.h"
 #include "Spread_EX.h"
 
+Croak* Croak::CroakPtr = nullptr;
+
 Croak::Croak() 
 {
 }
@@ -20,11 +22,19 @@ Croak::~Croak()
 
 void Croak::Start()
 {
+	CroakPtr = this;
 	ActorInitSetting();
 }
 
 void Croak::Update(float _DeltaTime)
 {
+	MoveAbleTime += _DeltaTime;
+
+	if (MoveAbleTime <= 0.5f)
+	{
+		return;
+	}
+
 	if (true == IsDebugRender)
 	{
 		BodyCollisionRenderPtr->On();
@@ -142,7 +152,7 @@ void Croak::HitBlink(float _DeltaTime)
 
 void Croak::ActorInitSetting()
 {
-	if (nullptr == GameEngineSprite::Find("Ribby_Idle"))
+	if (nullptr == GameEngineSprite::Find("Croaks_Intro"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -150,20 +160,20 @@ void Croak::ActorInitSetting()
 		NewDir.Move("Image");
 		NewDir.Move("Character");
 		NewDir.Move("1_Ribby_and_Croaks");
-		NewDir.Move("Ribby");
+		NewDir.Move("Croaks");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Idle").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro", .SpriteName = "Ribby_Intro", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Idle", .SpriteName = "Ribby_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Intro", .SpriteName = "Croaks_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Idle", .SpriteName = "Croaks_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 
-		RenderPtr->ChangeAnimation("Ribby_Intro");
+		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}
 
 	if (nullptr == BodyCollisionPtr)

@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Croak.h"
 #include "Player.h"
 #include "Peashooter.h"
 #include "Peashooter_EX.h"
@@ -27,7 +28,7 @@ void Ribby::Update(float _DeltaTime)
 {
 	MoveAbleTime += _DeltaTime;
 
-	if (MoveAbleTime <= 1.f)
+	if (MoveAbleTime <= 1.8f)
 	{
 		return;
 	}
@@ -65,16 +66,16 @@ void Ribby::CollisionCheck()
 {
 	/////////////// Normal
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0.0f)
+		&& Croak::CroakPtr->HP > 0.0f)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
-		HP -= 1.0f;
+		Croak::CroakPtr->HP -= 1.0f;
 
-		if (0 >= HP)
+		if (0 >= Croak::CroakPtr->HP)
 		{
-			HP = 0.0f;
+			Croak::CroakPtr->HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -82,16 +83,16 @@ void Ribby::CollisionCheck()
 	}
 
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0.0f)
+		&& Croak::CroakPtr->HP > 0.0f)
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
-		HP -= 0.4f;
+		Croak::CroakPtr->HP -= 0.4f;
 
-		if (0 >= HP)
+		if (0 >= Croak::CroakPtr->HP)
 		{
-			HP = 0.0f;
+			Croak::CroakPtr->HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -100,15 +101,15 @@ void Ribby::CollisionCheck()
 
 	/////////////// EX
 	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0.0f)
+		&& Croak::CroakPtr->HP > 0.0f)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter_EX*>(Projectile)->SetHitture();
-		HP -= 5.0f;
+		Croak::CroakPtr->HP -= 5.0f;
 
-		if (0 >= HP)
+		if (0 >= Croak::CroakPtr->HP)
 		{
-			HP = 0.0f;
+			Croak::CroakPtr->HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -116,15 +117,15 @@ void Ribby::CollisionCheck()
 	}
 
 	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)
-		&& HP > 0.0f)
+		&& Croak::CroakPtr->HP > 0.0f)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
-		HP -= 10.0f;
+		Croak::CroakPtr->HP -= 10.0f;
 
-		if (0 >= HP)
+		if (0 >= Croak::CroakPtr->HP)
 		{
-			HP = 0.0f;
+			Croak::CroakPtr->HP = 0.0f;
 			IsStageEnd = true;
 		}
 
@@ -182,10 +183,10 @@ void Ribby::ActorInitSetting()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro", .SpriteName = "Ribby_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro", .SpriteName = "Ribby_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_Loop", .SpriteName = "Ribby_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_End", .SpriteName = "Ribby_Intro_End", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Idle", .SpriteName = "Ribby_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_End", .SpriteName = "Ribby_Intro_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Idle", .SpriteName = "Ribby_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Ribby_Idle");
 	}
