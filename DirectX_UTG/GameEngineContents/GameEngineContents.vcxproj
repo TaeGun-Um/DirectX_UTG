@@ -257,10 +257,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="FrogBossDataBase.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="FrogLevel.h">
       <SubType>
       </SubType>
@@ -542,10 +538,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Fishgirl.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="FrogBossDataBase.cpp">
       <SubType>
       </SubType>
     </ClCompile>

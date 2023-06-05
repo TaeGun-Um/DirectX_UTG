@@ -180,8 +180,8 @@ void Croak::ActorInitSetting()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
-		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 480, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 20, -80 });
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)
@@ -197,8 +197,8 @@ void Croak::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
-		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 480, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 20, -80 });
 	}
 
 	if (nullptr == EXCollisionRenderPtr)
