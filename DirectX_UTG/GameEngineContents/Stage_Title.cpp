@@ -20,7 +20,23 @@ void Stage_Title::TitleWordSetting(CardValue _CV)
 	{
 	case CardValue::Tutorial_Fly:
 	{
-		WordRenderPtr->ChangeAnimation("Frog");
+		WordRenderPtr->Off();
+		INSRenderPtr->Off();
+		ANDRenderPtr->Off();
+		LOGORenderPtr->Off();
+		WouldRenderPtr->Off();
+		YesRenderPtr->Off();
+		NoRenderPtr->Off();
+
+		CardRenderPtr->SetScaleToTexture("TitleCard_Title_Small.png");
+		CardMaxScale = CardRenderPtr->GetTransform()->GetLocalScale();
+		CardRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+
+		BoxRender->SetScaleToTexture("EnterSelectBox.png");
+		BoxMaxScale = BoxRender->GetTransform()->GetLocalScale();
+		BoxRender->GetTransform()->SetLocalScale(float4::Zero);
+		BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+		BoxEndPosition = float4{ 0, -65 };
 	}
 	break;
 	case CardValue::Mouse:
@@ -76,6 +92,10 @@ void Stage_Title::BoxPositionReset()
 	YesRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 	NoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 
+	Airplane_OneRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	Airplane_TwoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	EnterRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+
 	INSRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
 	ANDRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
 	LOGORenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
@@ -83,6 +103,10 @@ void Stage_Title::BoxPositionReset()
 	YesRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
 	NoRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
 	BoxRender->GetTransform()->SetLocalPosition(float4::Zero);
+
+	Airplane_OneRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	Airplane_TwoRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	EnterRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
 
 	CardRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	BackRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
@@ -94,6 +118,10 @@ void Stage_Title::BoxPositionReset()
 	BoxRender->ColorOptionValue.MulColor.a = 0.0f;
 	YesRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	NoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+
+	Airplane_OneRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	Airplane_TwoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	EnterRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 }
 
 void Stage_Title::Start()
@@ -108,32 +136,115 @@ void Stage_Title::Update(float _DeltaTime)
 		return;
 	}
 
-	OnLogic(_DeltaTime);
+	if (true == IsSmall)
+	{
+		OnLogic_Small(_DeltaTime);
 
-	if (false == OnLogicEnd)
+		if (false == OnLogicEnd)
+		{
+			return;
+		}
+	}
+	else
+	{
+		Airplane_OneRenderPtr->Off();
+		Airplane_TwoRenderPtr->Off();
+		EnterRenderPtr->Off();
+
+		OnLogic(_DeltaTime);
+
+		if (false == OnLogicEnd)
+		{
+			return;
+		}
+
+		if (true == GameEngineInput::IsDown("MoveRight") && 0 == SelectInt)
+		{
+			BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
+			SelectInt = 1;
+		}
+		else if (true == GameEngineInput::IsDown("MoveLeft") && 0 == SelectInt)
+		{
+			BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
+			SelectInt = 1;
+		}
+		else if (true == GameEngineInput::IsDown("MoveRight") && 1 == SelectInt)
+		{
+			BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
+			SelectInt = 0;
+		}
+		else if (true == GameEngineInput::IsDown("MoveLeft") && 1 == SelectInt)
+		{
+			BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
+			SelectInt = 0;
+		}
+	}
+
+}
+
+void Stage_Title::OnLogic_Small(float _DeltaTime)
+{
+	if (true == OnLogicEnd)
 	{
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("MoveRight") && 0 == SelectInt)
+	if (1.0f > CardRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
-		SelectInt = 1;
+		CardRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		BackRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		BoxRender->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		Airplane_OneRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		Airplane_TwoRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		EnterRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
 	}
-	else if (true == GameEngineInput::IsDown("MoveLeft") && 0 == SelectInt)
+	else if (1.0f <= CardRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
-		SelectInt = 1;
+		CardRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BackRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+		Airplane_OneRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		Airplane_TwoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		EnterRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	}
-	else if (true == GameEngineInput::IsDown("MoveRight") && 1 == SelectInt)
+
+	ScaleMaxTime += _DeltaTime;
+
+	float4 CardScale = float4::LerpClamp(MinScale, CardMaxScale, ScaleMaxTime * 3.f);
+	float4 BoxScale = float4::LerpClamp(MinScale, BoxMaxScale, ScaleMaxTime * 3.f);
+	float4 Airplane_OneScale = float4::LerpClamp(MinScale, Airplane_OneMaxScale, ScaleMaxTime * 3.f);
+	float4 Airplane_TwoScale = float4::LerpClamp(MinScale, Airplane_TwoMaxScale, ScaleMaxTime * 3.f);
+	float4 EnterScale = float4::LerpClamp(MinScale, EnterMaxScale, ScaleMaxTime * 3.f);
+
+	CardRenderPtr->GetTransform()->SetLocalScale(CardScale);
+	BoxRender->GetTransform()->SetLocalScale(BoxScale);
+	Airplane_OneRenderPtr->GetTransform()->SetLocalScale(Airplane_OneScale);
+	Airplane_TwoRenderPtr->GetTransform()->SetLocalScale(Airplane_TwoScale);
+	EnterRenderPtr->GetTransform()->SetLocalScale(EnterScale);
+
+	float4 BoxPosition = float4::LerpClamp(MinScale, BoxEndPosition, ScaleMaxTime * 3.f);
+	float4 Airplane_OnePosition = float4::LerpClamp(MinScale, Airplane_OneEndPosition, ScaleMaxTime * 3.f);
+	float4 Airplane_TwoPosition = float4::LerpClamp(MinScale, Airplane_TwoEndPosition, ScaleMaxTime * 3.f);
+	float4 EnterPosition = float4::LerpClamp(MinScale, EnterEndPosition, ScaleMaxTime * 3.f);
+
+	BoxRender->GetTransform()->SetLocalPosition(BoxPosition);
+	Airplane_OneRenderPtr->GetTransform()->SetLocalPosition(Airplane_OnePosition);
+	Airplane_TwoRenderPtr->GetTransform()->SetLocalPosition(Airplane_TwoPosition);
+	EnterRenderPtr->GetTransform()->SetLocalPosition(EnterPosition);
+
+	if (CardMaxScale == CardRenderPtr->GetTransform()->GetLocalScale())
 	{
-		BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
-		SelectInt = 0;
-	}
-	else if (true == GameEngineInput::IsDown("MoveLeft") && 1 == SelectInt)
-	{
-		BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
-		SelectInt = 0;
+		OnLogicEnd = true;
+
+		CardRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BackRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+		Airplane_OneRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		Airplane_TwoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		EnterRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	}
 }
 
@@ -165,10 +276,9 @@ void Stage_Title::OnLogic(float _DeltaTime)
 		ANDRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 		LOGORenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
-		WouldRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
-		BoxRender->ColorOptionValue.MulColor.a = 1.0f;
-		YesRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
-		NoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+		YesRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
+		NoRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	}
 	
 	ScaleMaxTime += _DeltaTime;
@@ -220,9 +330,9 @@ void Stage_Title::OnLogic(float _DeltaTime)
 		LOGORenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 		WouldRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
-		BoxRender->ColorOptionValue.MulColor.a = 1.0f;
-		YesRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
-		NoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+		YesRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
+		NoRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	}
 }
 
@@ -249,7 +359,13 @@ void Stage_Title::BoxInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Yes.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("No.png").GetFullPath());
 
+		GameEngineTexture::Load(NewDir.GetPlusFileName("TitleCard_Title_Small.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Airplane_One.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Airplane_Two.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Enter.png").GetFullPath());
+
 		GameEngineTexture::Load(NewDir.GetPlusFileName("SelectBox.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("EnterSelectBox.png").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Title_Card.png"))
@@ -277,6 +393,10 @@ void Stage_Title::BoxInitSetting()
 	YesRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	NoRenderPtr = CreateComponent<GameEngineUIRenderer>();
 
+	Airplane_OneRenderPtr = CreateComponent<GameEngineUIRenderer>();
+	Airplane_TwoRenderPtr = CreateComponent<GameEngineUIRenderer>();
+	EnterRenderPtr = CreateComponent<GameEngineUIRenderer>();
+
 	CardRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	BackRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	INSRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
@@ -287,6 +407,10 @@ void Stage_Title::BoxInitSetting()
 	BoxRender->ColorOptionValue.MulColor.a = 0.0f;
 	YesRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	NoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+
+	Airplane_OneRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	Airplane_TwoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	EnterRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 
 	CardRenderPtr->SetScaleToTexture("TitleCard_Title.png");
 	BackRenderPtr->SetScaleToTexture("TitleCard_Back.png");
@@ -299,6 +423,10 @@ void Stage_Title::BoxInitSetting()
 	YesRenderPtr->SetScaleToTexture("Yes.png");
 	NoRenderPtr->SetScaleToTexture("No.png");
 
+	Airplane_OneRenderPtr->SetScaleToTexture("Airplane_One.png");
+	Airplane_TwoRenderPtr->SetScaleToTexture("Airplane_Two.png");
+	EnterRenderPtr->SetScaleToTexture("Enter.png");
+
 	CardMaxScale = CardRenderPtr->GetTransform()->GetLocalScale();
 	INSMaxScale = INSRenderPtr->GetTransform()->GetLocalScale();
 	ANDMaxScale = ANDRenderPtr->GetTransform()->GetLocalScale();
@@ -308,6 +436,10 @@ void Stage_Title::BoxInitSetting()
 	YesMaxScale = YesRenderPtr->GetTransform()->GetLocalScale();
 	NoMaxScale = NoRenderPtr->GetTransform()->GetLocalScale();
 
+	Airplane_OneMaxScale = Airplane_OneRenderPtr->GetTransform()->GetLocalScale();
+	Airplane_TwoMaxScale = Airplane_TwoRenderPtr->GetTransform()->GetLocalScale();
+	EnterMaxScale = EnterRenderPtr->GetTransform()->GetLocalScale();
+
 	CardRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 	INSRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 	ANDRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
@@ -316,6 +448,10 @@ void Stage_Title::BoxInitSetting()
 	BoxRender->GetTransform()->SetLocalScale(float4::Zero);
 	YesRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 	NoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+
+	Airplane_OneRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	Airplane_TwoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	EnterRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 
 	ConfirmRenderPtr->GetTransform()->SetLocalPosition({ 500, -330 });
 
@@ -327,12 +463,18 @@ void Stage_Title::BoxInitSetting()
 	NoEndPosition = float4{ 45, -115 };
 	BoxEndPosition = float4{ -50, -115 };
 
+	Airplane_OneEndPosition = float4{ 0, 70 };
+	Airplane_TwoEndPosition = float4{ 0, 0 };
+	EnterEndPosition = float4{ 0, -65 };
+
 	YesPosition = YesRenderPtr->GetTransform()->GetLocalPosition();
 	NoPosition = NoRenderPtr->GetTransform()->GetLocalPosition();
+	EnterPosition = EnterRenderPtr->GetTransform()->GetLocalPosition();
 
 	YesRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	NoRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 	BoxRender->ColorOptionValue.MulColor.a = 0.8f;
+	EnterRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 
 	WordRenderPtr->GetTransform()->SetLocalScale({ 781, 572 });
 	WordRenderPtr->CreateAnimation({ "Frog", "Title_Card.png", 8, 8, 1.f, false, false });

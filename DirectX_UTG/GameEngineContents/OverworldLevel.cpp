@@ -277,6 +277,11 @@ void OverworldLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("Yes.png");
 		GameEngineTexture::UnLoad("No.png");
 		GameEngineTexture::UnLoad("SelectBox.png");
+		GameEngineTexture::UnLoad("EnterSelectBox.png");
+		GameEngineTexture::UnLoad("TitleCard_Title_Small.png");
+		GameEngineTexture::UnLoad("Airplane_One.png");
+		GameEngineTexture::UnLoad("Airplane_Two.png");
+		GameEngineTexture::UnLoad("Enter.png");
 	}
 	if (nullptr != GameEngineSprite::Find("Title_Card.png"))
 	{
@@ -407,6 +412,11 @@ void OverworldLevel::ReLoadSetting()
 		GameEngineTexture::ReLoad("Yes.png");
 		GameEngineTexture::ReLoad("No.png");
 		GameEngineTexture::ReLoad("SelectBox.png");
+		GameEngineTexture::ReLoad("EnterSelectBox.png");
+		GameEngineTexture::ReLoad("TitleCard_Title_Small.png");
+		GameEngineTexture::ReLoad("Airplane_One.png");
+		GameEngineTexture::ReLoad("Airplane_Two.png");
+		GameEngineTexture::ReLoad("Enter.png");
 	}
 	if (nullptr != GameEngineSprite::Find("Title_Card.png"))
 	{

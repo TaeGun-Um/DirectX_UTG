@@ -276,7 +276,8 @@ void BuildingDataBase::BuildingSetting(BuildingValue _BValue)
 		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
 
 		Tutorial_FlyPtr = this;
-		Stage_TitleCard->TitleWordSetting(CardValue::Frog);
+		Stage_TitleCard->TitleWordSetting(CardValue::Tutorial_Fly);
+		Stage_TitleCard->SmallBoxSetting();
 		Stage_TitleCard->Off();
 	}
 	break;

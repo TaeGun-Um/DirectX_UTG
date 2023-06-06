@@ -965,18 +965,18 @@ void Player_Overworld::PlayerInitialSetting()
 	}
 
 	// Idle
-	RenderPtr->CreateAnimation({ .AnimationName = "Up_Idle", .SpriteName = "Up_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DU_Idle", .SpriteName = "DU_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Side_Idle", .SpriteName = "Side_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DD_Idle", .SpriteName = "DD_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Down_Idle", .SpriteName = "Down_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Up_Idle", .SpriteName = "Up_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DU_Idle", .SpriteName = "DU_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Side_Idle", .SpriteName = "Side_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DD_Idle", .SpriteName = "DD_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Down_Idle", .SpriteName = "Down_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 	
 	// Move
-	RenderPtr->CreateAnimation({ .AnimationName = "Up_Move", .SpriteName = "Up_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DU_Move", .SpriteName = "DU_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Up_Move", .SpriteName = "Up_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DU_Move", .SpriteName = "DU_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 
 	// Win
 	RenderPtr->CreateAnimation({ .AnimationName = "InterAction_Win", .SpriteName = "InterAction_Win", .FrameInter = 0.045f, .Loop = true, .ScaleToTexture = true });

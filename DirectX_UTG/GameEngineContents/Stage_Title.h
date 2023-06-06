@@ -34,6 +34,11 @@ public:
 		return SelectInt;
 	}
 
+	void SmallBoxSetting()
+	{
+		IsSmall = true;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -52,10 +57,15 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> YesRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> NoRenderPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> Airplane_OneRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> Airplane_TwoRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EnterRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BoxRender = nullptr;
 
 	float4 YesPosition = float4::Zero;
 	float4 NoPosition = float4::Zero;
+	float4 EnterPosition = float4::Zero;
 
 	float4 MinScale = float4::Zero;
 	float4 CardMaxScale = float4::Zero;
@@ -68,6 +78,10 @@ private:
 	float4 NoMaxScale = float4::Zero;
 	float4 WordMaxScale = float4::Zero;
 
+	float4 Airplane_OneMaxScale = float4::Zero;
+	float4 Airplane_TwoMaxScale = float4::Zero;
+	float4 EnterMaxScale = float4::Zero;
+
 	float4 INSEndPosition = float4::Zero;
 	float4 ANDEndPosition = float4::Zero;
 	float4 LOGOEndPosition = float4::Zero;
@@ -76,13 +90,19 @@ private:
 	float4 NoEndPosition = float4::Zero;
 	float4 BoxEndPosition = float4::Zero;
 
+	float4 Airplane_OneEndPosition = float4::Zero;
+	float4 Airplane_TwoEndPosition = float4::Zero;
+	float4 EnterEndPosition = float4::Zero;
+
 	float ScaleMaxTime = 0.0f;
 	int SelectInt = 0;
 	bool OnLogicEnd = false;
+	bool IsSmall = false;
 
 	CardValue CV = CardValue::Unknown;
 
 	void BoxInitSetting();
 	void OnLogic(float _DeltaTime);
+	void OnLogic_Small(float _DeltaTime);
 };
 
