@@ -2,8 +2,12 @@
 #include "Coin.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "Player_Overworld.h"
+#include "NPC_TextBox.h"
 
 Coin* Coin::CoinPtr = nullptr;
 
@@ -22,10 +26,37 @@ void Coin::Start()
 	InitRenderSetting();
 	InitCollisionSetting();
 }
+
 void Coin::Update(float _DeltaTime)
 {
 	CollisionCheck(CollisionPtr);
 	UpdateState(_DeltaTime);
+
+	if (true == CreateBox)
+	{
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void Coin::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		CreateBox = false;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		NPC_TextBoxRender->Off();
+		BoxInterActionDelayTime = 0.0f;
+	}
 }
 
 void Coin::InitRenderSetting()
@@ -57,6 +88,10 @@ void Coin::InitRenderSetting()
 	}
 
 	ChangeState(CoinState::Idle);
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
+	NPC_TextBoxRender->Off();
 }
 
 void Coin::InitCollisionSetting()

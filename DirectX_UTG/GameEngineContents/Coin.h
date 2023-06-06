@@ -55,10 +55,14 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
 
+	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+
 	void InitRenderSetting();
 	void InitCollisionSetting();
+	void TextBoxOn(float _DeltaTime);
 
 	float AccTime = 0.0f;
+	float BoxInterActionDelayTime = 0.0f;
 
 	void ChangeState(CoinState _StateValue);
 	void UpdateState(float _DeltaTime);

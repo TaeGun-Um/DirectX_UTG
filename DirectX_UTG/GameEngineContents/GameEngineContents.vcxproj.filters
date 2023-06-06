@@ -331,6 +331,9 @@
     <ClInclude Include="Stage_Title.h">
       <Filter>Levels\4. Overworld\Object\Building</Filter>
     </ClInclude>
+    <ClInclude Include="NPC_TextBox.h">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -563,6 +566,9 @@
     </ClCompile>
     <ClCompile Include="Stage_Title.cpp">
       <Filter>Levels\4. Overworld\Object\Building</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC_TextBox.cpp">
+      <Filter>Levels\4. Overworld\Object\NPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

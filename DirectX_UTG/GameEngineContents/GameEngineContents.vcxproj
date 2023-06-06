@@ -310,6 +310,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="NPCDataBase.h" />
+    <ClInclude Include="NPC_TextBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="OverworldGUI.h">
       <SubType>
       </SubType>
@@ -602,6 +606,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="NPCDataBase.cpp" />
+    <ClCompile Include="NPC_TextBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="OverworldGUI.cpp">
       <SubType>
       </SubType>

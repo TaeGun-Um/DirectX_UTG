@@ -1,8 +1,12 @@
 #include "PrecompileHeader.h"
 #include "Fishgirl.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "Player_Overworld.h"
+#include "NPC_TextBox.h"
 
 Fishgirl* Fishgirl::FishgirlPtr = nullptr;
 
@@ -21,10 +25,41 @@ void Fishgirl::Start()
 	InitRenderSetting();
 	InitCollisionSetting();
 }
+
 void Fishgirl::Update(float _DeltaTime)
 {
 	CollisionCheck(CollisionPtr);
+	AnimationLoop(_DeltaTime);
 
+	if (true == CreateBox)
+	{
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void Fishgirl::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		CreateBox = false;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		NPC_TextBoxRender->Off();
+		BoxInterActionDelayTime = 0.0f;
+	}
+}
+
+void Fishgirl::AnimationLoop(float _DeltaTime)
+{
 	BlinkTime += _DeltaTime;
 
 	if (4 == RenderPtr->GetCurrentFrame() && BlinkTime >= 3.0f)
@@ -59,6 +94,10 @@ void Fishgirl::InitRenderSetting()
 		RenderPtr->ChangeAnimation("FishGirl_Idle");
 		RenderPtr->CameraCullingOn();
 	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
+	NPC_TextBoxRender->Off();
 }
 
 void Fishgirl::InitCollisionSetting()

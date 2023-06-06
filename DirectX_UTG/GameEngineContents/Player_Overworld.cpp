@@ -414,11 +414,19 @@ void Player_Overworld::CreateMoveDust()
 		DustPosition += float4{ 0, 45 };
 	}
 
-	if (true == Directbool)
+	if (ADValue == AttackDirection::Right_Up || ADValue == AttackDirection::Left_Up)
+	{
+		DustPosition += float4{ 0, 0 };
+	}
+	else if (ADValue == AttackDirection::Right_Down || ADValue == AttackDirection::Left_Down)
+	{
+		DustPosition += float4{ 0, 20 };
+	}
+	else if (true == Directbool)
 	{
 		DustPosition += float4{ -20, 0 };
 	}
-	else
+	else if (false == Directbool)
 	{
 		DustPosition += float4{ 20, 0 };
 	}
@@ -984,11 +992,11 @@ void Player_Overworld::PlayerInitialSetting()
 	RenderPtr->CreateAnimation({ .AnimationName = "Down_Idle", .SpriteName = "Down_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 	
 	// Move
-	RenderPtr->CreateAnimation({ .AnimationName = "Up_Move", .SpriteName = "Up_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DU_Move", .SpriteName = "DU_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Up_Move", .SpriteName = "Up_Move", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DU_Move", .SpriteName = "DU_Move", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Side_Move", .SpriteName = "Side_Move", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "DD_Move", .SpriteName = "DD_Move", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	RenderPtr->CreateAnimation({ .AnimationName = "Down_Move", .SpriteName = "Down_Move", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 
 	// Win
 	RenderPtr->CreateAnimation({ .AnimationName = "InterAction_Win", .SpriteName = "InterAction_Win", .FrameInter = 0.045f, .Loop = true, .ScaleToTexture = true });

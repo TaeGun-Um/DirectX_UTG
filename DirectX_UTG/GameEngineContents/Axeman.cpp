@@ -1,8 +1,12 @@
 #include "PrecompileHeader.h"
 #include "Axeman.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "Player_Overworld.h"
+#include "NPC_TextBox.h"
 
 Axeman* Axeman::AxemanPtr = nullptr;
 
@@ -24,6 +28,32 @@ void Axeman::Start()
 void Axeman::Update(float _DeltaTime)
 {
 	CollisionCheck(CollisionPtr);
+
+	if (true == CreateBox)
+	{
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void Axeman::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		CreateBox = false;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		NPC_TextBoxRender->Off();
+		BoxInterActionDelayTime = 0.0f;
+	}
 }
 
 void Axeman::InitRenderSetting()
@@ -39,6 +69,10 @@ void Axeman::InitRenderSetting()
 		RenderPtr->ChangeAnimation("Axeman_Idle");
 		RenderPtr->CameraCullingOn();
 	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
+	NPC_TextBoxRender->Off();
 }
 
 void Axeman::InitCollisionSetting()

@@ -32,11 +32,11 @@ protected:
 	
 	void CollisionCheck(std::shared_ptr<class GameEngineCollision> _Collision);
 	void NPCLoad(NPCValue _NValue);
+	bool CreateBox = false;
 
 private:
 	NPCValue NValue = NPCValue::Unknown;
+	
 	bool Isinteraction = false;
-
-	void InterAction();
 };
 

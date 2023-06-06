@@ -338,6 +338,14 @@ void OverworldLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Up_Move");
 		GameEngineSprite::UnLoad("InterAction_Win");
 	}
+	if (nullptr != GameEngineTexture::Find("speech_bubble_box.png"))
+	{
+		GameEngineTexture::UnLoad("speech_bubble_box.png");
+		GameEngineTexture::UnLoad("speech_balloon_tail_0001.png");
+		GameEngineTexture::UnLoad("speech_balloon_tail_0004.png");
+		GameEngineTexture::UnLoad("speech_balloon_tail_0009.png");
+		GameEngineSprite::UnLoad("Arrow");
+	}
 	if (nullptr != GameEngineSprite::Find("Dust_A.png"))
 	{
 		GameEngineSprite::UnLoad("Dust_A.png");
@@ -458,6 +466,14 @@ void OverworldLevel::ReLoadSetting()
 	{
 		GameEngineSprite::ReLoad("FishGirl_Idle");
 		GameEngineSprite::ReLoad("FishGirl_Blink");
+	}
+	if (nullptr != GameEngineTexture::Find("speech_bubble_box.png"))
+	{
+		GameEngineTexture::ReLoad("speech_bubble_box.png");
+		GameEngineTexture::ReLoad("speech_balloon_tail_0001.png");
+		GameEngineTexture::ReLoad("speech_balloon_tail_0004.png");
+		GameEngineTexture::ReLoad("speech_balloon_tail_0009.png");
+		GameEngineSprite::ReLoad("Arrow");
 	}
 	if (nullptr != GameEngineSprite::Find("DD_Idle"))
 	{

@@ -26,43 +26,11 @@ void NPCDataBase::CollisionCheck(std::shared_ptr<class GameEngineCollision> _Col
 		Isinteraction = false;
 	}
 
-	if (true == Player_Overworld::MainPlayer->GetIsIdle()
-		&& true == Isinteraction
-		&& true == GameEngineInput::IsDown("Attack"))
+	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
 	{
-		InterAction();
-	}
-}
-
-void NPCDataBase::InterAction()
-{
-	switch (NValue)
-	{
-	case NPCValue::AppleTraveller:
-	{
-		MsgTextBox("AppleTraveller");
-	}
-	break;
-	case NPCValue::Axeman:
-	{
-		MsgTextBox("Axeman");
-	}
-	break;
-	case NPCValue::Canteen:
-	{
-		MsgTextBox("Canteen");
-	}
-	break;
-	case NPCValue::Coin:
-	{
-		MsgTextBox("Coin");
-	}
-	break;
-	case NPCValue::FishGirl:
-	{
-		MsgTextBox("FishGirl");
-	}
-	break;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+		Player_Overworld::MainPlayer->SetIsPortalingTrue();
+		CreateBox = true;
 	}
 }
 

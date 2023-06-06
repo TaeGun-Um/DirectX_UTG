@@ -44,12 +44,18 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> WaveCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> WaveCollisionPtr = nullptr;
 
+	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+
 	void InitRenderSetting();
 	void InitCollisionSetting();
+	void AnimationLoop(float _DeltaTime);
+	void TextBoxOn(float _DeltaTime);
 
 	float BlinkTime = 0.0f;
 	float WaveAcc = 0.0f;
 	float WaveTime = 0.0f;
+	float BoxInterActionDelayTime = 0.0f;
+
 	bool WaveInit = false;
 	bool IsWave = false;
 	bool WaveEnd = false;

@@ -1,10 +1,12 @@
 #include "PrecompileHeader.h"
 #include "AppleTraveller.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-#include "Player.h"
+#include "Player_Overworld.h"
+#include "NPC_TextBox.h"
 
 AppleTraveller* AppleTraveller::AppleTravellerPtr = nullptr;
 
@@ -26,7 +28,60 @@ void AppleTraveller::Start()
 void AppleTraveller::Update(float _DeltaTime)
 {
 	CollisionCheck(CollisionPtr);
+	AnimationLoop(_DeltaTime);
 
+	if (true == CreateBox)
+	{
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void AppleTraveller::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		CreateBox = false;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		NPC_TextBoxRender->Off();
+		BoxInterActionDelayTime = 0.0f;
+	}
+
+	//if (0 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
+	//{
+	//	NextLevelPortal = true;
+	//}
+	//else if (1 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
+	//{
+	//	Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+	//	Player_Overworld::MainPlayer->SetIsPortalingfalse();
+	//	Stage_TitleCard->Off();
+	//	Stage_TitleCard->BoxPositionReset();
+	//	CardInterActionDelayTime = 0.0f;
+	//	CreateCard = false;
+	//}
+	//else if (true == GameEngineInput::IsDown("Jump"))
+	//{
+	//	Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+	//	Player_Overworld::MainPlayer->SetIsPortalingfalse();
+	//	Stage_TitleCard->Off();
+	//	Stage_TitleCard->BoxPositionReset();
+	//	CardInterActionDelayTime = 0.0f;
+	//	CreateCard = false;
+	//}
+}
+
+void AppleTraveller::AnimationLoop(float _DeltaTime)
+{
 	if (false == WaveInit)
 	{
 		WaveAcc += _DeltaTime;
@@ -133,6 +188,10 @@ void AppleTraveller::InitRenderSetting()
 		AssitantRenderPtr->GetTransform()->SetLocalPosition({ 40, -40 });
 		AssitantRenderPtr->ChangeAnimation("AppleTraveller_HoboStick");
 	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
+	NPC_TextBoxRender->Off();
 }
 
 void AppleTraveller::InitCollisionSetting()

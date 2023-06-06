@@ -38,8 +38,13 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
 
+	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+
 	void InitRenderSetting();
 	void InitCollisionSetting();
+	void TextBoxOn(float _DeltaTime);
+
+	float BoxInterActionDelayTime = 0.0f;
 
 };
 

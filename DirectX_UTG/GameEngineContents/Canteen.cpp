@@ -1,8 +1,12 @@
 #include "PrecompileHeader.h"
 #include "Canteen.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "Player_Overworld.h"
+#include "NPC_TextBox.h"
 
 Canteen* Canteen::CanteenPtr = nullptr;
 
@@ -24,6 +28,32 @@ void Canteen::Start()
 void Canteen::Update(float _DeltaTime)
 {
 	CollisionCheck(CollisionPtr);
+
+	if (true == CreateBox)
+	{
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void Canteen::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		CreateBox = false;
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		NPC_TextBoxRender->Off();
+		BoxInterActionDelayTime = 0.0f;
+	}
 }
 
 void Canteen::InitRenderSetting()
@@ -39,6 +69,10 @@ void Canteen::InitRenderSetting()
 		RenderPtr->ChangeAnimation("Canteen_Idle");
 		RenderPtr->CameraCullingOn();
 	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
+	NPC_TextBoxRender->Off();
 }
 
 void Canteen::InitCollisionSetting()
