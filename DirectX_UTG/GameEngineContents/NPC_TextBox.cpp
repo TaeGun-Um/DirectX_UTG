@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "NPC_TextBox.h"
 
-#include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 NPC_TextBox::NPC_TextBox() 
 {
@@ -19,6 +19,46 @@ void NPC_TextBox::Start()
 void NPC_TextBox::Update(float _DeltaTime)
 {
 
+}
+
+void NPC_TextBox::BoxReset()
+{
+	IsDown = false;
+	IsEnd = false;
+}
+
+bool NPC_TextBox::RenderAlphaSetting(float _DeltaTime)
+{
+	if (false == IsDown)
+	{
+		BoxRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
+		TailRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
+		ArrowRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
+
+		if (BoxRenderPtr->ColorOptionValue.MulColor.a <= 0.0f)
+		{
+			IsDown = true;
+			BoxRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+			TailRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+			ArrowRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+		}
+	}
+	else
+	{
+		BoxRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
+		TailRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
+		ArrowRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
+
+		if (BoxRenderPtr->ColorOptionValue.MulColor.a >= 1.0f)
+		{
+			IsEnd = true;
+			BoxRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+			TailRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+			ArrowRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		}
+	}
+
+	return IsEnd;
 }
 
 void NPC_TextBox::TextBoxInitSetting()
@@ -52,14 +92,16 @@ void NPC_TextBox::TextBoxInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Arrow").GetFullPath());
 	}
 
-	BoxRenderPtr = CreateComponent<GameEngineUIRenderer>();
-	TailRenderPtr = CreateComponent<GameEngineUIRenderer>();
-	ArrowRenderPtr = CreateComponent<GameEngineUIRenderer>();
+	BoxRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	TailRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	ArrowRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
 	BoxRenderPtr->SetTexture("speech_bubble_box.png");
-	BoxRenderPtr->GetTransform()->SetLocalScale({400, 200});
+	BoxRenderPtr->GetTransform()->SetLocalScale({400, 130});
 
-	TailRenderPtr->SetScaleToTexture("speech_balloon_tail_0001.png");
+	TailRenderPtr->SetTexture("speech_balloon_tail_0004.png");
+	TailRenderPtr->GetTransform()->SetLocalScale({ 50, 40 });
 
-	ArrowRenderPtr->CreateAnimation({ .AnimationName = "Arrow", .SpriteName = "Arrow", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+	ArrowRenderPtr->CreateAnimation({ .AnimationName = "Arrow", .SpriteName = "Arrow", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
+	ArrowRenderPtr->ChangeAnimation("Arrow");
 }

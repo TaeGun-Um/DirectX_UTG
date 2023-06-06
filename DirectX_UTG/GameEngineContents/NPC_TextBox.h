@@ -17,9 +17,12 @@ public:
 	void LocalPositionSetting(float4 _Value)
 	{
 		BoxRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		TailRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value);
+		TailRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{130, -80});
+		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{ 170, -40 });
 	}
+
+	bool RenderAlphaSetting(float _DeltaTime);
+	void BoxReset();
 
 protected:
 	void Start();
@@ -32,5 +35,8 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> ArrowRenderPtr = nullptr;
 
 	void TextBoxInitSetting();
+
+	bool IsDown = false;
+	bool IsEnd = false;
 };
 

@@ -48,13 +48,28 @@ void Fishgirl::TextBoxOn(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("Attack"))
+	if (true == GameEngineInput::IsDown("Attack") && TextEndCount > TextCount && false == NextStep)
 	{
+		NextStep = true;
+		++TextCount;
+	}
+	else if (true == GameEngineInput::IsDown("Attack") && TextEndCount <= TextCount && false == NextStep)
+	{
+		TextCount = 0;
 		CreateBox = false;
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		Player_Overworld::MainPlayer->SetIsPortalingfalse();
 		NPC_TextBoxRender->Off();
 		BoxInterActionDelayTime = 0.0f;
+	}
+
+	if (true == NextStep)
+	{
+		if (true == NPC_TextBoxRender->RenderAlphaSetting(_DeltaTime))
+		{
+			NextStep = false;
+			NPC_TextBoxRender->BoxReset();
+		}
 	}
 }
 
@@ -96,7 +111,6 @@ void Fishgirl::InitRenderSetting()
 	}
 
 	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
-	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
 	NPC_TextBoxRender->Off();
 }
 

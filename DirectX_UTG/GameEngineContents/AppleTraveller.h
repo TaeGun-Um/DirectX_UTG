@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NPCDataBase.h"
+#include "NPC_TextBox.h"
 
 // Ό³Έν :
 class AppleTraveller : public NPCDataBase
@@ -30,6 +31,15 @@ public:
 		WaveCollisionRenderPtr->Off();
 	}
 
+	void TextBoxPositionSetting()
+	{
+		float4 PlusLocalPosition = float4{ -170, 140, -50 };
+		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
+
+		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
+		TextEndCount = 3;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -51,6 +61,9 @@ private:
 	void AnimationLoop(float _DeltaTime);
 	void TextBoxOn(float _DeltaTime);
 
+	int TextCount = 0;
+	int TextEndCount = 0;
+
 	float BlinkTime = 0.0f;
 	float WaveAcc = 0.0f;
 	float WaveTime = 0.0f;
@@ -60,5 +73,6 @@ private:
 	bool IsWave = false;
 	bool WaveEnd = false;
 	bool IsBlink = false;
+	bool NextStep = false;
 };
 

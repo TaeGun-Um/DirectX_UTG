@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NPCDataBase.h"
+#include "NPC_TextBox.h"
 
 enum class CoinState
 {
@@ -42,7 +43,15 @@ public:
 	void CollisionRenderOff()
 	{
 		CollisionRenderPtr->Off();
+	}
 
+	void TextBoxPositionSetting()
+	{
+		float4 PlusLocalPosition = float4{ -170, 140, -50 };
+		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
+
+		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
+		TextEndCount = 3;
 	}
 
 protected:
@@ -63,6 +72,11 @@ private:
 
 	float AccTime = 0.0f;
 	float BoxInterActionDelayTime = 0.0f;
+
+	int TextCount = 0;
+	int TextEndCount = 5;
+
+	bool NextStep = false;
 
 	void ChangeState(CoinState _StateValue);
 	void UpdateState(float _DeltaTime);

@@ -47,8 +47,14 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("Attack"))
+	if (true == GameEngineInput::IsDown("Attack") && TextEndCount > TextCount && false == NextStep)
 	{
+		NextStep = true;
+		++TextCount;
+	}
+	else if (true == GameEngineInput::IsDown("Attack") && TextEndCount <= TextCount && false == NextStep)
+	{
+		TextCount = 0;
 		CreateBox = false;
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
 		Player_Overworld::MainPlayer->SetIsPortalingfalse();
@@ -56,28 +62,14 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		BoxInterActionDelayTime = 0.0f;
 	}
 
-	//if (0 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
-	//{
-	//	NextLevelPortal = true;
-	//}
-	//else if (1 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
-	//{
-	//	Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-	//	Player_Overworld::MainPlayer->SetIsPortalingfalse();
-	//	Stage_TitleCard->Off();
-	//	Stage_TitleCard->BoxPositionReset();
-	//	CardInterActionDelayTime = 0.0f;
-	//	CreateCard = false;
-	//}
-	//else if (true == GameEngineInput::IsDown("Jump"))
-	//{
-	//	Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-	//	Player_Overworld::MainPlayer->SetIsPortalingfalse();
-	//	Stage_TitleCard->Off();
-	//	Stage_TitleCard->BoxPositionReset();
-	//	CardInterActionDelayTime = 0.0f;
-	//	CreateCard = false;
-	//}
+	if (true == NextStep)
+	{
+		if (true == NPC_TextBoxRender->RenderAlphaSetting(_DeltaTime))
+		{
+			NextStep = false;
+			NPC_TextBoxRender->BoxReset();
+		}
+	}
 }
 
 void AppleTraveller::AnimationLoop(float _DeltaTime)
@@ -190,7 +182,6 @@ void AppleTraveller::InitRenderSetting()
 	}
 
 	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
-	NPC_TextBoxRender->LocalPositionSetting(RenderPtr->GetTransform()->GetLocalPosition());
 	NPC_TextBoxRender->Off();
 }
 

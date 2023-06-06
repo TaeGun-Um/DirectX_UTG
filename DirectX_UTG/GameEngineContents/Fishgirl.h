@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NPCDataBase.h"
+#include "NPC_TextBox.h"
 
 // Ό³Έν :
 class Fishgirl : public NPCDataBase
@@ -28,6 +29,15 @@ public:
 		CollisionRenderPtr->Off();
 	}
 
+	void TextBoxPositionSetting()
+	{
+		float4 PlusLocalPosition = float4{ -170, 140, -50 };
+		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
+
+		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
+		TextEndCount = 5;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -48,6 +58,10 @@ private:
 	float BlinkTime = 0.0f;
 	float BoxInterActionDelayTime = 0.0f;
 
+	int TextCount = 0;
+	int TextEndCount = 0;
+
 	bool IsBlink = false;
+	bool NextStep = false;
 };
 

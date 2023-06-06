@@ -142,18 +142,23 @@ void OverworldLevel::LevelChangeStart()
 		{
 			std::shared_ptr<AppleTraveller> NPCObject0 = CreateActor<AppleTraveller>();
 			NPCObject0->GetTransform()->SetLocalPosition({ 1680 , 1325, 3 });
+			NPCObject0->TextBoxPositionSetting();
 
 			std::shared_ptr<Axeman> NPCObject1 = CreateActor<Axeman>();
 			NPCObject1->GetTransform()->SetLocalPosition({ 3170 , 1350, 3 });
+			NPCObject1->TextBoxPositionSetting();
 
 			std::shared_ptr<Canteen> NPCObject2 = CreateActor<Canteen>();
 			NPCObject2->GetTransform()->SetLocalPosition({ 2595 , 2040, 3 });
+			NPCObject2->TextBoxPositionSetting();
 
 			std::shared_ptr<Coin> NPCObject3 = CreateActor<Coin>();
 			NPCObject3->GetTransform()->SetLocalPosition({ 2330 , 770, 3 });
+			NPCObject3->TextBoxPositionSetting();
 
 			std::shared_ptr<Fishgirl> NPCObject4 = CreateActor<Fishgirl>();
 			NPCObject4->GetTransform()->SetLocalPosition({ 2860 , 445, -1 });
+			NPCObject4->TextBoxPositionSetting();
 		}
 		// Building
 		{
