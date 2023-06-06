@@ -63,9 +63,170 @@ void Stage_Title::BoxPositionReset()
 {
 	BoxRender->GetTransform()->SetLocalPosition(YesPosition);
 	SelectInt = 0;
+	OnLogicEnd = false;
+
+	ScaleMaxTime = 0.0f;
+
+	CardRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	INSRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	ANDRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	LOGORenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	WouldRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	BoxRender->GetTransform()->SetLocalScale(float4::Zero);
+	YesRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	NoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+
+	INSRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	ANDRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	LOGORenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	WouldRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	YesRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	NoRenderPtr->GetTransform()->SetLocalPosition(float4::Zero);
+	BoxRender->GetTransform()->SetLocalPosition(float4::Zero);
+
+	CardRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	BackRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	INSRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	ANDRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	LOGORenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	ConfirmRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	WouldRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	BoxRender->ColorOptionValue.MulColor.a = 0.0f;
+	YesRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	NoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 }
 
 void Stage_Title::Start()
+{
+	BoxInitSetting();
+}
+
+void Stage_Title::Update(float _DeltaTime)
+{
+	if (false == IsUpdate())
+	{
+		return;
+	}
+
+	OnLogic(_DeltaTime);
+
+	if (false == OnLogicEnd)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("MoveRight") && 0 == SelectInt)
+	{
+		BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
+		SelectInt = 1;
+	}
+	else if (true == GameEngineInput::IsDown("MoveLeft") && 0 == SelectInt)
+	{
+		BoxRender->GetTransform()->SetLocalPosition(NoEndPosition);
+		SelectInt = 1;
+	}
+	else if (true == GameEngineInput::IsDown("MoveRight") && 1 == SelectInt)
+	{
+		BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
+		SelectInt = 0;
+	}
+	else if (true == GameEngineInput::IsDown("MoveLeft") && 1 == SelectInt)
+	{
+		BoxRender->GetTransform()->SetLocalPosition(YesEndPosition);
+		SelectInt = 0;
+	}
+}
+
+void Stage_Title::OnLogic(float _DeltaTime)
+{
+	if (true == OnLogicEnd)
+	{
+		return;
+	}
+
+	if (1.0f > CardRenderPtr->ColorOptionValue.MulColor.a)
+	{
+		CardRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		BackRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		INSRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		ANDRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		LOGORenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		WouldRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		BoxRender->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		YesRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+		NoRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 4.f;
+	}
+	else if (1.0f <= CardRenderPtr->ColorOptionValue.MulColor.a)
+	{
+		CardRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BackRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		INSRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ANDRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		LOGORenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		WouldRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 1.0f;
+		YesRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		NoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+	}
+	
+	ScaleMaxTime += _DeltaTime;
+
+	float4 CardScale = float4::LerpClamp(MinScale, CardMaxScale, ScaleMaxTime * 3.f);
+	float4 INSScale = float4::LerpClamp(MinScale, INSMaxScale, ScaleMaxTime * 3.f);
+	float4 ANDScale = float4::LerpClamp(MinScale, ANDMaxScale, ScaleMaxTime * 3.f);
+	float4 WouldScale = float4::LerpClamp(MinScale, WouldMaxScale, ScaleMaxTime * 3.f);
+	float4 BoxScale = float4::LerpClamp(MinScale, BoxMaxScale, ScaleMaxTime * 3.f);
+	float4 YesScale = float4::LerpClamp(MinScale, YesMaxScale, ScaleMaxTime * 3.f);
+	float4 NoScale = float4::LerpClamp(MinScale, NoMaxScale, ScaleMaxTime * 3.f);
+	float4 LOGOScale = float4::LerpClamp(MinScale, LOGOMaxScale, ScaleMaxTime * 3.f);
+	float4 WordScale = float4::LerpClamp(MinScale, WordMaxScale, ScaleMaxTime * 3.f);
+
+	CardRenderPtr->GetTransform()->SetLocalScale(CardScale);
+	INSRenderPtr->GetTransform()->SetLocalScale(INSScale);
+	ANDRenderPtr->GetTransform()->SetLocalScale(ANDScale);
+	WouldRenderPtr->GetTransform()->SetLocalScale(WouldScale);
+	BoxRender->GetTransform()->SetLocalScale(BoxScale);
+	YesRenderPtr->GetTransform()->SetLocalScale(YesScale);
+	NoRenderPtr->GetTransform()->SetLocalScale(NoScale);
+	LOGORenderPtr->GetTransform()->SetLocalScale(LOGOScale);
+	WordRenderPtr->GetTransform()->SetLocalScale(WordScale);
+
+	float4 INSPosition = float4::LerpClamp(MinScale, INSEndPosition, ScaleMaxTime * 3.f);
+	float4 ANDPosition = float4::LerpClamp(MinScale, ANDEndPosition, ScaleMaxTime * 3.f);
+	float4 WouldPosition = float4::LerpClamp(MinScale, WouldEndPosition, ScaleMaxTime * 3.f);
+	float4 BoxPosition = float4::LerpClamp(MinScale, BoxEndPosition, ScaleMaxTime * 3.f);
+	float4 YesPosition = float4::LerpClamp(MinScale, YesEndPosition, ScaleMaxTime * 3.f);
+	float4 NoPosition = float4::LerpClamp(MinScale, NoEndPosition, ScaleMaxTime * 3.f);
+	float4 LOGOPosition = float4::LerpClamp(MinScale, LOGOEndPosition, ScaleMaxTime * 3.f);
+
+	INSRenderPtr->GetTransform()->SetLocalPosition(INSPosition);
+	ANDRenderPtr->GetTransform()->SetLocalPosition(ANDPosition);
+	WouldRenderPtr->GetTransform()->SetLocalPosition(WouldPosition);
+	BoxRender->GetTransform()->SetLocalPosition(BoxPosition);
+	YesRenderPtr->GetTransform()->SetLocalPosition(YesPosition);
+	NoRenderPtr->GetTransform()->SetLocalPosition(NoPosition);
+	LOGORenderPtr->GetTransform()->SetLocalPosition(LOGOPosition);
+
+	if (CardMaxScale == CardRenderPtr->GetTransform()->GetLocalScale())
+	{
+		OnLogicEnd = true;
+
+		CardRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BackRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		INSRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ANDRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		LOGORenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		ConfirmRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		WouldRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		BoxRender->ColorOptionValue.MulColor.a = 1.0f;
+		YesRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		NoRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+	}
+}
+
+void Stage_Title::BoxInitSetting()
 {
 	if (nullptr == GameEngineTexture::Find("TitleCard_Back.png"))
 	{
@@ -104,8 +265,8 @@ void Stage_Title::Start()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Title_Card.png").GetFullPath(), 4, 5);
 	}
 
-	CardRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	BackRenderPtr = CreateComponent<GameEngineUIRenderer>();
+	CardRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	WordRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	INSRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	ANDRenderPtr = CreateComponent<GameEngineUIRenderer>();
@@ -116,8 +277,19 @@ void Stage_Title::Start()
 	YesRenderPtr = CreateComponent<GameEngineUIRenderer>();
 	NoRenderPtr = CreateComponent<GameEngineUIRenderer>();
 
-	CardRenderPtr->SetScaleToTexture("TitleCard_Back.png");
-	BackRenderPtr->SetScaleToTexture("TitleCard_Title.png");
+	CardRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	BackRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	INSRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	ANDRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	LOGORenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	ConfirmRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	WouldRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	BoxRender->ColorOptionValue.MulColor.a = 0.0f;
+	YesRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+	NoRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+
+	CardRenderPtr->SetScaleToTexture("TitleCard_Title.png");
+	BackRenderPtr->SetScaleToTexture("TitleCard_Back.png");
 	INSRenderPtr->SetScaleToTexture("INS.png");
 	ANDRenderPtr->SetScaleToTexture("AND.png");
 	LOGORenderPtr->SetScaleToTexture("Logo.png");
@@ -127,15 +299,33 @@ void Stage_Title::Start()
 	YesRenderPtr->SetScaleToTexture("Yes.png");
 	NoRenderPtr->SetScaleToTexture("No.png");
 
-	INSRenderPtr->GetTransform()->SetLocalPosition({ 0, 160 });
-	ANDRenderPtr->GetTransform()->SetLocalPosition({ 0, -115 });
-	LOGORenderPtr->GetTransform()->SetLocalPosition({ 0, -190 });
+	CardMaxScale = CardRenderPtr->GetTransform()->GetLocalScale();
+	INSMaxScale = INSRenderPtr->GetTransform()->GetLocalScale();
+	ANDMaxScale = ANDRenderPtr->GetTransform()->GetLocalScale();
+	LOGOMaxScale = LOGORenderPtr->GetTransform()->GetLocalScale();
+	WouldMaxScale = WouldRenderPtr->GetTransform()->GetLocalScale();
+	BoxMaxScale = BoxRender->GetTransform()->GetLocalScale();
+	YesMaxScale = YesRenderPtr->GetTransform()->GetLocalScale();
+	NoMaxScale = NoRenderPtr->GetTransform()->GetLocalScale();
+
+	CardRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	INSRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	ANDRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	LOGORenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	WouldRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	BoxRender->GetTransform()->SetLocalScale(float4::Zero);
+	YesRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
+	NoRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 
 	ConfirmRenderPtr->GetTransform()->SetLocalPosition({ 500, -330 });
-	WouldRenderPtr->GetTransform()->SetLocalPosition({ 0, -75 });
-	YesRenderPtr->GetTransform()->SetLocalPosition({ -50, -115 });
-	NoRenderPtr->GetTransform()->SetLocalPosition({ 45, -115 });
-	BoxRender->GetTransform()->SetLocalPosition({ -50, -115 });
+
+	INSEndPosition = float4{ 0, 160 };
+	ANDEndPosition = float4{ 0, -115 };
+	LOGOEndPosition = float4{ 0, -190 };
+	WouldEndPosition = float4{ 0, -75 };
+	YesEndPosition = float4{ -50, -115 };
+	NoEndPosition = float4{ 45, -115 };
+	BoxEndPosition = float4{ -50, -115 };
 
 	YesPosition = YesRenderPtr->GetTransform()->GetLocalPosition();
 	NoPosition = NoRenderPtr->GetTransform()->GetLocalPosition();
@@ -152,28 +342,8 @@ void Stage_Title::Start()
 	WordRenderPtr->CreateAnimation({ "Zeplin", "Title_Card.png", 3, 3, 1.f, false, false });
 
 	WordRenderPtr->ChangeAnimation("Frog");
-}
 
-void Stage_Title::Update(float _DeltaTime)
-{
-	if (true == GameEngineInput::IsDown("MoveRight") && 0 == SelectInt)
-	{
-		BoxRender->GetTransform()->SetLocalPosition(NoPosition);
-		SelectInt = 1;
-	}
-	else if (true == GameEngineInput::IsDown("MoveLeft") && 0 == SelectInt)
-	{
-		BoxRender->GetTransform()->SetLocalPosition(NoPosition);
-		SelectInt = 1;
-	}
-	else if (true == GameEngineInput::IsDown("MoveRight") && 1 == SelectInt)
-	{
-		BoxRender->GetTransform()->SetLocalPosition(YesPosition);
-		SelectInt = 0;
-	}
-	else if (true == GameEngineInput::IsDown("MoveLeft") && 1 == SelectInt)
-	{
-		BoxRender->GetTransform()->SetLocalPosition(YesPosition);
-		SelectInt = 0;
-	}
+	WordMaxScale = WordRenderPtr->GetTransform()->GetLocalScale();
+
+	WordRenderPtr->GetTransform()->SetLocalScale(float4::Zero);
 }

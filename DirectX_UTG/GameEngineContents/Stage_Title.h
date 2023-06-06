@@ -57,9 +57,32 @@ private:
 	float4 YesPosition = float4::Zero;
 	float4 NoPosition = float4::Zero;
 
+	float4 MinScale = float4::Zero;
+	float4 CardMaxScale = float4::Zero;
+	float4 INSMaxScale = float4::Zero;
+	float4 ANDMaxScale = float4::Zero;
+	float4 LOGOMaxScale = float4::Zero;
+	float4 WouldMaxScale = float4::Zero;
+	float4 BoxMaxScale = float4::Zero;
+	float4 YesMaxScale = float4::Zero;
+	float4 NoMaxScale = float4::Zero;
+	float4 WordMaxScale = float4::Zero;
+
+	float4 INSEndPosition = float4::Zero;
+	float4 ANDEndPosition = float4::Zero;
+	float4 LOGOEndPosition = float4::Zero;
+	float4 WouldEndPosition = float4::Zero;
+	float4 YesEndPosition = float4::Zero;
+	float4 NoEndPosition = float4::Zero;
+	float4 BoxEndPosition = float4::Zero;
+
+	float ScaleMaxTime = 0.0f;
 	int SelectInt = 0;
+	bool OnLogicEnd = false;
 
 	CardValue CV = CardValue::Unknown;
 
+	void BoxInitSetting();
+	void OnLogic(float _DeltaTime);
 };
 
