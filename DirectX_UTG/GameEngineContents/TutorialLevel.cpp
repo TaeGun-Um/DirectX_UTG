@@ -17,6 +17,7 @@
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
+#include "WeaponUI.h"
 #include "PortalDoor.h"
 #include "Screen_FX.h"
 #include "Loading.h"
@@ -147,16 +148,22 @@ void TutorialLevel::LevelChangeStart()
 		LayerObject->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
 	}
 	{
+		if (nullptr == WeaponObject)
+		{
+			WeaponObject = CreateActor<WeaponUI>();
+		}
 		if (nullptr == HealthObject)
 		{
 			HealthObject = CreateActor<HealthUI>();
 		}
-
 		if (nullptr == CardObject)
 		{
 			CardObject = CreateActor<CardUI>();
 		}
 
+		WeaponObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		WeaponObject->SetMainPalyer(PlayerObject);
+		WeaponObject->StartPositionSetting(WeaponObject->GetTransform()->GetLocalPosition());
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
 		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });

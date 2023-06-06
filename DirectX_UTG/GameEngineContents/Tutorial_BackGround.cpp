@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Tutorial_BackGround.h"
 
+#include <GameEngineCore/GameEngineLevel.h>
+//#include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "Player.h"
@@ -38,6 +40,9 @@ void Tutorial_BackGround::Start()
 }
 void Tutorial_BackGround::Update(float _DeltaTime)
 {
-	float4 MinusDist = Player::MainPlayer->GetCameraMoveDistance();
-	GetTransform()->AddWorldPosition(MinusDist);
+	float XPos =  GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().x;
+	float YPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().y;
+	float ZPos = GetTransform()->GetLocalPosition().z;
+
+	GetTransform()->SetLocalPosition({ XPos , YPos , ZPos });
 }
