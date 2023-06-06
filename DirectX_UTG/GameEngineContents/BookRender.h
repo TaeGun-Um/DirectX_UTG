@@ -34,7 +34,8 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-	std::vector< std::shared_ptr<class AnimationInfo>> BookVector;
+	std::shared_ptr<class GameEngineSpriteRenderer> ArrowRenderPtr = nullptr;
+	
 	int Page = 0;
 	static bool IsEnd;
 };

@@ -49,8 +49,6 @@ void BookRender::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		BookVector.resize(11);
-
 		RenderPtr->CreateAnimation({ .AnimationName = "Page_01", .SpriteName = "Page_01", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Page_01-02", .SpriteName = "Page_01-02", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Page_02-03", .SpriteName = "Page_02-03", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
@@ -65,25 +63,50 @@ void BookRender::Start()
 
 		RenderPtr->ChangeAnimation("Page_01");
 	}
+
+	if (nullptr == GameEngineSprite::Find("Arrow"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("TextBox");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Arrow").GetFullPath());
+	}
+
+	if (nullptr == ArrowRenderPtr)
+	{
+		ArrowRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ArrowRenderPtr->GetTransform()->SetLocalPosition({480, -310});
+		ArrowRenderPtr->CreateAnimation({ .AnimationName = "Arrow", .SpriteName = "Arrow", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
+		ArrowRenderPtr->ChangeAnimation("Arrow");
+		ArrowRenderPtr->Off();
+	}
 }
 void BookRender::Update(float _DeltaTime)
 {
 	if (true == RenderPtr->FindAnimation("Page_01")->IsEnd() && 0 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_01-02");
 		}
 	}
 
-	size_t asdf = RenderPtr->FindAnimation("Page_01-02")->CurFrame;
-	size_t asdsfsff = RenderPtr->FindAnimation("Page_01-02")->EndFrame;
-
 	if (true == RenderPtr->FindAnimation("Page_01-02")->IsEnd() && 1 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_02-03");
 		}
@@ -91,8 +114,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_02-03")->IsEnd() && 2 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_03-04");
 		}
@@ -100,8 +126,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_03-04")->IsEnd() && 3 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_04-05");
 		}
@@ -109,8 +138,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_04-05")->IsEnd() && 4 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_05-06");
 		}
@@ -118,8 +150,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_05-06")->IsEnd() && 5 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_06-07");
 		}
@@ -127,8 +162,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_06-07")->IsEnd() && 6 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_07-08");
 		}
@@ -136,8 +174,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_07-08")->IsEnd() && 7 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_08-09");
 		}
@@ -145,8 +186,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_08-09")->IsEnd() && 8 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_09-10");
 		}
@@ -154,8 +198,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_09-10")->IsEnd() && 9 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			++Page;
 			RenderPtr->ChangeAnimation("Page_10-11");
 		}
@@ -163,8 +210,11 @@ void BookRender::Update(float _DeltaTime)
 
 	if (true == RenderPtr->FindAnimation("Page_10-11")->IsEnd() && 10 == Page)
 	{
+		ArrowRenderPtr->On();
+
 		if (true == GameEngineInput::IsDown("Next"))
 		{
+			ArrowRenderPtr->Off();
 			IsEnd = true;
 		}
 	}

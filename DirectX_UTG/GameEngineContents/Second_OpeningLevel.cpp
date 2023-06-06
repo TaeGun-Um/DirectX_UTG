@@ -104,6 +104,11 @@ void Second_OpeningLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Page_10-11");
 	}
 
+	if (nullptr != GameEngineTexture::Find("Arrow"))
+	{
+		GameEngineSprite::UnLoad("Arrow");
+	}
+
 	{
 		BlackBoxPtr->BoxSettingReset();
 		IsEnd = false;
@@ -125,5 +130,10 @@ void Second_OpeningLevel::ReLoadSetting()
 		GameEngineSprite::ReLoad("Page_08-09");
 		GameEngineSprite::ReLoad("Page_09-10");
 		GameEngineSprite::ReLoad("Page_10-11");
+	}
+
+	if (nullptr != GameEngineTexture::Find("Arrow"))
+	{
+		GameEngineSprite::ReLoad("Arrow");
 	}
 }
