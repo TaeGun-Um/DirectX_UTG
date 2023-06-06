@@ -436,7 +436,7 @@ void Player_Overworld::CreateMoveDust()
 
 void Player_Overworld::DirectCheck()
 {
-	if (true == IsWin)
+	if (true == IsWin || true ==  IsPortaling)
 	{
 		return;
 	}
@@ -464,7 +464,7 @@ void Player_Overworld::DirectCheck()
 
 void Player_Overworld::MoveDirectCheck()
 {
-	if (true == IsWin)
+	if (true == IsWin || true == IsPortaling)
 	{
 		return;
 	}
@@ -532,6 +532,9 @@ void Player_Overworld::ChangeState(OverworldState _StateValue)
 	case OverworldState::Move:
 		MoveStart();
 		break;
+	case OverworldState::Portal:
+		PortalStart();
+		break;
 	case OverworldState::Win:
 		WinStart();
 		break;
@@ -546,6 +549,9 @@ void Player_Overworld::ChangeState(OverworldState _StateValue)
 		break;
 	case OverworldState::Move:
 		MoveEnd();
+		break;
+	case OverworldState::Portal:
+		PortalEnd();
 		break;
 	case OverworldState::Win:
 		WinEnd();
@@ -565,6 +571,9 @@ void Player_Overworld::UpdateState(float _DeltaTime)
 	case OverworldState::Move:
 		MoveUpdate(_DeltaTime);
 		break;
+	case OverworldState::Portal:
+		PortalUpdate(_DeltaTime);
+		break;
 	case OverworldState::Win:
 		WinUpdate(_DeltaTime);
 		break;
@@ -579,9 +588,9 @@ void Player_Overworld::IdleStart()
 }
 void Player_Overworld::IdleUpdate(float _DeltaTime)
 {
-	if (true == WinSetting)
+	if (true == IsPortaling)
 	{
-		ChangeState(OverworldState::Win);
+		ChangeState(OverworldState::Portal);
 		return;
 	}
 
@@ -660,6 +669,12 @@ void Player_Overworld::MoveStart()
 }
 void Player_Overworld::MoveUpdate(float _DeltaTime)
 {
+	if (true == IsPortaling)
+	{
+		ChangeState(OverworldState::Portal);
+		return;
+	}
+
 	MoveTime += _DeltaTime;
 
 	switch (ADValue)
@@ -789,6 +804,85 @@ void Player_Overworld::MoveUpdate(float _DeltaTime)
 void Player_Overworld::MoveEnd()
 {
 	MoveTime = 0.0f;
+}
+
+void Player_Overworld::PortalStart() 
+{
+
+}
+void Player_Overworld::PortalUpdate(float _DeltaTime)
+{
+	if (false == IsPortaling)
+	{
+		ChangeState(OverworldState::Idle);
+		return;
+	}
+
+	if (true == WinSetting)
+	{
+		ChangeState(OverworldState::Win);
+		return;
+	}
+
+	switch (ADValue)
+	{
+	case AttackDirection::Right_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Idle", false);
+	}
+	break;
+	case AttackDirection::Right_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Up:
+	{
+		RenderPtr->ChangeAnimation("Up_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalUp:
+	{
+		RenderPtr->ChangeAnimation("DU_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Front:
+	{
+		RenderPtr->ChangeAnimation("Side_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_DiagonalDown:
+	{
+		RenderPtr->ChangeAnimation("DD_Idle", false);
+	}
+	break;
+	case AttackDirection::Left_Down:
+	{
+		RenderPtr->ChangeAnimation("Down_Idle", false);
+	}
+	break;
+	default:
+		break;
+	}
+}
+void Player_Overworld::PortalEnd()
+{
+
 }
 
 void Player_Overworld::WinStart()

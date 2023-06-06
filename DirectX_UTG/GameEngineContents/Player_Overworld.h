@@ -6,6 +6,7 @@ enum class OverworldState
 {
 	Idle,
 	Move,
+	Portal,
 	Win,
 };
 
@@ -163,6 +164,10 @@ private:
 	void MoveStart() override;
 	void MoveUpdate(float _DeltaTime) override;
 	void MoveEnd() override;
+
+	void PortalStart();
+	void PortalUpdate(float _DeltaTime);
+	void PortalEnd();
 
 	void WinStart();
 	void WinUpdate(float _DeltaTime);

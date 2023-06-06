@@ -9,6 +9,7 @@
 #include "Player_Overworld.h"
 #include "OverworldLevel.h"
 #include "RoundBlackBox.h"
+#include "Stage_Title.h"
 
 BuildingDataBase* BuildingDataBase::HomePtr = nullptr;
 BuildingDataBase* BuildingDataBase::Tutorial_FlyPtr = nullptr;
@@ -76,6 +77,8 @@ void BuildingDataBase::Start()
 		CollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		CollisionRenderPtr->CameraCullingOn();
 	}
+
+	Stage_TitleCard = GetLevel()->CreateActor<Stage_Title>();
 }
 
 void BuildingDataBase::Update(float _DeltaTime)
@@ -97,152 +100,20 @@ void BuildingDataBase::Update(float _DeltaTime)
 		return;
 	}
 
-	CollisionCheck();
+	CollisionCheck(_DeltaTime);
+
+	if (true == CreateCard)
+	{
+		CardUIOn(_DeltaTime);
+	}
 
 	if (true == NextLevelPortal)
 	{
-		//NextLevelPortal = false;
 		InterAction();
 	}
 }
 
-void BuildingDataBase::BuildingSetting(BuildingValue _BValue)
-{
-	BValue = _BValue;
-
-	switch (BValue)
-	{
-	case BuildingValue::Home:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_WaittingRoom", .SpriteName = "To_WaittingRoom.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("To_WaittingRoom");
-		
-		CollisionPtr->GetTransform()->SetLocalScale({ 200, 100, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
-		CollisionPtr->Off();
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		HomePtr = this;
-	}
-		break;
-	case BuildingValue::Tutorial_Fly:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Tutorial_Fly", .SpriteName = "To_Tutorial_Fly.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("To_Tutorial_Fly");
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 200, 100, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-		
-		Tutorial_FlyPtr = this;
-	}
-		break;
-	case BuildingValue::Mouse:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Werner_Werman", .SpriteName = "To_Werner_Werman.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = false });
-		RenderPtr->GetTransform()->SetLocalScale({400, 400, 1});
-		RenderPtr->ChangeAnimation("To_Werner_Werman");
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ -50, -50, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		FlagRenderPtr->GetTransform()->SetLocalPosition({ 10, -75, -1 });
-
-		MousePtr = this;
-	}
-		break;
-	case BuildingValue::Frog:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Ribby_and_Croaks", .SpriteName = "To_Ribby_and_Croaks.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("To_Ribby_and_Croaks");
-
-		if (nullptr == AssitantRenderPtr)
-		{
-			AssitantRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-			AssitantRenderPtr->CreateAnimation({ .AnimationName = "To_Ribby_and_Croaks_Wave", .SpriteName = "To_Ribby_and_Croaks_Wave.png", .Start = 0, .End = 6, .FrameInter = 0.1f, .ScaleToTexture = true });
-			AssitantRenderPtr->ChangeAnimation("To_Ribby_and_Croaks_Wave");
-			AssitantRenderPtr->GetTransform()->SetLocalPosition({-25, -110});
-		}
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 20, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		FlagRenderPtr->GetTransform()->SetLocalPosition({ -20, 150, 1 });
-
-		FrogPtr = this;
-	}
-		break;
-	case BuildingValue::Dragon:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Grim_Matchstick", .SpriteName = "To_Grim_Matchstick.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = false });
-		RenderPtr->GetTransform()->SetLocalScale({ 400, 400, 1 });
-		RenderPtr->ChangeAnimation("To_Grim_Matchstick");
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 100, 120, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ -10, -100, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		FlagRenderPtr->GetTransform()->SetLocalPosition({ 95, -55, 1 });
-
-		DragonPtr = this;
-	}
-		break;
-	case BuildingValue::Zeplin:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Hilda_Berg", .SpriteName = "To_Hilda_Berg.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("To_Hilda_Berg");
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 250, 100, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ -10, -50, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		FlagRenderPtr->GetTransform()->SetLocalPosition({ -50, 0, -1 });
-
-		ZeplinPtr = this;
-	}
-		break;
-	case BuildingValue::Djimmi:
-	{
-		RenderPtr->CreateAnimation({ .AnimationName = "To_Djimmi_The_Great", .SpriteName = "To_Djimmi_The_Great.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("To_Djimmi_The_Great");
-
-		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ -60, -50, -17 });
-
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-
-		FlagRenderPtr->GetTransform()->SetLocalPosition({ -30, -60, -1 });
-
-		DjimmiPtr = this;
-	}
-		break;
-	case BuildingValue::Unknown:
-	{
-		MsgAssert("BuildingSetting()를 실시하지 않았습니다. BuildingValue가 Unknown입니다.");
-		return;
-	}
-		break;
-	default:
-		break;
-	}
-}
-
-void BuildingDataBase::CollisionCheck()
+void BuildingDataBase::CollisionCheck(float _DeltaTime)
 {
 	if (nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
@@ -253,13 +124,46 @@ void BuildingDataBase::CollisionCheck()
 		Isinteraction = false;
 	}
 
-	if (true == Player_Overworld::MainPlayer->GetIsIdle()
-		&& true == Isinteraction
-		&& true == GameEngineInput::IsDown("Attack"))
+	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
 	{
-		NextLevelPortal = true;
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 		Player_Overworld::MainPlayer->SetIsPortalingTrue();
+		CreateCard = true;
+	}
+}
+
+void BuildingDataBase::CardUIOn(float _DeltaTime)
+{
+	Stage_TitleCard->On();
+
+	CardInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= CardInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (0 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
+	{
+		NextLevelPortal = true;
+	}
+	else if (1 == Stage_TitleCard->GetSelectInt() && true == GameEngineInput::IsDown("Attack"))
+	{
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Stage_TitleCard->Off();
+		Stage_TitleCard->BoxPositionReset();
+		CardInterActionDelayTime = 0.0f;
+		CreateCard = false;
+	}
+	else if (true == GameEngineInput::IsDown("Jump"))
+	{
+		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+		Player_Overworld::MainPlayer->SetIsPortalingfalse();
+		Stage_TitleCard->Off();
+		Stage_TitleCard->BoxPositionReset();
+		CardInterActionDelayTime = 0.0f;
+		CreateCard = false;
 	}
 }
 
@@ -273,6 +177,7 @@ void BuildingDataBase::InterAction()
 		NextLevelPortal = false;
 		Player_Overworld::MainPlayer->SetIsPortalingfalse();
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+
 		MsgTextBox("Home");
 	}
 	break;
@@ -333,5 +238,155 @@ void BuildingDataBase::InterAction()
 		MsgTextBox("Djimmi");
 	}
 	break;
+	}
+}
+
+void BuildingDataBase::BuildingSetting(BuildingValue _BValue)
+{
+	BValue = _BValue;
+
+	switch (BValue)
+	{
+	case BuildingValue::Home:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_WaittingRoom", .SpriteName = "To_WaittingRoom.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
+		RenderPtr->ChangeAnimation("To_WaittingRoom");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 200, 100, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
+		CollisionPtr->Off();
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		HomePtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Frog);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Tutorial_Fly:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Tutorial_Fly", .SpriteName = "To_Tutorial_Fly.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
+		RenderPtr->ChangeAnimation("To_Tutorial_Fly");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 200, 100, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		Tutorial_FlyPtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Frog);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Mouse:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Werner_Werman", .SpriteName = "To_Werner_Werman.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = false });
+		RenderPtr->GetTransform()->SetLocalScale({ 400, 400, 1 });
+		RenderPtr->ChangeAnimation("To_Werner_Werman");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ -50, -50, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		FlagRenderPtr->GetTransform()->SetLocalPosition({ 10, -75, -1 });
+
+		MousePtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Mouse);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Frog:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Ribby_and_Croaks", .SpriteName = "To_Ribby_and_Croaks.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
+		RenderPtr->ChangeAnimation("To_Ribby_and_Croaks");
+
+		if (nullptr == AssitantRenderPtr)
+		{
+			AssitantRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+			AssitantRenderPtr->CreateAnimation({ .AnimationName = "To_Ribby_and_Croaks_Wave", .SpriteName = "To_Ribby_and_Croaks_Wave.png", .Start = 0, .End = 6, .FrameInter = 0.1f, .ScaleToTexture = true });
+			AssitantRenderPtr->ChangeAnimation("To_Ribby_and_Croaks_Wave");
+			AssitantRenderPtr->GetTransform()->SetLocalPosition({ -25, -110 });
+		}
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 0, 20, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		FlagRenderPtr->GetTransform()->SetLocalPosition({ -20, 150, 1 });
+
+		FrogPtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Frog);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Dragon:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Grim_Matchstick", .SpriteName = "To_Grim_Matchstick.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = false });
+		RenderPtr->GetTransform()->SetLocalScale({ 400, 400, 1 });
+		RenderPtr->ChangeAnimation("To_Grim_Matchstick");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 100, 120, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ -10, -100, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		FlagRenderPtr->GetTransform()->SetLocalPosition({ 95, -55, 1 });
+
+		DragonPtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Dragon);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Zeplin:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Hilda_Berg", .SpriteName = "To_Hilda_Berg.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
+		RenderPtr->ChangeAnimation("To_Hilda_Berg");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 250, 100, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ -10, -50, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		FlagRenderPtr->GetTransform()->SetLocalPosition({ -50, 0, -1 });
+
+		ZeplinPtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Zeplin);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Djimmi:
+	{
+		RenderPtr->CreateAnimation({ .AnimationName = "To_Djimmi_The_Great", .SpriteName = "To_Djimmi_The_Great.png", .Start = 0, .End = 2, .FrameInter = 0.1f, .ScaleToTexture = true });
+		RenderPtr->ChangeAnimation("To_Djimmi_The_Great");
+
+		CollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ -60, -50, -17 });
+
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+
+		FlagRenderPtr->GetTransform()->SetLocalPosition({ -30, -60, -1 });
+
+		DjimmiPtr = this;
+		Stage_TitleCard->TitleWordSetting(CardValue::Djimmi);
+		Stage_TitleCard->Off();
+	}
+	break;
+	case BuildingValue::Unknown:
+	{
+		MsgAssert("BuildingSetting()를 실시하지 않았습니다. BuildingValue가 Unknown입니다.");
+		return;
+	}
+	break;
+	default:
+		break;
 	}
 }

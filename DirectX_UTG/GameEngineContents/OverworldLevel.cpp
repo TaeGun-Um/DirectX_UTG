@@ -265,6 +265,23 @@ void OverworldLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("To_WaittingRoom.png");
 		GameEngineSprite::UnLoad("To_Werner_Werman.png");
 	}
+	if (nullptr != GameEngineTexture::Find("TitleCard_Back.png"))
+	{
+		GameEngineTexture::UnLoad("TitleCard_Back.png");
+		GameEngineTexture::UnLoad("TitleCard_Title.png");
+		GameEngineTexture::UnLoad("AND.png");
+		GameEngineTexture::UnLoad("INS.png");
+		GameEngineTexture::UnLoad("Logo.png");
+		GameEngineTexture::UnLoad("CONFIRM_BACK.png");
+		GameEngineTexture::UnLoad("Wouldyou.png");
+		GameEngineTexture::UnLoad("Yes.png");
+		GameEngineTexture::UnLoad("No.png");
+		GameEngineTexture::UnLoad("SelectBox.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Title_Card.png"))
+	{
+		GameEngineSprite::UnLoad("Title_Card.png");
+	}
 	if (nullptr != GameEngineSprite::Find("AppleTraveller_Blink"))
 	{
 		GameEngineSprite::UnLoad("AppleTraveller_Blink");
@@ -377,6 +394,23 @@ void OverworldLevel::ReLoadSetting()
 		GameEngineSprite::ReLoad("To_Tutorial_Fly.png");
 		GameEngineSprite::ReLoad("To_WaittingRoom.png");
 		GameEngineSprite::ReLoad("To_Werner_Werman.png");
+	}
+	if (nullptr != GameEngineTexture::Find("TitleCard_Back.png"))
+	{
+		GameEngineTexture::ReLoad("TitleCard_Back.png");
+		GameEngineTexture::ReLoad("TitleCard_Title.png");
+		GameEngineTexture::ReLoad("AND.png");
+		GameEngineTexture::ReLoad("INS.png");
+		GameEngineTexture::ReLoad("Logo.png");
+		GameEngineTexture::ReLoad("CONFIRM_BACK.png");
+		GameEngineTexture::ReLoad("Wouldyou.png");
+		GameEngineTexture::ReLoad("Yes.png");
+		GameEngineTexture::ReLoad("No.png");
+		GameEngineTexture::ReLoad("SelectBox.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Title_Card.png"))
+	{
+		GameEngineSprite::ReLoad("Title_Card.png");
 	}
 	if (nullptr != GameEngineSprite::Find("AppleTraveller_Blink"))
 	{

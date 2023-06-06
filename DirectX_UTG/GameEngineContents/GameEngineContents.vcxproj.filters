@@ -328,6 +328,9 @@
     <ClInclude Include="WeaponUI.h">
       <Filter>Levels\7. Player\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Stage_Title.h">
+      <Filter>Levels\4. Overworld\Object\Building</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -557,6 +560,9 @@
     </ClCompile>
     <ClCompile Include="WeaponUI.cpp">
       <Filter>Levels\7. Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage_Title.cpp">
+      <Filter>Levels\4. Overworld\Object\Building</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

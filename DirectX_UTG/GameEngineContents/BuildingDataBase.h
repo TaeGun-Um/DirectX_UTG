@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Stage_Title.h"
+
 enum class BuildingValue
 {
 	Home,
@@ -63,6 +65,10 @@ public:
 
 	void IsLevelChangeReset()
 	{
+		Stage_TitleCard->Off();
+		Stage_TitleCard->BoxPositionReset();
+		CardInterActionDelayTime = 0.0f;
+		CreateCard = false;
 		NextLevelPortal = false;
 		BlackBoxCount = 1;
 	}
@@ -79,18 +85,23 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
 
+	std::shared_ptr<class Stage_Title> Stage_TitleCard = nullptr;
 
 	BuildingValue BValue = BuildingValue::Unknown;
 
 	bool FlagCall = false;
 	bool Isinteraction = false;
 	bool NextLevelPortal = false;
+	bool CreateCard = false;
 	bool IsCollisionOff = false;
 
 	int AnimationCount = 1;
 	int BlackBoxCount = 1;
 
-	void CollisionCheck();
+	float CardInterActionDelayTime = 0.0f;
+
+	void CardUIOn(float _DeltaTime);
+	void CollisionCheck(float _DeltaTime);
 	void InterAction();
 };
 
