@@ -588,6 +588,12 @@ void Player_Overworld::IdleStart()
 }
 void Player_Overworld::IdleUpdate(float _DeltaTime)
 {
+	if (true == WinSetting)
+	{
+		ChangeState(OverworldState::Win);
+		return;
+	}
+
 	if (true == IsPortaling)
 	{
 		ChangeState(OverworldState::Portal);
@@ -669,6 +675,12 @@ void Player_Overworld::MoveStart()
 }
 void Player_Overworld::MoveUpdate(float _DeltaTime)
 {
+	if (true == WinSetting)
+	{
+		ChangeState(OverworldState::Win);
+		return;
+	}
+
 	if (true == IsPortaling)
 	{
 		ChangeState(OverworldState::Portal);

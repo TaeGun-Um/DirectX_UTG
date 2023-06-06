@@ -14,17 +14,6 @@ Spread_EX::~Spread_EX()
 
 void Spread_EX::Start()
 {
-	if (nullptr == RenderPtr)
-	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-
-		RenderPtr->CreateAnimation({ "Spawn", "Spread_EX_Spawn.png", 0, 4, 0.04f, true, true });
-		RenderPtr->CreateAnimation({ "Loop", "Spread_EX_Loop.png", 0, 3, 0.07f, true, true });
-		RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, false, true });
-
-		RenderPtr->ChangeAnimation("Spawn");
-	}
-
 	if (nullptr == FalmeRenderPtr)
 	{
 		FalmeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -36,6 +25,17 @@ void Spread_EX::Start()
 		FalmeRenderPtr->CreateAnimation({ "FlameEnd", "Spread_EX_Flame.png", 10, 16, 0.07f, false, true });
 
 		FalmeRenderPtr->ChangeAnimation("FlameStart");
+	}
+
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+
+		RenderPtr->CreateAnimation({ "Spawn", "Spread_EX_Spawn.png", 0, 4, 0.04f, true, true });
+		RenderPtr->CreateAnimation({ "Loop", "Spread_EX_Loop.png", 0, 3, 0.07f, true, true });
+		RenderPtr->CreateAnimation({ "Death", "Spread_EX_Death.png", 0, 5, 0.05f, false, true });
+
+		RenderPtr->ChangeAnimation("Spawn");
 	}
 
 	if (nullptr == ProjectileCollisionPtr)

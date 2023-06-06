@@ -215,6 +215,7 @@ void CardUI::Update(float _DeltaTime)
 
 	if (1 == StackCount)
 	{
+		Stack0 = 49;
 		CardBackRenderPtr0->Off();
 		CardFrontRenderPtr0->On();
 		CardFrontRenderPtr0->ChangeAnimation("Rotate", false);
@@ -228,6 +229,7 @@ void CardUI::Update(float _DeltaTime)
 
 	if (2 == StackCount)
 	{
+		Stack1 = 49;
 		CardBackRenderPtr1->Off();
 		CardFrontRenderPtr1->On();
 		CardFrontRenderPtr1->ChangeAnimation("Rotate", false);
@@ -241,6 +243,7 @@ void CardUI::Update(float _DeltaTime)
 
 	if (3 == StackCount)
 	{
+		Stack2 = 49;
 		CardBackRenderPtr2->Off();
 		CardFrontRenderPtr2->On();
 		CardFrontRenderPtr2->ChangeAnimation("Rotate", false);
@@ -254,6 +257,7 @@ void CardUI::Update(float _DeltaTime)
 
 	if (4 == StackCount)
 	{
+		Stack3 = 49;
 		CardBackRenderPtr3->Off();
 		CardFrontRenderPtr3->On();
 		CardFrontRenderPtr3->ChangeAnimation("Rotate", false);
@@ -267,6 +271,7 @@ void CardUI::Update(float _DeltaTime)
 
 	if (5 == StackCount)
 	{
+		Stack4 = 49;
 		CardBackRenderPtr4->Off();
 		CardFrontRenderPtr4->On();
 		CardFrontRenderPtr4->ChangeAnimation("Rotate", false);
