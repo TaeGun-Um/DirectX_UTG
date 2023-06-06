@@ -118,7 +118,7 @@ void OverworldLevel::LevelChangeStart()
 	{
 		// 카메라 세팅
 		GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-		// GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
+		//GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
 		GetMainCamera()->GetTransform()->SetLocalPosition({2240 , 475, -620.0f });
 		GetMainCamera()->SetSortType(0, SortType::ZSort);
 

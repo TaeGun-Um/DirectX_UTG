@@ -39,7 +39,7 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<MouseLevel>();
 	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::ChangeLevel("Second_OpeningLevel");
+	GameEngineCore::ChangeLevel("First_OpeningLevel");
 }
 
 void CupheadCore::GameEnd()
