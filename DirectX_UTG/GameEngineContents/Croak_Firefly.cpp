@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -201,21 +202,41 @@ void Croak_Firefly::MoveStart()
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	float4 Direct = PlayerPos - CurPosition;
 
-	RenderPtr->ChangeAnimation("Left");
-
-	if (Direct.x < 0)
-	{
-		GetTransform()->SetLocalPositiveScaleX();
-	}
-	else
-	{
-		GetTransform()->SetLocalNegativeScaleX();
-	}
-
 	DirectNormal = Direct.NormalizeReturn();
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+	if (0 == RandC)
+	{
+		DirectNormal.RotaitonYDeg(180.0f);
+	}
 
 	TrackingPosition = (CurPosition + (DirectNormal * 150));
 
+	RenderPtr->ChangeAnimation("Left");
+
+	if (0 == RandC)
+	{
+		if (Direct.x < 0)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
+		else if (Direct.x >= 0)
+		{
+			GetTransform()->SetLocalPositiveScaleX();
+		}
+	}
+	else
+	{
+		if (Direct.x < 0)
+		{
+			GetTransform()->SetLocalPositiveScaleX();
+		}
+		else if (Direct.x >= 0)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
+	}
 }
 void Croak_Firefly::MoveUpdate(float _DeltaTime)
 {

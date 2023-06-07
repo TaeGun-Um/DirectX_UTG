@@ -7,18 +7,6 @@ enum class FlyState
 	Death,
 };
 
-enum class FlyDirect
-{
-	Up,
-	Right_DU,
-	Right,
-	Right_DD,
-	Down,
-	Left_DD,
-	Left,
-	Left_DU,
-};
-
 // Ό³Έν :
 class Croak_Firefly : public GameEngineActor
 {
@@ -92,7 +80,6 @@ private:
 	bool IsFourth = false;
 
 	FlyState StateValue = FlyState::Idle;
-	FlyDirect DV = FlyDirect::Left;
 
 	float4 StartPosition = float4::Zero;
 	float4 CurPosition = float4::Zero;
