@@ -6,13 +6,16 @@ enum class RibbyState
 	Intro_Loop,
 	Intro_End,
 	Idle,
-	Roll_Intro,
-	Roll_Intro_Loop,
-	Roll_Loop,
-	Roll_End,
 	FistAttack_Intro,
+	FistAttack_Intro_Loop,
+	FistAttack_Intro_Out,
 	FistAttack_Loop,
 	FistAttack_End,
+	Roll_Intro,
+	Roll_Intro_Loop,
+	Roll_Intro_Out,
+	Roll_Loop,
+	Roll_End,
 	ClapAttack_Intro,
 	ClapAttack_Boil,
 	ClapAttack,
@@ -22,7 +25,11 @@ enum class RibbyState
 // Ό³Έν :
 class Ribby : public GameEngineActor
 {
+	friend class Croak;
+
 public:
+	static Ribby* RibbyPtr;
+
 	// constrcuter destructer
 	Ribby();
 	~Ribby();
@@ -77,7 +84,11 @@ private:
 	void ActorInitSetting();
 	void DirectCheck();
 	void CollisionCheck();
+	void CollisionSetting();
 	void HitBlink(float _DeltaTime);
+
+	void CreateFistProjectile();
+	void CreateFistSFX(float4 _Position);
 
 	float BlinkTime = 0.0f;
 	float OriginMulColor = 0.0f;
@@ -87,9 +98,15 @@ private:
 	RibbyState StateValue = RibbyState::Intro;
 
 	float IntroLoopTime = 0.0f;
+	float IdleDelayTime = 0.0f;
+	float FistLoopDelayTime = 0.0f;
+	float FistAttackDelayTime = 0.0f;
 
 	bool IsIntro = true;
 	bool Directbool = false;
+	bool IsFistAttak = false;
+
+	int FistCreateCount = 0;
 
 	void ChangeState(RibbyState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -110,6 +127,26 @@ private:
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
 
+	void FistAttack_IntroStart();
+	void FistAttack_IntroUpdate(float _DeltaTime);
+	void FistAttack_IntroEnd();
+
+	void FistAttack_Intro_LoopStart();
+	void FistAttack_Intro_LoopUpdate(float _DeltaTime);
+	void FistAttack_Intro_LoopEnd();
+
+	void FistAttack_Intro_OutStart();
+	void FistAttack_Intro_OutUpdate(float _DeltaTime);
+	void FistAttack_Intro_OutEnd();
+
+	void FistAttack_LoopStart();
+	void FistAttack_LoopUpdate(float _DeltaTime);
+	void FistAttack_LoopEnd();
+
+	void FistAttack_EndStart();
+	void FistAttack_EndUpdate(float _DeltaTime);
+	void FistAttack_EndEnd();
+
 	void Roll_IntroStart();
 	void Roll_IntroUpdate(float _DeltaTime);
 	void Roll_IntroEnd();
@@ -118,6 +155,10 @@ private:
 	void Roll_Intro_LoopUpdate(float _DeltaTime);
 	void Roll_Intro_LoopEnd();
 
+	void Roll_Intro_OutStart();
+	void Roll_Intro_OutUpdate(float _DeltaTime);
+	void Roll_Intro_OutEnd();
+
 	void Roll_LoopStart();
 	void Roll_LoopUpdate(float _DeltaTime);
 	void Roll_LoopEnd();
@@ -125,18 +166,6 @@ private:
 	void Roll_EndStart();
 	void Roll_EndUpdate(float _DeltaTime);
 	void Roll_EndEnd();
-
-	void FistAttack_IntroStart();
-	void FistAttack_IntroUpdate(float _DeltaTime);
-	void FistAttack_IntroEnd();
-
-	void FistAttack_EndStart();
-	void FistAttack_EndUpdate(float _DeltaTime);
-	void FistAttack_EndEnd();
-
-	void FistAttack_LoopStart();
-	void FistAttack_LoopUpdate(float _DeltaTime);
-	void FistAttack_LoopEnd();
 
 	void ClapAttack_IntroStart();
 	void ClapAttack_IntroUpdate(float _DeltaTime);

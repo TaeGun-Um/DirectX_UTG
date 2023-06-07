@@ -149,10 +149,12 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	IdleDelayTime += _DeltaTime;
+
 }
 void Croak::IdleEnd()
 {
-
+	IdleDelayTime = 0.0f;
 }
 	 
 void Croak::CreateMob_StartStart()

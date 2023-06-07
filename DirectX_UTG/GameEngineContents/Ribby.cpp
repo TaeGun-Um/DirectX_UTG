@@ -11,6 +11,12 @@
 #include "Spread.h"
 #include "Spread_EX.h"
 
+#include "Croak.h"
+#include "FistAttack_Projectile.h"
+#include "FistAttack_SFX.h"
+
+Ribby* Ribby::RibbyPtr = nullptr;
+
 Ribby::Ribby() 
 {
 }
@@ -21,6 +27,7 @@ Ribby::~Ribby()
 
 void Ribby::Start()
 {
+	RibbyPtr = this;
 	ActorInitSetting();
 }
 
@@ -47,19 +54,53 @@ void Ribby::Update(float _DeltaTime)
 	DirectCheck();
 	UpdateState(_DeltaTime);
 	CollisionCheck();
+	CollisionSetting();
 	HitBlink(_DeltaTime);
 }
 
-void Ribby::DirectCheck()
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Ribby::HitBlink(float _DeltaTime)
 {
-	if (false == Directbool)
+	if (false == IsBlink)
 	{
-		GetTransform()->SetLocalPositiveScaleX();
+		return;
 	}
-	else
+
+	BlinkTime += _DeltaTime;
+
+	if (BlinkCount == 1)
 	{
-		GetTransform()->SetLocalNegativeScaleX();
+		BlinkCount = 0;
+
+		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
+		BlinkMulColor = 0.8f;
+		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
 	}
+
+	if (BlinkTime >= 0.1f)
+	{
+		BlinkCount = 1;
+		BlinkTime = 0.0f;
+		IsBlink = false;
+
+		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                    CollisionCheck                    /////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Ribby::CollisionSetting()
+{
+	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+
+	EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
 void Ribby::CollisionCheck()
@@ -133,33 +174,64 @@ void Ribby::CollisionCheck()
 	}
 }
 
-void Ribby::HitBlink(float _DeltaTime)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Ribby::CreateFistProjectile()
 {
-	if (false == IsBlink)
+	std::shared_ptr<FistAttack_Projectile> Projectile = GetLevel()->CreateActor<FistAttack_Projectile>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 ProjectilePosition = StartPosition;
+
+	if (0 == FistCreateCount || 4 == FistCreateCount || 8 == FistCreateCount)
 	{
-		return;
+		ProjectilePosition += float4{ -140, -120, -1 };
+	}
+	else if (1 == FistCreateCount || 3 == FistCreateCount || 5 == FistCreateCount || 7 == FistCreateCount)
+	{
+		ProjectilePosition += float4{ -140, -20, -1 };
+	}
+	else if (2 == FistCreateCount || 6 == FistCreateCount)
+	{
+		ProjectilePosition += float4{ -140, 80, -1 };
 	}
 
-	BlinkTime += _DeltaTime;
+	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetDirection(Directbool);
 
-	if (BlinkCount == 1)
+	CreateFistSFX(ProjectilePosition);
+}
+
+void Ribby::CreateFistSFX(float4 _Position)
+{
+	std::shared_ptr<FistAttack_SFX> FistSFX = GetLevel()->CreateActor<FistAttack_SFX>();
+	
+	//float4 FistSFXPosition = StartPosition;
+
+	FistSFX->SetStartPosition(_Position);
+	FistSFX->SetDirection(Directbool);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Ribby::DirectCheck()
+{
+	if (false == Directbool)
 	{
-		BlinkCount = 0;
-
-		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
-		BlinkMulColor = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+		GetTransform()->SetLocalPositiveScaleX();
 	}
-
-	if (BlinkTime >= 0.1f)
+	else
 	{
-		BlinkCount = 1;
-		BlinkTime = 0.0f;
-		IsBlink = false;
-
-		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		GetTransform()->SetLocalNegativeScaleX();
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     InitSetting                     ///////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Ribby::ActorInitSetting()
 {
@@ -177,6 +249,30 @@ void Ribby::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Intro_End").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Idle").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_FistAttack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_FistAttack_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_FistAttack_Intro_out").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_FistAttack_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_FistAttack_End").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Normal_Loop"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Ribby");
+		NewDir.Move("Fist_Projectile");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Normal_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Normal_Spawn").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Pink_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Pink_Spawn").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spark").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
@@ -187,6 +283,12 @@ void Ribby::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_Loop", .SpriteName = "Ribby_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Intro_End", .SpriteName = "Ribby_Intro_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Idle", .SpriteName = "Ribby_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_Intro", .SpriteName = "Ribby_FistAttack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_Intro_Loop", .SpriteName = "Ribby_FistAttack_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_Intro_out", .SpriteName = "Ribby_FistAttack_Intro_out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_Loop", .SpriteName = "Ribby_FistAttack_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_End", .SpriteName = "Ribby_FistAttack_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Ribby_Idle");
 	}

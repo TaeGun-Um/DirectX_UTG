@@ -83,6 +83,7 @@ private:
 	void ActorInitSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
+	void CreateFirefly();
 
 	float BlinkTime = 0.0f;
 	float OriginMulColor = 0.0f;
@@ -92,6 +93,7 @@ private:
 	CroakState StateValue = CroakState::Intro;
 
 	float IntroLoopTime = 0.0f;
+	float IdleDelayTime = 0.0f;
 
 	bool IsIntro = true;
 

@@ -209,6 +209,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Croak_Firefly.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Crowd.h">
       <SubType>
       </SubType>
@@ -254,6 +258,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Fishgirl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FistAttack_Projectile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FistAttack_SFX.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -503,6 +515,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Croak_Firefly.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Croak_FSM.cpp" />
     <ClCompile Include="Crowd.cpp">
       <SubType>
@@ -550,6 +566,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Fishgirl.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FistAttack_Projectile.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FistAttack_SFX.cpp">
       <SubType>
       </SubType>
     </ClCompile>
