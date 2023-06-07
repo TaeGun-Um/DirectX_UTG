@@ -38,8 +38,8 @@ public:
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 
 		StartPosition = GetTransform()->GetLocalPosition();
-		FirstSpawnPosition = StartPosition + float4{-400, 50};
-		SecondSpawnPosition = StartPosition + float4{ -200, 50 };
+		FirstSpawnPosition = StartPosition + float4{ -650, 120 };
+		SecondSpawnPosition = StartPosition + float4{ -200, 120 };
 	}
 
 	void SetCollisionRenderOn()
@@ -76,8 +76,10 @@ private:
 	FlyDirect DV = FlyDirect::Left;
 
 	float4 StartPosition = float4::Zero;
+	float4 CurPosition = float4::Zero;
 	float4 FirstSpawnPosition = float4::Zero;
 	float4 SecondSpawnPosition = float4::Zero;
+	float4 MoveDistance = float4::Zero;
 
 	float SpawnMoveTime = 0.0f;
 	float IdleDelayTime = 0.0f;

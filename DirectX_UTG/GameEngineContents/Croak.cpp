@@ -169,7 +169,7 @@ void Croak::CreateFirefly()
 {
 	std::shared_ptr<Croak_Firefly> Mob = GetLevel()->CreateActor<Croak_Firefly>();
 	float4 StartPosition = GetTransform()->GetLocalPosition();
-	float4 MobPosition = StartPosition + float4{-50, 50};
+	float4 MobPosition = StartPosition + float4{-250, 70, 1};
 
 	if (true == IsDebugRender)
 	{

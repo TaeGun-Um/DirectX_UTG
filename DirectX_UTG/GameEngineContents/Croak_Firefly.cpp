@@ -25,7 +25,7 @@ void Croak_Firefly::Start()
 		RenderPtr->CreateAnimation({ .AnimationName = "Left", .SpriteName = "Firefly_Left", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Up", .SpriteName = "Firefly_Up", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Down", .SpriteName = "Firefly_Down", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Firefly_Death", .FrameInter = 0.03f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Death", .SpriteName = "Firefly_Death", .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Left");
 	}
@@ -34,8 +34,8 @@ void Croak_Firefly::Start()
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		ProjectileCollisionPtr->SetColType(ColType::SPHERE2D);
-		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 60, 60, 1 });
-		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 40, 0 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 80, 80, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 5, -25 });
 	}
 
 	if (nullptr == ProjectileCollisionRenderPtr)
@@ -63,24 +63,35 @@ void Croak_Firefly::SpawnMove(float _DeltaTime)
 {
 	SpawnMoveTime += _DeltaTime;
 
+	CurPosition = GetTransform()->GetLocalPosition();
+	float4 Movedir = float4::Zero;
+
 	if (true == IsFirst)
 	{
-		float4 CurPosition = float4::LerpClamp(StartPosition, FirstSpawnPosition, SpawnMoveTime * 2.f);
-		GetTransform()->SetLocalPosition(CurPosition);
+		Movedir = (FirstSpawnPosition - CurPosition);
 
-		if ((FirstSpawnPosition.x + 5) >= CurPosition.x)
+		MoveDistance = Movedir * 3.0f * _DeltaTime;
+
+		GetTransform()->AddWorldPosition(MoveDistance);
+
+		if ((FirstSpawnPosition.x + 15) >= CurPosition.x)
 		{
 			IsSpawn = false;
+			ChangeState(FlyState::Idle);
 		}
 	}
 	else
 	{
-		float4 CurPosition = float4::LerpClamp(StartPosition, SecondSpawnPosition, SpawnMoveTime * 2.f);
-		GetTransform()->SetLocalPosition(CurPosition);
+		Movedir = (SecondSpawnPosition - CurPosition);
 
-		if ((SecondSpawnPosition.x + 5) >= CurPosition.x)
+		MoveDistance = Movedir * 3.0f * _DeltaTime;
+
+		GetTransform()->AddWorldPosition(MoveDistance);
+
+		if ((SecondSpawnPosition.x + 15) >= CurPosition.x)
 		{
 			IsSpawn = false;
+			ChangeState(FlyState::Idle);
 		}
 	}
 }
@@ -92,7 +103,7 @@ void Croak_Firefly::CollisionCheck()
 		GameEngineActor* Projectile = ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
-		
+
 		IsDeath = true;
 	}
 
@@ -200,6 +211,7 @@ void Croak_Firefly::MoveUpdate(float _DeltaTime)
 {
 	if (true == IsDeath)
 	{
+
 		ChangeState(FlyState::Death);
 		return;
 	}
@@ -241,6 +253,9 @@ void Croak_Firefly::MoveEnd()
 
 void Croak_Firefly::DeathStart()
 {
+	ProjectileCollisionRenderPtr->Death();
+	ProjectileCollisionPtr->Death();
+
 	RenderPtr->ChangeAnimation("Death");
 }
 void Croak_Firefly::DeathUpdate(float _DeltaTime)

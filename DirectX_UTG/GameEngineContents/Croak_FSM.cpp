@@ -219,6 +219,7 @@ void Croak::CreateMob_Start_OutUpdate(float _DeltaTime)
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		CreateMob = 1;
+		CreateMobCount = 2;
 		ChangeState(CroakState::CreateMob);
 		return;
 	}
@@ -244,6 +245,7 @@ void Croak::CreateMobUpdate(float _DeltaTime)
 
 			if (RandC == 0)
 			{
+				CreateMobCount = 2;
 				ChangeState(CroakState::CreateMob_End);
 				return;
 			}
@@ -270,7 +272,6 @@ void Croak::CreateMobUpdate(float _DeltaTime)
 void Croak::CreateMobEnd()
 {
 	CreateMob = 0;
-	CreateMobCount = 2;
 }
 	 
 void Croak::CreateMob_EndStart()
