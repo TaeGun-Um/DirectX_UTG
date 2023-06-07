@@ -1,11 +1,17 @@
 #include "PrecompileHeader.h"
 #include "Croak_Firefly.h"
 
+#include <cmath>
+
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
 #include "Peashooter.h"
 #include "Spread.h"
+
+#include "FrogLevel.h"
+#include "You_Died.h"
 
 Croak_Firefly::Croak_Firefly() 
 {
@@ -50,6 +56,11 @@ void Croak_Firefly::Start()
 
 void Croak_Firefly::Update(float _DeltaTime)
 {
+	if (true == FrogLevel::FrogLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	if (true == IsSpawn)
 	{
 		SpawnMove(_DeltaTime);
@@ -173,7 +184,7 @@ void Croak_Firefly::IdleUpdate(float _DeltaTime)
 
 	IdleDelayTime += _DeltaTime;
 
-	if (3.0f <= IdleDelayTime)
+	if (1.0f <= IdleDelayTime)
 	{
 		ChangeState(FlyState::Move);
 		return;
@@ -186,45 +197,47 @@ void Croak_Firefly::IdleEnd()
 
 void Croak_Firefly::MoveStart()
 {
+	CurPosition = GetTransform()->GetLocalPosition();
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	float4 Direct = PlayerPos - CurPosition;
+
+	RenderPtr->ChangeAnimation("Left");
+
+	if (Direct.x < 0)
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
+	else
+	{
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	DirectNormal = Direct.NormalizeReturn();
+
+	TrackingPosition = (CurPosition + (DirectNormal * 150));
 
 }
 void Croak_Firefly::MoveUpdate(float _DeltaTime)
 {
 	if (true == IsDeath)
 	{
-
 		ChangeState(FlyState::Death);
 		return;
 	}
 
-	switch (DV)
+	CurPosition = GetTransform()->GetLocalPosition();
+	float4 Movedir = float4::Zero;
+
+	Movedir = (TrackingPosition - CurPosition);
+
+	MoveDistance = Movedir * 4.0f * _DeltaTime;
+
+	GetTransform()->AddWorldPosition(MoveDistance);
+
+	if (TrackingPosition.y + 5 >= CurPosition.y)
 	{
-	case FlyDirect::Up:
-		RenderPtr->ChangeAnimation("Up", false);
-		break;
-	case FlyDirect::Right_DU:
-		RenderPtr->ChangeAnimation("Right", false);
-		break;
-	case FlyDirect::Right:
-		RenderPtr->ChangeAnimation("Right", false);
-		break;
-	case FlyDirect::Right_DD:
-		RenderPtr->ChangeAnimation("Right", false);
-		break;
-	case FlyDirect::Down:
-		RenderPtr->ChangeAnimation("Down", false);
-		break;
-	case FlyDirect::Left_DD:
-		RenderPtr->ChangeAnimation("Left", false);
-		break;
-	case FlyDirect::Left:
-		RenderPtr->ChangeAnimation("Left", false);
-		break;
-	case FlyDirect::Left_DU:
-		RenderPtr->ChangeAnimation("Left", false);
-		break;
-	default:
-		break;
+		ChangeState(FlyState::Idle);
+		return;
 	}
 }
 void Croak_Firefly::MoveEnd()

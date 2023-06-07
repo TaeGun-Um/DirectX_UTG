@@ -99,6 +99,10 @@ private:
 	float4 SpawnPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
 
+	float4 TrackingPosition = float4::Zero;
+	float4 DirectNormal = float4::Zero;
+
+	float MoveSpeed = 200.0f;
 	float MoveTime = 0.0f;
 	float IdleDelayTime = 0.0f;
 	bool IsSpawn = true;
