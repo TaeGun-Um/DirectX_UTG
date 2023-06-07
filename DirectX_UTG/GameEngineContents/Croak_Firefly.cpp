@@ -73,6 +73,11 @@ void Croak_Firefly::Update(float _DeltaTime)
 
 void Croak_Firefly::SpawnMove(float _DeltaTime)
 {
+	if (true == IsDeath)
+	{
+		return;
+	}
+
 	CurPosition = GetTransform()->GetLocalPosition();
 	float4 Movedir = float4::Zero;
 
@@ -91,18 +96,26 @@ void Croak_Firefly::SpawnMove(float _DeltaTime)
 
 void Croak_Firefly::CollisionCheck()
 {
-	if (nullptr != ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D))
+	if (nullptr != ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D) && false == IsDeath)
 	{
 		GameEngineActor* Projectile = ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+
+		ProjectileCollisionRenderPtr->Death();
+		ProjectileCollisionPtr->Death();
+
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
 		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
 
 		IsDeath = true;
 	}
 
-	if (nullptr != ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D))
+	if (nullptr != ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D) && false == IsDeath)
 	{
 		GameEngineActor* Projectile = ProjectileCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		
+		ProjectileCollisionRenderPtr->Death();
+		ProjectileCollisionPtr->Death();
+		
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
 		dynamic_cast<Spread*>(Projectile)->SetHitture();
 
@@ -213,6 +226,15 @@ void Croak_Firefly::MoveStart()
 
 	TrackingPosition = (CurPosition + (DirectNormal * 150));
 
+	if (0.0f >= TrackingPosition.x)
+	{
+		TrackingPosition.x = 30.0f;
+	}
+	else if (1280.0f <= TrackingPosition.x)
+	{
+		TrackingPosition.x = 1250.0f;
+	}
+
 	RenderPtr->ChangeAnimation("Left");
 
 	if (0 == RandC)
@@ -268,9 +290,6 @@ void Croak_Firefly::MoveEnd()
 
 void Croak_Firefly::DeathStart()
 {
-	ProjectileCollisionRenderPtr->Death();
-	ProjectileCollisionPtr->Death();
-
 	RenderPtr->ChangeAnimation("Death");
 }
 void Croak_Firefly::DeathUpdate(float _DeltaTime)
