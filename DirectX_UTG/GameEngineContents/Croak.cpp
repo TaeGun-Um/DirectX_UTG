@@ -167,7 +167,25 @@ void Croak::CollisionCheck()
 
 void Croak::CreateFirefly()
 {
+	std::shared_ptr<Croak_Firefly> Mob = GetLevel()->CreateActor<Croak_Firefly>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 MobPosition = StartPosition + float4{-50, 50};
 
+	if (true == IsDebugRender)
+	{
+		Mob->SetCollisionRenderOn();
+	}
+	else
+	{
+		Mob->SetCollisionRenderOff();
+	}
+
+	if (1 == CreateMobCount)
+	{
+		Mob->SetIsFirstSpawn();
+	}
+
+	Mob->SetStartPosition(MobPosition);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +212,24 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_Start_Out").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_End").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Croaks_Firefly"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_Firefly");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Death").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Left").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Up").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)

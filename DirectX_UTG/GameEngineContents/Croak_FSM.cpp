@@ -218,7 +218,7 @@ void Croak::CreateMob_Start_OutUpdate(float _DeltaTime)
 {
 	if (true == RenderPtr->IsAnimationEnd())
 	{
-		CreatePlus = 1;
+		CreateMob = 1;
 		ChangeState(CroakState::CreateMob);
 		return;
 	}
@@ -236,7 +236,9 @@ void Croak::CreateMobUpdate(float _DeltaTime)
 {
 	if (true == RenderPtr->IsAnimationEnd())
 	{
-		if (1 == CreatePlus)
+		IsCreateMob = false;
+
+		if (1 == CreateMob)
 		{
 			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
@@ -257,10 +259,18 @@ void Croak::CreateMobUpdate(float _DeltaTime)
 			return;
 		}
 	}
+
+	if (2 == RenderPtr->GetCurrentFrame() && 0 < CreateMobCount && false == IsCreateMob)
+	{
+		IsCreateMob = true;
+		--CreateMobCount;
+		CreateFirefly();
+	}
 }
 void Croak::CreateMobEnd()
 {
-	CreatePlus = 0;
+	CreateMob = 0;
+	CreateMobCount = 2;
 }
 	 
 void Croak::CreateMob_EndStart()

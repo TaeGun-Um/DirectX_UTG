@@ -1,5 +1,24 @@
 #pragma once
 
+enum class FlyState
+{
+	Idle,
+	Move,
+	Death,
+};
+
+enum class FlyDirect
+{
+	Up,
+	Right_DU,
+	Right,
+	Right_DD,
+	Down,
+	Left_DD,
+	Left,
+	Left_DU,
+};
+
 // Ό³Έν :
 class Croak_Firefly : public GameEngineActor
 {
@@ -14,6 +33,30 @@ public:
 	Croak_Firefly& operator=(const Croak_Firefly& _Other) = delete;
 	Croak_Firefly& operator=(Croak_Firefly&& _Other) noexcept = delete;
 
+	void SetStartPosition(const float4& _PlayerPosition)
+	{
+		GetTransform()->SetLocalPosition(_PlayerPosition);
+
+		StartPosition = GetTransform()->GetLocalPosition();
+		FirstSpawnPosition = StartPosition + float4{-400, 50};
+		SecondSpawnPosition = StartPosition + float4{ -200, 50 };
+	}
+
+	void SetCollisionRenderOn()
+	{
+		ProjectileCollisionRenderPtr->On();
+	}
+
+	void SetCollisionRenderOff()
+	{
+		ProjectileCollisionRenderPtr->Off();
+	}
+
+	void SetIsFirstSpawn()
+	{
+		IsFirst = true;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -21,6 +64,39 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
 
+	void SpawnMove(float _DeltaTime);
+	void CollisionCheck();
+
+	bool IsFirst = false;
+
+	FlyState StateValue = FlyState::Idle;
+	FlyDirect DV = FlyDirect::Left;
+
+	float4 StartPosition = float4::Zero;
+	float4 FirstSpawnPosition = float4::Zero;
+	float4 SecondSpawnPosition = float4::Zero;
+
+	float SpawnMoveTime = 0.0f;
+	float IdleDelayTime = 0.0f;
+	bool IsSpawn = true;
+	bool IsDeath = false;
+
+	void ChangeState(FlyState _StateValue);
+	void UpdateState(float _DeltaTime);
+
+	void IdleStart();
+	void IdleUpdate(float _DeltaTime);
+	void IdleEnd();
+
+	void MoveStart();
+	void MoveUpdate(float _DeltaTime);
+	void MoveEnd();
+
+	void DeathStart();
+	void DeathUpdate(float _DeltaTime);
+	void DeathEnd();
 };
 
