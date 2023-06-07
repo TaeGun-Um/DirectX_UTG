@@ -188,6 +188,12 @@ void Croak::ActorInitSetting()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Idle").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_Start").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_Start_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_Start_Out").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_End").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
@@ -196,6 +202,12 @@ void Croak::ActorInitSetting()
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Intro", .SpriteName = "Croaks_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Idle", .SpriteName = "Croaks_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_Start", .SpriteName = "Croaks_CreateMob_Start", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_Start_Loop", .SpriteName = "Croaks_CreateMob_Start_Loop", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_Start_Out", .SpriteName = "Croaks_CreateMob_Start_Out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob", .SpriteName = "Croaks_CreateMob", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_End", .SpriteName = "Croaks_CreateMob_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}

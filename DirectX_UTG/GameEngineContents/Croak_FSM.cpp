@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Croak.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
 void Croak::ChangeState(CroakState _StateValue)
 {
 	CroakState NextState = _StateValue;
@@ -19,8 +21,11 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::CreateMob_Start:
 		CreateMob_StartStart();
 		break;
-	case CroakState::CreateMob_Boil:
-		CreateMob_BoilStart();
+	case CroakState::CreateMob_Start_Loop:
+		CreateMob_Start_LoopStart();
+		break;
+	case CroakState::CreateMob_Start_Out:
+		CreateMob_Start_OutStart();
 		break;
 	case CroakState::CreateMob:
 		CreateMobStart();
@@ -55,8 +60,11 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::CreateMob_Start:
 		CreateMob_StartEnd();
 		break;
-	case CroakState::CreateMob_Boil:
-		CreateMob_BoilEnd();
+	case CroakState::CreateMob_Start_Loop:
+		CreateMob_Start_LoopEnd();
+		break;
+	case CroakState::CreateMob_Start_Out:
+		CreateMob_Start_OutEnd();
 		break;
 	case CroakState::CreateMob:
 		CreateMobEnd();
@@ -94,8 +102,11 @@ void Croak::UpdateState(float _DeltaTime)
 	case CroakState::CreateMob_Start:
 		CreateMob_StartUpdate(_DeltaTime);
 		break;
-	case CroakState::CreateMob_Boil:
-		CreateMob_BoilUpdate(_DeltaTime);
+	case CroakState::CreateMob_Start_Loop:
+		CreateMob_Start_LoopUpdate(_DeltaTime);
+		break;
+	case CroakState::CreateMob_Start_Out:
+		CreateMob_Start_OutUpdate(_DeltaTime);
 		break;
 	case CroakState::CreateMob:
 		CreateMobUpdate(_DeltaTime);
@@ -151,6 +162,11 @@ void Croak::IdleUpdate(float _DeltaTime)
 
 	IdleDelayTime += _DeltaTime;
 
+	if (IdleDelayTime >= 2.0f)
+	{
+		ChangeState(CroakState::CreateMob_Start);
+		return;
+	}
 }
 void Croak::IdleEnd()
 {
@@ -159,54 +175,109 @@ void Croak::IdleEnd()
 	 
 void Croak::CreateMob_StartStart()
 {
-
+	IsCreatefly = true;
+	RenderPtr->ChangeAnimation("Croaks_CreateMob_Start");
 }
 void Croak::CreateMob_StartUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::CreateMob_Start_Loop);
+		return;
+	}
 }
 void Croak::CreateMob_StartEnd()
 {
 
 }
 	 
-void Croak::CreateMob_BoilStart()
+void Croak::CreateMob_Start_LoopStart()
 {
-
+	RenderPtr->ChangeAnimation("Croaks_CreateMob_Start_Loop");
 }
-void Croak::CreateMob_BoilUpdate(float _DeltaTime)
+void Croak::CreateMob_Start_LoopUpdate(float _DeltaTime)
 {
+	CreateMob_LoopTime += _DeltaTime;
 
+	if (CreateMob_LoopTime >= 1.0f)
+	{
+		ChangeState(CroakState::CreateMob_Start_Out);
+		return;
+	}
 }
-void Croak::CreateMob_BoilEnd()
+void Croak::CreateMob_Start_LoopEnd()
+{
+	CreateMob_LoopTime = 0.0f;
+}
+
+void Croak::CreateMob_Start_OutStart()
+{
+	RenderPtr->ChangeAnimation("Croaks_CreateMob_Start_Out");
+}
+void Croak::CreateMob_Start_OutUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		CreatePlus = 1;
+		ChangeState(CroakState::CreateMob);
+		return;
+	}
+}
+void Croak::CreateMob_Start_OutEnd()
 {
 
 }
 
 void Croak::CreateMobStart() 
 {
-
+	RenderPtr->ChangeAnimation("Croaks_CreateMob");
 }
 void Croak::CreateMobUpdate(float _DeltaTime) 
 {
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		if (1 == CreatePlus)
+		{
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
+			if (RandC == 0)
+			{
+				ChangeState(CroakState::CreateMob_End);
+				return;
+			}
+			else
+			{
+				ChangeState(CroakState::CreateMob);
+				return;
+			}
+		}
+		else
+		{
+			ChangeState(CroakState::CreateMob_End);
+			return;
+		}
+	}
 }
 void Croak::CreateMobEnd()
 {
-
+	CreatePlus = 0;
 }
 	 
 void Croak::CreateMob_EndStart()
 {
-
+	RenderPtr->ChangeAnimation("Croaks_CreateMob_End");
 }
 void Croak::CreateMob_EndUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Idle);
+		return;
+	}
 }
 void Croak::CreateMob_EndEnd()
 {
-
+	IsCreatefly = false;
 }
 	 
 void Croak::Fan_IntroStart()

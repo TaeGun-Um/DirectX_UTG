@@ -5,7 +5,8 @@ enum class CroakState
 	Intro,
 	Idle,
 	CreateMob_Start,
-	CreateMob_Boil,
+	CreateMob_Start_Loop,
+	CreateMob_Start_Out,
 	CreateMob,
 	CreateMob_End,
 	Fan_Intro,
@@ -94,8 +95,12 @@ private:
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
+	float CreateMob_LoopTime = 0.0f;
+
+	int CreatePlus = 1;
 
 	bool IsIntro = true;
+	bool IsCreatefly = false;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -112,9 +117,13 @@ private:
 	void CreateMob_StartUpdate(float _DeltaTime);
 	void CreateMob_StartEnd();
 
-	void CreateMob_BoilStart();
-	void CreateMob_BoilUpdate(float _DeltaTime);
-	void CreateMob_BoilEnd();
+	void CreateMob_Start_LoopStart();
+	void CreateMob_Start_LoopUpdate(float _DeltaTime);
+	void CreateMob_Start_LoopEnd();
+
+	void CreateMob_Start_OutStart();
+	void CreateMob_Start_OutUpdate(float _DeltaTime);
+	void CreateMob_Start_OutEnd();
 
 	void CreateMobStart();
 	void CreateMobUpdate(float _DeltaTime);

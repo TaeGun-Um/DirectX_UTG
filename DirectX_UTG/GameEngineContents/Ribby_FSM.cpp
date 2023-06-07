@@ -264,7 +264,7 @@ void Ribby::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	IdleDelayTime += _DeltaTime;
+	//IdleDelayTime += _DeltaTime;
 
 	if (IdleDelayTime >= 3.0f)
 	{
