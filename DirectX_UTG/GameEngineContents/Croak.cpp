@@ -180,12 +180,29 @@ void Croak::CreateFirefly()
 		Mob->SetCollisionRenderOff();
 	}
 
+	Mob->SetStartPosition(MobPosition);
+
 	if (1 == CreateMobCount)
 	{
 		Mob->SetIsFirstSpawn();
 	}
-
-	Mob->SetStartPosition(MobPosition);
+	else if (2 == CreateMobCount)
+	{
+		Mob->SetIsSecondSpawn();
+	}
+	else if (3 == CreateMobCount)
+	{
+		Mob->SetIsThirdSpawn();
+	}
+	else if (4 == CreateMobCount)
+	{
+		Mob->SetIsFourthSpawn();
+	}
+	else
+	{
+		MsgAssert("FireFly ½ºÆùÀÌ ¹º°¡ Àß¸øµÊ");
+		return;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

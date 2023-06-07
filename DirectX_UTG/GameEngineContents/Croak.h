@@ -97,12 +97,15 @@ private:
 	float IdleDelayTime = 0.0f;
 	float CreateMob_LoopTime = 0.0f;
 
-	int CreateMob = 1;
-	int CreateMobCount = 2;
+	int CreatePlus = 0;
+	int CreateMobCount = 0;
 
 	bool IsIntro = true;
 	bool IsCreatefly = false;
-	bool IsCreateMob = false;
+	bool CreateAction = false;
+	bool CreateLoop = false;
+	bool LoopCreateAction = false;
+	bool LoopCreateEnd = false;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);

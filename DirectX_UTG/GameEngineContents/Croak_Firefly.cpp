@@ -61,38 +61,19 @@ void Croak_Firefly::Update(float _DeltaTime)
 
 void Croak_Firefly::SpawnMove(float _DeltaTime)
 {
-	SpawnMoveTime += _DeltaTime;
-
 	CurPosition = GetTransform()->GetLocalPosition();
 	float4 Movedir = float4::Zero;
 
-	if (true == IsFirst)
+	Movedir = (SpawnPosition - CurPosition);
+
+	MoveDistance = Movedir * 4.0f * _DeltaTime;
+
+	GetTransform()->AddWorldPosition(MoveDistance);
+
+	if ((SpawnPosition.x + 15) >= CurPosition.x)
 	{
-		Movedir = (FirstSpawnPosition - CurPosition);
-
-		MoveDistance = Movedir * 3.0f * _DeltaTime;
-
-		GetTransform()->AddWorldPosition(MoveDistance);
-
-		if ((FirstSpawnPosition.x + 15) >= CurPosition.x)
-		{
-			IsSpawn = false;
-			ChangeState(FlyState::Idle);
-		}
-	}
-	else
-	{
-		Movedir = (SecondSpawnPosition - CurPosition);
-
-		MoveDistance = Movedir * 3.0f * _DeltaTime;
-
-		GetTransform()->AddWorldPosition(MoveDistance);
-
-		if ((SecondSpawnPosition.x + 15) >= CurPosition.x)
-		{
-			IsSpawn = false;
-			ChangeState(FlyState::Idle);
-		}
+		IsSpawn = false;
+		ChangeState(FlyState::Idle);
 	}
 }
 

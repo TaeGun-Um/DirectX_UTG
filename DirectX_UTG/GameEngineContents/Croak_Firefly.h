@@ -36,10 +36,7 @@ public:
 	void SetStartPosition(const float4& _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
-
 		StartPosition = GetTransform()->GetLocalPosition();
-		FirstSpawnPosition = StartPosition + float4{ -650, 120 };
-		SecondSpawnPosition = StartPosition + float4{ -200, 120 };
 	}
 
 	void SetCollisionRenderOn()
@@ -55,6 +52,25 @@ public:
 	void SetIsFirstSpawn()
 	{
 		IsFirst = true;
+		SpawnPosition = StartPosition + float4{ -700, 120 };
+	}
+
+	void SetIsSecondSpawn()
+	{
+		IsSecond = true;
+		SpawnPosition = StartPosition + float4{ -150, 120 };
+	}
+
+	void SetIsThirdSpawn()
+	{
+		IsThird = true;
+		SpawnPosition = StartPosition + float4{ -550, 120 };
+	}
+
+	void SetIsFourthSpawn()
+	{
+		IsFourth = true;
+		SpawnPosition = StartPosition + float4{ -270, 120 };
 	}
 
 protected:
@@ -71,17 +87,19 @@ private:
 	void CollisionCheck();
 
 	bool IsFirst = false;
+	bool IsSecond = false;
+	bool IsThird = false;
+	bool IsFourth = false;
 
 	FlyState StateValue = FlyState::Idle;
 	FlyDirect DV = FlyDirect::Left;
 
 	float4 StartPosition = float4::Zero;
 	float4 CurPosition = float4::Zero;
-	float4 FirstSpawnPosition = float4::Zero;
-	float4 SecondSpawnPosition = float4::Zero;
+	float4 SpawnPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
 
-	float SpawnMoveTime = 0.0f;
+	float MoveTime = 0.0f;
 	float IdleDelayTime = 0.0f;
 	bool IsSpawn = true;
 	bool IsDeath = false;
