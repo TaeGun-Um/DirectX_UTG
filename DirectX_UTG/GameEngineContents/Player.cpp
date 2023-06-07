@@ -548,7 +548,7 @@ void Player::CollisionSetting()
 		BodyCollisionPtr->On();
 	}
 
-	if (true == IsDuck)
+	if (true == IsDuck || true == IsDuckAttack)
 	{
 		if (true == Directbool)
 		{
@@ -2196,7 +2196,7 @@ void Player::PlayerCollisionSetting()
 
 	if (nullptr == ParryCollisionPtr)
 	{
-		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
+		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerParry));
 		ParryCollisionPtr->SetColType(ColType::AABBBOX2D);
 		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
 		ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });

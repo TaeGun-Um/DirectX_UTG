@@ -129,20 +129,18 @@ void Tutorial_Map::Update(float _DeltaTime)
 		PlatformCollisionRenderPtr->Off();
 	}
 
-	if (nullptr != ParrySpotCollisionPtr0->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D)
-		&& Player::MainPlayer->GetParryCheck())
+	if (nullptr != ParrySpotCollisionPtr0->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		/*&& Player::MainPlayer->GetParryCheck()*/)
 	{
 		Step_1();
 	}
 
-	if (nullptr != ParrySpotCollisionPtr1->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D)
-		&& Player::MainPlayer->GetParryCheck())
+	if (nullptr != ParrySpotCollisionPtr1->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		Step_2();
 	}
 
-	if (nullptr != ParrySpotCollisionPtr2->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D)
-		&& Player::MainPlayer->GetParryCheck())
+	if (nullptr != ParrySpotCollisionPtr2->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		Step_3();
 	}

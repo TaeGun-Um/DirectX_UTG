@@ -724,12 +724,14 @@ void Player::DuckUpdate(float _DeltaTime)
 {
 	if (true == IsHit)
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::Hit);
 		return;
 	}
 
 	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::EXAttack);
 		return;
 	}
@@ -745,12 +747,14 @@ void Player::DuckUpdate(float _DeltaTime)
 
 	if (true == IsFall)
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
 	{
+		IsDuck = false;
 		IsBottomJump = true;
 		IsFall = true;
 		ChangeState(PlayerState::Fall);
@@ -759,12 +763,14 @@ void Player::DuckUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::Jump);
 		return;
 	}
 
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::Dash);
 		return;
 	}
@@ -777,13 +783,14 @@ void Player::DuckUpdate(float _DeltaTime)
 
 	if (false == GameEngineInput::IsPress("MoveDown"))
 	{
+		IsDuck = false;
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 }
 void Player::DuckEnd()
 {
-	IsDuck = false;
+	
 }
 
 // Jump 상태 체크
@@ -1359,24 +1366,32 @@ void Player::DuckAttackUpdate(float _DeltaTime)
 {
 	if (true == IsHit)
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::Hit);
 		return;
 	}
 
 	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::EXAttack);
 		return;
 	}
 
 	if (true == IsFall)
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("MoveDown") && true == GameEngineInput::IsDown("Jump") && true == BottomJumpAble)
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		IsBottomJump = true;
 		IsFall = true;
 		ChangeState(PlayerState::Fall);
@@ -1385,12 +1400,16 @@ void Player::DuckAttackUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::Jump);
 		return;
 	}
 
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::Dash);
 		return;
 	}
@@ -1407,20 +1426,22 @@ void Player::DuckAttackUpdate(float _DeltaTime)
 
 	if (false == GameEngineInput::IsPress("Attack"))
 	{
+		IsDuckAttack = false;
 		ChangeState(PlayerState::Duck);
 		return;
 	}
 
 	if (false == GameEngineInput::IsPress("MoveDown"))
 	{
+		IsDuckAttack = false;
+		IsDuck = false;
 		ChangeState(PlayerState::Attack);
 		return;
 	}
 }
 void Player::DuckAttackEnd()
 {
-	IsDuckAttack = false;
-	IsDuck = false;
+
 }
 
 // EX Attack 상태 체크

@@ -105,8 +105,10 @@ private:
 	bool IsIntro = true;
 	bool Directbool = false;
 	bool IsFistAttak = false;
+	bool ParryFistCreate = false;
 
 	int FistCreateCount = 0;
+	int ParryFistCount = 1;
 
 	void ChangeState(RibbyState _StateValue);
 	void UpdateState(float _DeltaTime);

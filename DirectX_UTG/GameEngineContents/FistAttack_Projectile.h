@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GameEngineCore/GameEngineCollision.h>
+
 // Ό³Έν :
 class FistAttack_Projectile : public GameEngineActor
 {
@@ -27,6 +29,28 @@ public:
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 	}
 
+	void SetCollisionRenderOn()
+	{
+		ProjectileCollisionRenderPtr->On();
+		ParryCollisionRenderPtr->On();
+
+		if (false == IsParryProjectile)
+		{
+			ParryCollisionRenderPtr->Off();
+		}
+	}
+
+	void SetCollisionRenderOff()
+	{
+		ProjectileCollisionRenderPtr->Off();
+		ParryCollisionRenderPtr->Off();
+	}
+
+	void SetParryFistCreate()
+	{
+		IsParryProjectile = true;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -41,10 +65,11 @@ private:
 
 	float MoveSpeed = 700.0f;
 
-	bool Check = false;
 	bool IsDeath = false;
+	bool IsParryProjectile = false;
 
 	void MoveDirection(float _DeltaTime);
+	void CollisionCheck();
 	void DeathCheck();
 	void SetFistDeath();
 

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Ribby.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -190,15 +191,37 @@ void Ribby::CreateFistProjectile()
 	}
 	else if (1 == FistCreateCount || 3 == FistCreateCount || 5 == FistCreateCount || 7 == FistCreateCount)
 	{
-		ProjectilePosition += float4{ -140, -20, -1 };
+		ProjectilePosition += float4{ -140, -30, -1 };
 	}
 	else if (2 == FistCreateCount || 6 == FistCreateCount)
 	{
-		ProjectilePosition += float4{ -140, 80, -1 };
+		ProjectilePosition += float4{ -140, 60, -1 };
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, (8 - FistCreateCount));
+	
+	if (0 == RandC && false == ParryFistCreate)
+	{
+		ParryFistCreate = true;
+	}
+
+	if (true == ParryFistCreate && 1 == ParryFistCount)
+	{
+		ParryFistCount = 0;
+		Projectile->SetParryFistCreate();
 	}
 
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetDirection(Directbool);
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
 
 	CreateFistSFX(ProjectilePosition);
 }
@@ -273,6 +296,7 @@ void Ribby::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Pink_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Pink_Spawn").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spark").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Death_FX").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)

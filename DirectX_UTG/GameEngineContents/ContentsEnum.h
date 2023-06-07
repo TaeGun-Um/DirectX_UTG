@@ -19,6 +19,7 @@ enum class AttackDirection
 enum class CollisionOrder
 {
 	Player,         
+	PlayerParry,
 	PlayerSensor,
 	Peashooter,
 	PeashooterEX,

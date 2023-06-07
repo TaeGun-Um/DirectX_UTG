@@ -318,11 +318,11 @@ void Ribby::FistAttack_Intro_OutStart()
 {
 	RenderPtr->ChangeAnimation("Ribby_FistAttack_Intro_out");
 
-	BodyCollisionPtr->GetTransform()->SetLocalScale({ 300, 270, 1 });
-	EXCollisionPtr->GetTransform()->SetLocalScale({ 300, 270, 1 });
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 270, 1 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 200, 270, 1 });
 
-	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -50, -40 });
-	EXCollisionPtr->GetTransform()->SetLocalPosition({ -50, -40 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -20, -40 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -20, -40 });
 }
 void Ribby::FistAttack_Intro_OutUpdate(float _DeltaTime)
 {
@@ -361,6 +361,8 @@ void Ribby::FistAttack_LoopUpdate(float _DeltaTime)
 void Ribby::FistAttack_LoopEnd()
 {
 	FistCreateCount = 0;
+	ParryFistCount = 1;
+	ParryFistCreate = false;
 	FistAttackDelayTime = 0.0f;
 }
 
