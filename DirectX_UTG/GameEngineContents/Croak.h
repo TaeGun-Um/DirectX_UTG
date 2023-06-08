@@ -40,14 +40,7 @@ public:
 		return IsStageEnd;
 	}
 
-	void SetInitReset()
-	{
-		MoveAbleTime = 0.0f;
-		StateValue = CroakState::Idle;
-		IsStageEnd = false;
-		IsIntro = true;
-		HP = 1000;
-	}
+	void SetInitReset();
 
 	float GetBossHP()
 	{

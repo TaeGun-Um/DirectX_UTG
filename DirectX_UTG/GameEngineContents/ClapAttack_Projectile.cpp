@@ -33,6 +33,7 @@ void ClapAttack_Projectile::Start()
 		DebugRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		DebugRenderPtr->SetScaleToTexture("BlueDot.png");
 		DebugRenderPtr->GetTransform()->SetLocalPosition({ 10, 0, -3 });
+		DebugRenderPtr->Off();
 	}
 
 	if (nullptr == ProjectileCollisionPtr)
@@ -100,7 +101,7 @@ void ClapAttack_Projectile::PixelCheck(float _DeltaTime)
 		if (true == PixelCollisionCheck.IsBlack(BoundPixel) && true == Directbool)
 		{
 			BouncingBufferTime = 0.0f;
-			GetTransform()->SetLocalRotation({ 0, 0, 300 });
+			GetTransform()->SetLocalRotation({ 0, 0, 298 });
 			Directbool = false;
 			++BoundCount;
 			CreateClapAttackSFX();
@@ -108,7 +109,7 @@ void ClapAttack_Projectile::PixelCheck(float _DeltaTime)
 		else if (true == PixelCollisionCheck.IsBlack(BoundPixel) && false == Directbool)
 		{
 			BouncingBufferTime = 0.0f;
-			GetTransform()->SetLocalRotation({ 0, 0, 60 });
+			GetTransform()->SetLocalRotation({ 0, 0, 63 });
 			Directbool = true;
 			++BoundCount;
 			CreateClapAttackSFX();

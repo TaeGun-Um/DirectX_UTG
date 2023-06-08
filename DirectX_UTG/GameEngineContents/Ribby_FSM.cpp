@@ -4,6 +4,8 @@
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "Croak.h"
+
 void Ribby::ChangeState(RibbyState _StateValue)
 {
 	RibbyState NextState = _StateValue;
@@ -477,7 +479,22 @@ void Ribby::Roll_Intro_OutEnd()
 void Ribby::Roll_LoopStart()
 {
 	RollStartPosition = GetTransform()->GetLocalPosition();
-	RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
+
+	if (false == Directbool)
+	{
+		RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
+	}
+	else if (true == Directbool)
+	{
+		float XPos = Croak::CroakPtr->GetTransform()->GetLocalPosition().x;
+		float YPos = Croak::CroakPtr->GetTransform()->GetLocalPosition().y;
+
+		RollEndPosition = float4{ XPos , YPos } + float4{ 0, 0 };
+
+		//float4 Direct = RollStartPosition - RollEndPosition;
+
+		//DirectNormal = Direct.NormalizeReturn() + RollStartPosition;
+	}
 
 	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
 	EXCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
@@ -488,26 +505,55 @@ void Ribby::Roll_LoopUpdate(float _DeltaTime)
 {
 	float4 CurPos = GetTransform()->GetLocalPosition();
 
-	if (RollEndPosition.x >= CurPos.x)
+	if (false == Directbool)
 	{
-		RollDelayTime += _DeltaTime;
-
-		if (1.0f <= RollDelayTime)
+		if (RollEndPosition.x >= CurPos.x)
 		{
-			ChangeState(RibbyState::Roll_End);
+			RollDelayTime += _DeltaTime;
+
+			if (1.0f <= RollDelayTime)
+			{
+				ChangeState(RibbyState::Roll_End);
+			}
+
+			return;
 		}
-		
-		return;
+
+		RollStartPosition.x += 200.0f * _DeltaTime;
+		float4 Movedir = float4::Zero;
+
+		Movedir = (RollStartPosition - CurPos);
+
+		MoveDistance = -(Movedir * 1.2f * _DeltaTime);
+
+		GetTransform()->AddWorldPosition(MoveDistance);
 	}
+	else if (true == Directbool)
+	{
+		if (RollEndPosition.x <= CurPos.x)
+		{
+			RollDelayTime += _DeltaTime;
 
-	RollStartPosition.x += 200.0f * _DeltaTime;
-	float4 Movedir = float4::Zero;
+			if (1.0f <= RollDelayTime)
+			{
+				ChangeState(RibbyState::Roll_End);
+			}
 
-	Movedir = (RollStartPosition - CurPos);
+			return;
+		}
 
-	MoveDistance = -(Movedir * 1.2f * _DeltaTime);
+		RollMoveTime += _DeltaTime;
 
-	GetTransform()->AddWorldPosition(MoveDistance);
+		float4 Dist = float4::Lerp(RollStartPosition, RollEndPosition, RollMoveTime);
+
+		float4 Movedir = float4::Zero;
+
+		Movedir = (Dist - CurPos);
+
+		MoveDistance = Movedir * 1.f * _DeltaTime;
+
+		GetTransform()->AddWorldPosition(MoveDistance);
+	}
 }
 void Ribby::Roll_LoopEnd()
 {

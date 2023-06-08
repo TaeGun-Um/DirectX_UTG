@@ -72,6 +72,15 @@ void Croak::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Croak::SetInitReset()
+{
+	MoveAbleTime = 0.0f;
+	StateValue = CroakState::Idle;
+	IsStageEnd = false;
+	IsIntro = true;
+	HP = 1000;
+}
+
 void Croak::CollisionSetting()
 {
 	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());

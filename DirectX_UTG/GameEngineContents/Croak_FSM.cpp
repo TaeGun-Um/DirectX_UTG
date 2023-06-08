@@ -161,6 +161,18 @@ void Croak::IdleStart()
 	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
 
 	RenderPtr->ChangeAnimation("Croaks_Idle");
+
+	// 지울것
+	float4 CurPos = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
+
+	Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ CurPos.x - 860.0f, CurPos.y });
+
+	Ribby::RibbyPtr->Directbool = true;
+	Ribby::RibbyPtr->BodyCollisionPtr->Off();
+	Ribby::RibbyPtr->EXCollisionPtr->Off();
+
+	RollPatter = 1;
+	//
 }
 void Croak::IdleUpdate(float _DeltaTime)
 {
@@ -170,73 +182,85 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (400.0f >= HP)
-	{
-		Ribby::RibbyPtr->IsClap = false;
-		return;
-	}
+	// 지울것
+	IdleDelayTime += _DeltaTime;
 
-	if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
-	{
-		IdleDelayTime += _DeltaTime;
-	}
-
-	if (IdleDelayTime >= 0.5f && 0 == RollPatter && 750.0f >= HP)
+	if (IdleDelayTime >= 0.25f && 1 == RollPatter)
 	{
 		++RollPatter;
 		IdleDelayTime = 0.0f;
 		Ribby::RibbyPtr->IsRoll = true;
 		return;
 	}
+	// 지울것
 
-	if (IdleDelayTime >= 1.5f && false == Ribby::RibbyPtr->IsRoll && 1 == RollPatter)
-	{
-		Ribby::RibbyPtr->IsClap = true;
-		ChangeState(CroakState::Fan_Intro);
-		return;
-	}
+	//if (400.0f >= HP)
+	//{
+	//	Ribby::RibbyPtr->IsClap = false;
+	//	return;
+	//}
 
-	if (750.0f >= HP)
-	{
-		return;
-	}
-	
-	if (IdleDelayTime >= 2.f)
-	{
-		IdleDelayTime = 0.0f;
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	//if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
+	//{
+	//	IdleDelayTime += _DeltaTime;
+	//}
 
-		if (0 == RandC)
-		{
-			if (RibbyFistCount == MaxPatternCount)
-			{
-				RibbyFistCount = 0;
-				ChangeState(CroakState::CreateMob_Start);
-				return;
-			}
-			else
-			{
-				++RibbyFistCount;
-				Ribby::RibbyPtr->IsFistAttak = true;
-				return;
-			}
-		}
-		else
-		{
-			if (CroakCrateMobCount == MaxPatternCount)
-			{
-				CroakCrateMobCount = 0;
-				Ribby::RibbyPtr->IsFistAttak = true;
-				return;
-			}
-			else
-			{
-				++CroakCrateMobCount;
-				ChangeState(CroakState::CreateMob_Start);
-				return;
-			}
-		}
-	}
+	//if (IdleDelayTime >= 0.25f && 0 == RollPatter && 750.0f >= HP)
+	//{
+	//	++RollPatter;
+	//	IdleDelayTime = 0.0f;
+	//	Ribby::RibbyPtr->IsRoll = true;
+	//	return;
+	//}
+
+	//if (IdleDelayTime >= 1.5f && false == Ribby::RibbyPtr->IsRoll && 1 == RollPatter)
+	//{
+	//	Ribby::RibbyPtr->IsClap = true;
+	//	ChangeState(CroakState::Fan_Intro);
+	//	return;
+	//}
+
+	//if (750.0f >= HP)
+	//{
+	//	return;
+	//}
+	//
+	//if (IdleDelayTime >= 2.f)
+	//{
+	//	IdleDelayTime = 0.0f;
+	//	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	//	if (0 == RandC)
+	//	{
+	//		if (RibbyFistCount == MaxPatternCount)
+	//		{
+	//			RibbyFistCount = 0;
+	//			ChangeState(CroakState::CreateMob_Start);
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			++RibbyFistCount;
+	//			Ribby::RibbyPtr->IsFistAttak = true;
+	//			return;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (CroakCrateMobCount == MaxPatternCount)
+	//		{
+	//			CroakCrateMobCount = 0;
+	//			Ribby::RibbyPtr->IsFistAttak = true;
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			++CroakCrateMobCount;
+	//			ChangeState(CroakState::CreateMob_Start);
+	//			return;
+	//		}
+	//	}
+	//}
 }
 void Croak::IdleEnd()
 {

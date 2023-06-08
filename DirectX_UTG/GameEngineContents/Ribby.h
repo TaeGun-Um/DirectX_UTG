@@ -49,13 +49,7 @@ public:
 		return IsStageEnd;
 	}
 
-	void SetInitReset()
-	{
-		MoveAbleTime = 0.0f;
-		StateValue = RibbyState::Idle;
-		IsStageEnd = false;
-		IsIntro = true;
-	}
+	void SetInitReset();
 
 	void DebugRenderOn()
 	{
@@ -105,6 +99,8 @@ private:
 	float4 RollStartPosition = float4::Zero;
 	float4 RollEndPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
+	float4 DirectNormal = float4::Zero;
+	float RollMoveTime = 0.0f;
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;

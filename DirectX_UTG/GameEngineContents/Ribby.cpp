@@ -96,6 +96,14 @@ void Ribby::HitBlink(float _DeltaTime)
 ///////////////////////////////////////////                    CollisionCheck                    /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Ribby::SetInitReset()
+{
+	MoveAbleTime = 0.0f;
+	StateValue = RibbyState::Idle;
+	IsStageEnd = false;
+	IsIntro = true;
+}
+
 void Ribby::CollisionSetting()
 {
 	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
@@ -248,12 +256,12 @@ void Ribby::CreateBallProjectile()
 
 	if (0 == RandC)
 	{
-		ProjectileRotation = float4{ 0, 0, 60 };
+		ProjectileRotation = float4{ 0, 0, 63 };
 		UpDirect = true;
 	}
 	else
 	{
-		ProjectileRotation = float4{ 0, 0, 300 };
+		ProjectileRotation = float4{ 0, 0, 298 };
 		UpDirect = false;
 	}
 

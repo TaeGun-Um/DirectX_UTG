@@ -29,11 +29,13 @@ public:
 	void SetCollisionRenderOn()
 	{
 		ProjectileCollisionRenderPtr->On();
+		DebugRenderPtr->On();
 	}
 
 	void SetCollisionRenderOff()
 	{
 		ProjectileCollisionRenderPtr->Off();
+		DebugRenderPtr->Off();
 	}
 
 	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
