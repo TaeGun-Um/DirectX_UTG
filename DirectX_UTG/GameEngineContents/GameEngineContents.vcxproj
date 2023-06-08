@@ -196,6 +196,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ClapAttack_FX.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ClapAttack_Projectile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Coin.h">
       <SubType>
       </SubType>
@@ -500,6 +508,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Cheerer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ClapAttack_FX.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ClapAttack_Projectile.cpp">
       <SubType>
       </SubType>
     </ClCompile>

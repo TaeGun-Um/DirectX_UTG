@@ -102,6 +102,11 @@ public:
 		ColMapWidth_Half = PixelCollisionCheck.GetColMapWidth_Half();
 	}
 
+	std::shared_ptr<GameEngineTexture> GetColMap()
+	{
+		return ColMap;
+	}
+
 	bool GetPlayerPortalAble()
 	{
 		return PortalAble;

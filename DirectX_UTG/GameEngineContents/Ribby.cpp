@@ -15,6 +15,7 @@
 #include "Croak.h"
 #include "FistAttack_Projectile.h"
 #include "FistAttack_SFX.h"
+#include "ClapAttack_Projectile.h"
 
 Ribby* Ribby::RibbyPtr = nullptr;
 
@@ -230,10 +231,27 @@ void Ribby::CreateFistSFX(float4 _Position)
 {
 	std::shared_ptr<FistAttack_SFX> FistSFX = GetLevel()->CreateActor<FistAttack_SFX>();
 	
-	//float4 FistSFXPosition = StartPosition;
-
 	FistSFX->SetStartPosition(_Position);
 	FistSFX->SetDirection(Directbool);
+}
+
+void Ribby::CreateBallProjectile()
+{
+	std::shared_ptr<ClapAttack_Projectile> Projectile = GetLevel()->CreateActor<ClapAttack_Projectile>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 ProjectilePosition = StartPosition + float4{115, -5, 1};
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
+
+	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Projectile->SetStartPosition(ProjectilePosition);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +302,12 @@ void Ribby::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Roll_Intro_Out").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Roll_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_Roll_End").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_ClapAttack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_ClapAttack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_ClapAttack_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_ClapAttack_LoopBack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ribby_ClapAttack_End").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Normal_Loop"))
@@ -303,6 +327,21 @@ void Ribby::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Pink_Spawn").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spark").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Death_FX").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Clap_Ball"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Ribby");
+		NewDir.Move("Clap_Projectile");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Clap_Ball").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Clap_FX").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
@@ -325,6 +364,12 @@ void Ribby::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Intro_Out", .SpriteName = "Ribby_Roll_Intro_Out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Loop", .SpriteName = "Ribby_Roll_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_End", .SpriteName = "Ribby_Roll_End", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack_Intro", .SpriteName = "Ribby_ClapAttack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack", .SpriteName = "Ribby_ClapAttack", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack_Loop", .SpriteName = "Ribby_ClapAttack_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack_LoopBack", .SpriteName = "Ribby_ClapAttack_LoopBack", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack_End", .SpriteName = "Ribby_ClapAttack_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Ribby_Idle");
 	}

@@ -349,6 +349,12 @@
     <ClInclude Include="FistAttack_SFX.h">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="ClapAttack_Projectile.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ClapAttack_FX.h">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -592,6 +598,12 @@
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClCompile>
     <ClCompile Include="FistAttack_SFX.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ClapAttack_Projectile.cpp">
+      <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ClapAttack_FX.cpp">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClCompile>
   </ItemGroup>

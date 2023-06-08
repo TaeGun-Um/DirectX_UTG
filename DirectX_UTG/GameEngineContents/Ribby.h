@@ -20,8 +20,9 @@ enum class RibbyState
 	Roll_End,
 
 	ClapAttack_Intro,
-	ClapAttack_Boil,
 	ClapAttack,
+	ClapAttack_Loop,
+	ClapAttack_LoopBack,
 	ClapAttack_End,
 };
 
@@ -91,6 +92,7 @@ private:
 	void HitBlink(float _DeltaTime);
 
 	void CreateFistProjectile();
+	void CreateBallProjectile();
 	void CreateFistSFX(float4 _Position);
 
 	float BlinkTime = 0.0f;
@@ -110,15 +112,19 @@ private:
 	float FistAttackDelayTime = 0.0f;
 	float LoopInterDelayTime = 0.0f;
 	float RollDelayTime = 0.0f;
+	float ClapLoopTime = 0.0f;
 
-	bool IsIntro = true;
 	bool Directbool = false;
-	bool IsFistAttak = false;
+	bool IsIntro = true;
 	bool IsRoll = false;
+	bool IsClap = false;
+	bool IsFistAttak = false;
 	bool ParryFistCreate = false;
 
 	int FistCreateCount = 0;
 	int ParryFistCount = 1;
+	int ClapCount = 4;
+	int CreateBallCount = 1;
 
 	void ChangeState(RibbyState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -183,13 +189,17 @@ private:
 	void ClapAttack_IntroUpdate(float _DeltaTime);
 	void ClapAttack_IntroEnd();
 
-	void ClapAttack_BoilStart();
-	void ClapAttack_BoilUpdate(float _DeltaTime);
-	void ClapAttack_BoilEnd();
-
 	void ClapAttackStart();
 	void ClapAttackUpdate(float _DeltaTime);
 	void ClapAttackEnd();
+
+	void ClapAttack_LoopStart();
+	void ClapAttack_LoopUpdate(float _DeltaTime);
+	void ClapAttack_LoopEnd();
+
+	void ClapAttack_LoopBackStart();
+	void ClapAttack_LoopBackUpdate(float _DeltaTime);
+	void ClapAttack_LoopBackEnd();
 
 	void ClapAttack_EndStart();
 	void ClapAttack_EndUpdate(float _DeltaTime);

@@ -161,6 +161,18 @@ void Croak::IdleStart()
 	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
 
 	RenderPtr->ChangeAnimation("Croaks_Idle");
+
+	// Áö¿ï°÷
+	float4 RollStartPosition = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
+	float4 RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
+
+	Ribby::RibbyPtr->BodyCollisionPtr->Off();
+	Ribby::RibbyPtr->EXCollisionPtr->Off();
+
+	Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ RollEndPosition.x + 630.0f, RollEndPosition.y });
+	
+	Ribby::RibbyPtr->Directbool = true;
+	//
 }
 void Croak::IdleUpdate(float _DeltaTime)
 {
@@ -170,16 +182,16 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	Off();
-
-	float4 RollStartPosition = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
-	float4 RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
-
-	Ribby::RibbyPtr->BodyCollisionPtr->Off();
-	Ribby::RibbyPtr->EXCollisionPtr->Off();
-
-	Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ RollEndPosition.x + 630.0f, RollEndPosition.y });
-	Ribby::RibbyPtr->Directbool = true;
+	if (false == Ribby::RibbyPtr->IsClap)
+	{
+		IdleDelayTime += _DeltaTime;
+	}
+	
+	if (2.0f <= IdleDelayTime)
+	{
+		IdleDelayTime = 0.0f;
+		Ribby::RibbyPtr->IsClap = true;
+	}
 
 	//if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
 	//{

@@ -4,7 +4,10 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "FrogLevel.h"
 #include "Player.h"
+
+#include "You_Died.h"
 
 FistAttack_Projectile::FistAttack_Projectile() 
 {
@@ -67,6 +70,11 @@ void FistAttack_Projectile::Start()
 
 void FistAttack_Projectile::Update(float _DeltaTime)
 {
+	if (true == FrogLevel::FrogLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	if (true == IsParryProjectile)
 	{
 		IsParryProjectile = false;

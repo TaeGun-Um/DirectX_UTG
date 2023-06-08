@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Ribby.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
 void Ribby::ChangeState(RibbyState _StateValue)
@@ -57,11 +58,14 @@ void Ribby::ChangeState(RibbyState _StateValue)
 	case RibbyState::ClapAttack_Intro:
 		ClapAttack_IntroStart();
 		break;
-	case RibbyState::ClapAttack_Boil:
-		ClapAttack_BoilStart();
-		break;
 	case RibbyState::ClapAttack:
 		ClapAttackStart();
+		break;
+	case RibbyState::ClapAttack_Loop:
+		ClapAttack_LoopStart();
+		break;
+	case RibbyState::ClapAttack_LoopBack:
+		ClapAttack_LoopBackStart();
 		break;
 	case RibbyState::ClapAttack_End:
 		ClapAttack_EndStart();
@@ -117,11 +121,14 @@ void Ribby::ChangeState(RibbyState _StateValue)
 	case RibbyState::ClapAttack_Intro:
 		ClapAttack_IntroEnd();
 		break;
-	case RibbyState::ClapAttack_Boil:
-		ClapAttack_BoilEnd();
-		break;
 	case RibbyState::ClapAttack:
 		ClapAttackEnd();
+		break;
+	case RibbyState::ClapAttack_Loop:
+		ClapAttack_LoopEnd();
+		break;
+	case RibbyState::ClapAttack_LoopBack:
+		ClapAttack_LoopBackEnd();
 		break;
 	case RibbyState::ClapAttack_End:
 		ClapAttack_EndEnd();
@@ -180,11 +187,14 @@ void Ribby::UpdateState(float _DeltaTime)
 	case RibbyState::ClapAttack_Intro:
 		ClapAttack_IntroUpdate(_DeltaTime);
 		break;
-	case RibbyState::ClapAttack_Boil:
-		ClapAttack_BoilUpdate(_DeltaTime);
-		break;
 	case RibbyState::ClapAttack:
 		ClapAttackUpdate(_DeltaTime);
+		break;
+	case RibbyState::ClapAttack_Loop:
+		ClapAttack_LoopUpdate(_DeltaTime);
+		break;
+	case RibbyState::ClapAttack_LoopBack:
+		ClapAttack_LoopBackUpdate(_DeltaTime);
 		break;
 	case RibbyState::ClapAttack_End:
 		ClapAttack_EndUpdate(_DeltaTime);
@@ -258,6 +268,13 @@ void Ribby::IdleStart()
 }
 void Ribby::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsClap)
+	{
+		ClapCount = 4;
+		ChangeState(RibbyState::ClapAttack_Intro);
+		return;
+	}
+
 	if (true == IsRoll)
 	{
 		ChangeState(RibbyState::Roll_Intro);
@@ -536,52 +553,112 @@ void Ribby::Roll_EndEnd()
 
 void Ribby::ClapAttack_IntroStart()
 {
-
+	RenderPtr->ChangeAnimation("Ribby_ClapAttack_Intro");
 }
 void Ribby::ClapAttack_IntroUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::ClapAttack);
+		return;
+	}
 }
 void Ribby::ClapAttack_IntroEnd()
 {
 
 }
 
-void Ribby::ClapAttack_BoilStart()
-{
-
-}
-void Ribby::ClapAttack_BoilUpdate(float _DeltaTime)
-{
-
-}
-void Ribby::ClapAttack_BoilEnd()
-{
-
-}
-
 void Ribby::ClapAttackStart()
 {
-
+	CreateBallCount = 1;
+	--ClapCount;
+	RenderPtr->ChangeAnimation("Ribby_ClapAttack");
 }
 void Ribby::ClapAttackUpdate(float _DeltaTime)
 {
+	if (3 == RenderPtr->GetCurrentFrame() && 1 == CreateBallCount)
+	{
+		CreateBallCount = 0;
+		CreateBallProjectile();
+	}
 
+	if (true == RenderPtr->IsAnimationEnd() && 0 == ClapCount)
+	{
+		ChangeState(RibbyState::ClapAttack_End);
+		return;
+	}
+	else if (true == RenderPtr->IsAnimationEnd() && 0 < ClapCount)
+	{
+		if (1 == ClapCount)
+		{
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+			if (0 == RandC)
+			{
+				ClapCount = 0;
+				ChangeState(RibbyState::ClapAttack_End);
+				return;
+			}
+		}
+
+		ChangeState(RibbyState::ClapAttack_LoopBack);
+		return;
+	}
 }
 void Ribby::ClapAttackEnd()
 {
 
 }
 
-void Ribby::ClapAttack_EndStart()
+void Ribby::ClapAttack_LoopStart()
+{
+	RenderPtr->ChangeAnimation("Ribby_ClapAttack_Loop");
+}
+void Ribby::ClapAttack_LoopUpdate(float _DeltaTime)
+{
+	ClapLoopTime += _DeltaTime;
+
+	if (1.0f <= ClapLoopTime)
+	{
+		ChangeState(RibbyState::ClapAttack);
+		return;
+	}
+}
+void Ribby::ClapAttack_LoopEnd()
+{
+	ClapLoopTime = 0.0f;
+}
+
+void Ribby::ClapAttack_LoopBackStart()
+{
+	RenderPtr->ChangeAnimation("Ribby_ClapAttack_LoopBack");
+}
+void Ribby::ClapAttack_LoopBackUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::ClapAttack_Loop);
+		return;
+	}
+}
+void Ribby::ClapAttack_LoopBackEnd()
 {
 
+}
+
+void Ribby::ClapAttack_EndStart()
+{
+	RenderPtr->ChangeAnimation("Ribby_ClapAttack_End");
 }
 void Ribby::ClapAttack_EndUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::Idle);
+		return;
+	}
 }
 void Ribby::ClapAttack_EndEnd()
 {
-
+	IsClap = false;
 }
