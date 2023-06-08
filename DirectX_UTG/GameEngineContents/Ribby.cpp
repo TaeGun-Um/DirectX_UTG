@@ -321,10 +321,10 @@ void Ribby::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_FistAttack_End", .SpriteName = "Ribby_FistAttack_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Intro", .SpriteName = "Ribby_Roll_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Intro_Loop", .SpriteName = "Ribby_Roll_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Intro_Loop", .SpriteName = "Ribby_Roll_Intro_Loop", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Intro_Out", .SpriteName = "Ribby_Roll_Intro_Out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_Loop", .SpriteName = "Ribby_Roll_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_End", .SpriteName = "Ribby_Roll_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_Roll_End", .SpriteName = "Ribby_Roll_End", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Ribby_Idle");
 	}

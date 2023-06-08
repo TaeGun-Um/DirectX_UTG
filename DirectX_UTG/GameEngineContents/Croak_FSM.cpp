@@ -1,8 +1,10 @@
 #include "PrecompileHeader.h"
 #include "Croak.h"
 
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Player.h"
 #include "Ribby.h"
 
 void Croak::ChangeState(CroakState _StateValue)
@@ -152,6 +154,12 @@ void Croak::IntroEnd()
 	 
 void Croak::IdleStart()
 {
+	PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+	PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+
+	PlusEXCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+
 	RenderPtr->ChangeAnimation("Croaks_Idle");
 }
 void Croak::IdleUpdate(float _DeltaTime)
@@ -162,23 +170,42 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (false == Ribby::RibbyPtr->IsFistAttak || false == Ribby::RibbyPtr->IsRoll)
-	{
-		IdleDelayTime += _DeltaTime;
-	}
+	Off();
 
-	if (IdleDelayTime >= 2.5f)
-	{
-		IdleDelayTime = 0.0f;
-		Ribby::RibbyPtr->IsRoll = true;
-	}
+	float4 RollStartPosition = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
+	float4 RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
+
+	Ribby::RibbyPtr->BodyCollisionPtr->Off();
+	Ribby::RibbyPtr->EXCollisionPtr->Off();
+
+	Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ RollEndPosition.x + 630.0f, RollEndPosition.y });
+	Ribby::RibbyPtr->Directbool = true;
+
+	//if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
+	//{
+	//	IdleDelayTime += _DeltaTime;
+	//}
+
+	//if (IdleDelayTime >= 0.5f && 0 == RollPatter && 750.0f >= HP)
+	//{
+	//	++RollPatter;
+	//	IdleDelayTime = 0.0f;
+	//	Ribby::RibbyPtr->IsRoll = true;
+	//	return;
+	//}
+
+	//if (IdleDelayTime >= 1.7f && false == Ribby::RibbyPtr->IsRoll && 1 == RollPatter)
+	//{
+	//	ChangeState(CroakState::Fan_Intro);
+	//	return;
+	//}
 
 	//if (750.0f >= HP)
 	//{
 	//	return;
 	//}
 	//
-	//if (IdleDelayTime >= 2.5f)
+	//if (IdleDelayTime >= 2.f)
 	//{
 	//	IdleDelayTime = 0.0f;
 	//	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
@@ -360,11 +387,18 @@ void Croak::CreateMob_EndEnd()
 	 
 void Croak::Fan_IntroStart()
 {
+	PlusBodyCollisionPtr->Off();
+	PlusEXCollisionPtr->Off();
 
+	RenderPtr->ChangeAnimation("Croaks_Fan_Intro");
 }
 void Croak::Fan_IntroUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Fan_Loop_A);
+		return;
+	}
 }
 void Croak::Fan_IntroEnd()
 {
@@ -373,39 +407,88 @@ void Croak::Fan_IntroEnd()
 	 
 void Croak::Fan_Loop_AStart()
 {
+	RenderPtr->ChangeAnimation("Croaks_Fan_LoopA");
+	WindRenderPtr->ChangeAnimation("Croaks_Fan_Wind_Intro");
 
+	PlusBodyCollisionPtr->On();
+	PlusEXCollisionPtr->On();
+
+	PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 350, 1 });
+	PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ -80, 50 });
+
+	PlusEXCollisionPtr->GetTransform()->SetLocalScale({ 200, 350, 1 });
+	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -80, 50 });
+
+	WindRenderPtr->On();
 }
 void Croak::Fan_Loop_AUpdate(float _DeltaTime)
 {
+	AFanLoopTime += _DeltaTime;
 
+	float WindPower = 250.0f * _DeltaTime;
+
+	Player::MainPlayer->PlayerMoveDisturbance(-WindPower);
+
+	if (true == WindRenderPtr->FindAnimation("Croaks_Fan_Wind_Intro")->IsEnd())
+	{
+		WindRenderPtr->ChangeAnimation("Croaks_Fan_Wind_Loop", false);
+	}
+
+	if (0.4f <= AFanLoopTime)
+	{
+		WindRenderPtr->ChangeAnimation("Croaks_Fan_Wind_Loop", false);
+		ChangeState(CroakState::Fan_Loop_B);
+		return;
+	}
 }
 void Croak::Fan_Loop_AEnd()
 {
-
+	AFanLoopTime = 0.0f;
 }
 	 
 void Croak::Fan_Loop_BStart()
 {
-
+	RenderPtr->ChangeAnimation("Croaks_Fan_LoopB");
 }
 void Croak::Fan_Loop_BUpdate(float _DeltaTime)
 {
+	BFanLoopTime += _DeltaTime;
 
+	float WindPower = 250.0f * _DeltaTime;
+
+	Player::MainPlayer->PlayerMoveDisturbance(-WindPower);
+
+	if (8.5f <= BFanLoopTime)
+	{
+		ChangeState(CroakState::Fan_End);
+		return;
+	}
 }
 void Croak::Fan_Loop_BEnd()
 {
-
+	BFanLoopTime = 0.0f;
 }
 	 
 void Croak::Fan_EndStart()
 {
+	RenderPtr->ChangeAnimation("Croaks_Fan_Outro");
 
+	PlusBodyCollisionPtr->Off();
+	PlusEXCollisionPtr->Off();
+
+	WindRenderPtr->Off();
 }
 void Croak::Fan_EndUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Idle);
+		return;
+	}
 }
 void Croak::Fan_EndEnd()
 {
-
+	PlusBodyCollisionPtr->On();
+	PlusEXCollisionPtr->On();
+	IdleDelayTime += 1.0f;
 }

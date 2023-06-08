@@ -123,6 +123,8 @@ public:
 	void AddPlayerEXGauge_Spread();
 	void CheckPlayerEXGauge();
 
+	void PlayerMoveDisturbance(float _Value);
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;

@@ -102,17 +102,14 @@ private:
 
 	float4 RollStartPosition = float4::Zero;
 	float4 RollEndPosition = float4::Zero;
+	float4 MoveDistance = float4::Zero;
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
 	float FistLoopDelayTime = 0.0f;
 	float FistAttackDelayTime = 0.0f;
 	float LoopInterDelayTime = 0.0f;
-	float RollMoveTime = 0.0f;
-
-	float RollSpeed_One = 100.0f;
-	float RollSpeed_Two = 100.0f;
-	float RollSpeed_Three = 100.0f;
+	float RollDelayTime = 0.0f;
 
 	bool IsIntro = true;
 	bool Directbool = false;

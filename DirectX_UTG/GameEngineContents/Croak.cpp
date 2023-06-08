@@ -42,21 +42,50 @@ void Croak::Update(float _DeltaTime)
 	{
 		BodyCollisionRenderPtr->On();
 		EXCollisionRenderPtr->On();
+
+		if (true == PlusEXCollisionPtr->IsUpdate())
+		{
+			PlusBodyCollisionRenderPtr->On();
+			PlusEXCollisionRenderPtr->On();
+		}
+		else
+		{
+			PlusBodyCollisionRenderPtr->Off();
+			PlusEXCollisionRenderPtr->Off();
+		}
 	}
 	else
 	{
 		BodyCollisionRenderPtr->Off();
 		EXCollisionRenderPtr->Off();
+		PlusBodyCollisionRenderPtr->Off();
+		PlusEXCollisionRenderPtr->Off();
 	}
 
 	UpdateState(_DeltaTime);
 	CollisionCheck();
+	CollisionSetting();
 	HitBlink(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Croak::CollisionSetting()
+{
+	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+
+	EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
+
+	PlusBodyCollisionRenderPtr->GetTransform()->SetLocalScale(PlusBodyCollisionPtr->GetTransform()->GetLocalScale());
+	PlusBodyCollisionRenderPtr->GetTransform()->SetLocalPosition(PlusBodyCollisionPtr->GetTransform()->GetLocalPosition());
+
+	PlusEXCollisionRenderPtr->GetTransform()->SetLocalScale(PlusEXCollisionPtr->GetTransform()->GetLocalScale());
+	PlusEXCollisionRenderPtr->GetTransform()->SetLocalPosition(PlusEXCollisionPtr->GetTransform()->GetLocalPosition());
+}
 
 void Croak::HitBlink(float _DeltaTime)
 {
@@ -127,6 +156,40 @@ void Croak::CollisionCheck()
 		IsBlink = true;
 	}
 
+	if (nullptr != PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
+		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
+		HP -= 1.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
+		dynamic_cast<Spread*>(Projectile)->SetHitture();
+		HP -= 0.4f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
 	/////////////// EX
 	if (nullptr != EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
 		&& HP > 0.0f)
@@ -148,6 +211,38 @@ void Croak::CollisionCheck()
 		&& HP > 0.0f)
 	{
 		GameEngineActor* Projectile = EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
+		HP -= 10.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != PlusEXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = PlusEXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Peashooter_EX*>(Projectile)->SetHitture();
+		HP -= 5.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != PlusEXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = PlusEXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
 		HP -= 10.0f;
 
@@ -229,6 +324,14 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_Start_Out").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_CreateMob_End").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_LoopA").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_LoopB").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_Wind_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_Wind_Loop").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Croaks_Firefly"))
@@ -262,6 +365,11 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob", .SpriteName = "Croaks_CreateMob", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_End", .SpriteName = "Croaks_CreateMob_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Intro", .SpriteName = "Croaks_Fan_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopA", .SpriteName = "Croaks_Fan_LoopA", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopB", .SpriteName = "Croaks_Fan_LoopB", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Outro", .SpriteName = "Croaks_Fan_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+
 		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}
 
@@ -280,6 +388,7 @@ void Croak::ActorInitSetting()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		BodyCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == EXCollisionPtr)
@@ -297,5 +406,52 @@ void Croak::ActorInitSetting()
 		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
 		EXCollisionRenderPtr->SetTexture("RedLine.png");
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		EXCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == PlusBodyCollisionPtr)
+	{
+		PlusBodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
+		PlusBodyCollisionPtr->SetColType(ColType::AABBBOX2D);
+		PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+		PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+	}
+
+	if (nullptr == PlusBodyCollisionRenderPtr)
+	{
+		PlusBodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		PlusBodyCollisionRenderPtr->GetTransform()->SetLocalScale(PlusBodyCollisionPtr->GetTransform()->GetLocalScale());
+		PlusBodyCollisionRenderPtr->GetTransform()->SetLocalPosition(PlusBodyCollisionPtr->GetTransform()->GetLocalPosition());
+		PlusBodyCollisionRenderPtr->SetTexture("GreenLine.png");
+		PlusBodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		PlusBodyCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == PlusEXCollisionPtr)
+	{
+		PlusEXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
+		PlusEXCollisionPtr->SetColType(ColType::AABBBOX2D);
+		PlusEXCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+		PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+	}
+
+	if (nullptr == PlusEXCollisionRenderPtr)
+	{
+		PlusEXCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		PlusEXCollisionRenderPtr->GetTransform()->SetLocalScale(PlusEXCollisionPtr->GetTransform()->GetLocalScale());
+		PlusEXCollisionRenderPtr->GetTransform()->SetLocalPosition(PlusEXCollisionPtr->GetTransform()->GetLocalPosition());
+		PlusEXCollisionRenderPtr->SetTexture("RedLine.png");
+		PlusEXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		PlusEXCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == WindRenderPtr)
+	{
+		WindRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		WindRenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Wind_Intro", .SpriteName = "Croaks_Fan_Wind_Intro", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+		WindRenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Wind_Loop", .SpriteName = "Croaks_Fan_Wind_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WindRenderPtr->ChangeAnimation("Croaks_Fan_Wind_Intro");
+		WindRenderPtr->GetTransform()->AddLocalPosition({-400, -10});
+		WindRenderPtr->Off();
 	}
 }

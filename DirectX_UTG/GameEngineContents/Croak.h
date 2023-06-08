@@ -71,10 +71,17 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> WindRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> PlusBodyCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> PlusEXCollisionRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> PlusBodyCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> PlusEXCollisionPtr = nullptr;
 	
 	float MoveAbleTime = 0.0f;
 	float HP = 1000;
@@ -84,6 +91,7 @@ private:
 	bool IsBlink = false;
 
 	void ActorInitSetting();
+	void CollisionSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
 	void CreateFirefly();
@@ -98,6 +106,8 @@ private:
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
 	float CreateMob_LoopTime = 0.0f;
+	float AFanLoopTime = 0.0f;
+	float BFanLoopTime = 0.0f;
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;
@@ -112,6 +122,7 @@ private:
 	int RibbyFistCount = 0;
 	int CroakCrateMobCount = 0;
 	int MaxPatternCount = 2;
+	int RollPatter = 0;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);

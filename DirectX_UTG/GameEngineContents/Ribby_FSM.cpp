@@ -412,6 +412,12 @@ void Ribby::Roll_IntroEnd()
 void Ribby::Roll_Intro_LoopStart()
 {
 	RenderPtr->ChangeAnimation("Ribby_Roll_Intro_Loop");
+
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -10, -100 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -10, -100 });
 }
 void Ribby::Roll_Intro_LoopUpdate(float _DeltaTime)
 {
@@ -448,50 +454,75 @@ void Ribby::Roll_Intro_OutEnd()
 void Ribby::Roll_LoopStart()
 {
 	RollStartPosition = GetTransform()->GetLocalPosition();
-	RollEndPosition = { (RollStartPosition.x - 900.0f) , RollStartPosition.y };
+	RollEndPosition = { (RollStartPosition.x - 1500.0f) , RollStartPosition.y };
+
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
 
 	RenderPtr->ChangeAnimation("Ribby_Roll_Loop");
 }
 void Ribby::Roll_LoopUpdate(float _DeltaTime)
 {
-	RollMoveTime += _DeltaTime;
-	
-	if (1.0f < RollMoveTime)
-	{
-		float Movedist = RollSpeed_Three * _DeltaTime;
-		GetTransform()->AddLocalPosition({ -Movedist, 0 });
-	}
-	else if (1.0f >= RollMoveTime)
-	{
-		float Movedist = RollSpeed_Two * _DeltaTime;
-		GetTransform()->AddLocalPosition({ -Movedist, 0 });
-	}
-	else if (0.5f >= RollMoveTime)
-	{
-		float Movedist = RollSpeed_One * _DeltaTime;
-		GetTransform()->AddLocalPosition({ -Movedist, 0});
-	}
-
 	float4 CurPos = GetTransform()->GetLocalPosition();
 
 	if (RollEndPosition.x >= CurPos.x)
 	{
-		ChangeState(RibbyState::Roll_End);
+		RollDelayTime += _DeltaTime;
+
+		if (1.0f <= RollDelayTime)
+		{
+			ChangeState(RibbyState::Roll_End);
+		}
+		
 		return;
 	}
+
+	RollStartPosition.x += 200.0f * _DeltaTime;
+	float4 Movedir = float4::Zero;
+
+	Movedir = (RollStartPosition - CurPos);
+
+	MoveDistance = -(Movedir * 1.2f * _DeltaTime);
+
+	GetTransform()->AddWorldPosition(MoveDistance);
 }
 void Ribby::Roll_LoopEnd()
 {
+	BodyCollisionPtr->Off();
+	EXCollisionPtr->Off();
 
+	BodyCollisionRenderPtr->Off();
+	EXCollisionRenderPtr->Off();
 }
 
 void Ribby::Roll_EndStart()
 {
+	GetTransform()->SetLocalPosition({ RollEndPosition.x + 750.0f, RollEndPosition.y });
 	Directbool = true;
 	RenderPtr->ChangeAnimation("Ribby_Roll_End");
+
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 200, -100 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ 200, -100 });
 }
 void Ribby::Roll_EndUpdate(float _DeltaTime)
 {
+	if (9 == RenderPtr->GetCurrentFrame())
+	{
+		GetTransform()->SetLocalPosition({ RollEndPosition.x + 630.0f, RollEndPosition.y });
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
+
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+	}
+
+	if (10 == RenderPtr->GetCurrentFrame())
+	{
+		BodyCollisionPtr->On();
+		EXCollisionPtr->On();
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(RibbyState::Idle);
