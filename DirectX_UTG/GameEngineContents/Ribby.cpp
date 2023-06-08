@@ -239,7 +239,23 @@ void Ribby::CreateBallProjectile()
 {
 	std::shared_ptr<ClapAttack_Projectile> Projectile = GetLevel()->CreateActor<ClapAttack_Projectile>();
 	float4 StartPosition = GetTransform()->GetLocalPosition();
+
 	float4 ProjectilePosition = StartPosition + float4{115, -5, 1};
+	float4 ProjectileRotation = float4::Zero;
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	bool UpDirect = true;
+
+	if (0 == RandC)
+	{
+		ProjectileRotation = float4{ 0, 0, 60 };
+		UpDirect = true;
+	}
+	else
+	{
+		ProjectileRotation = float4{ 0, 0, 300 };
+		UpDirect = false;
+	}
 
 	if (true == IsDebugRender)
 	{
@@ -252,6 +268,7 @@ void Ribby::CreateBallProjectile()
 
 	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
 	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetProjectileRotation(ProjectileRotation, UpDirect);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

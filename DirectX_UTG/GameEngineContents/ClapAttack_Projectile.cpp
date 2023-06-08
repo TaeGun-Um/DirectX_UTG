@@ -28,6 +28,13 @@ void ClapAttack_Projectile::Start()
 		RenderPtr->ChangeAnimation("Clap_Ball");
 	}
 
+	if (nullptr == DebugRenderPtr)
+	{
+		DebugRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		DebugRenderPtr->SetScaleToTexture("BlueDot.png");
+		DebugRenderPtr->GetTransform()->SetLocalPosition({ 10, 0, -3 });
+	}
+
 	if (nullptr == ProjectileCollisionPtr)
 	{
 		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
@@ -53,7 +60,25 @@ void ClapAttack_Projectile::Update(float _DeltaTime)
 		Death();
 	}
 
-	// PixelCheck(_DeltaTime);
+	PixelCheck(_DeltaTime);
+	MoveDirection(_DeltaTime);
+	DeathCheck();
+}
+
+void ClapAttack_Projectile::MoveDirection(float _DeltaTime)
+{
+	if (true == IsDeath)
+	{
+		return;
+	}
+
+	float MoveDist = 30.0f * _DeltaTime;
+
+	float4 MoveDist4 = float4::Zero;
+	float4 Correction = float4::Zero;
+
+	Correction = GetTransform()->GetWorldRightVector().NormalizeReturn();
+	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
 void ClapAttack_Projectile::CreateClapAttackSFX()
@@ -67,19 +92,43 @@ void ClapAttack_Projectile::CreateClapAttackSFX()
 
 void ClapAttack_Projectile::PixelCheck(float _DeltaTime)
 {
-	// 開馬 端滴
-	float4 ProjectilePos = GetTransform()->GetLocalPosition();
-	float4 UpPos = ProjectilePos + float4{ 0, 10 };
-	float4 DownPos = ProjectilePos + float4{ 0, -10 };
-
-	GameEnginePixelColor UpPixel = PixelCollisionCheck.PixelCheck(UpPos);
-	GameEnginePixelColor DownPixel = PixelCollisionCheck.PixelCheck(DownPos);
-
-	if (true == PixelCollisionCheck.IsBlack(UpPixel))
+	if (3 <= BoundCount)
 	{
+		return;
 	}
 
-	if (true == PixelCollisionCheck.IsBlack(DownPixel))
+	// 開馬 端滴
+	float4 ProjectilePos = GetTransform()->GetLocalPosition();
+	float4 BoundPos = ProjectilePos + float4{ 10, 0 };
+
+	GameEnginePixelColor BoundPixel = PixelCollisionCheck.PixelCheck(BoundPos);
+
+	if (true == PixelCollisionCheck.IsBlack(BoundPixel) && true == Directbool)
 	{
+		GetTransform()->SetLocalRotation({ 0, 0, 300 });
+		Directbool = false;
+		++BoundCount;
+	}
+	else if (true == PixelCollisionCheck.IsBlack(BoundPixel) && false == Directbool)
+	{
+		GetTransform()->SetLocalRotation({ 0, 0, 60 });
+		Directbool = true;
+		++BoundCount;
+	}
+
+}
+
+void ClapAttack_Projectile::DeathCheck()
+{
+	float4 CurPos = GetTransform()->GetLocalPosition();
+
+	if ((StartPosition.x + 1200.0f) <= CurPos.x)
+	{
+		IsDeath = true;
+	}
+
+	if (true == IsDeath)
+	{
+		Death();
 	}
 }

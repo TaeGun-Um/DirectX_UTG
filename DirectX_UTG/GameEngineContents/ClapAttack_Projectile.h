@@ -17,6 +17,13 @@ public:
 	void SetStartPosition(const float4& _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
+		StartPosition = GetTransform()->GetLocalPosition();
+	}
+
+	void SetProjectileRotation(const float4& _Rotation, bool _Direct)
+	{
+		GetTransform()->SetLocalRotation(_Rotation);
+		Directbool = _Direct;
 	}
 
 	void SetCollisionRenderOn()
@@ -44,9 +51,20 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr = nullptr;
+
 private:
 	void CreateClapAttackSFX();
 	void PixelCheck(float _DeltaTime);
+	void MoveDirection(float _DeltaTime);
+	void DeathCheck();
+
+	float4 StartPosition = float4::Zero;
+
+	float MoveSpeed = 500.0f;
+	bool IsDeath = false;
+	bool Directbool = true; // true = À§ // false == ¾Æ·¡
+	int BoundCount = 0;
 
 	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
 	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
