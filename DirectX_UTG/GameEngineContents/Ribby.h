@@ -108,6 +108,7 @@ private:
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
+	float ClapDelayTime = 0.0f;
 	float FistLoopDelayTime = 0.0f;
 	float FistAttackDelayTime = 0.0f;
 	float LoopInterDelayTime = 0.0f;

@@ -270,6 +270,11 @@ void Ribby::IdleUpdate(float _DeltaTime)
 {
 	if (true == IsClap)
 	{
+		ClapDelayTime += _DeltaTime;
+	}
+
+	if (true == IsClap && 1.5f <= ClapDelayTime)
+	{
 		ClapCount = 4;
 		ChangeState(RibbyState::ClapAttack_Intro);
 		return;
@@ -296,6 +301,7 @@ void Ribby::IdleUpdate(float _DeltaTime)
 void Ribby::IdleEnd()
 {
 	IdleDelayTime = 0.0f;
+	ClapDelayTime = 0.0f;
 }
 
 void Ribby::FistAttack_IntroStart()
@@ -582,7 +588,7 @@ void Ribby::ClapAttackUpdate(float _DeltaTime)
 		CreateBallProjectile();
 	}
 
-	if (true == RenderPtr->IsAnimationEnd() && 0 == ClapCount)
+	if (true == RenderPtr->IsAnimationEnd() && 0 >= ClapCount)
 	{
 		ChangeState(RibbyState::ClapAttack_End);
 		return;
@@ -660,5 +666,4 @@ void Ribby::ClapAttack_EndUpdate(float _DeltaTime)
 }
 void Ribby::ClapAttack_EndEnd()
 {
-	IsClap = false;
 }

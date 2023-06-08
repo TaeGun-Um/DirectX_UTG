@@ -26,6 +26,12 @@ void ClapAttack_FX::Start()
 
 void ClapAttack_FX::Update(float _DeltaTime)
 {
+	if (false == Directbool)
+	{
+		Directbool = true;
+		GetTransform()->SetLocalRotation({ 0, 0, 180 });
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		Death();

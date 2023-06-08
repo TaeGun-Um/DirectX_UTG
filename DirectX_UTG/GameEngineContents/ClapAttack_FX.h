@@ -14,9 +14,10 @@ public:
 	ClapAttack_FX& operator=(const ClapAttack_FX& _Other) = delete;
 	ClapAttack_FX& operator=(ClapAttack_FX&& _Other) noexcept = delete;
 
-	void SetStartPosition(const float4& _PlayerPosition)
+	void SetStartPosition(const float4& _PlayerPosition, bool _Direct)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
+		Directbool = _Direct;
 	}
 
 protected:
@@ -27,5 +28,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
+	bool Directbool = true;
 };
 

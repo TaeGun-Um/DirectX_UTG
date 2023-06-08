@@ -81,15 +81,6 @@ void ClapAttack_Projectile::MoveDirection(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Correction * MoveSpeed * _DeltaTime);
 }
 
-void ClapAttack_Projectile::CreateClapAttackSFX()
-{
-	std::shared_ptr<ClapAttack_FX> SFX = GetLevel()->CreateActor<ClapAttack_FX>();
-	float4 StartPosition = GetTransform()->GetLocalPosition();
-	float4 SFXPosition = StartPosition;
-
-	SFX->SetStartPosition(SFXPosition);
-}
-
 void ClapAttack_Projectile::PixelCheck(float _DeltaTime)
 {
 	if (3 <= BoundCount)
@@ -97,25 +88,41 @@ void ClapAttack_Projectile::PixelCheck(float _DeltaTime)
 		return;
 	}
 
-	// ³«ÇÏ Ã¼Å©
+	BouncingBufferTime += _DeltaTime;
+
 	float4 ProjectilePos = GetTransform()->GetLocalPosition();
 	float4 BoundPos = ProjectilePos + float4{ 10, 0 };
 
 	GameEnginePixelColor BoundPixel = PixelCollisionCheck.PixelCheck(BoundPos);
-
-	if (true == PixelCollisionCheck.IsBlack(BoundPixel) && true == Directbool)
+	
+	if (0.1f <= BouncingBufferTime)
 	{
-		GetTransform()->SetLocalRotation({ 0, 0, 300 });
-		Directbool = false;
-		++BoundCount;
+		if (true == PixelCollisionCheck.IsBlack(BoundPixel) && true == Directbool)
+		{
+			BouncingBufferTime = 0.0f;
+			GetTransform()->SetLocalRotation({ 0, 0, 300 });
+			Directbool = false;
+			++BoundCount;
+			CreateClapAttackSFX();
+		}
+		else if (true == PixelCollisionCheck.IsBlack(BoundPixel) && false == Directbool)
+		{
+			BouncingBufferTime = 0.0f;
+			GetTransform()->SetLocalRotation({ 0, 0, 60 });
+			Directbool = true;
+			++BoundCount;
+			CreateClapAttackSFX();
+		}
 	}
-	else if (true == PixelCollisionCheck.IsBlack(BoundPixel) && false == Directbool)
-	{
-		GetTransform()->SetLocalRotation({ 0, 0, 60 });
-		Directbool = true;
-		++BoundCount;
-	}
+}
 
+void ClapAttack_Projectile::CreateClapAttackSFX()
+{
+	std::shared_ptr<ClapAttack_FX> SFX = GetLevel()->CreateActor<ClapAttack_FX>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 SFXPosition = StartPosition;
+
+	SFX->SetStartPosition(SFXPosition, Directbool);
 }
 
 void ClapAttack_Projectile::DeathCheck()

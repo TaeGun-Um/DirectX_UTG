@@ -61,7 +61,8 @@ private:
 
 	float4 StartPosition = float4::Zero;
 
-	float MoveSpeed = 500.0f;
+	float MoveSpeed = 660.0f;
+	float BouncingBufferTime = 0.0f;
 	bool IsDeath = false;
 	bool Directbool = true; // true = À§ // false == ¾Æ·¡
 	int BoundCount = 0;

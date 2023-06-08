@@ -365,8 +365,8 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob", .SpriteName = "Croaks_CreateMob", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_CreateMob_End", .SpriteName = "Croaks_CreateMob_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Intro", .SpriteName = "Croaks_Fan_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopA", .SpriteName = "Croaks_Fan_LoopA", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Intro", .SpriteName = "Croaks_Fan_Intro", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopA", .SpriteName = "Croaks_Fan_LoopA", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopB", .SpriteName = "Croaks_Fan_LoopB", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Outro", .SpriteName = "Croaks_Fan_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
