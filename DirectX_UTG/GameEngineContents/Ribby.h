@@ -6,16 +6,19 @@ enum class RibbyState
 	Intro_Loop,
 	Intro_End,
 	Idle,
+
 	FistAttack_Intro,
 	FistAttack_Intro_Loop,
 	FistAttack_Intro_Out,
 	FistAttack_Loop,
 	FistAttack_End,
+
 	Roll_Intro,
 	Roll_Intro_Loop,
 	Roll_Intro_Out,
 	Roll_Loop,
 	Roll_End,
+
 	ClapAttack_Intro,
 	ClapAttack_Boil,
 	ClapAttack,
@@ -97,14 +100,24 @@ private:
 
 	RibbyState StateValue = RibbyState::Intro;
 
+	float4 RollStartPosition = float4::Zero;
+	float4 RollEndPosition = float4::Zero;
+
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
 	float FistLoopDelayTime = 0.0f;
 	float FistAttackDelayTime = 0.0f;
+	float LoopInterDelayTime = 0.0f;
+	float RollMoveTime = 0.0f;
+
+	float RollSpeed_One = 100.0f;
+	float RollSpeed_Two = 100.0f;
+	float RollSpeed_Three = 100.0f;
 
 	bool IsIntro = true;
 	bool Directbool = false;
 	bool IsFistAttak = false;
+	bool IsRoll = false;
 	bool ParryFistCreate = false;
 
 	int FistCreateCount = 0;

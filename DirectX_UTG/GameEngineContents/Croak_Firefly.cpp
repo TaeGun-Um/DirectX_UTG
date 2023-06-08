@@ -213,18 +213,20 @@ void Croak_Firefly::MoveStart()
 {
 	CurPosition = GetTransform()->GetLocalPosition();
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
-	float4 Direct = PlayerPos - CurPosition;
+	float4 YUpPos = { 0, 50 };
+	float4 Direct = PlayerPos + YUpPos - CurPosition;
 
 	DirectNormal = Direct.NormalizeReturn();
 
 	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+	++RandMoveCount;
 
-	if (0 == RandC)
+	if (0 == RandC && RandMoveCount <= MaxRandMoveCount)
 	{
 		DirectNormal.RotaitonYDeg(180.0f);
 	}
 
-	TrackingPosition = (CurPosition + (DirectNormal * 150));
+	TrackingPosition = (CurPosition + (DirectNormal * 200));
 
 	if (0.0f >= TrackingPosition.x)
 	{

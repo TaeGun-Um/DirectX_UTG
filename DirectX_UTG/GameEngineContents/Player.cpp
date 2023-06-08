@@ -528,12 +528,12 @@ void Player::CollisionSetting()
 		if (true == Directbool)
 		{
 			ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 85 });
-			ParryCollisionPtr->GetTransform()->SetLocalScale({ 100, 100, 1 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 120, 120, 1 });
 		}
 		else
 		{
 			ParryCollisionPtr->GetTransform()->SetLocalPosition({ 10, 85 });
-			ParryCollisionPtr->GetTransform()->SetLocalScale({ 100, 100, -1 });
+			ParryCollisionPtr->GetTransform()->SetLocalScale({ 120, 120, -1 });
 		}
 	}
 
@@ -2198,7 +2198,7 @@ void Player::PlayerCollisionSetting()
 	{
 		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerParry));
 		ParryCollisionPtr->SetColType(ColType::AABBBOX2D);
-		ParryCollisionPtr->GetTransform()->SetLocalScale({ 90, 80, 1 });
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 110, 110, 1 });
 		ParryCollisionPtr->GetTransform()->SetLocalPosition({ -5, 80 });
 		ParryCollisionPtr->Off();
 	}

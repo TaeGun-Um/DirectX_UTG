@@ -95,6 +95,9 @@ private:
 	bool IsSpawn = true;
 	bool IsDeath = false;
 
+	int RandMoveCount = 0;
+	int MaxRandMoveCount = 3;
+
 	void ChangeState(FlyState _StateValue);
 	void UpdateState(float _DeltaTime);
 

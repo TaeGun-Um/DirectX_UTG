@@ -258,15 +258,19 @@ void Ribby::IdleStart()
 }
 void Ribby::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsRoll)
+	{
+		ChangeState(RibbyState::Roll_Intro);
+		return;
+	}
+
 	if (true == IsIntro)
 	{
 		ChangeState(RibbyState::Intro);
 		return;
 	}
 
-	//IdleDelayTime += _DeltaTime;
-
-	if (IdleDelayTime >= 3.0f)
+	if (true == IsFistAttak)
 	{
 		ChangeState(RibbyState::FistAttack_Intro);
 		return;
@@ -279,7 +283,6 @@ void Ribby::IdleEnd()
 
 void Ribby::FistAttack_IntroStart()
 {
-	IsFistAttak = true;
 	RenderPtr->ChangeAnimation("Ribby_FistAttack_Intro");
 }
 void Ribby::FistAttack_IntroUpdate(float _DeltaTime)
@@ -391,11 +394,15 @@ void Ribby::FistAttack_EndEnd()
 
 void Ribby::Roll_IntroStart()
 {
-
+	RenderPtr->ChangeAnimation("Ribby_Roll_Intro");
 }
 void Ribby::Roll_IntroUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::Roll_Intro_Loop);
+		return;
+	}
 }
 void Ribby::Roll_IntroEnd()
 {
@@ -404,24 +411,34 @@ void Ribby::Roll_IntroEnd()
 
 void Ribby::Roll_Intro_LoopStart()
 {
-
+	RenderPtr->ChangeAnimation("Ribby_Roll_Intro_Loop");
 }
 void Ribby::Roll_Intro_LoopUpdate(float _DeltaTime)
 {
+	LoopInterDelayTime += _DeltaTime;
 
+	if (1.5f <= LoopInterDelayTime)
+	{
+		ChangeState(RibbyState::Roll_Intro_Out);
+		return;
+	}
 }
 void Ribby::Roll_Intro_LoopEnd()
 {
-
+	LoopInterDelayTime = 0.0f;
 }
 
 void Ribby::Roll_Intro_OutStart()
 {
-
+	RenderPtr->ChangeAnimation("Ribby_Roll_Intro_Out");
 }
 void Ribby::Roll_Intro_OutUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::Roll_Loop);
+		return;
+	}
 }
 void Ribby::Roll_Intro_OutEnd()
 {
@@ -430,10 +447,38 @@ void Ribby::Roll_Intro_OutEnd()
 
 void Ribby::Roll_LoopStart()
 {
+	RollStartPosition = GetTransform()->GetLocalPosition();
+	RollEndPosition = { (RollStartPosition.x - 900.0f) , RollStartPosition.y };
+
+	RenderPtr->ChangeAnimation("Ribby_Roll_Loop");
 }
 void Ribby::Roll_LoopUpdate(float _DeltaTime)
 {
+	RollMoveTime += _DeltaTime;
+	
+	if (1.0f < RollMoveTime)
+	{
+		float Movedist = RollSpeed_Three * _DeltaTime;
+		GetTransform()->AddLocalPosition({ -Movedist, 0 });
+	}
+	else if (1.0f >= RollMoveTime)
+	{
+		float Movedist = RollSpeed_Two * _DeltaTime;
+		GetTransform()->AddLocalPosition({ -Movedist, 0 });
+	}
+	else if (0.5f >= RollMoveTime)
+	{
+		float Movedist = RollSpeed_One * _DeltaTime;
+		GetTransform()->AddLocalPosition({ -Movedist, 0});
+	}
 
+	float4 CurPos = GetTransform()->GetLocalPosition();
+
+	if (RollEndPosition.x >= CurPos.x)
+	{
+		ChangeState(RibbyState::Roll_End);
+		return;
+	}
 }
 void Ribby::Roll_LoopEnd()
 {
@@ -442,15 +487,20 @@ void Ribby::Roll_LoopEnd()
 
 void Ribby::Roll_EndStart()
 {
-
+	Directbool = true;
+	RenderPtr->ChangeAnimation("Ribby_Roll_End");
 }
 void Ribby::Roll_EndUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(RibbyState::Idle);
+		return;
+	}
 }
 void Ribby::Roll_EndEnd()
 {
-	
+	IsRoll = false;
 }
 
 void Ribby::ClapAttack_IntroStart()

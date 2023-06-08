@@ -4,11 +4,13 @@ enum class CroakState
 {
 	Intro,
 	Idle,
+
 	CreateMob_Start,
 	CreateMob_Start_Loop,
 	CreateMob_Start_Out,
 	CreateMob,
 	CreateMob_End,
+
 	Fan_Intro,
 	Fan_Loop_A,
 	Fan_Loop_B,
@@ -106,6 +108,10 @@ private:
 	bool CreateLoop = false;
 	bool LoopCreateAction = false;
 	bool LoopCreateEnd = false;
+
+	int RibbyFistCount = 0;
+	int CroakCrateMobCount = 0;
+	int MaxPatternCount = 2;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);
