@@ -12,6 +12,7 @@
 
 #include "Ribby.h"
 #include "Croak_Firefly.h"
+#include "Slot_FrontDust.h"
 #include "CoinAttack_Projectile.h"
 
 Croak* Croak::CroakPtr = nullptr;
@@ -43,16 +44,18 @@ void Croak::Update(float _DeltaTime)
 	{
 		BodyCollisionRenderPtr->On();
 		EXCollisionRenderPtr->On();
-
+		
 		if (true == PlusEXCollisionPtr->IsUpdate())
 		{
 			PlusBodyCollisionRenderPtr->On();
 			PlusEXCollisionRenderPtr->On();
+			ParryCollisionRenderPtr->On();
 		}
 		else
 		{
 			PlusBodyCollisionRenderPtr->Off();
 			PlusEXCollisionRenderPtr->Off();
+			ParryCollisionRenderPtr->Off();
 		}
 	}
 	else
@@ -61,6 +64,7 @@ void Croak::Update(float _DeltaTime)
 		EXCollisionRenderPtr->Off();
 		PlusBodyCollisionRenderPtr->Off();
 		PlusEXCollisionRenderPtr->Off();
+		ParryCollisionRenderPtr->Off();
 	}
 
 	UpdateState(_DeltaTime);
@@ -72,6 +76,35 @@ void Croak::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Croak::CoinAttack(float _DeltaTime)
+{
+	if (true == IsRullet)
+	{
+		return;
+	}
+
+	CoinAttackTime += _DeltaTime;
+
+	if (1.2f <= CoinAttackTime && 3 > CreateCoinCount)
+	{
+		CoinAttackTime = 0.0f;
+		SlotMouthRenderPtr->On();
+	}
+
+	if (2.7f <= CoinAttackTime)
+	{
+		CreateCoinCount = 0;
+	}
+
+	if (5 == SlotMouthRenderPtr->GetCurrentFrame())
+	{
+		++CreateCoinCount;
+		CreateCoinProjectile();
+		SlotMouthRenderPtr->FindAnimation("Slot_CoinMouth")->CurFrame = 0;
+		SlotMouthRenderPtr->Off();
+	}
+}
 
 void Croak::SetInitReset()
 {
@@ -132,6 +165,11 @@ void Croak::HitBlink(float _DeltaTime)
 
 void Croak::CollisionCheck()
 {
+	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::SPHERE2D))
+	{
+		IsArmParry = true;
+	}
+
 	/////////////// Normal
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
 		&& HP > 0.0f)
@@ -336,6 +374,15 @@ void Croak::CreateFirefly()
 	}
 }
 
+void Croak::CreateFrontDust()
+{
+	std::shared_ptr<Slot_FrontDust> Dust = GetLevel()->CreateActor<Slot_FrontDust>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 DustPosition = StartPosition + float4{ 0, -250, 1 };
+
+	Dust->SetStartPosition(DustPosition);
+}
+
 void Croak::CreateCoinProjectile()
 {
 	std::shared_ptr<CoinAttack_Projectile> Projectile = GetLevel()->CreateActor<CoinAttack_Projectile>();
@@ -417,8 +464,13 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Intro_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Outro").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Idle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_InitialOpen").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_ArmMove_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_ArmMove_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_ArmMove_Outro").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Loop").GetFullPath());
 	}
@@ -457,6 +509,53 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Projectile").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Slot_CoinMouth"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Slot_Coin");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_CoinMouth").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Projectile").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Slot_Dust_Front"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Slot_Dust");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Dust_Front").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Slot_TEMP.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Slot_TEMP.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Slot_flash_TEMP.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Slot_ImageBack.png").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -482,6 +581,9 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Idle", .SpriteName = "Slot_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Death_Intro", .SpriteName = "Slot_Death_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Death_Loop", .SpriteName = "Slot_Death_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Intro", .SpriteName = "Slot_ArmMove_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Loop", .SpriteName = "Slot_ArmMove_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Outro", .SpriteName = "Slot_ArmMove_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}
@@ -575,5 +677,73 @@ void Croak::ActorInitSetting()
 		SlotMouthRenderPtr->ChangeAnimation("Slot_CoinMouth");
 		SlotMouthRenderPtr->GetTransform()->AddLocalPosition({ -5, 65 });
 		SlotMouthRenderPtr->Off();
+	}
+
+	// basic = 66, 301 // idle = 66, 200
+
+	if (nullptr == SlotImageRenderPtr0)
+	{
+		SlotImageRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
+		SlotImageRenderPtr0->SetScaleToTexture("Slot_TEMP.png");
+
+		SlotImageRollSclae0 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 200 });
+		SlotImageBasicSclae0 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+
+		SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ -65, -110, 1 });
+		SlotImageRenderPtr0->Off();
+	}
+
+	if (nullptr == SlotImageRenderPtr1)
+	{
+		SlotImageRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
+		SlotImageRenderPtr1->SetScaleToTexture("Slot_TEMP.png");
+
+		SlotImageRollSclae1 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 200 });
+		SlotImageBasicSclae1 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+
+		SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ -12, -110, 1 });
+		SlotImageRenderPtr1->Off();
+	}
+
+	if (nullptr == SlotImageRenderPtr2)
+	{
+		SlotImageRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
+		SlotImageRenderPtr2->SetScaleToTexture("Slot_TEMP.png");
+
+		SlotImageRollSclae2 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 200 });
+		SlotImageBasicSclae2 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+
+		SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 43, -110, 1 });
+		SlotImageRenderPtr2->Off();
+	}
+
+	if (nullptr == SlotImageBackRenderPtr)
+	{
+		SlotImageBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		SlotImageBackRenderPtr->SetTexture("Slot_ImageBack.png");
+		SlotImageBackRenderPtr->GetTransform()->SetLocalScale({ 200, 100 });
+		SlotImageBackRenderPtr->GetTransform()->AddLocalPosition({ 0, -20, 2 });
+		SlotImageBackRenderPtr->Off();
+	}
+
+	if (nullptr == ParryCollisionPtr)
+	{
+		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
+		ParryCollisionPtr->SetColType(ColType::SPHERE2D);
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 130, 130, 1 });
+		ParryCollisionPtr->GetTransform()->SetLocalPosition({ -350, -50 });
+		ParryCollisionPtr->Off();
+	}
+
+	if (nullptr == ParryCollisionRenderPtr)
+	{
+		ParryCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ParryCollisionRenderPtr->SetTexture("GreenLine.png");
+		ParryCollisionRenderPtr->GetTransform()->SetLocalScale(ParryCollisionPtr->GetTransform()->GetLocalScale());
+		ParryCollisionRenderPtr->GetTransform()->SetLocalPosition(ParryCollisionPtr->GetTransform()->GetLocalPosition());
+		ParryCollisionRenderPtr->Off();
 	}
 }

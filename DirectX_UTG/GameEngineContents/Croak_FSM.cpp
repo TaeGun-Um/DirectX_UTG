@@ -61,6 +61,15 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::Slot_InitialOpen:
 		Slot_InitialOpenStart();
 		break;
+	case CroakState::Slot_ArmMove_Intro:
+		Slot_ArmMove_IntroStart();
+		break;
+	case CroakState::Slot_ArmMove_Loop:
+		Slot_ArmMove_LoopStart();
+		break;
+	case CroakState::Slot_ArmMove_Outro:
+		Slot_ArmMove_OutroStart();
+		break;
 	case CroakState::Slot_Idle:
 		Slot_IdleStart();
 		break;
@@ -117,6 +126,15 @@ void Croak::ChangeState(CroakState _StateValue)
 		break;
 	case CroakState::Slot_InitialOpen:
 		Slot_InitialOpenEnd();
+		break;
+	case CroakState::Slot_ArmMove_Intro:
+		Slot_ArmMove_IntroEnd();
+		break;
+	case CroakState::Slot_ArmMove_Loop:
+		Slot_ArmMove_LoopEnd();
+		break;
+	case CroakState::Slot_ArmMove_Outro:
+		Slot_ArmMove_OutroEnd();
 		break;
 	case CroakState::Slot_Idle:
 		Slot_IdleEnd();
@@ -178,6 +196,15 @@ void Croak::UpdateState(float _DeltaTime)
 	case CroakState::Slot_InitialOpen:
 		Slot_InitialOpenUpdate(_DeltaTime);
 		break;
+	case CroakState::Slot_ArmMove_Intro:
+		Slot_ArmMove_IntroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_ArmMove_Loop:
+		Slot_ArmMove_LoopUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_ArmMove_Outro:
+		Slot_ArmMove_OutroUpdate(_DeltaTime);
+		break;
 	case CroakState::Slot_Idle:
 		Slot_IdleUpdate(_DeltaTime);
 		break;
@@ -205,7 +232,7 @@ void Croak::IntroEnd()
 {
 	IsIntro = false;
 }
-	 
+
 void Croak::IdleStart()
 {
 	PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
@@ -329,7 +356,7 @@ void Croak::IdleEnd()
 {
 	IdleDelayTime = 0.0f;
 }
-	 
+
 void Croak::CreateMob_StartStart()
 {
 	IsCreatefly = true;
@@ -347,7 +374,7 @@ void Croak::CreateMob_StartEnd()
 {
 
 }
-	 
+
 void Croak::CreateMob_Start_LoopStart()
 {
 	RenderPtr->ChangeAnimation("Croaks_CreateMob_Start_Loop");
@@ -391,11 +418,11 @@ void Croak::CreateMob_Start_OutEnd()
 
 }
 
-void Croak::CreateMobStart() 
+void Croak::CreateMobStart()
 {
 	RenderPtr->ChangeAnimation("Croaks_CreateMob");
 }
-void Croak::CreateMobUpdate(float _DeltaTime) 
+void Croak::CreateMobUpdate(float _DeltaTime)
 {
 	if (2 == RenderPtr->GetCurrentFrame() && false == CreateAction)
 	{
@@ -447,7 +474,7 @@ void Croak::CreateMobEnd()
 {
 	CreateAction = false;
 }
-	 
+
 void Croak::CreateMob_EndStart()
 {
 	CreateLoop = false;
@@ -467,7 +494,7 @@ void Croak::CreateMob_EndEnd()
 {
 	IsCreatefly = false;
 }
-	 
+
 void Croak::Fan_IntroStart()
 {
 	PlusBodyCollisionPtr->Off();
@@ -492,7 +519,7 @@ void Croak::Fan_IntroEnd()
 {
 
 }
-	 
+
 void Croak::Fan_Loop_AStart()
 {
 	RenderPtr->ChangeAnimation("Croaks_Fan_LoopA");
@@ -538,7 +565,7 @@ void Croak::Fan_Loop_AEnd()
 {
 	AFanLoopTime = 0.0f;
 }
-	 
+
 void Croak::Fan_Loop_BStart()
 {
 	RenderPtr->ChangeAnimation("Croaks_Fan_LoopB");
@@ -569,7 +596,7 @@ void Croak::Fan_Loop_BEnd()
 {
 	BFanLoopTime = 0.0f;
 }
-	 
+
 void Croak::Fan_EndStart()
 {
 	RenderPtr->ChangeAnimation("Croaks_Fan_Outro");
@@ -641,7 +668,7 @@ void Croak::Slot_Morph_OutroStart()
 {
 	SlotInvincibility = true;
 
-	GetTransform()->AddLocalPosition({-240, 0});
+	GetTransform()->AddLocalPosition({ -240, 0 });
 
 	BodyCollisionPtr->Off();
 	EXCollisionPtr->Off();
@@ -655,7 +682,17 @@ void Croak::Slot_Morph_OutroUpdate(float _DeltaTime)
 		SlotPositionFix = 0;
 		GetTransform()->AddLocalPosition({ 180, -30 });
 	}
-	
+
+	if (20 == RenderPtr->GetCurrentFrame() && 0 == SlotPositionFix)
+	{
+		SlotPositionFix = -1;
+		CreateFrontDust();
+		SlotImageBackRenderPtr->On();
+		SlotImageRenderPtr0->On();
+		SlotImageRenderPtr1->On();
+		SlotImageRenderPtr2->On();
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		MorphDealyTime += _DeltaTime;
@@ -700,28 +737,86 @@ void Croak::Slot_InitialOpenEnd()
 
 void Croak::Slot_IdleStart()
 {
-	SlotInvincibility = true;
-
+	if (false == IsRullet)
+	{
+		SlotInvincibility = true;
+	}
+	
 	RenderPtr->ChangeAnimation("Slot_Idle");
 }
 void Croak::Slot_IdleUpdate(float _DeltaTime)
 {
-	CoinAttackTime += _DeltaTime;
-
-	if (2.0f <= CoinAttackTime)
+	if (false == IsRullet)
 	{
-		CoinAttackTime = 0.0f;
-		SlotMouthRenderPtr->On();
-	}
+		CoinAttack(_DeltaTime);
 
-	if (5 == SlotMouthRenderPtr->GetCurrentFrame())
-	{
-		CreateCoinProjectile();
-		SlotMouthRenderPtr->FindAnimation("Slot_CoinMouth")->CurFrame = 0;
-		SlotMouthRenderPtr->Off();
+		if (3 == CreateCoinCount)
+		{
+			ChangeState(CroakState::Slot_ArmMove_Intro);
+			return;
+		}
 	}
 }
 void Croak::Slot_IdleEnd()
+{
+	CoinAttackTime = 0.0f;
+}
+
+void Croak::Slot_ArmMove_IntroStart()
+{
+	RenderPtr->ChangeAnimation("Slot_ArmMove_Intro");
+}
+void Croak::Slot_ArmMove_IntroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_ArmMove_Loop);
+		return;
+	}
+}
+void Croak::Slot_ArmMove_IntroEnd()
+{
+
+}
+
+void Croak::Slot_ArmMove_LoopStart()
+{
+	ParryCollisionPtr->On();
+	RenderPtr->ChangeAnimation("Slot_ArmMove_Loop");
+}
+void Croak::Slot_ArmMove_LoopUpdate(float _DeltaTime)
+{
+	CoinAttack(_DeltaTime);
+
+	if (true == IsArmParry)
+	{
+		IsArmParry = false;
+		IsRullet = true;
+		ChangeState(CroakState::Slot_ArmMove_Outro);
+		return;
+	}
+}
+void Croak::Slot_ArmMove_LoopEnd()
+{
+	SlotMouthRenderPtr->Off();
+	CreateCoinCount = 0;
+	CoinAttackTime = 0.0f;
+}
+
+void Croak::Slot_ArmMove_OutroStart()
+{
+	SlotInvincibility = false;
+	RenderPtr->ChangeAnimation("Slot_ArmMove_Outro");
+}
+void Croak::Slot_ArmMove_OutroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_Idle);
+		return;
+	}
+}
+void Croak::Slot_ArmMove_OutroEnd()
 {
 
 }

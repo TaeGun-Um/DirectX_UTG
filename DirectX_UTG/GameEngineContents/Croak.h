@@ -21,8 +21,11 @@ enum class CroakState
 	Slot_Morph_Outro,
 
 	Slot_InitialOpen,
-
 	Slot_Idle,
+	Slot_ArmMove_Intro,
+	Slot_ArmMove_Loop,
+	Slot_ArmMove_Outro,
+
 	Slot_Death,
 };
 
@@ -76,6 +79,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> WindRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> SlotMouthRenderPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageBackRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageRenderPtr0 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageRenderPtr1 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageRenderPtr2 = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PlusBodyCollisionRenderPtr = nullptr;
@@ -85,6 +93,9 @@ private:
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlusBodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlusEXCollisionPtr = nullptr;
+
+	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 	
 	float MoveAbleTime = 0.0f;
 	float HP = 1000;
@@ -93,11 +104,13 @@ private:
 	bool IsDebugRender = false;
 	bool IsBlink = false;
 
+	void CoinAttack(float _DeltaTime);
 	void ActorInitSetting();
 	void CollisionSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
 	void CreateFirefly();
+	void CreateFrontDust();
 	void CreateCoinProjectile();
 	void CreatePlatform_Bison();
 	void CreatePlatform_Snake();
@@ -109,6 +122,14 @@ private:
 	int BlinkCount = 1;
 
 	CroakState StateValue = CroakState::Intro;
+
+	float4 SlotImageRollSclae0 = float4::Zero;
+	float4 SlotImageRollSclae1 = float4::Zero;
+	float4 SlotImageRollSclae2 = float4::Zero;
+
+	float4 SlotImageBasicSclae0 = float4::Zero;
+	float4 SlotImageBasicSclae1 = float4::Zero;
+	float4 SlotImageBasicSclae2 = float4::Zero;
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;
@@ -130,6 +151,8 @@ private:
 	bool LoopCreateEnd = false;
 	bool IsMorph = false;
 	bool SlotInvincibility = false;
+	bool IsRullet = false;
+	bool IsArmParry = false;
 
 	int RibbyFistCount = 0;
 	int CroakCrateMobCount = 0;
@@ -199,6 +222,18 @@ private:
 	void Slot_InitialOpenStart();
 	void Slot_InitialOpenUpdate(float _DeltaTime);
 	void Slot_InitialOpenEnd();
+
+	void Slot_ArmMove_IntroStart();
+	void Slot_ArmMove_IntroUpdate(float _DeltaTime);
+	void Slot_ArmMove_IntroEnd();
+
+	void Slot_ArmMove_LoopStart();
+	void Slot_ArmMove_LoopUpdate(float _DeltaTime);
+	void Slot_ArmMove_LoopEnd();
+
+	void Slot_ArmMove_OutroStart();
+	void Slot_ArmMove_OutroUpdate(float _DeltaTime);
+	void Slot_ArmMove_OutroEnd();
 
 	void Slot_IdleStart();
 	void Slot_IdleUpdate(float _DeltaTime);

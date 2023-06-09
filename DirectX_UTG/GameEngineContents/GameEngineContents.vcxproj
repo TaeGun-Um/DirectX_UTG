@@ -408,6 +408,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Slot_FrontDust.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Spread.h">
       <SubType>
       </SubType>
@@ -735,6 +739,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Second_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Slot_FrontDust.cpp">
       <SubType>
       </SubType>
     </ClCompile>
