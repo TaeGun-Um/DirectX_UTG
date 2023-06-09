@@ -198,7 +198,7 @@ void Croak::HitBlink(float _DeltaTime)
 		BlinkMulColor.g = 0.2f;
 		BlinkMulColor.b = 0.35f;
 		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
-		SlotFrontRenderPtr->ColorOptionValue.MulColor = BlinkMulColor;
+		SlotFrontRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
 	}
 
 	if (BlinkTime >= 0.1f)
