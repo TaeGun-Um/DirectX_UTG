@@ -91,7 +91,7 @@ void Croak::SetInitReset()
 	MoveAbleTime = 0.0f;
 	StateValue = CroakState::Idle;
 	ChangeState(CroakState::Idle);
-	HP = 10;
+	HP = 1000;
 
 	IntroLoopTime = 0.0f;
 	IdleDelayTime = 0.0f;
@@ -193,10 +193,12 @@ void Croak::HitBlink(float _DeltaTime)
 	{
 		BlinkCount = 0;
 
-		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
-		BlinkMulColor = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
-		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+		OriginMulColor = RenderPtr->ColorOptionValue.MulColor;
+		BlinkMulColor.r = 0.2f;
+		BlinkMulColor.g = 0.2f;
+		BlinkMulColor.b = 0.35f;
+		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		SlotFrontRenderPtr->ColorOptionValue.MulColor = BlinkMulColor;
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -205,8 +207,8 @@ void Croak::HitBlink(float _DeltaTime)
 		BlinkTime = 0.0f;
 		IsBlink = false;
 
-		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
-		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		SlotFrontRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 	}
 }
 
@@ -847,3 +849,34 @@ void Croak::ActorInitSetting()
 		SlotFrontRenderPtr->Off();
 	}
 }
+
+// 투명 블링크 // mulcolor 자료형 float
+//void Croak::HitBlink(float _DeltaTime)
+//{
+//	if (false == IsBlink)
+//	{
+//		return;
+//	}
+//
+//	BlinkTime += _DeltaTime;
+//
+//	if (BlinkCount == 1)
+//	{
+//		BlinkCount = 0;
+//
+//		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
+//		BlinkMulColor = 0.8f;
+//		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+//		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+//	}
+//
+//	if (BlinkTime >= 0.1f)
+//	{
+//		BlinkCount = 1;
+//		BlinkTime = 0.0f;
+//		IsBlink = false;
+//
+//		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+//		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+//	}
+//}

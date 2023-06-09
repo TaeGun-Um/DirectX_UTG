@@ -89,9 +89,9 @@ private:
 	void CreateBallProjectile();
 	void CreateFistSFX(float4 _Position);
 
+	float4 OriginMulColor = float4::Zero;
+	float4 BlinkMulColor = float4::Zero;
 	float BlinkTime = 0.0f;
-	float OriginMulColor = 0.0f;
-	float BlinkMulColor = 0.0f;
 	int BlinkCount = 1;
 
 	RibbyState StateValue = RibbyState::Intro;

@@ -123,9 +123,10 @@ private:
 	void CreatePlatform_Tiger();
 	void CreateDeathExplosion(float _DeltaTime);
 
+	float4 OriginMulColor = float4::Zero;
+	float4 BlinkMulColor = float4::Zero;
 	float BlinkTime = 0.0f;
-	float OriginMulColor = 0.0f;
-	float BlinkMulColor = 0.0f;
+
 	int BlinkCount = 1;
 
 	CroakState StateValue = CroakState::Intro;

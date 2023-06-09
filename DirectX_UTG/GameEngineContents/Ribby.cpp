@@ -85,9 +85,11 @@ void Ribby::HitBlink(float _DeltaTime)
 	{
 		BlinkCount = 0;
 
-		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
-		BlinkMulColor = 0.8f;
-		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+		OriginMulColor = RenderPtr->ColorOptionValue.MulColor;
+		BlinkMulColor.r = 0.2f;
+		BlinkMulColor.g = 0.2f;
+		BlinkMulColor.b = 0.35f;
+		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -96,7 +98,7 @@ void Ribby::HitBlink(float _DeltaTime)
 		BlinkTime = 0.0f;
 		IsBlink = false;
 
-		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 	}
 }
 

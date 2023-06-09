@@ -317,15 +317,15 @@ void Croak::IdleUpdate(float _DeltaTime)
 	}
 
 	// 지울것 // 룰렛 테스트
-	IdleDelayTime += _DeltaTime;
-	Ribby::RibbyPtr->Off();
+	//IdleDelayTime += _DeltaTime;
+	//Ribby::RibbyPtr->Off();
 
-	if (IdleDelayTime >= 1.f)
-	{
-		CreateCoinCount = 3;
-		ChangeState(CroakState::Slot_Morph_Outro);
-		return;
-	}
+	//if (IdleDelayTime >= 1.f)
+	//{
+	//	CreateCoinCount = 3;
+	//	ChangeState(CroakState::Slot_Morph_Outro);
+	//	return;
+	//}
 	//
 
 	// 합체 테스트
