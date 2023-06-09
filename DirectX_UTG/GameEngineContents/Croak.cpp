@@ -80,6 +80,7 @@ void Croak::SetInitReset()
 	IsStageEnd = false;
 	IsIntro = true;
 	HP = 1000;
+	SlotPositionFix = 1;
 }
 
 void Croak::CollisionSetting()

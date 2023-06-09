@@ -238,15 +238,23 @@ void Croak::IdleUpdate(float _DeltaTime)
 
 	// 지울것
 	IdleDelayTime += _DeltaTime;
+	Ribby::RibbyPtr->Off();
 
-	if (IdleDelayTime >= 0.25f && 1 == RollPatter)
+	if (IdleDelayTime >= 1.f)
 	{
-		ChangeState(CroakState::Slot_Morph_Intro);
-		++RollPatter;
-		IdleDelayTime = 0.0f;
-		Ribby::RibbyPtr->IsRoll = true;
+		ChangeState(CroakState::Slot_Morph_Outro);
 		return;
 	}
+	//
+
+	//if (IdleDelayTime >= 0.25f && 1 == RollPatter)
+	//{
+	//	ChangeState(CroakState::Slot_Morph_Intro);
+	//	++RollPatter;
+	//	IdleDelayTime = 0.0f;
+	//	Ribby::RibbyPtr->IsRoll = true;
+	//	return;
+	//}
 	// 지울것
 
 	//if (400.0f >= HP)
