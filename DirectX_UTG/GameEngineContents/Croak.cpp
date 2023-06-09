@@ -49,12 +49,19 @@ void Croak::Update(float _DeltaTime)
 		{
 			PlusBodyCollisionRenderPtr->On();
 			PlusEXCollisionRenderPtr->On();
-			ParryCollisionRenderPtr->On();
 		}
 		else
 		{
 			PlusBodyCollisionRenderPtr->Off();
 			PlusEXCollisionRenderPtr->Off();
+		}
+
+		if (true == ParryCollisionPtr->IsUpdate())
+		{
+			ParryCollisionRenderPtr->On();
+		}
+		else
+		{
 			ParryCollisionRenderPtr->Off();
 		}
 	}
@@ -76,6 +83,56 @@ void Croak::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Croak::SetInitReset()
+{
+	MoveAbleTime = 0.0f;
+	StateValue = CroakState::Idle;
+	ChangeState(CroakState::Idle);
+	HP = 1000;
+
+	IntroLoopTime = 0.0f;
+	IdleDelayTime = 0.0f;
+	CreateMob_LoopTime = 0.0f;
+	AFanLoopTime = 0.0f;
+	BFanLoopTime = 0.0f;
+	MorphDealyTime = 0.0f;
+	CoinAttackTime = 0.0f;
+
+	RulletTime = 0.0f; // 임시
+	RulletLoopTime = 0.0f; // 임시
+
+	IsIntro = true;
+	IsCreatefly = false;
+	CreateAction = false;
+	CreateLoop = false;
+	LoopCreateAction = false;
+	LoopCreateEnd = false;
+	IsMorph = false;
+	SlotInvincibility = false;
+	IsRullet = false;
+	IsArmParry = false;
+
+	CreatePlus = 0;
+	CreateMobCount = 0;
+	CreateCoinCount = 0;
+	RibbyFistCount = 0;
+	CroakCrateMobCount = 0;
+	MaxPatternCount = 2;
+	RollPatter = 0;
+	SlotPositionFix = 1;
+
+	WindRenderPtr->Off();
+	SlotMouthRenderPtr->Off();
+	SlotFrontRenderPtr->Off();
+
+	SlotImageBackRenderPtr->Off();
+	SlotImageRenderPtr0->Off();
+	SlotImageRenderPtr1->Off();
+	SlotImageRenderPtr2->Off();
+
+	ParryCollisionPtr->Off();
+}
 
 void Croak::CoinAttack(float _DeltaTime)
 {
@@ -104,16 +161,6 @@ void Croak::CoinAttack(float _DeltaTime)
 		SlotMouthRenderPtr->FindAnimation("Slot_CoinMouth")->CurFrame = 0;
 		SlotMouthRenderPtr->Off();
 	}
-}
-
-void Croak::SetInitReset()
-{
-	MoveAbleTime = 0.0f;
-	StateValue = CroakState::Idle;
-	IsStageEnd = false;
-	IsIntro = true;
-	HP = 1000;
-	SlotPositionFix = 1;
 }
 
 void Croak::CollisionSetting()
@@ -147,6 +194,7 @@ void Croak::HitBlink(float _DeltaTime)
 		OriginMulColor = RenderPtr->ColorOptionValue.MulColor.a;
 		BlinkMulColor = 0.8f;
 		RenderPtr->ColorOptionValue.MulColor.a = BlinkMulColor;
+		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -156,6 +204,7 @@ void Croak::HitBlink(float _DeltaTime)
 		IsBlink = false;
 
 		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		SlotFrontRenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
 	}
 }
 
@@ -167,7 +216,12 @@ void Croak::CollisionCheck()
 {
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::SPHERE2D))
 	{
+		ParryCollisionPtr->Off();
 		IsArmParry = true;
+	}
+	else
+	{
+		IsArmParry = false;
 	}
 
 	/////////////// Normal
@@ -471,11 +525,15 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_ArmMove_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_ArmMove_Outro").GetFullPath());
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Attack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Attack_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Attack_Outro").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Loop").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Slot_Morph_Intro"))
+	if (nullptr == GameEngineSprite::Find("Firefly_Death"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -491,22 +549,6 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Idle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Left").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Up").GetFullPath());
-	}
-
-	if (nullptr == GameEngineSprite::Find("Slot_CoinMouth"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("1_Ribby_and_Croaks");
-		NewDir.Move("Croaks");
-		NewDir.Move("Croaks_SlotMachine");
-		NewDir.Move("Slot_Coin");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_CoinMouth").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Projectile").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Slot_CoinMouth"))
@@ -556,6 +598,26 @@ void Croak::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Slot_ImageBack.png").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("SlotMachine_Attack_Front_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Attack_Front");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_006.png").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -584,6 +646,9 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Intro", .SpriteName = "Slot_ArmMove_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Loop", .SpriteName = "Slot_ArmMove_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_ArmMove_Outro", .SpriteName = "Slot_ArmMove_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Attack_Intro", .SpriteName = "Slot_Attack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Attack_Loop", .SpriteName = "Slot_Attack_Loop", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Attack_Outro", .SpriteName = "Slot_Attack_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}
@@ -745,5 +810,13 @@ void Croak::ActorInitSetting()
 		ParryCollisionRenderPtr->GetTransform()->SetLocalScale(ParryCollisionPtr->GetTransform()->GetLocalScale());
 		ParryCollisionRenderPtr->GetTransform()->SetLocalPosition(ParryCollisionPtr->GetTransform()->GetLocalPosition());
 		ParryCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == SlotFrontRenderPtr)
+	{
+		SlotFrontRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_001.png");
+		SlotFrontRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -2 });
+		SlotFrontRenderPtr->Off();
 	}
 }

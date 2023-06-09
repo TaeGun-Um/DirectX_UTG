@@ -51,7 +51,7 @@ void FrogLevel::Update(float _DeltaTime)
 {
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
-	if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
+	if (true == CroakObject->GetIsStageEnd() && 1 == EndSetCount)
 	{
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
@@ -67,7 +67,7 @@ void FrogLevel::Update(float _DeltaTime)
 		{
 			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
-			if (EndTime >= 3.0f && 1 == EndSetCount2)
+			if (EndTime >= 4.5f && 1 == EndSetCount2)
 			{
 				EndSetCount2 = 0;
 				BlackBoxPtr->BoxSettingReset();
@@ -357,13 +357,6 @@ void FrogLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("Plant_2.png");
 		GameEngineTexture::UnLoad("Plant_3.png");
 	}
-	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-	{
-		GameEngineSprite::UnLoad("Ribby_Intro");
-		GameEngineSprite::UnLoad("Ribby_Intro_Loop");
-		GameEngineSprite::UnLoad("Ribby_Intro_End");
-		GameEngineSprite::UnLoad("Ribby_Idle");
-	}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
@@ -413,6 +406,115 @@ void FrogLevel::LevelChangeEnd()
 	{
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
+	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
+	{
+		GameEngineSprite::UnLoad("Ribby_Intro");
+		GameEngineSprite::UnLoad("Ribby_Intro_Loop");
+		GameEngineSprite::UnLoad("Ribby_Intro_End");
+		GameEngineSprite::UnLoad("Ribby_Idle");
+
+		GameEngineSprite::UnLoad("Ribby_FistAttack_Intro");
+		GameEngineSprite::UnLoad("Ribby_FistAttack_Intro_Loop");
+		GameEngineSprite::UnLoad("Ribby_FistAttack_Intro_out");
+		GameEngineSprite::UnLoad("Ribby_FistAttack_Loop");
+		GameEngineSprite::UnLoad("Ribby_FistAttack_End");
+
+		GameEngineSprite::UnLoad("Ribby_Roll_Intro");
+		GameEngineSprite::UnLoad("Ribby_Roll_Intro_Loop");
+		GameEngineSprite::UnLoad("Ribby_Roll_Intro_Out");
+		GameEngineSprite::UnLoad("Ribby_Roll_Loop");
+		GameEngineSprite::UnLoad("Ribby_Roll_End");
+
+		GameEngineSprite::UnLoad("Ribby_ClapAttack_Intro");
+		GameEngineSprite::UnLoad("Ribby_ClapAttack");
+		GameEngineSprite::UnLoad("Ribby_ClapAttack_Loop");
+		GameEngineSprite::UnLoad("Ribby_ClapAttack_LoopBack");
+		GameEngineSprite::UnLoad("Ribby_ClapAttack_End");
+	}
+	if (nullptr != GameEngineSprite::Find("Normal_Loop"))
+	{
+		GameEngineSprite::UnLoad("Normal_Loop");
+		GameEngineSprite::UnLoad("Normal_Spawn");
+		GameEngineSprite::UnLoad("Pink_Loop");
+		GameEngineSprite::UnLoad("Pink_Spawn");
+		GameEngineSprite::UnLoad("Spark");
+		GameEngineSprite::UnLoad("Death_FX");
+	}
+	if (nullptr != GameEngineSprite::Find("Clap_Ball"))
+	{
+		GameEngineSprite::UnLoad("Clap_Ball");
+		GameEngineSprite::UnLoad("Clap_FX");
+	}
+	if (nullptr != GameEngineSprite::Find("Croaks_Intro"))
+	{
+		GameEngineSprite::UnLoad("Croaks_Intro");
+		GameEngineSprite::UnLoad("Croaks_Idle");
+
+		GameEngineSprite::UnLoad("Croaks_CreateMob_Start");
+		GameEngineSprite::UnLoad("Croaks_CreateMob_Start_Loop");
+		GameEngineSprite::UnLoad("Croaks_CreateMob_Start_Out");
+		GameEngineSprite::UnLoad("Croaks_CreateMob");
+		GameEngineSprite::UnLoad("Croaks_CreateMob_End");
+
+		GameEngineSprite::UnLoad("Croaks_Fan_Intro");
+		GameEngineSprite::UnLoad("Croaks_Fan_LoopA");
+		GameEngineSprite::UnLoad("Croaks_Fan_LoopB");
+		GameEngineSprite::UnLoad("Croaks_Fan_Outro");
+
+		GameEngineSprite::UnLoad("Croaks_Fan_Wind_Intro");
+		GameEngineSprite::UnLoad("Croaks_Fan_Wind_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_Idle"))
+	{
+		GameEngineSprite::UnLoad("Slot_Morph_Intro");
+		GameEngineSprite::UnLoad("Slot_Morph_Intro_Loop");
+		GameEngineSprite::UnLoad("Slot_Morph_Outro");
+
+		GameEngineSprite::UnLoad("Slot_Idle");
+		GameEngineSprite::UnLoad("Slot_InitialOpen");
+		GameEngineSprite::UnLoad("Slot_ArmMove_Intro");
+		GameEngineSprite::UnLoad("Slot_ArmMove_Loop");
+		GameEngineSprite::UnLoad("Slot_ArmMove_Outro");
+
+		GameEngineSprite::UnLoad("Slot_Attack_Intro");
+		GameEngineSprite::UnLoad("Slot_Attack_Loop");
+		GameEngineSprite::UnLoad("Slot_Attack_Outro");
+
+		GameEngineSprite::UnLoad("Slot_Death_Intro");
+		GameEngineSprite::UnLoad("Slot_Death_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Firefly_Death"))
+	{
+		GameEngineSprite::UnLoad("Firefly_Death");
+		GameEngineSprite::UnLoad("Firefly_Down");
+		GameEngineSprite::UnLoad("Firefly_Idle");
+		GameEngineSprite::UnLoad("Firefly_Left");
+		GameEngineSprite::UnLoad("Firefly_Up");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_CoinMouth"))
+	{
+		GameEngineSprite::UnLoad("Slot_CoinMouth");
+		GameEngineSprite::UnLoad("Coin_Projectile");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_Dust_Front"))
+	{
+		GameEngineSprite::UnLoad("Slot_Dust_Front");
+	}
+	if (nullptr != GameEngineTexture::Find("Slot_TEMP.png"))
+	{
+		GameEngineTexture::UnLoad("Slot_TEMP.png");
+		GameEngineTexture::UnLoad("Slot_flash_TEMP.png");
+		GameEngineTexture::UnLoad("Slot_ImageBack.png");
+	}
+	if (nullptr != GameEngineTexture::Find("SlotMachine_Attack_Front_001.png"))
+	{
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_001.png");
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_002.png");
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_003.png");
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_004.png");
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_005.png");
+		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_006.png");
+	}
 
 	{
 		ReadyWallopCount = 1;
@@ -453,13 +555,6 @@ void FrogLevel::ReLoadSetting()
 		GameEngineTexture::ReLoad("Plant_1.png");
 		GameEngineTexture::ReLoad("Plant_2.png");
 		GameEngineTexture::ReLoad("Plant_3.png");
-	}
-	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-	{
-		GameEngineSprite::ReLoad("Ribby_Intro");
-		GameEngineSprite::ReLoad("Ribby_Intro_Loop");
-		GameEngineSprite::ReLoad("Ribby_Intro_End");
-		GameEngineSprite::ReLoad("Ribby_Idle");
 	}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
@@ -509,6 +604,115 @@ void FrogLevel::ReLoadSetting()
 	if (nullptr != GameEngineSprite::Find("Ready_WALLOP"))
 	{
 		GameEngineSprite::ReLoad("Ready_WALLOP");
+	}
+	if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
+	{
+		GameEngineSprite::ReLoad("Ribby_Intro");
+		GameEngineSprite::ReLoad("Ribby_Intro_Loop");
+		GameEngineSprite::ReLoad("Ribby_Intro_End");
+		GameEngineSprite::ReLoad("Ribby_Idle");
+
+		GameEngineSprite::ReLoad("Ribby_FistAttack_Intro");
+		GameEngineSprite::ReLoad("Ribby_FistAttack_Intro_Loop");
+		GameEngineSprite::ReLoad("Ribby_FistAttack_Intro_out");
+		GameEngineSprite::ReLoad("Ribby_FistAttack_Loop");
+		GameEngineSprite::ReLoad("Ribby_FistAttack_End");
+
+		GameEngineSprite::ReLoad("Ribby_Roll_Intro");
+		GameEngineSprite::ReLoad("Ribby_Roll_Intro_Loop");
+		GameEngineSprite::ReLoad("Ribby_Roll_Intro_Out");
+		GameEngineSprite::ReLoad("Ribby_Roll_Loop");
+		GameEngineSprite::ReLoad("Ribby_Roll_End");
+
+		GameEngineSprite::ReLoad("Ribby_ClapAttack_Intro");
+		GameEngineSprite::ReLoad("Ribby_ClapAttack");
+		GameEngineSprite::ReLoad("Ribby_ClapAttack_Loop");
+		GameEngineSprite::ReLoad("Ribby_ClapAttack_LoopBack");
+		GameEngineSprite::ReLoad("Ribby_ClapAttack_End");
+	}
+	if (nullptr != GameEngineSprite::Find("Normal_Loop"))
+	{
+		GameEngineSprite::ReLoad("Normal_Loop");
+		GameEngineSprite::ReLoad("Normal_Spawn");
+		GameEngineSprite::ReLoad("Pink_Loop");
+		GameEngineSprite::ReLoad("Pink_Spawn");
+		GameEngineSprite::ReLoad("Spark");
+		GameEngineSprite::ReLoad("Death_FX");
+	}
+	if (nullptr != GameEngineSprite::Find("Clap_Ball"))
+	{
+		GameEngineSprite::ReLoad("Clap_Ball");
+		GameEngineSprite::ReLoad("Clap_FX");
+	}
+	if (nullptr != GameEngineSprite::Find("Croaks_Intro"))
+	{
+		GameEngineSprite::ReLoad("Croaks_Intro");
+		GameEngineSprite::ReLoad("Croaks_Idle");
+
+		GameEngineSprite::ReLoad("Croaks_CreateMob_Start");
+		GameEngineSprite::ReLoad("Croaks_CreateMob_Start_Loop");
+		GameEngineSprite::ReLoad("Croaks_CreateMob_Start_Out");
+		GameEngineSprite::ReLoad("Croaks_CreateMob");
+		GameEngineSprite::ReLoad("Croaks_CreateMob_End");
+
+		GameEngineSprite::ReLoad("Croaks_Fan_Intro");
+		GameEngineSprite::ReLoad("Croaks_Fan_LoopA");
+		GameEngineSprite::ReLoad("Croaks_Fan_LoopB");
+		GameEngineSprite::ReLoad("Croaks_Fan_Outro");
+
+		GameEngineSprite::ReLoad("Croaks_Fan_Wind_Intro");
+		GameEngineSprite::ReLoad("Croaks_Fan_Wind_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_Idle"))
+	{
+		GameEngineSprite::ReLoad("Slot_Morph_Intro");
+		GameEngineSprite::ReLoad("Slot_Morph_Intro_Loop");
+		GameEngineSprite::ReLoad("Slot_Morph_Outro");
+
+		GameEngineSprite::ReLoad("Slot_Idle");
+		GameEngineSprite::ReLoad("Slot_InitialOpen");
+		GameEngineSprite::ReLoad("Slot_ArmMove_Intro");
+		GameEngineSprite::ReLoad("Slot_ArmMove_Loop");
+		GameEngineSprite::ReLoad("Slot_ArmMove_Outro");
+
+		GameEngineSprite::ReLoad("Slot_Attack_Intro");
+		GameEngineSprite::ReLoad("Slot_Attack_Loop");
+		GameEngineSprite::ReLoad("Slot_Attack_Outro");
+
+		GameEngineSprite::ReLoad("Slot_Death_Intro");
+		GameEngineSprite::ReLoad("Slot_Death_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Firefly_Death"))
+	{
+		GameEngineSprite::ReLoad("Firefly_Death");
+		GameEngineSprite::ReLoad("Firefly_Down");
+		GameEngineSprite::ReLoad("Firefly_Idle");
+		GameEngineSprite::ReLoad("Firefly_Left");
+		GameEngineSprite::ReLoad("Firefly_Up");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_CoinMouth"))
+	{
+		GameEngineSprite::ReLoad("Slot_CoinMouth");
+		GameEngineSprite::ReLoad("Coin_Projectile");
+	}
+	if (nullptr != GameEngineSprite::Find("Slot_Dust_Front"))
+	{
+		GameEngineSprite::ReLoad("Slot_Dust_Front");
+	}
+	if (nullptr != GameEngineTexture::Find("Slot_TEMP.png"))
+	{
+		GameEngineTexture::ReLoad("Slot_TEMP.png");
+		GameEngineTexture::ReLoad("Slot_flash_TEMP.png");
+		GameEngineTexture::ReLoad("Slot_ImageBack.png");
+	}
+	if (nullptr != GameEngineTexture::Find("SlotMachine_Attack_Front_001.png"))
+	{
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_001.png");
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_002.png");
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_003.png");
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_004.png");
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_005.png");
+		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_006.png");
 	}
 }
 

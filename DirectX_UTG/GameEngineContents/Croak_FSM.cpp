@@ -73,7 +73,19 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::Slot_Idle:
 		Slot_IdleStart();
 		break;
-	case CroakState::Slot_Death:
+	case CroakState::Slot_Attack_Intro:
+		Slot_Attack_IntroStart();
+		break;
+	case CroakState::Slot_Attack_Loop:
+		Slot_Attack_LoopStart();
+		break;
+	case CroakState::Slot_Attack_Outro:
+		Slot_Attack_OutroStart();
+		break;
+	case CroakState::Slot_Death_Intro:
+		Slot_Death_IntroStart();
+		break;
+	case CroakState::Slot_Death_Loop:
 		Slot_DeathStart();
 		break;
 	default:
@@ -139,7 +151,19 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::Slot_Idle:
 		Slot_IdleEnd();
 		break;
-	case CroakState::Slot_Death:
+	case CroakState::Slot_Attack_Intro:
+		Slot_Attack_IntroEnd();
+		break;
+	case CroakState::Slot_Attack_Loop:
+		Slot_Attack_LoopEnd();
+		break;
+	case CroakState::Slot_Attack_Outro:
+		Slot_Attack_OutroEnd();
+		break;
+	case CroakState::Slot_Death_Intro:
+		Slot_Death_IntroEnd();
+		break;
+	case CroakState::Slot_Death_Loop:
 		Slot_DeathEnd();
 		break;
 	default:
@@ -208,7 +232,19 @@ void Croak::UpdateState(float _DeltaTime)
 	case CroakState::Slot_Idle:
 		Slot_IdleUpdate(_DeltaTime);
 		break;
-	case CroakState::Slot_Death:
+	case CroakState::Slot_Attack_Intro:
+		Slot_Attack_IntroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Attack_Loop:
+		Slot_Attack_LoopUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Attack_Outro:
+		Slot_Attack_OutroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Death_Intro:
+		Slot_Death_IntroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Death_Loop:
 		Slot_DeathUpdate(_DeltaTime);
 		break;
 	default:
@@ -218,6 +254,21 @@ void Croak::UpdateState(float _DeltaTime)
 
 void Croak::IntroStart()
 {
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 480, 1 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ 20, -80 });
+
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 480, 1 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 20, -80 });
+
+	PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+	PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+
+	PlusEXCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
+	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+
+	PlusEXCollisionPtr->On();
+	PlusBodyCollisionPtr->On();
+
 	RenderPtr->ChangeAnimation("Croaks_Intro");
 }
 void Croak::IntroUpdate(float _DeltaTime)
@@ -244,16 +295,18 @@ void Croak::IdleStart()
 	RenderPtr->ChangeAnimation("Croaks_Idle");
 
 	// 지울것
-	float4 CurPos = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
+	//float4 CurPos = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
 
-	Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ CurPos.x - 860.0f, CurPos.y });
+	//Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ CurPos.x - 860.0f, CurPos.y });
 
-	Ribby::RibbyPtr->Directbool = true;
-	Ribby::RibbyPtr->BodyCollisionPtr->Off();
-	Ribby::RibbyPtr->EXCollisionPtr->Off();
+	//Ribby::RibbyPtr->Directbool = true;
+	//Ribby::RibbyPtr->BodyCollisionPtr->Off();
+	//Ribby::RibbyPtr->EXCollisionPtr->Off();
 
-	RollPatter = 1;
+	//RollPatter = 1;
 	//
+
+	
 }
 void Croak::IdleUpdate(float _DeltaTime)
 {
@@ -263,17 +316,19 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 지울것
-	IdleDelayTime += _DeltaTime;
-	Ribby::RibbyPtr->Off();
+	// 지울것 // 룰렛 테스트
+	//IdleDelayTime += _DeltaTime;
+	//Ribby::RibbyPtr->Off();
 
-	if (IdleDelayTime >= 1.f)
-	{
-		ChangeState(CroakState::Slot_Morph_Outro);
-		return;
-	}
+	//if (IdleDelayTime >= 1.f)
+	//{
+	//	CreateCoinCount = 3;
+	//	ChangeState(CroakState::Slot_Morph_Outro);
+	//	return;
+	//}
 	//
 
+	// 합체 테스트
 	//if (IdleDelayTime >= 0.25f && 1 == RollPatter)
 	//{
 	//	ChangeState(CroakState::Slot_Morph_Intro);
@@ -284,73 +339,75 @@ void Croak::IdleUpdate(float _DeltaTime)
 	//}
 	// 지울것
 
-	//if (400.0f >= HP)
-	//{
-	//	Ribby::RibbyPtr->IsClap = false;
-	//	return;
-	//}
+	if (400.0f >= HP)
+	{
+		Ribby::RibbyPtr->IsClap = false;
+		Ribby::RibbyPtr->ClapCount = 0;
+		ChangeState(CroakState::Slot_Morph_Intro);
+		return;
+	}
 
-	//if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
-	//{
-	//	IdleDelayTime += _DeltaTime;
-	//}
+	if (false == Ribby::RibbyPtr->IsFistAttak && false == Ribby::RibbyPtr->IsRoll)
+	{
+		IdleDelayTime += _DeltaTime;
+	}
 
-	//if (IdleDelayTime >= 0.25f && 0 == RollPatter && 750.0f >= HP)
-	//{
-	//	++RollPatter;
-	//	IdleDelayTime = 0.0f;
-	//	Ribby::RibbyPtr->IsRoll = true;
-	//	return;
-	//}
+	if (IdleDelayTime >= 0.25f && 0 == RollPatter && 750.0f >= HP)
+	{
+		++RollPatter;
+		IdleDelayTime = 0.0f;
+		Ribby::RibbyPtr->IsRoll = true;
+		return;
+	}
 
-	//if (IdleDelayTime >= 1.5f && false == Ribby::RibbyPtr->IsRoll && 1 == RollPatter)
-	//{
-	//	Ribby::RibbyPtr->IsClap = true;
-	//	ChangeState(CroakState::Fan_Intro);
-	//	return;
-	//}
+	if (IdleDelayTime >= 1.5f && false == Ribby::RibbyPtr->IsRoll && 1 == RollPatter)
+	{
+		Ribby::RibbyPtr->IsClap = true;
+		ChangeState(CroakState::Fan_Intro);
+		return;
+	}
 
-	//if (750.0f >= HP)
-	//{
-	//	return;
-	//}
-	//
-	//if (IdleDelayTime >= 2.f)
-	//{
-	//	IdleDelayTime = 0.0f;
-	//	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	if (750.0f >= HP)
+	{
+		return;
+	}
+	
+	if (IdleDelayTime >= 2.f)
+	{
+		IdleDelayTime = 0.0f;
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
-	//	if (0 == RandC)
-	//	{
-	//		if (RibbyFistCount == MaxPatternCount)
-	//		{
-	//			RibbyFistCount = 0;
-	//			ChangeState(CroakState::CreateMob_Start);
-	//			return;
-	//		}
-	//		else
-	//		{
-	//			++RibbyFistCount;
-	//			Ribby::RibbyPtr->IsFistAttak = true;
-	//			return;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (CroakCrateMobCount == MaxPatternCount)
-	//		{
-	//			CroakCrateMobCount = 0;
-	//			Ribby::RibbyPtr->IsFistAttak = true;
-	//			return;
-	//		}
-	//		else
-	//		{
-	//			++CroakCrateMobCount;
-	//			ChangeState(CroakState::CreateMob_Start);
-	//			return;
-	//		}
-	//	}
-	//}
+		if (0 == RandC)
+		{
+			if (RibbyFistCount == MaxPatternCount)
+			{
+				RibbyFistCount = 0;
+				ChangeState(CroakState::CreateMob_Start);
+				return;
+			}
+			else
+			{
+				++RibbyFistCount;
+				Ribby::RibbyPtr->IsFistAttak = true;
+				return;
+			}
+		}
+		else
+		{
+			if (CroakCrateMobCount == MaxPatternCount)
+			{
+				CroakCrateMobCount = 0;
+				Ribby::RibbyPtr->IsFistAttak = true;
+				return;
+			}
+			else
+			{
+				++CroakCrateMobCount;
+				ChangeState(CroakState::CreateMob_Start);
+				return;
+			}
+		}
+	}
 }
 void Croak::IdleEnd()
 {
@@ -559,6 +616,7 @@ void Croak::Fan_Loop_AUpdate(float _DeltaTime)
 	if (400.0f >= HP)
 	{
 		Ribby::RibbyPtr->IsClap = false;
+		Ribby::RibbyPtr->ClapCount = 0;
 	}
 }
 void Croak::Fan_Loop_AEnd()
@@ -653,6 +711,14 @@ void Croak::Slot_Morph_Intro_LoopStart()
 }
 void Croak::Slot_Morph_Intro_LoopUpdate(float _DeltaTime)
 {
+	IdleDelayTime += _DeltaTime;
+
+	if (1.0f <= IdleDelayTime)
+	{
+		IdleDelayTime = 0.0f;
+		Ribby::RibbyPtr->IsRoll = true;
+	}
+
 	if (true == IsMorph)
 	{
 		ChangeState(CroakState::Slot_Morph_Outro);
@@ -661,7 +727,7 @@ void Croak::Slot_Morph_Intro_LoopUpdate(float _DeltaTime)
 }
 void Croak::Slot_Morph_Intro_LoopEnd()
 {
-
+	IdleDelayTime = 0.0f;
 }
 
 void Croak::Slot_Morph_OutroStart()
@@ -756,10 +822,21 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 			return;
 		}
 	}
+	else if (true == IsRullet)
+	{
+		RulletTime += _DeltaTime; // 임시
+
+		if (3.0f <= RulletTime)
+		{
+			ChangeState(CroakState::Slot_Attack_Intro);
+			return;
+		}
+	}
 }
 void Croak::Slot_IdleEnd()
 {
 	CoinAttackTime = 0.0f;
+	RulletTime = 0.0f;     // 임시
 }
 
 void Croak::Slot_ArmMove_IntroStart()
@@ -790,7 +867,6 @@ void Croak::Slot_ArmMove_LoopUpdate(float _DeltaTime)
 
 	if (true == IsArmParry)
 	{
-		IsArmParry = false;
 		IsRullet = true;
 		ChangeState(CroakState::Slot_ArmMove_Outro);
 		return;
@@ -805,7 +881,6 @@ void Croak::Slot_ArmMove_LoopEnd()
 
 void Croak::Slot_ArmMove_OutroStart()
 {
-	SlotInvincibility = false;
 	RenderPtr->ChangeAnimation("Slot_ArmMove_Outro");
 }
 void Croak::Slot_ArmMove_OutroUpdate(float _DeltaTime)
@@ -821,13 +896,130 @@ void Croak::Slot_ArmMove_OutroEnd()
 
 }
 
-void Croak::Slot_DeathStart()
+void Croak::Slot_Attack_IntroStart()
+{
+	SlotInvincibility = false;
+
+	RenderPtr->ChangeAnimation("Slot_Attack_Intro");
+}
+void Croak::Slot_Attack_IntroUpdate(float _DeltaTime)
+{
+	if (true == IsStageEnd)
+	{
+		ChangeState(CroakState::Slot_Death_Intro);
+		return;
+	}
+
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_Attack_Loop);
+		return;
+	}
+}
+void Croak::Slot_Attack_IntroEnd()
+{
+
+}
+
+void Croak::Slot_Attack_LoopStart()
+{
+	SlotFrontRenderPtr->On();
+	RenderPtr->ChangeAnimation("Slot_Attack_Loop");
+}
+void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
+{
+	if (true == IsStageEnd)
+	{
+		ChangeState(CroakState::Slot_Death_Intro);
+		return;
+	}
+
+	if (5 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_006.png");
+	}
+	else if (4 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_005.png");
+	}
+	else if (3 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_004.png");
+	}
+	else if (2 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_003.png");
+	}
+	else if (1 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_002.png");
+	}
+	else if (0 == RenderPtr->GetCurrentFrame())
+	{
+		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_001.png");
+	}
+
+	RulletLoopTime += _DeltaTime;
+
+	if (4.0f <= RulletLoopTime)
+	{
+		ChangeState(CroakState::Slot_Attack_Outro);
+		return;
+	}
+}
+void Croak::Slot_Attack_LoopEnd()
+{
+	SlotFrontRenderPtr->Off();
+	RulletLoopTime = 0.0f;
+}
+
+void Croak::Slot_Attack_OutroStart()
+{
+	RenderPtr->ChangeAnimation("Slot_Attack_Outro");
+}
+void Croak::Slot_Attack_OutroUpdate(float _DeltaTime)
+{
+	if (true == IsStageEnd)
+	{
+		ChangeState(CroakState::Slot_Death_Intro);
+		return;
+	}
+
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_InitialOpen);
+		return;
+	}
+}
+void Croak::Slot_Attack_OutroEnd()
+{
+	IsRullet = false;
+}
+
+void Croak::Slot_Death_IntroStart()
 {
 	RenderPtr->ChangeAnimation("Slot_Death_Intro");
 }
-void Croak::Slot_DeathUpdate(float _DeltaTime)
+void Croak::Slot_Death_IntroUpdate(float _DeltaTime)
+{
+	if (RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_Death_Loop);
+		return;
+	}
+}
+void Croak::Slot_Death_IntroEnd()
 {
 
+}
+
+void Croak::Slot_DeathStart()
+{
+	RenderPtr->ChangeAnimation("Slot_Death_Loop");
+}
+void Croak::Slot_DeathUpdate(float _DeltaTime)
+{
+	// CreateDeathDust(_DeltaTime);
 }
 void Croak::Slot_DeathEnd()
 {

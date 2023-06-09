@@ -44,8 +44,16 @@ void Ribby::Update(float _DeltaTime)
 
 	if (true == IsDebugRender)
 	{
-		BodyCollisionRenderPtr->On();
-		EXCollisionRenderPtr->On();
+		if (true == BodyCollisionPtr->IsUpdate())
+		{
+			BodyCollisionRenderPtr->On();
+			EXCollisionRenderPtr->On();
+		}
+		else
+		{
+			BodyCollisionRenderPtr->Off();
+			EXCollisionRenderPtr->Off();
+		}
 	}
 	else
 	{
@@ -98,10 +106,41 @@ void Ribby::HitBlink(float _DeltaTime)
 
 void Ribby::SetInitReset()
 {
+	On();
 	MoveAbleTime = 0.0f;
 	StateValue = RibbyState::Idle;
-	IsStageEnd = false;
+	ChangeState(RibbyState::Idle);
+	GetTransform()->SetLocalPositiveScaleX();
+
+	RollStartPosition = float4::Zero;
+	RollEndPosition = float4::Zero;
+	MoveDistance = float4::Zero;
+	DirectNormal = float4::Zero;
+
+	RollMoveTime = 0.0f;
+	IntroLoopTime = 0.0f;
+	IdleDelayTime = 0.0f;
+	ClapDelayTime = 0.0f;
+	FistLoopDelayTime = 0.0f;
+	FistAttackDelayTime = 0.0f;
+	LoopInterDelayTime = 0.0f;
+	RollDelayTime = 0.0f;
+	ClapLoopTime = 0.0f;
+
+	Directbool = false;
 	IsIntro = true;
+	IsRoll = false;
+	IsClap = false;
+	IsFistAttak = false;
+	ParryFistCreate = false;
+
+	FistCreateCount = 0;
+	ParryFistCount = 1;
+	ClapCount = 4;
+	CreateBallCount = 1;
+
+	BodyCollisionRenderPtr->Off();
+	EXCollisionRenderPtr->Off();
 }
 
 void Ribby::CollisionSetting()

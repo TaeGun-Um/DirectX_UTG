@@ -490,6 +490,9 @@ void Ribby::Roll_LoopStart()
 		float YPos = Croak::CroakPtr->GetTransform()->GetLocalPosition().y;
 
 		RollEndPosition = float4{ XPos , YPos } + float4{ 0, -80 };
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 170, 170, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 170, 170, 1 });
 	}
 
 	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });

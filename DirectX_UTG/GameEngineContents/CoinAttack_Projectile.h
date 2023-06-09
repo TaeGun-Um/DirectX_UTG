@@ -43,7 +43,7 @@ private:
 	float4 StartPosition = float4::Zero;
 	float4 DirectNormal = float4::Zero;
 
-	float MoveSpeed = 600.0f;
+	float MoveSpeed = 650.0f;
 	int MoveSet = 1;
 
 	void MoveDirection(float _DeltaTime);

@@ -26,7 +26,12 @@ enum class CroakState
 	Slot_ArmMove_Loop,
 	Slot_ArmMove_Outro,
 
-	Slot_Death,
+	Slot_Attack_Intro,
+	Slot_Attack_Loop,
+	Slot_Attack_Outro,
+
+	Slot_Death_Intro,
+	Slot_Death_Loop,
 };
 
 // 설명 :
@@ -78,6 +83,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> WindRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> SlotMouthRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotFrontRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageBackRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> SlotImageRenderPtr0 = nullptr;
@@ -94,8 +100,8 @@ private:
 	std::shared_ptr<class GameEngineCollision> PlusBodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlusEXCollisionPtr = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
 	
 	float MoveAbleTime = 0.0f;
 	float HP = 1000;
@@ -138,6 +144,9 @@ private:
 	float BFanLoopTime = 0.0f;
 	float MorphDealyTime = 0.0f;
 	float CoinAttackTime = 0.0f;
+
+	float RulletTime = 0.0f; // 임시
+	float RulletLoopTime = 0.0f; // 임시
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;
@@ -238,6 +247,22 @@ private:
 	void Slot_IdleStart();
 	void Slot_IdleUpdate(float _DeltaTime);
 	void Slot_IdleEnd();
+
+	void Slot_Attack_IntroStart();
+	void Slot_Attack_IntroUpdate(float _DeltaTime);
+	void Slot_Attack_IntroEnd();
+
+	void Slot_Attack_LoopStart();
+	void Slot_Attack_LoopUpdate(float _DeltaTime);
+	void Slot_Attack_LoopEnd();
+
+	void Slot_Attack_OutroStart();
+	void Slot_Attack_OutroUpdate(float _DeltaTime);
+	void Slot_Attack_OutroEnd();
+
+	void Slot_Death_IntroStart();
+	void Slot_Death_IntroUpdate(float _DeltaTime);
+	void Slot_Death_IntroEnd();
 
 	void Slot_DeathStart();
 	void Slot_DeathUpdate(float _DeltaTime);

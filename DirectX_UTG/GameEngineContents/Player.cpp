@@ -163,7 +163,15 @@ void Player::PlayerDebugRenderer()
 		StandCollisionRenderPtr->On();
 		BottomSensorCollisionRenderPtr->On();
 		FrontSensorCollisionRenderPtr->On();
-		ParryCollisionRenderPtr->On();
+		
+		if (true == ParryCollisionPtr->IsUpdate())
+		{
+			ParryCollisionRenderPtr->On();
+		}
+		else 
+		{
+			ParryCollisionRenderPtr->Off();
+		}
 	}
 	else
 	{
