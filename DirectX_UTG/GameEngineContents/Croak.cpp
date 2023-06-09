@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Croak.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -14,6 +15,7 @@
 #include "Croak_Firefly.h"
 #include "Slot_FrontDust.h"
 #include "CoinAttack_Projectile.h"
+#include "DeathExplosion.h"
 
 Croak* Croak::CroakPtr = nullptr;
 
@@ -89,7 +91,7 @@ void Croak::SetInitReset()
 	MoveAbleTime = 0.0f;
 	StateValue = CroakState::Idle;
 	ChangeState(CroakState::Idle);
-	HP = 1000;
+	HP = 10;
 
 	IntroLoopTime = 0.0f;
 	IdleDelayTime = 0.0f;
@@ -470,6 +472,19 @@ void Croak::CreatePlatform_Tiger()
 
 }
 
+void Croak::CreateDeathExplosion(float _DeltaTime)
+{
+	std::shared_ptr<DeathExplosion> Explosion = GetLevel()->CreateActor<DeathExplosion>();
+	float4 StartPosition = SlotMouthRenderPtr->GetTransform()->GetWorldPosition();
+
+	int RandX = GameEngineRandom::MainRandom.RandomInt(-230, 230); // -200 ~ 200
+	int RandY = GameEngineRandom::MainRandom.RandomInt(-350, 130); // -350 ~ 100
+
+	float4 ExplosionPosition = StartPosition + float4{ static_cast<float>(RandX), static_cast<float>(RandY), -1 };
+
+	Explosion->SetStartPosition(ExplosionPosition);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     InitSetting                     ///////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,6 +631,18 @@ void Croak::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_004.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_005.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("SlotMachine_Attack_Front_006.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)

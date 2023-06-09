@@ -515,6 +515,10 @@ void FrogLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_005.png");
 		GameEngineTexture::UnLoad("SlotMachine_Attack_Front_006.png");
 	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineSprite::UnLoad("Explosion");
+	}
 
 	{
 		ReadyWallopCount = 1;
@@ -713,6 +717,10 @@ void FrogLevel::ReLoadSetting()
 		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_004.png");
 		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_005.png");
 		GameEngineTexture::ReLoad("SlotMachine_Attack_Front_006.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineSprite::ReLoad("Explosion");
 	}
 }
 

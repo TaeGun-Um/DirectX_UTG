@@ -121,6 +121,7 @@ private:
 	void CreatePlatform_Bison();
 	void CreatePlatform_Snake();
 	void CreatePlatform_Tiger();
+	void CreateDeathExplosion(float _DeltaTime);
 
 	float BlinkTime = 0.0f;
 	float OriginMulColor = 0.0f;
@@ -144,6 +145,7 @@ private:
 	float BFanLoopTime = 0.0f;
 	float MorphDealyTime = 0.0f;
 	float CoinAttackTime = 0.0f;
+	float ExplosionTime = 0.0f;
 
 	float RulletTime = 0.0f; // 임시
 	float RulletLoopTime = 0.0f; // 임시

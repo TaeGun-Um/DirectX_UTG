@@ -303,7 +303,7 @@ void Croak::IdleStart()
 	//Ribby::RibbyPtr->BodyCollisionPtr->Off();
 	//Ribby::RibbyPtr->EXCollisionPtr->Off();
 
-	//RollPatter = 1;
+	RollPatter = 1;
 	//
 
 	
@@ -317,15 +317,15 @@ void Croak::IdleUpdate(float _DeltaTime)
 	}
 
 	// 지울것 // 룰렛 테스트
-	//IdleDelayTime += _DeltaTime;
-	//Ribby::RibbyPtr->Off();
+	IdleDelayTime += _DeltaTime;
+	Ribby::RibbyPtr->Off();
 
-	//if (IdleDelayTime >= 1.f)
-	//{
-	//	CreateCoinCount = 3;
-	//	ChangeState(CroakState::Slot_Morph_Outro);
-	//	return;
-	//}
+	if (IdleDelayTime >= 1.f)
+	{
+		CreateCoinCount = 3;
+		ChangeState(CroakState::Slot_Morph_Outro);
+		return;
+	}
 	//
 
 	// 합체 테스트
@@ -339,7 +339,7 @@ void Croak::IdleUpdate(float _DeltaTime)
 	//}
 	// 지울것
 
-	if (400.0f >= HP)
+	/*if (400.0f >= HP)
 	{
 		Ribby::RibbyPtr->IsClap = false;
 		Ribby::RibbyPtr->ClapCount = 0;
@@ -407,7 +407,7 @@ void Croak::IdleUpdate(float _DeltaTime)
 				return;
 			}
 		}
-	}
+	}*/
 }
 void Croak::IdleEnd()
 {
@@ -1016,10 +1016,17 @@ void Croak::Slot_Death_IntroEnd()
 void Croak::Slot_DeathStart()
 {
 	RenderPtr->ChangeAnimation("Slot_Death_Loop");
+	ExplosionTime = 0.4f;
 }
 void Croak::Slot_DeathUpdate(float _DeltaTime)
 {
-	// CreateDeathDust(_DeltaTime);
+	ExplosionTime += _DeltaTime;
+
+	if (0.4f <= ExplosionTime)
+	{
+		ExplosionTime = 0.0f;
+		CreateDeathExplosion(_DeltaTime);
+	}
 }
 void Croak::Slot_DeathEnd()
 {
