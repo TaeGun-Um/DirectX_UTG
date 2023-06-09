@@ -76,6 +76,11 @@ void Player::Update(float _DeltaTime)
 // 플레이어 이동 방해(바람, 플랫폼 등)
 void Player::PlayerMoveDisturbance(float _Value)
 {
+	if (true == IsEXAttack)
+	{
+		return;
+	}
+
 	GetTransform()->AddLocalPosition({ _Value , 0 });
 }
 
