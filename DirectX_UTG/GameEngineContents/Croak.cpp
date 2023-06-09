@@ -12,6 +12,7 @@
 
 #include "Ribby.h"
 #include "Croak_Firefly.h"
+#include "CoinAttack_Projectile.h"
 
 Croak* Croak::CroakPtr = nullptr;
 
@@ -334,6 +335,39 @@ void Croak::CreateFirefly()
 	}
 }
 
+void Croak::CreateCoinProjectile()
+{
+	std::shared_ptr<CoinAttack_Projectile> Projectile = GetLevel()->CreateActor<CoinAttack_Projectile>();
+	float4 StartPosition = SlotMouthRenderPtr->GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ 0, 0, -1 };
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
+
+	Projectile->SetStartPosition(ProjectilePosition);
+}
+
+void Croak::CreatePlatform_Bison()
+{
+
+}
+
+void Croak::CreatePlatform_Snake()
+{
+
+}
+
+void Croak::CreatePlatform_Tiger()
+{
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     InitSetting                     ///////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -404,6 +438,22 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Idle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Left").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Firefly_Up").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Slot_CoinMouth"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Slot_Coin");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_CoinMouth").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Coin_Projectile").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
@@ -515,5 +565,14 @@ void Croak::ActorInitSetting()
 		WindRenderPtr->ChangeAnimation("Croaks_Fan_Wind_Intro");
 		WindRenderPtr->GetTransform()->AddLocalPosition({-400, -10});
 		WindRenderPtr->Off();
+	}
+
+	if (nullptr == SlotMouthRenderPtr)
+	{
+		SlotMouthRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		SlotMouthRenderPtr->CreateAnimation({ .AnimationName = "Slot_CoinMouth", .SpriteName = "Slot_CoinMouth", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		SlotMouthRenderPtr->ChangeAnimation("Slot_CoinMouth");
+		SlotMouthRenderPtr->GetTransform()->AddLocalPosition({ -5, 65 });
+		SlotMouthRenderPtr->Off();
 	}
 }

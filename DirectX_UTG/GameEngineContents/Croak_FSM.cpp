@@ -698,7 +698,20 @@ void Croak::Slot_IdleStart()
 }
 void Croak::Slot_IdleUpdate(float _DeltaTime)
 {
+	CoinAttackTime += _DeltaTime;
 
+	if (2.0f <= CoinAttackTime)
+	{
+		CoinAttackTime = 0.0f;
+		SlotMouthRenderPtr->On();
+	}
+
+	if (5 == SlotMouthRenderPtr->GetCurrentFrame())
+	{
+		CreateCoinProjectile();
+		SlotMouthRenderPtr->FindAnimation("Slot_CoinMouth")->CurFrame = 0;
+		SlotMouthRenderPtr->Off();
+	}
 }
 void Croak::Slot_IdleEnd()
 {

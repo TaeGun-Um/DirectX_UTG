@@ -74,6 +74,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> WindRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> SlotMouthRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -97,6 +98,10 @@ private:
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
 	void CreateFirefly();
+	void CreateCoinProjectile();
+	void CreatePlatform_Bison();
+	void CreatePlatform_Snake();
+	void CreatePlatform_Tiger();
 
 	float BlinkTime = 0.0f;
 	float OriginMulColor = 0.0f;
@@ -111,9 +116,11 @@ private:
 	float AFanLoopTime = 0.0f;
 	float BFanLoopTime = 0.0f;
 	float MorphDealyTime = 0.0f;
+	float CoinAttackTime = 0.0f;
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;
+	int CreateCoinCount = 0;
 
 	bool IsIntro = true;
 	bool IsCreatefly = false;
