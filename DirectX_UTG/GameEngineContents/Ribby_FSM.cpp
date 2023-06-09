@@ -489,11 +489,7 @@ void Ribby::Roll_LoopStart()
 		float XPos = Croak::CroakPtr->GetTransform()->GetLocalPosition().x;
 		float YPos = Croak::CroakPtr->GetTransform()->GetLocalPosition().y;
 
-		RollEndPosition = float4{ XPos , YPos } + float4{ 0, 0 };
-
-		//float4 Direct = RollStartPosition - RollEndPosition;
-
-		//DirectNormal = Direct.NormalizeReturn() + RollStartPosition;
+		RollEndPosition = float4{ XPos , YPos } + float4{ 0, -80 };
 	}
 
 	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
@@ -530,19 +526,14 @@ void Ribby::Roll_LoopUpdate(float _DeltaTime)
 	}
 	else if (true == Directbool)
 	{
-		if (RollEndPosition.x <= CurPos.x)
+		if (RollEndPosition.x - 315.0f <= CurPos.x)
 		{
-			RollDelayTime += _DeltaTime;
-
-			if (1.0f <= RollDelayTime)
-			{
-				ChangeState(RibbyState::Roll_End);
-			}
-
+			Off();
+			Croak::CroakPtr->IsMorph = true;
 			return;
 		}
 
-		RollMoveTime += _DeltaTime;
+		RollMoveTime += _DeltaTime * 0.8f;
 
 		float4 Dist = float4::Lerp(RollStartPosition, RollEndPosition, RollMoveTime);
 
@@ -550,9 +541,9 @@ void Ribby::Roll_LoopUpdate(float _DeltaTime)
 
 		Movedir = (Dist - CurPos);
 
-		MoveDistance = Movedir * 1.f * _DeltaTime;
+		MoveDistance = Movedir * 2.f * _DeltaTime;
 
-		GetTransform()->AddWorldPosition(MoveDistance);
+		GetTransform()->AddLocalPosition(MoveDistance);
 	}
 }
 void Ribby::Roll_LoopEnd()

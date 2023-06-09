@@ -136,16 +136,21 @@ void Croak::CollisionCheck()
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
-		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
-		HP -= 1.0f;
 
-		if (0 >= HP)
+		if (false == SlotInvincibility)
 		{
-			HP = 0.0f;
-			IsStageEnd = true;
-		}
+			dynamic_cast<Peashooter*>(Projectile)->SetHitture();
 
-		IsBlink = true;
+			HP -= 1.0f;
+
+			if (0 >= HP)
+			{
+				HP = 0.0f;
+				IsStageEnd = true;
+			}
+
+			IsBlink = true;
+		}
 	}
 
 	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
@@ -153,16 +158,21 @@ void Croak::CollisionCheck()
 	{
 		GameEngineActor* Projectile = BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
-		dynamic_cast<Spread*>(Projectile)->SetHitture();
-		HP -= 0.4f;
 
-		if (0 >= HP)
+		if (false == SlotInvincibility)
 		{
-			HP = 0.0f;
-			IsStageEnd = true;
-		}
+			dynamic_cast<Spread*>(Projectile)->SetHitture();
 
-		IsBlink = true;
+			HP -= 0.4f;
+
+			if (0 >= HP)
+			{
+				HP = 0.0f;
+				IsStageEnd = true;
+			}
+
+			IsBlink = true;
+		}
 	}
 
 	if (nullptr != PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
@@ -170,16 +180,21 @@ void Croak::CollisionCheck()
 	{
 		GameEngineActor* Projectile = PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
-		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
-		HP -= 1.0f;
 
-		if (0 >= HP)
+		if (false == SlotInvincibility)
 		{
-			HP = 0.0f;
-			IsStageEnd = true;
-		}
+			dynamic_cast<Peashooter*>(Projectile)->SetHitture();
 
-		IsBlink = true;
+			HP -= 1.0f;
+
+			if (0 >= HP)
+			{
+				HP = 0.0f;
+				IsStageEnd = true;
+			}
+
+			IsBlink = true;
+		}
 	}
 
 	if (nullptr != PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
@@ -187,16 +202,26 @@ void Croak::CollisionCheck()
 	{
 		GameEngineActor* Projectile = PlusBodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
 		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
-		dynamic_cast<Spread*>(Projectile)->SetHitture();
-		HP -= 0.4f;
-
-		if (0 >= HP)
+		
+		if (false == SlotInvincibility)
 		{
-			HP = 0.0f;
-			IsStageEnd = true;
-		}
+			dynamic_cast<Spread*>(Projectile)->SetHitture();
 
-		IsBlink = true;
+			HP -= 0.4f;
+
+			if (0 >= HP)
+			{
+				HP = 0.0f;
+				IsStageEnd = true;
+			}
+
+			IsBlink = true;
+		}
+	}
+
+	if (true == SlotInvincibility)
+	{
+		return;
 	}
 
 	/////////////// EX
@@ -343,7 +368,27 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Croaks_Fan_Wind_Loop").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Croaks_Firefly"))
+	if (nullptr == GameEngineSprite::Find("Slot_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Morph_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_InitialOpen").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Slot_Death_Loop").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Slot_Morph_Intro"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -378,6 +423,14 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopA", .SpriteName = "Croaks_Fan_LoopA", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopB", .SpriteName = "Croaks_Fan_LoopB", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Outro", .SpriteName = "Croaks_Fan_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Intro", .SpriteName = "Slot_Morph_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Intro_Loop", .SpriteName = "Slot_Morph_Intro_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Outro", .SpriteName = "Slot_Morph_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_InitialOpen", .SpriteName = "Slot_InitialOpen", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Idle", .SpriteName = "Slot_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Death_Intro", .SpriteName = "Slot_Death_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Death_Loop", .SpriteName = "Slot_Death_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Croaks_Idle");
 	}

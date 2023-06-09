@@ -15,6 +15,15 @@ enum class CroakState
 	Fan_Loop_A,
 	Fan_Loop_B,
 	Fan_End,
+
+	Slot_Morph_Intro,
+	Slot_Morph_Intro_Loop,
+	Slot_Morph_Outro,
+
+	Slot_InitialOpen,
+
+	Slot_Idle,
+	Slot_Death,
 };
 
 // Ό³Έν :
@@ -101,6 +110,7 @@ private:
 	float CreateMob_LoopTime = 0.0f;
 	float AFanLoopTime = 0.0f;
 	float BFanLoopTime = 0.0f;
+	float MorphDealyTime = 0.0f;
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;
@@ -111,11 +121,14 @@ private:
 	bool CreateLoop = false;
 	bool LoopCreateAction = false;
 	bool LoopCreateEnd = false;
+	bool IsMorph = false;
+	bool SlotInvincibility = false;
 
 	int RibbyFistCount = 0;
 	int CroakCrateMobCount = 0;
 	int MaxPatternCount = 2;
 	int RollPatter = 0;
+	int SlotPositionFix = 1;
 
 	void ChangeState(CroakState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -163,5 +176,29 @@ private:
 	void Fan_EndStart();
 	void Fan_EndUpdate(float _DeltaTime);
 	void Fan_EndEnd();
+
+	void Slot_Morph_IntroStart();
+	void Slot_Morph_IntroUpdate(float _DeltaTime);
+	void Slot_Morph_IntroEnd();
+
+	void Slot_Morph_Intro_LoopStart();
+	void Slot_Morph_Intro_LoopUpdate(float _DeltaTime);
+	void Slot_Morph_Intro_LoopEnd();
+
+	void Slot_Morph_OutroStart();
+	void Slot_Morph_OutroUpdate(float _DeltaTime);
+	void Slot_Morph_OutroEnd();
+
+	void Slot_InitialOpenStart();
+	void Slot_InitialOpenUpdate(float _DeltaTime);
+	void Slot_InitialOpenEnd();
+
+	void Slot_IdleStart();
+	void Slot_IdleUpdate(float _DeltaTime);
+	void Slot_IdleEnd();
+
+	void Slot_DeathStart();
+	void Slot_DeathUpdate(float _DeltaTime);
+	void Slot_DeathEnd();
 };
 

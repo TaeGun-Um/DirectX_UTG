@@ -49,6 +49,24 @@ void Croak::ChangeState(CroakState _StateValue)
 	case CroakState::Fan_End:
 		Fan_EndStart();
 		break;
+	case CroakState::Slot_Morph_Intro:
+		Slot_Morph_IntroStart();
+		break;
+	case CroakState::Slot_Morph_Intro_Loop:
+		Slot_Morph_Intro_LoopStart();
+		break;
+	case CroakState::Slot_Morph_Outro:
+		Slot_Morph_OutroStart();
+		break;
+	case CroakState::Slot_InitialOpen:
+		Slot_InitialOpenStart();
+		break;
+	case CroakState::Slot_Idle:
+		Slot_IdleStart();
+		break;
+	case CroakState::Slot_Death:
+		Slot_DeathStart();
+		break;
 	default:
 		break;
 	}
@@ -87,6 +105,24 @@ void Croak::ChangeState(CroakState _StateValue)
 		break;
 	case CroakState::Fan_End:
 		Fan_EndEnd();
+		break;
+	case CroakState::Slot_Morph_Intro:
+		Slot_Morph_IntroEnd();
+		break;
+	case CroakState::Slot_Morph_Intro_Loop:
+		Slot_Morph_Intro_LoopEnd();
+		break;
+	case CroakState::Slot_Morph_Outro:
+		Slot_Morph_OutroEnd();
+		break;
+	case CroakState::Slot_InitialOpen:
+		Slot_InitialOpenEnd();
+		break;
+	case CroakState::Slot_Idle:
+		Slot_IdleEnd();
+		break;
+	case CroakState::Slot_Death:
+		Slot_DeathEnd();
 		break;
 	default:
 		break;
@@ -129,6 +165,24 @@ void Croak::UpdateState(float _DeltaTime)
 		break;
 	case CroakState::Fan_End:
 		Fan_EndUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Morph_Intro:
+		Slot_Morph_IntroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Morph_Intro_Loop:
+		Slot_Morph_Intro_LoopUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Morph_Outro:
+		Slot_Morph_OutroUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_InitialOpen:
+		Slot_InitialOpenUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Idle:
+		Slot_IdleUpdate(_DeltaTime);
+		break;
+	case CroakState::Slot_Death:
+		Slot_DeathUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -187,6 +241,7 @@ void Croak::IdleUpdate(float _DeltaTime)
 
 	if (IdleDelayTime >= 0.25f && 1 == RollPatter)
 	{
+		ChangeState(CroakState::Slot_Morph_Intro);
 		++RollPatter;
 		IdleDelayTime = 0.0f;
 		Ribby::RibbyPtr->IsRoll = true;
@@ -529,4 +584,136 @@ void Croak::Fan_EndEnd()
 	PlusBodyCollisionPtr->On();
 	PlusEXCollisionPtr->On();
 	IdleDelayTime += 1.0f;
+}
+
+void Croak::Slot_Morph_IntroStart()
+{
+	PlusBodyCollisionPtr->Off();
+	PlusEXCollisionPtr->Off();
+
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 250, 250 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 250, 250 });
+
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -90, -180 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -90, -180 });
+
+	RenderPtr->ChangeAnimation("Slot_Morph_Intro");
+}
+void Croak::Slot_Morph_IntroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_Morph_Intro_Loop);
+		return;
+	}
+}
+void Croak::Slot_Morph_IntroEnd()
+{
+
+}
+
+void Croak::Slot_Morph_Intro_LoopStart()
+{
+	RenderPtr->ChangeAnimation("Slot_Morph_Intro_Loop");
+}
+void Croak::Slot_Morph_Intro_LoopUpdate(float _DeltaTime)
+{
+	if (true == IsMorph)
+	{
+		ChangeState(CroakState::Slot_Morph_Outro);
+		return;
+	}
+}
+void Croak::Slot_Morph_Intro_LoopEnd()
+{
+
+}
+
+void Croak::Slot_Morph_OutroStart()
+{
+	SlotInvincibility = true;
+
+	GetTransform()->AddLocalPosition({-240, 0});
+
+	BodyCollisionPtr->Off();
+	EXCollisionPtr->Off();
+
+	RenderPtr->ChangeAnimation("Slot_Morph_Outro");
+}
+void Croak::Slot_Morph_OutroUpdate(float _DeltaTime)
+{
+	if (15 == RenderPtr->GetCurrentFrame() && 1 == SlotPositionFix)
+	{
+		SlotPositionFix = 0;
+		GetTransform()->AddLocalPosition({ 180, -30 });
+	}
+	
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		MorphDealyTime += _DeltaTime;
+
+		BodyCollisionPtr->On();
+		EXCollisionPtr->On();
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 400, 500 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 400, 500 });
+
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 30, -50 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 30, -50 });
+	}
+
+	if (0.7f <= MorphDealyTime)
+	{
+		ChangeState(CroakState::Slot_InitialOpen);
+		return;
+	}
+}
+void Croak::Slot_Morph_OutroEnd()
+{
+	MorphDealyTime = 0.0f;
+}
+
+void Croak::Slot_InitialOpenStart()
+{
+	RenderPtr->ChangeAnimation("Slot_InitialOpen");
+}
+void Croak::Slot_InitialOpenUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(CroakState::Slot_Idle);
+		return;
+	}
+}
+void Croak::Slot_InitialOpenEnd()
+{
+
+}
+
+void Croak::Slot_IdleStart()
+{
+	SlotInvincibility = true;
+
+	RenderPtr->ChangeAnimation("Slot_Idle");
+}
+void Croak::Slot_IdleUpdate(float _DeltaTime)
+{
+
+}
+void Croak::Slot_IdleEnd()
+{
+
+}
+
+void Croak::Slot_DeathStart()
+{
+	RenderPtr->ChangeAnimation("Slot_Death_Intro");
+}
+void Croak::Slot_DeathUpdate(float _DeltaTime)
+{
+
+}
+void Croak::Slot_DeathEnd()
+{
+
 }
