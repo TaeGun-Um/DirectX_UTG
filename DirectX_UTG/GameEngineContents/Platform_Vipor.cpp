@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
 #include "FrogLevel.h"
 #include "You_Died.h"
 
@@ -27,7 +28,7 @@ void Platform_Vipor::Start()
 	if (nullptr == PlatformCollisionPtr)
 	{
 		PlatformCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Platform));
-		PlatformCollisionPtr->GetTransform()->SetLocalScale({ 200, 25, 1 });
+		PlatformCollisionPtr->GetTransform()->SetLocalScale({ 200, 25, -1 });
 		PlatformCollisionPtr->GetTransform()->SetLocalPosition({ 0, 20 });
 	}
 
@@ -36,31 +37,31 @@ void Platform_Vipor::Start()
 		PlatformCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalScale(PlatformCollisionPtr->GetTransform()->GetLocalScale());
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalPosition(PlatformCollisionPtr->GetTransform()->GetLocalPosition());
-		PlatformCollisionRenderPtr->SetTexture("RedBox.png");
+		PlatformCollisionRenderPtr->SetTexture("GreenBox.png");
 		PlatformCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
 	}
 
 	if (nullptr == DebugRenderPtr)
 	{
 		DebugRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		DebugRenderPtr->GetTransform()->AddLocalPosition({0, -5});
-		DebugRenderPtr->SetTexture("BlueDot.png");
+		DebugRenderPtr->GetTransform()->AddLocalPosition({ 0, -70 });
+		DebugRenderPtr->SetTexture("RedDot.png");
 	}
 
-	//if (nullptr == HitCollisionPtr)
-	//{
-	//	HitCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-	//	HitCollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-	//	HitCollisionPtr->GetTransform()->SetLocalPosition({ 50, 0 });
-	//}
+	if (nullptr == HitCollisionPtr)
+	{
+		HitCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+		HitCollisionPtr->GetTransform()->SetLocalScale({ 150, 50, 1 });
+		HitCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
+	}
 
-	//if (nullptr == HitCollisionRenderPtr)
-	//{
-	//	HitCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	HitCollisionRenderPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-	//	HitCollisionRenderPtr->GetTransform()->SetLocalPosition({ 50, 0 });
-	//	HitCollisionRenderPtr->SetTexture("RedLine.png");
-	//}
+	if (nullptr == HitCollisionRenderPtr)
+	{
+		HitCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		HitCollisionRenderPtr->GetTransform()->SetLocalScale(HitCollisionPtr->GetTransform()->GetLocalScale());
+		HitCollisionRenderPtr->GetTransform()->SetLocalPosition(HitCollisionPtr->GetTransform()->GetLocalPosition());
+		HitCollisionRenderPtr->SetTexture("RedLine.png");
+	}
 }
 
 void Platform_Vipor::Update(float _DeltaTime)
@@ -79,10 +80,7 @@ void Platform_Vipor::MoveDirection(float _DeltaTime)
 {
 	if (false == IsBoundEnd)
 	{
-		if (MoveDirect.y >= -500.0f)
-		{
-			MoveDirect.y += -1000.0f * _DeltaTime;
-		}
+		MoveDirect.y -= 1000.0f * _DeltaTime;
 
 		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 	}
@@ -91,17 +89,36 @@ void Platform_Vipor::MoveDirection(float _DeltaTime)
 		MoveDirect.y = 0;
 	}
 
-	float MoveDis = 100.0f * _DeltaTime;
+	float MoveDis = 500.0f * _DeltaTime;
+
+	CollisionCheck(MoveDis);
 
 	GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+}
+
+void Platform_Vipor::CollisionCheck(float _Value)
+{
+	if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerSensor), ColType::AABBBOX2D, ColType::SPHERE2D))
+	{
+		Player::MainPlayer->SetBottomJumpBlock();
+
+		if (true == Player::MainPlayer->GetPlatformCheckAble())
+		{
+			Player::MainPlayer->PlayerMoveDisturbance(-_Value);
+		}
+	}
+	else
+	{
+		Player::MainPlayer->SetBottomJumpBlockOff();
+	}
 }
 
 void Platform_Vipor::DeathCheck()
 {
 	float4 CurPos = GetTransform()->GetLocalPosition();
 
-	if (StartPosition.x - 1100.0f >= CurPos.x)
+	if (StartPosition.x - 1300.0f >= CurPos.x)
 	{
 		Death();
 	}
@@ -115,20 +132,29 @@ void Platform_Vipor::PixelCheck(float _DeltaTime)
 	}
 
 	float4 PlatformPos = GetTransform()->GetLocalPosition();
-	float4 BoundPos = PlatformPos + float4{ 0, -5 };
+	float4 BoundPos = PlatformPos + float4{ 0, -70 };
 
 	GameEnginePixelColor BoundPixel = PixelCollisionCheck.PixelCheck(BoundPos);
 
-	if (true == PixelCollisionCheck.IsBlack(BoundPixel) && 0 == BoundCount)
+	BoundBufferTime += _DeltaTime;
+
+	if (0.05f <= BoundBufferTime)
 	{
-		MoveDirect.y = 0;
-		MoveDirect.y += 100.0f;
-		++BoundCount;
-	}
-	if (true == PixelCollisionCheck.IsBlack(BoundPixel) && 1 == BoundCount)
-	{
-		MoveDirect.y = 0;
-		IsBoundEnd = true;
-		++BoundCount;
+		if (true == PixelCollisionCheck.IsBlack(BoundPixel) && 1 == BoundCount)
+		{
+			BoundBufferTime = 0.0f;
+
+			MoveDirect.y = 0;
+			IsBoundEnd = true;
+			++BoundCount;
+		}
+		if (true == PixelCollisionCheck.IsBlack(BoundPixel) && 0 == BoundCount)
+		{
+			BoundBufferTime = 0.0f;
+
+			MoveDirect.y = 0;
+			MoveDirect.y += 150.0f;
+			++BoundCount;
+		}
 	}
 }

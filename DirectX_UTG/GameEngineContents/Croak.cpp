@@ -869,22 +869,31 @@ void Croak::CreateCoinProjectile()
 	Projectile->SetStartPosition(ProjectilePosition);
 }
 
-void Croak::CreatePlatform_Vipor(float _DeltaTime)
+void Croak::CreatePlatform_Vipor()
 {
 	std::shared_ptr<Platform_Vipor> Platform = GetLevel()->CreateActor<Platform_Vipor>();
 	float4 StartPosition = GetTransform()->GetLocalPosition();
-	float4 PlatformPosition = StartPosition + float4{ 0, 100, -1 };
+	float4 PlatformPosition = StartPosition + float4{ 0, -180 };
+
+	if (true == IsDebugRender)
+	{
+		Platform->SetCollisionRenderOn();
+	}
+	else
+	{
+		Platform->SetCollisionRenderOff();
+	}
 
 	Platform->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
-	Platform->SetStartPosition(StartPosition);
+	Platform->SetStartPosition(PlatformPosition);
 }
 
-void Croak::CreatePlatform_Bison(float _DeltaTime)
+void Croak::CreatePlatform_Bison()
 {
 
 }
 
-void Croak::CreatePlatform_Tiger(float _DeltaTime)
+void Croak::CreatePlatform_Tiger()
 {
 
 }

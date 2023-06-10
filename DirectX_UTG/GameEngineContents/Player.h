@@ -61,9 +61,19 @@ public:
 		IsIntro = true;
 	}
 
+	bool GetPlatformCheckAble()
+	{
+		return PlatformCheckAble;
+	}
+
 	void SetBottomJumpBlock()
 	{
 		BottomJumpBlock = true;
+	}
+
+	void SetBottomJumpBlockOff()
+	{
+		BottomJumpBlock = false;
 	}
 
 	bool GetIsPlayerDeath()
@@ -212,6 +222,7 @@ private:
 
 	// ÇÈ¼¿Ã¼Å©
 	void WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime);
+	void DisturbanceWallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime, float _Value);
 	void PixelCheck(float _DeltaTime);
 	
 	std::shared_ptr<GameEngineTexture> ColMap = nullptr;

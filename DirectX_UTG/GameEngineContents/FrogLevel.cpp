@@ -231,7 +231,6 @@ void FrogLevel::LevelChangeStart()
 		PlayerObject->SetCorrectionFalse();
 		PlayerObject->PlayerReset();
 		PlayerObject->SetIntro();
-		PlayerObject->SetBottomJumpBlock();
 	}
 	{
 		if (nullptr == FrontObject)

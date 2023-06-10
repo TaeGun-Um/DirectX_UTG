@@ -831,7 +831,7 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 {
 	if (false == IsRullet)
 	{
-		CoinAttack(_DeltaTime);
+		 // CoinAttack(_DeltaTime); mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 		if (3 == CreateCoinCount)
 		{
@@ -919,7 +919,7 @@ void Croak::Slot_ArmMove_LoopStart()
 }
 void Croak::Slot_ArmMove_LoopUpdate(float _DeltaTime)
 {
-	CoinAttack(_DeltaTime);
+	//CoinAttack(_DeltaTime);                                   MMMMMMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 	if (true == IsArmParry)
 	{
@@ -983,6 +983,10 @@ int Creta = 1;
 void Croak::Slot_Attack_LoopStart()
 {
 	SlotFrontRenderPtr->On();
+
+	CreateVipor = 20;
+	RulletLoopTime = 0.7f;
+
 	RenderPtr->ChangeAnimation("Slot_Attack_Loop");
 }
 void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
@@ -1020,28 +1024,31 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 
 	RulletLoopTime += _DeltaTime;
 
-	if (4.0f <= RulletLoopTime)
+	if (true == IsVipor && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	{
+		RulletLoopTime = 0.0f;
+		--CreateVipor;
+		CreatePlatform_Vipor(); // 22개 바닥으로 소환
+	}
+	else if (true == IsBison && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	{
+		RulletLoopTime = 0.0f;
+		--CreateVipor;
+		CreatePlatform_Vipor(); // 22개 바닥으로 소환
+		//CreatePlatform_Bison(_DeltaTime); // 11개 중간으로 소환
+	}
+	else if (true == IsTiger && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	{
+		RulletLoopTime = 0.0f;
+		--CreateVipor;
+		CreatePlatform_Vipor(); // 22개 바닥으로 소환
+		//CreatePlatform_Tiger(_DeltaTime); // 10개 바닥
+	}
+
+	if (0 == CreateVipor && 0.5f <= RulletLoopTime)
 	{
 		ChangeState(CroakState::Slot_Attack_Outro);
 		return;
-	}
-
-	if (true == IsVipor && 1 == Creta)
-	{
-		Creta = 0;
-		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
-	}
-	else if (true == IsBison && 1 == Creta)
-	{
-		Creta = 0;
-		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
-		//CreatePlatform_Bison(_DeltaTime); // 11개 중간으로 소환
-	}
-	else if (true == IsTiger && 1 == Creta)
-	{
-		Creta = 0;
-		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
-		//CreatePlatform_Tiger(_DeltaTime); // 10개 바닥
 	}
 }
 void Croak::Slot_Attack_LoopEnd()

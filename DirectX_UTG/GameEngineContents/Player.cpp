@@ -5,6 +5,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 #include "Peashooter.h"
 #include "Peashooter_EX.h"
@@ -73,7 +74,7 @@ void Player::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 플레이어 이동 방해(바람, 플랫폼 등)
+// 플레이어 이동 방해(바람, 플랫폼 등), X만 해당
 void Player::PlayerMoveDisturbance(float _Value)
 {
 	if (true == IsEXAttack)
@@ -81,7 +82,17 @@ void Player::PlayerMoveDisturbance(float _Value)
 		return;
 	}
 
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+
+	float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
+
+	GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
 	GetTransform()->AddLocalPosition({ _Value , 0 });
+
+	DisturbanceWallCheck(LeftWallPixel, RightWallPixel, GameEngineTime::GlobalTime.GetTimeScaleDeltaTime(), _Value);
 }
 
 // 플레이어 리셋
@@ -94,6 +105,7 @@ void Player::PlayerReset()
 	Directbool = true;
 	HitTimeCheck = false;
 	IsPlayerDeath = false;
+	BottomJumpBlock = false;
 
 	GetTransform()->SetLocalPositiveScaleX();
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
@@ -488,6 +500,35 @@ void Player::WallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const Game
 {
 	float DashFalseDist = MoveSpeed * _DeltaTime;
 	float DashTureDist = (MoveSpeed * 2) * _DeltaTime;
+
+	if (true == IsDash)
+	{
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashTureDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashTureDist, 0 });
+		}
+	}
+	else
+	{
+		if (true == PixelCollisionCheck.IsBlack(_LeftWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ DashFalseDist, 0 });
+		}
+		if (true == PixelCollisionCheck.IsBlack(_RightWallMapPixel))
+		{
+			GetTransform()->AddLocalPosition({ -DashFalseDist, 0 });
+		}
+	}
+}
+
+void Player::DisturbanceWallCheck(const GameEnginePixelColor& _LeftWallMapPixel, const GameEnginePixelColor& _RightWallMapPixel, float _DeltaTime, float _Value)
+{
+	float DashFalseDist = MoveSpeed * _DeltaTime - (_Value * 2);
+	float DashTureDist = (MoveSpeed * 2) * _DeltaTime - (_Value * 3);
 
 	if (true == IsDash)
 	{
@@ -2208,7 +2249,7 @@ void Player::PlayerCollisionSetting()
 
 	if (nullptr == BottomSensorCollisionPtr)
 	{
-		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
+		BottomSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerBottomSensor));
 		BottomSensorCollisionPtr->SetColType(ColType::AABBBOX2D);
 		BottomSensorCollisionPtr->GetTransform()->SetLocalScale({ 30, -6 });
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -7, -3 });

@@ -120,9 +120,9 @@ private:
 	void CreateFirefly();
 	void CreateFrontDust();
 	void CreateCoinProjectile();
-	void CreatePlatform_Vipor(float _DeltaTime);
-	void CreatePlatform_Bison(float _DeltaTime);
-	void CreatePlatform_Tiger(float _DeltaTime);
+	void CreatePlatform_Vipor();
+	void CreatePlatform_Bison();
+	void CreatePlatform_Tiger();
 	void CreateDeathExplosion(float _DeltaTime);
 
 	float4 OriginMulColor = float4::Zero;
@@ -176,7 +176,9 @@ private:
 	float ExplosionTime = 0.0f;
 
 	float RulletTime = 0.0f; // 임시
-	float RulletLoopTime = 0.0f; // 임시
+	float RulletLoopTime = 0.0f;
+
+	int CreateVipor = 20;
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;

@@ -25,6 +25,20 @@ public:
 		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
 	}
 
+	void SetCollisionRenderOn()
+	{
+		PlatformCollisionRenderPtr->On();
+		HitCollisionRenderPtr->On();
+		DebugRenderPtr->On();
+	}
+
+	void SetCollisionRenderOff()
+	{
+		PlatformCollisionRenderPtr->Off();
+		HitCollisionRenderPtr->Off();
+		DebugRenderPtr->Off();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -42,12 +56,15 @@ private:
 
 	void PixelCheck(float _DeltaTime);
 	void MoveDirection(float _DeltaTime);
+	void CollisionCheck(float _Value);
 	void DeathCheck();
 
 	float4 StartPosition = float4::Zero;
 	float4 MoveDirect = float4::Zero;
 
 	PixelCollision PixelCollisionCheck;
+
+	float BoundBufferTime = 0.0f;
 
 	bool IsBoundEnd = false;
 
