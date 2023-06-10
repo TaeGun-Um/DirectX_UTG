@@ -231,6 +231,7 @@ void FrogLevel::LevelChangeStart()
 		PlayerObject->SetCorrectionFalse();
 		PlayerObject->PlayerReset();
 		PlayerObject->SetIntro();
+		PlayerObject->SetBottomJumpBlock();
 	}
 	{
 		if (nullptr == FrontObject)
@@ -519,6 +520,18 @@ void FrogLevel::LevelChangeEnd()
 	{
 		GameEngineSprite::UnLoad("Explosion");
 	}
+	if (nullptr != GameEngineSprite::Find("Snake_Platform"))
+	{
+		GameEngineSprite::UnLoad("Snake_Platform");
+		GameEngineSprite::UnLoad("Tiger_Ball");
+		GameEngineSprite::UnLoad("Tiger_Front");
+		GameEngineSprite::UnLoad("Tiger_Platform");
+		GameEngineSprite::UnLoad("Bison_Flame_Large_Intro");
+		GameEngineSprite::UnLoad("Bison_Flame_Large_Loop");
+		GameEngineSprite::UnLoad("Bison_Flame_Small_Loop");
+		GameEngineSprite::UnLoad("Bison_Front");
+		GameEngineSprite::UnLoad("Bison_Platform");
+	}
 
 	{
 		ReadyWallopCount = 1;
@@ -533,7 +546,6 @@ void FrogLevel::LevelChangeEnd()
 		CardObject->CartUIReset();
 		PlayerObject->MoveAbleTimeReset();
 	}
-
 }
 
 void FrogLevel::ReLoadSetting()
@@ -721,6 +733,18 @@ void FrogLevel::ReLoadSetting()
 	if (nullptr != GameEngineSprite::Find("Explosion"))
 	{
 		GameEngineSprite::ReLoad("Explosion");
+	}
+	if (nullptr != GameEngineSprite::Find("Snake_Platform"))
+	{
+		GameEngineSprite::ReLoad("Snake_Platform");
+		GameEngineSprite::ReLoad("Tiger_Ball");
+		GameEngineSprite::ReLoad("Tiger_Front");
+		GameEngineSprite::ReLoad("Tiger_Platform");
+		GameEngineSprite::ReLoad("Bison_Flame_Large_Intro");
+		GameEngineSprite::ReLoad("Bison_Flame_Large_Loop");
+		GameEngineSprite::ReLoad("Bison_Flame_Small_Loop");
+		GameEngineSprite::ReLoad("Bison_Front");
+		GameEngineSprite::ReLoad("Bison_Platform");
 	}
 }
 

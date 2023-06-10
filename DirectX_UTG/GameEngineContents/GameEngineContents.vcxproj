@@ -374,6 +374,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Platform_Bison.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Platform_Tiger.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Platform_Vipor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
@@ -699,6 +711,18 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PixelCollision.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Platform_Bison.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Platform_Tiger.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Platform_Vipor.cpp">
       <SubType>
       </SubType>
     </ClCompile>

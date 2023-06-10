@@ -19,6 +19,10 @@
 #include "CoinAttack_Projectile.h"
 #include "DeathExplosion.h"
 
+#include "Platform_Vipor.h"
+#include "Platform_Bison.h"
+#include "Platform_Tiger.h"
+
 Croak* Croak::CroakPtr = nullptr;
 
 Croak::Croak() 
@@ -867,7 +871,12 @@ void Croak::CreateCoinProjectile()
 
 void Croak::CreatePlatform_Vipor(float _DeltaTime)
 {
+	std::shared_ptr<Platform_Vipor> Platform = GetLevel()->CreateActor<Platform_Vipor>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 PlatformPosition = StartPosition + float4{ 0, 100, -1 };
 
+	Platform->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Platform->SetStartPosition(StartPosition);
 }
 
 void Croak::CreatePlatform_Bison(float _DeltaTime)
@@ -1051,6 +1060,31 @@ void Croak::ActorInitSetting()
 		NewDir.Move("Tutorial_Normal");
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Snake_Platform"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Attack_Platforms");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Snake_Platform").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Ball").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Front").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Platform").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Large_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Large_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Small_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Front").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Platform").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)
@@ -1254,7 +1288,7 @@ void Croak::ActorInitSetting()
 	{
 		SlotFrontRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_001.png");
-		SlotFrontRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -2 });
+		SlotFrontRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -3 });
 		SlotFrontRenderPtr->Off();
 	}
 }

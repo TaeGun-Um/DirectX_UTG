@@ -912,8 +912,6 @@ void Croak::Slot_ArmMove_IntroEnd()
 
 }
 
-bool RollCheck = false;
-
 void Croak::Slot_ArmMove_LoopStart()
 {
 	ParryCollisionPtr->On();
@@ -980,6 +978,8 @@ void Croak::Slot_Attack_IntroEnd()
 
 }
 
+int Creta = 1;
+
 void Croak::Slot_Attack_LoopStart()
 {
 	SlotFrontRenderPtr->On();
@@ -1026,17 +1026,22 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == IsVipor)
+	if (true == IsVipor && 1 == Creta)
 	{
-		//CreatePlatform_Vipor(_DeltaTime)
+		Creta = 0;
+		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
 	}
-	else if (true == IsBison)
+	else if (true == IsBison && 1 == Creta)
 	{
-		//CreatePlatform_Bison(_DeltaTime)
+		Creta = 0;
+		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
+		//CreatePlatform_Bison(_DeltaTime); // 11개 중간으로 소환
 	}
-	else if (true == IsTiger)
+	else if (true == IsTiger && 1 == Creta)
 	{
-		//CreatePlatform_Tiger(_DeltaTime)
+		Creta = 0;
+		CreatePlatform_Vipor(_DeltaTime); // 22개 바닥으로 소환
+		//CreatePlatform_Tiger(_DeltaTime); // 10개 바닥
 	}
 }
 void Croak::Slot_Attack_LoopEnd()

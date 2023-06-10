@@ -623,14 +623,17 @@ void Player::CollisionSetting()
 	FrontSensorCollisionRenderPtr->GetTransform()->SetLocalPosition(FrontSensorCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
-// BluePixel을 체크
 void Player::PlatformBottomJump(float _DeltaTime)
 {
 	// 에어대쉬 가능 상태 체크
 	if (nullptr != BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		AirDash = true;
-		BottomJumpAble = true;
+
+		if (false == BottomJumpBlock)
+		{
+			BottomJumpAble = true;
+		}
 	}
 
 	// 바닥 체크
@@ -680,6 +683,12 @@ void Player::PlatformBottomJumpStateCheck(float _DeltaTime)
 		if (nullptr != BottomSensorCollisionPtr->Collision(static_cast<int>(CollisionOrder::Platform), ColType::AABBBOX2D, ColType::AABBBOX2D))
 		{
 			IsBottomJump = true;
+
+			if (true == BottomJumpBlock)
+			{
+				IsBottomJump = false;
+			}
+
 			return;
 		}
 		else

@@ -61,6 +61,11 @@ public:
 		IsIntro = true;
 	}
 
+	void SetBottomJumpBlock()
+	{
+		BottomJumpBlock = true;
+	}
+
 	bool GetIsPlayerDeath()
 	{
 		return IsPlayerDeath;
@@ -257,6 +262,7 @@ private:
 	bool SlapJump = false;
 	bool ParryCheck = false;
 	bool IsBottomJump = false;
+	bool BottomJumpBlock = false;
 	bool BottomJumpAble = false;
 	bool AirEXAttackAble = false;
 	bool IsDash = false;

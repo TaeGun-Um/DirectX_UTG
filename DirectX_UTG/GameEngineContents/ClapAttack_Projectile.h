@@ -69,8 +69,6 @@ private:
 	bool Directbool = true; // true = À§ // false == ¾Æ·¡
 	int BoundCount = 0;
 
-	std::shared_ptr<GameEngineTexture> ColMap = nullptr;
-	PixelCollision::Coordinate Pivot = PixelCollision::Coordinate::WindowOrigin;
 	PixelCollision PixelCollisionCheck;
 
 };
