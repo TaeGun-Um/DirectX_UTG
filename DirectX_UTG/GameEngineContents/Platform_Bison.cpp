@@ -27,12 +27,15 @@ void Platform_Bison::Start()
 		RenderPtr->ChangeAnimation("Bison_Platform");
 	}
 
-	//if (nullptr == FireRenderPtr)
-	//{
-	//	FireRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	FireRenderPtr->CreateAnimation({ .AnimationName = "Tiger_Ball", .SpriteName = "Tiger_Ball", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-	//	FireRenderPtr->ChangeAnimation("Tiger_Ball");
-	//}
+	if (nullptr == FireRenderPtr)
+	{
+		FireRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Bison_Flame_Small_Loop", .SpriteName = "Bison_Flame_Small_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Bison_Flame_Large_Intro", .SpriteName = "Bison_Flame_Large_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Bison_Flame_Large_Loop", .SpriteName = "Bison_Flame_Large_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		FireRenderPtr->GetTransform()->AddLocalPosition({ 0, 50 });
+		FireRenderPtr->ChangeAnimation("Bison_Flame_Small_Loop");
+	}
 
 	if (nullptr == FrontRenderPtr)
 	{
@@ -66,7 +69,7 @@ void Platform_Bison::Start()
 	if (nullptr == HitCollisionPtr)
 	{
 		HitCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-		HitCollisionPtr->GetTransform()->SetLocalScale({ 150, 50, 1 });
+		HitCollisionPtr->GetTransform()->SetLocalScale({ 130, 40, 1 });
 		HitCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
 	}
 
@@ -78,20 +81,22 @@ void Platform_Bison::Start()
 		HitCollisionRenderPtr->SetTexture("RedLine.png");
 	}
 
-	//if (nullptr == FireCollisionPtr)
-	//{
-	//	FireCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-	//	FireCollisionPtr->GetTransform()->SetLocalScale({ 50, 50, 1 });
-	//	//FireCollisionPtr->GetTransform()->SetLocalPosition(FrontRenderPtr->GetTransform()->GetLocalPosition());
-	//}
+	if (nullptr == FireCollisionPtr)
+	{
+		FireCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+		FireCollisionPtr->GetTransform()->SetLocalScale({ 40, 500, 1 });
+		FireCollisionPtr->GetTransform()->AddLocalPosition({ 0, 250 });
+		FireCollisionPtr->Off();
+	}
 
-	//if (nullptr == FireCollisionRenderPtr)
-	//{
-	//	FireCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	FireCollisionRenderPtr->GetTransform()->SetLocalScale(FireCollisionPtr->GetTransform()->GetLocalScale());
-	//	FireCollisionRenderPtr->GetTransform()->SetLocalPosition(FireCollisionPtr->GetTransform()->GetLocalPosition());
-	//	FireCollisionRenderPtr->SetTexture("RedBox.png");
-	//}
+	if (nullptr == FireCollisionRenderPtr)
+	{
+		FireCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		FireCollisionRenderPtr->GetTransform()->SetLocalScale(FireCollisionPtr->GetTransform()->GetLocalScale());
+		FireCollisionRenderPtr->GetTransform()->SetLocalPosition(FireCollisionPtr->GetTransform()->GetLocalPosition());
+		FireCollisionRenderPtr->SetTexture("RedLine.png");
+		FireCollisionRenderPtr->Off();
+	}
 }
 
 void Platform_Bison::Update(float _DeltaTime)
@@ -101,22 +106,78 @@ void Platform_Bison::Update(float _DeltaTime)
 		Death();
 	}
 
+	FireChage(_DeltaTime);
 	FrontSet();
-	//FireChage(_DeltaTime);
 	MoveDirection(_DeltaTime);
 	DeathCheck();
 }
 
-//void Platform_Bison::FireChage(float _DeltaTime)
-//{
-//	BallBountTime += _DeltaTime;
-//
-//	float MoveDis = abs(sinf(BallBountTime * 3.f) * 500.0f) - 45.0f;
-//
-//	BallRenderPtr->GetTransform()->SetLocalPosition({ 0, MoveDis });
-//	BallCollisionPtr->GetTransform()->SetLocalPosition(BallRenderPtr->GetTransform()->GetLocalPosition());
-//	BallCollisionRenderPtr->GetTransform()->SetLocalPosition(BallCollisionPtr->GetTransform()->GetLocalPosition());
-//}
+void Platform_Bison::FireChage(float _DeltaTime)
+{
+	FireChangeTime += _DeltaTime;
+
+	if (1.0f <= FireChangeTime)
+	{
+		return;
+	}
+
+	if (FireRenderPtr->IsAnimationEnd() && false == FireEnd2 && true == FireEnd1)
+	{
+		FireEnd2 = true;
+		FireRenderPtr->ChangeAnimation("Bison_Flame_Large_Loop");
+	}
+	else if (FireRenderPtr->IsAnimationEnd() && false == FireEnd1)
+	{
+		FireEnd1 = true;
+		FireRenderPtr->ChangeAnimation("Bison_Flame_Large_Intro");
+	}
+
+	if (false == FireEnd2 && true == FireEnd1)
+	{
+		if (true == Directbool)
+		{
+			if (3 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, 270 });
+				FireCollisionPtr->On();
+			}
+			else if (2 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, 270 });
+				FireCollisionPtr->On();
+			}
+			else if (1 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, 370 });
+			}
+			else if (0 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, 370 });
+			}
+		}
+		else
+		{
+			if (3 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, -320 });
+				FireCollisionPtr->On();
+			}
+			else if (2 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, -320 });
+				FireCollisionPtr->On();
+			}
+			else if (0 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, -420 });
+			}
+			else if (1 == FireRenderPtr->GetCurrentFrame())
+			{
+				FireRenderPtr->GetTransform()->SetLocalPosition({ 0, -420 });
+			}
+		}
+	}
+}
 
 void Platform_Bison::MoveDirection(float _DeltaTime)
 {
@@ -142,9 +203,9 @@ void Platform_Bison::MoveDirection(float _DeltaTime)
 	}
 	else
 	{
-		float MoveDisY_samll = (sinf(WaveTime * 18.f) * (25.0f - (WaveTime * 36.f))) + 280.0f;
+		float MoveDisY_samll = (sinf(WaveTime * 10.f) * (25.0f - (WaveTime * 30.f))) + 280.0f;
 
-		if (0.0f >= (WaveTime * 18.f) * (25.0f - (WaveTime * 36.f)))
+		if (0.0f >= (WaveTime * 10.f) * (25.0f - (WaveTime * 30.f)))
 		{
 			MoveDisY = 0.0f;
 			MoveDisY_samll = 0.0f;
@@ -174,6 +235,10 @@ void Platform_Bison::CollisionCheck(float _Value)
 	{
 		Player::MainPlayer->SetBottomJumpBlockOff();
 	}
+
+
+	FireCollisionRenderPtr->GetTransform()->SetLocalScale(FireCollisionPtr->GetTransform()->GetLocalScale());
+	FireCollisionRenderPtr->GetTransform()->SetLocalPosition(FireCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
 void Platform_Bison::DeathCheck()

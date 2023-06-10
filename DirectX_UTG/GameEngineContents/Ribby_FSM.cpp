@@ -212,8 +212,8 @@ void Ribby::IntroStart()
 	BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
 	EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
 
-	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
-	EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 50, -40 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ 50, -40 });
 }
 void Ribby::IntroUpdate(float _DeltaTime)
 {

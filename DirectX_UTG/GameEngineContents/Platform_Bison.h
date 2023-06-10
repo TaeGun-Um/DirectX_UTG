@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GameEngineCore/GameEngineCollision.h>
+
 // Ό³Έν :
 class Platform_Bison : public GameEngineActor
 {
@@ -18,6 +20,42 @@ public:
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
 		StartPosition = GetTransform()->GetLocalPosition();
+	}
+
+	void SetFireRotation(const float4& _Rotation, bool _Direct)
+	{
+		FireRenderPtr->GetTransform()->SetLocalRotation(_Rotation);
+		Directbool = _Direct;
+
+		if (false == Directbool)
+		{
+			FireRenderPtr->GetTransform()->AddLocalPosition({ 0, -150 });
+			FireCollisionPtr->GetTransform()->AddLocalPosition({ 0, -550 });
+		}
+	}
+
+	void SetCollisionRenderOn()
+	{
+		PlatformCollisionRenderPtr->On();
+		HitCollisionRenderPtr->On();
+		DebugRenderPtr->On();
+
+		if (true == FireCollisionPtr->IsUpdate())
+		{
+			FireCollisionRenderPtr->On();
+		}
+		else
+		{
+			FireCollisionRenderPtr->Off();
+		}
+	}
+
+	void SetCollisionRenderOff()
+	{
+		PlatformCollisionRenderPtr->Off();
+		HitCollisionRenderPtr->Off();
+		DebugRenderPtr->Off();
+		FireCollisionRenderPtr->Off();
 	}
 
 protected:
@@ -48,8 +86,13 @@ private:
 
 	float4 StartPosition = float4::Zero;
 	float4 MoveDirect = float4::Zero;
-
+	
+	float FireChangeTime = 0.0f;
 	float WaveTime = 0.0f;
 	bool IsWaveEnd = false;
+	bool Directbool = true;
+
+	bool FireEnd1 = false;
+	bool FireEnd2 = false;
 };
 

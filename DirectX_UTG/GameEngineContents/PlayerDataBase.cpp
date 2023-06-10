@@ -176,13 +176,17 @@ void PlayerDataBase::CameraShake(float _DeltaTime)
 {
 	if (false == IsCameraShaking)
 	{
+		ShakingCameraSetting = 1;
 		return;
 	}
 
 	if (1 == ShakingCameraSetting)
 	{
+		CameraShakeTime = 0.0f;
+		ShakingCount = 0;
 		ShakingCameraSetting = 0;
 		CurCameraPosition = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+		GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(CurCameraPosition);
 	}
 
 	CameraShakeTime += _DeltaTime;
@@ -191,7 +195,7 @@ void PlayerDataBase::CameraShake(float _DeltaTime)
 	{
 		CameraShakeTime = 0.0f;
 
-		if (8 == ShakingCount)
+		if (ShakingMaxCount == ShakingCount)
 		{
 			ShakingCount = 0;
 			IsCameraShaking = false;

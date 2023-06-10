@@ -51,7 +51,7 @@ void Platform_Vipor::Start()
 	if (nullptr == HitCollisionPtr)
 	{
 		HitCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-		HitCollisionPtr->GetTransform()->SetLocalScale({ 150, 50, 1 });
+		HitCollisionPtr->GetTransform()->SetLocalScale({ 130, 40, 1 });
 		HitCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
 	}
 

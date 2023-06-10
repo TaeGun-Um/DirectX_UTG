@@ -892,18 +892,35 @@ void Croak::CreatePlatform_Bison()
 {
 	std::shared_ptr<Platform_Bison> Platform = GetLevel()->CreateActor<Platform_Bison>();
 	float4 StartPosition = GetTransform()->GetLocalPosition();
-	float4 PlatformPosition = StartPosition + float4{ 0, -180 };
 
-	//if (true == IsDebugRender)
-	//{
-	//	Platform->SetCollisionRenderOn();
-	//}
-	//else
-	//{
-	//	Platform->SetCollisionRenderOff();
-	//}
+	float4 PlatformPosition = StartPosition + float4{ 0, -180 };
+	float4 FireRotation = float4::Zero;
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	bool UpDirect = true;
+
+	if (0 == RandC)
+	{
+		FireRotation = float4{ 0, 0, 0 };
+		UpDirect = true;
+	}
+	else
+	{
+		FireRotation = float4{ 0, 0, 180 };
+		UpDirect = false;
+	}
+
+	if (true == IsDebugRender)
+	{
+		Platform->SetCollisionRenderOn();
+	}
+	else
+	{
+		Platform->SetCollisionRenderOff();
+	}
 
 	Platform->SetStartPosition(PlatformPosition);
+	Platform->SetFireRotation(FireRotation, UpDirect);
 }
 
 void Croak::CreatePlatform_Tiger()

@@ -53,6 +53,7 @@ void FrogLevel::Update(float _DeltaTime)
 
 	if (true == CroakObject->GetIsStageEnd() && 1 == EndSetCount)
 	{
+		PlayerObject->SetStageEndHP();
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
 		IsBossEnd = true;

@@ -287,26 +287,12 @@ void Croak::IntroEnd()
 void Croak::IdleStart()
 {
 	PlusBodyCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
-	PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+	PlusBodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -220 });
 
 	PlusEXCollisionPtr->GetTransform()->SetLocalScale({ 200, 200, 1 });
-	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ -8, -220 });
+	PlusEXCollisionPtr->GetTransform()->SetLocalPosition({ 0, -220 });
 
 	RenderPtr->ChangeAnimation("Croaks_Idle");
-
-	// 지울것
-	//float4 CurPos = Ribby::RibbyPtr->GetTransform()->GetLocalPosition();
-
-	//Ribby::RibbyPtr->GetTransform()->SetLocalPosition({ CurPos.x - 860.0f, CurPos.y });
-
-	//Ribby::RibbyPtr->Directbool = true;
-	//Ribby::RibbyPtr->BodyCollisionPtr->Off();
-	//Ribby::RibbyPtr->EXCollisionPtr->Off();
-
-	RollPatter = 1;
-	//
-
-	
 }
 void Croak::IdleUpdate(float _DeltaTime)
 {
@@ -316,30 +302,7 @@ void Croak::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 지울것 // 룰렛 테스트
-	IdleDelayTime += _DeltaTime;
-	Ribby::RibbyPtr->Off();
-
-	if (IdleDelayTime >= 1.f)
-	{
-		CreateCoinCount = 3;
-		ChangeState(CroakState::Slot_Morph_Outro);
-		return;
-	}
-	//
-
-	// 합체 테스트
-	//if (IdleDelayTime >= 0.25f && 1 == RollPatter)
-	//{
-	//	ChangeState(CroakState::Slot_Morph_Intro);
-	//	++RollPatter;
-	//	IdleDelayTime = 0.0f;
-	//	Ribby::RibbyPtr->IsRoll = true;
-	//	return;
-	//}
-	// 지울것
-
-	/*if (400.0f >= HP)
+	if (400.0f >= HP)
 	{
 		Ribby::RibbyPtr->IsClap = false;
 		Ribby::RibbyPtr->ClapCount = 0;
@@ -407,7 +370,7 @@ void Croak::IdleUpdate(float _DeltaTime)
 				return;
 			}
 		}
-	}*/
+	}
 }
 void Croak::IdleEnd()
 {
@@ -751,6 +714,7 @@ void Croak::Slot_Morph_OutroUpdate(float _DeltaTime)
 
 	if (20 == RenderPtr->GetCurrentFrame() && 0 == SlotPositionFix)
 	{
+		Player::MainPlayer->StartCameraShaking(16);
 		SlotPositionFix = -1;
 		CreateFrontDust();
 		SlotImageBackRenderPtr->On();
@@ -831,7 +795,7 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 {
 	if (false == IsRullet)
 	{
-		 // CoinAttack(_DeltaTime); mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+		CoinAttack(_DeltaTime);
 
 		if (3 == CreateCoinCount)
 		{
@@ -841,7 +805,7 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 	}
 	else if (true == IsRullet)
 	{
-		RulletTime += _DeltaTime; // 임시
+		RulletTime += _DeltaTime;
 
 		if (3.5f <= RulletTime && 1 == RulletSelectCount)
 		{
@@ -919,7 +883,7 @@ void Croak::Slot_ArmMove_LoopStart()
 }
 void Croak::Slot_ArmMove_LoopUpdate(float _DeltaTime)
 {
-	//CoinAttack(_DeltaTime);                                   MMMMMMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+	CoinAttack(_DeltaTime);
 
 	if (true == IsArmParry)
 	{
@@ -1038,32 +1002,19 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 
 	RulletLoopTime += _DeltaTime;
 
-	//if (true == IsVipor && 0 < CreateVipor && 0.8f <= RulletLoopTime)
-	//{
-	//	RulletLoopTime = 0.0f;
-	//	--CreateVipor;
-	//	CreatePlatform_Vipor();
-	//}
-	//else if (true == IsBison && 0 < CreateTiger && 1.0f <= RulletLoopTime)
-	//{
-	//	RulletLoopTime = 0.0f;
-	//	--CreateTiger;
-	//	CreatePlatform_Tiger();
-	//}
-
-	if (true == IsVipor && 0 < CreateBison && 1.0f <= RulletLoopTime)
+	if (true == IsVipor && 0 < CreateVipor && 0.8f <= RulletLoopTime)
 	{
 		RulletLoopTime = 0.0f;
-		--CreateBison;
-		CreatePlatform_Bison();
+		--CreateVipor;
+		CreatePlatform_Vipor();
+	}
+	else if (true == IsTiger && 0 < CreateTiger && 1.0f <= RulletLoopTime)
+	{
+		RulletLoopTime = 0.0f;
+		--CreateTiger;
+		CreatePlatform_Tiger();
 	}
 	else if (true == IsBison && 0 < CreateBison && 1.0f <= RulletLoopTime)
-	{
-		RulletLoopTime = 0.0f;
-		--CreateBison;
-		CreatePlatform_Bison();
-	}
-	else if (true == IsTiger && 0 < CreateBison && 1.0f <= RulletLoopTime)
 	{
 		RulletLoopTime = 0.0f;
 		--CreateBison;
@@ -1139,6 +1090,7 @@ void Croak::Slot_DeathUpdate(float _DeltaTime)
 	if (0.4f <= ExplosionTime)
 	{
 		ExplosionTime = 0.0f;
+		Player::MainPlayer->StartCameraShaking(6);
 		CreateDeathExplosion(_DeltaTime);
 	}
 }

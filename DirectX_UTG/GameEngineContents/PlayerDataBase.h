@@ -99,6 +99,7 @@ protected:
 	int RightCount = 1;
 	int ShakingCameraSetting = 1;
 	int ShakingCount = 0;
+	int ShakingMaxCount = 0;
 
 	float4 TargetPosition = float4::Zero;
 	float4 PrevCameraPosition = float4::Zero;

@@ -228,7 +228,7 @@ void Player::CheatKey()
 // 플레이어 치트키 모음
 void Player::MinusPlayerHP()
 {
-	if (true == IsHPMax)
+	if (true == IsHPMax || true == StageEndHPMax)
 	{
 		return;
 	}

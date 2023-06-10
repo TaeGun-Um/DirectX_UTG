@@ -49,6 +49,17 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void StartCameraShaking(int _ShakingMaxCount)
+	{
+		ShakingMaxCount = _ShakingMaxCount;
+		IsCameraShaking = true;
+	}
+
+	void SetStageEndHP()
+	{
+		StageEndHPMax = true;
+	}
+
 	void MoveAbleTimeReset()
 	{
 		MoveAbleTime = 0.0f;
@@ -208,6 +219,7 @@ private:
 	bool IsHPMax = false;
 	bool IsEXMax = false;
 	bool IsEXUse = false;
+	bool StageEndHPMax = false;
 	bool IsWeaponChange = false;
 
 	// Assistant
