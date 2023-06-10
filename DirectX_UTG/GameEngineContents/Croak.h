@@ -179,6 +179,8 @@ private:
 	float RulletLoopTime = 0.0f;
 
 	int CreateVipor = 20;
+	int CreateBison = 10;
+	int CreateTiger = 10;
 
 	int CreatePlus = 0;
 	int CreateMobCount = 0;

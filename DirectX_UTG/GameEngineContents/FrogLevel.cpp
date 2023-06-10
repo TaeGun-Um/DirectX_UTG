@@ -225,7 +225,7 @@ void FrogLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 		
-		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half });
+		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();
@@ -523,13 +523,37 @@ void FrogLevel::LevelChangeEnd()
 	{
 		GameEngineSprite::UnLoad("Snake_Platform");
 		GameEngineSprite::UnLoad("Tiger_Ball");
-		GameEngineSprite::UnLoad("Tiger_Front");
 		GameEngineSprite::UnLoad("Tiger_Platform");
 		GameEngineSprite::UnLoad("Bison_Flame_Large_Intro");
 		GameEngineSprite::UnLoad("Bison_Flame_Large_Loop");
 		GameEngineSprite::UnLoad("Bison_Flame_Small_Loop");
-		GameEngineSprite::UnLoad("Bison_Front");
 		GameEngineSprite::UnLoad("Bison_Platform");
+	}
+	if (nullptr != GameEngineTexture::Find("Platform_Bison_Front_001.png"))
+	{
+		GameEngineTexture::UnLoad("Platform_Bison_Front_001.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_002.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_003.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_004.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_005.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_006.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_007.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_008.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_009.png");
+		GameEngineTexture::UnLoad("Platform_Bison_Front_010.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Platform_Tiger_Front_001.png"))
+	{
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_001.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_002.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_003.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_004.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_005.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_006.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_007.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_008.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_009.png");
+		GameEngineTexture::UnLoad("Platform_Tiger_Front_010.png");
 	}
 
 	{
@@ -737,13 +761,37 @@ void FrogLevel::ReLoadSetting()
 	{
 		GameEngineSprite::ReLoad("Snake_Platform");
 		GameEngineSprite::ReLoad("Tiger_Ball");
-		GameEngineSprite::ReLoad("Tiger_Front");
 		GameEngineSprite::ReLoad("Tiger_Platform");
 		GameEngineSprite::ReLoad("Bison_Flame_Large_Intro");
 		GameEngineSprite::ReLoad("Bison_Flame_Large_Loop");
 		GameEngineSprite::ReLoad("Bison_Flame_Small_Loop");
-		GameEngineSprite::ReLoad("Bison_Front");
 		GameEngineSprite::ReLoad("Bison_Platform");
+	}
+	if (nullptr != GameEngineTexture::Find("Platform_Bison_Front_001.png"))
+	{
+		GameEngineTexture::ReLoad("Platform_Bison_Front_001.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_002.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_003.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_004.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_005.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_006.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_007.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_008.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_009.png");
+		GameEngineTexture::ReLoad("Platform_Bison_Front_010.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Platform_Tiger_Front_001.png"))
+	{
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_001.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_002.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_003.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_004.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_005.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_006.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_007.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_008.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_009.png");
+		GameEngineTexture::ReLoad("Platform_Tiger_Front_010.png");
 	}
 }
 

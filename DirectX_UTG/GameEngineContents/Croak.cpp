@@ -123,9 +123,9 @@ void Croak::SetInitReset()
 	MorphDealyTime = 0.0f;
 	CoinAttackTime = 0.0f;
 	ImageBlinkTime = 0.0f;
+	RulletLoopTime = 0.0f;
 
 	RulletTime = 0.0f; // 임시
-	RulletLoopTime = 0.0f; // 임시
 
 	IsIntro = true;
 	IsCreatefly = false;
@@ -890,12 +890,39 @@ void Croak::CreatePlatform_Vipor()
 
 void Croak::CreatePlatform_Bison()
 {
+	std::shared_ptr<Platform_Bison> Platform = GetLevel()->CreateActor<Platform_Bison>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 PlatformPosition = StartPosition + float4{ 0, -180 };
 
+	//if (true == IsDebugRender)
+	//{
+	//	Platform->SetCollisionRenderOn();
+	//}
+	//else
+	//{
+	//	Platform->SetCollisionRenderOff();
+	//}
+
+	Platform->SetStartPosition(PlatformPosition);
 }
 
 void Croak::CreatePlatform_Tiger()
 {
+	std::shared_ptr<Platform_Tiger> Platform = GetLevel()->CreateActor<Platform_Tiger>();
+	float4 StartPosition = GetTransform()->GetLocalPosition();
+	float4 PlatformPosition = StartPosition + float4{ 0, -180 };
 
+	if (true == IsDebugRender)
+	{
+		Platform->SetCollisionRenderOn();
+	}
+	else
+	{
+		Platform->SetCollisionRenderOff();
+	}
+
+	Platform->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Platform->SetStartPosition(PlatformPosition);
 }
 
 void Croak::CreateDeathExplosion(float _DeltaTime)
@@ -1086,14 +1113,62 @@ void Croak::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Snake_Platform").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Ball").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Front").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tiger_Platform").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Large_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Large_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Flame_Small_Loop").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Front").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bison_Platform").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Platform_Bison_Front_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Attack_Platforms");
+		NewDir.Move("Bison_Front");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Bison_Front_010.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Platform_Tiger_Front_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("Croaks");
+		NewDir.Move("Croaks_SlotMachine");
+		NewDir.Move("Attack_Platforms");
+		NewDir.Move("Tiger_Front");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Platform_Tiger_Front_010.png").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)

@@ -25,6 +25,22 @@ public:
 		PixelCollisionCheck.SetColMap(_ColMap, _Pivot);
 	}
 
+	void SetCollisionRenderOn()
+	{
+		PlatformCollisionRenderPtr->On();
+		HitCollisionRenderPtr->On();
+		DebugRenderPtr->On();
+		BallCollisionRenderPtr->On();
+	}
+
+	void SetCollisionRenderOff()
+	{
+		PlatformCollisionRenderPtr->Off();
+		HitCollisionRenderPtr->Off();
+		DebugRenderPtr->Off();
+		BallCollisionRenderPtr->Off();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -32,18 +48,34 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> BallRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> HitCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> BallCollisionRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> HitCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> BallCollisionPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr = nullptr;
+
+	void FrontSet();
 	void PixelCheck(float _DeltaTime);
+	void BallMoveDirection(float _DeltaTime);
 	void MoveDirection(float _DeltaTime);
+	void CollisionCheck(float _Value);
 	void DeathCheck();
 
 	float4 StartPosition = float4::Zero;
+	float4 MoveDirect = float4::Zero;
 
 	PixelCollision PixelCollisionCheck;
+
+	float BallBountTime = 0.0f;
+	float BoundBufferTime = 0.0f;
+	bool IsBoundEnd = false;
+	int BoundCount = 0;
 };
 

@@ -27,16 +27,29 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FireRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> HitCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FireCollisionRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> HitCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> FireCollisionPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> DebugRenderPtr = nullptr;
+
+	void FrontSet();
+	void FireChage(float _DeltaTime);
 	void MoveDirection(float _DeltaTime);
+	void CollisionCheck(float _Value);
 	void DeathCheck();
 
 	float4 StartPosition = float4::Zero;
+	float4 MoveDirect = float4::Zero;
 
+	float WaveTime = 0.0f;
+	bool IsWaveEnd = false;
 };
 

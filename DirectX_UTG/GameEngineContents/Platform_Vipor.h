@@ -65,9 +65,7 @@ private:
 	PixelCollision PixelCollisionCheck;
 
 	float BoundBufferTime = 0.0f;
-
 	bool IsBoundEnd = false;
-
 	int BoundCount = 0;
 };
 

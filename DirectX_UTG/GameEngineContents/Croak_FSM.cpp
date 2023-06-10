@@ -985,7 +985,21 @@ void Croak::Slot_Attack_LoopStart()
 	SlotFrontRenderPtr->On();
 
 	CreateVipor = 20;
-	RulletLoopTime = 0.7f;
+	CreateBison = 10;
+	CreateTiger = 10;
+
+	if (true == IsVipor)
+	{
+		RulletLoopTime = 0.7f;
+	}
+	else if (true == IsBison)
+	{
+		RulletLoopTime = 0.9f;
+	}
+	else if (true == IsTiger)
+	{
+		RulletLoopTime = 0.9f;
+	}
 
 	RenderPtr->ChangeAnimation("Slot_Attack_Loop");
 }
@@ -1024,28 +1038,41 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 
 	RulletLoopTime += _DeltaTime;
 
-	if (true == IsVipor && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	//if (true == IsVipor && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	//{
+	//	RulletLoopTime = 0.0f;
+	//	--CreateVipor;
+	//	CreatePlatform_Vipor();
+	//}
+	//else if (true == IsBison && 0 < CreateTiger && 1.0f <= RulletLoopTime)
+	//{
+	//	RulletLoopTime = 0.0f;
+	//	--CreateTiger;
+	//	CreatePlatform_Tiger();
+	//}
+
+	if (true == IsVipor && 0 < CreateBison && 1.0f <= RulletLoopTime)
 	{
 		RulletLoopTime = 0.0f;
-		--CreateVipor;
-		CreatePlatform_Vipor(); // 22개 바닥으로 소환
+		--CreateBison;
+		CreatePlatform_Bison();
 	}
-	else if (true == IsBison && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	else if (true == IsBison && 0 < CreateBison && 1.0f <= RulletLoopTime)
 	{
 		RulletLoopTime = 0.0f;
-		--CreateVipor;
-		CreatePlatform_Vipor(); // 22개 바닥으로 소환
-		//CreatePlatform_Bison(_DeltaTime); // 11개 중간으로 소환
+		--CreateBison;
+		CreatePlatform_Bison();
 	}
-	else if (true == IsTiger && 0 < CreateVipor && 0.8f <= RulletLoopTime)
+	else if (true == IsTiger && 0 < CreateBison && 1.0f <= RulletLoopTime)
 	{
 		RulletLoopTime = 0.0f;
-		--CreateVipor;
-		CreatePlatform_Vipor(); // 22개 바닥으로 소환
-		//CreatePlatform_Tiger(_DeltaTime); // 10개 바닥
+		--CreateBison;
+		CreatePlatform_Bison();
 	}
 
-	if (0 == CreateVipor && 0.5f <= RulletLoopTime)
+	if (0 == CreateVipor && 0.5f <= RulletLoopTime
+		|| 0 == CreateBison && 0.5f <= RulletLoopTime
+		|| 0 == CreateTiger && 0.5f <= RulletLoopTime)
 	{
 		ChangeState(CroakState::Slot_Attack_Outro);
 		return;
