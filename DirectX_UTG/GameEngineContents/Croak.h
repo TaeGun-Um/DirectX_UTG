@@ -109,7 +109,9 @@ private:
 	bool IsStageEnd = false;
 	bool IsDebugRender = false;
 	bool IsBlink = false;
-
+	
+	void RulletImageBlink(float _DeltaTime);
+	void RulletActivate(float _DeltaTime);
 	void CoinAttack(float _DeltaTime);
 	void ActorInitSetting();
 	void CollisionSetting();
@@ -118,9 +120,9 @@ private:
 	void CreateFirefly();
 	void CreateFrontDust();
 	void CreateCoinProjectile();
-	void CreatePlatform_Bison();
-	void CreatePlatform_Snake();
-	void CreatePlatform_Tiger();
+	void CreatePlatform_Vipor(float _DeltaTime);
+	void CreatePlatform_Bison(float _DeltaTime);
+	void CreatePlatform_Tiger(float _DeltaTime);
 	void CreateDeathExplosion(float _DeltaTime);
 
 	float4 OriginMulColor = float4::Zero;
@@ -131,13 +133,38 @@ private:
 
 	CroakState StateValue = CroakState::Intro;
 
-	float4 SlotImageRollSclae0 = float4::Zero;
-	float4 SlotImageRollSclae1 = float4::Zero;
-	float4 SlotImageRollSclae2 = float4::Zero;
+	float4 SlotViporPosition0 = float4::Zero;
+	float4 SlotViporPosition1 = float4::Zero;
+	float4 SlotViporPosition2 = float4::Zero;
 
-	float4 SlotImageBasicSclae0 = float4::Zero;
-	float4 SlotImageBasicSclae1 = float4::Zero;
-	float4 SlotImageBasicSclae2 = float4::Zero;
+	float4 SlotBisonPosition0 = float4::Zero;
+	float4 SlotBisonPosition1 = float4::Zero;
+	float4 SlotBisonPosition2 = float4::Zero;
+
+	float4 SlotTigerPosition0 = float4::Zero;
+	float4 SlotTigerPosition1 = float4::Zero;
+	float4 SlotTigerPosition2 = float4::Zero;
+
+	float4 LowerLimit = float4::Zero;
+
+	float RulletDelayTime = 0.0f;
+	float RulletSelectDelayTime = 0.0f;
+	float ImageBlinkTime = 0.0f;
+	float WaveTime0 = 0.0f;
+	float WaveTime1 = 0.0f;
+	float WaveTime2 = 0.0f;
+
+	bool IsRulletActivate = false;
+	bool RulletActivateEnd = false;
+	bool IsVipor = false;
+	bool IsBison = false;
+	bool IsTiger = false;
+	bool RulletWave0 = false;
+	bool RulletWave1 = false;
+	bool RulletWave2 = false;
+
+	int RulletSelectCount = 1;
+	int ImageBlinkCount = 0;
 
 	float IntroLoopTime = 0.0f;
 	float IdleDelayTime = 0.0f;

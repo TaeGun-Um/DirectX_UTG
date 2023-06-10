@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Croak.h"
 
+#include <cmath>
+
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -80,6 +82,9 @@ void Croak::Update(float _DeltaTime)
 	CollisionCheck();
 	CollisionSetting();
 	HitBlink(_DeltaTime);
+	RulletActivate(_DeltaTime);
+
+	RulletActivate(_DeltaTime); // ╥Й╥©
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +98,19 @@ void Croak::SetInitReset()
 	ChangeState(CroakState::Idle);
 	HP = 1000;
 
+	IsRulletActivate = false;
+	IsVipor = false;
+	IsBison = false;
+	IsTiger = false;
+	RulletWave0 = false;
+	RulletWave1 = false;
+	RulletWave2 = false;
+
+	WaveTime0 = 0.0f;
+	WaveTime1 = 0.0f;
+	WaveTime2 = 0.0f;
+	RulletSelectDelayTime = 0.0f;
+	RulletDelayTime = 0.0f;
 	IntroLoopTime = 0.0f;
 	IdleDelayTime = 0.0f;
 	CreateMob_LoopTime = 0.0f;
@@ -100,6 +118,7 @@ void Croak::SetInitReset()
 	BFanLoopTime = 0.0f;
 	MorphDealyTime = 0.0f;
 	CoinAttackTime = 0.0f;
+	ImageBlinkTime = 0.0f;
 
 	RulletTime = 0.0f; // юс╫ц
 	RulletLoopTime = 0.0f; // юс╫ц
@@ -114,6 +133,13 @@ void Croak::SetInitReset()
 	SlotInvincibility = false;
 	IsRullet = false;
 	IsArmParry = false;
+	IsRulletActivate = false;
+	IsVipor = false;
+	IsBison = false;
+	IsTiger = false;
+	RulletWave0 = false;
+	RulletWave1 = false;
+	RulletWave2 = false;
 
 	CreatePlus = 0;
 	CreateMobCount = 0;
@@ -123,6 +149,7 @@ void Croak::SetInitReset()
 	MaxPatternCount = 2;
 	RollPatter = 0;
 	SlotPositionFix = 1;
+	ImageBlinkCount = 0;
 
 	WindRenderPtr->Off();
 	SlotMouthRenderPtr->Off();
@@ -134,6 +161,385 @@ void Croak::SetInitReset()
 	SlotImageRenderPtr2->Off();
 
 	ParryCollisionPtr->Off();
+}
+
+void Croak::RulletImageBlink(float _DeltaTime)
+{
+	ImageBlinkTime += _DeltaTime;
+
+	if (0.3f <= ImageBlinkTime)
+	{
+		ImageBlinkTime = 0.0f;
+
+		if (0 == ImageBlinkCount)
+		{
+			++ImageBlinkCount;
+
+			SlotImageRenderPtr0->SetScaleToTexture("Slot_flash_TEMP.png");
+			SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 150 });
+
+			SlotImageRenderPtr2->SetScaleToTexture("Slot_TEMP.png");
+			SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 150 });
+
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotBisonPosition0);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotBisonPosition2);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotTigerPosition0);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotTigerPosition2);
+			}
+		}
+		else if (1 == ImageBlinkCount)
+		{
+			++ImageBlinkCount;
+
+			SlotImageRenderPtr0->SetScaleToTexture("Slot_TEMP.png");
+			SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 150 });
+
+			SlotImageRenderPtr1->SetScaleToTexture("Slot_flash_TEMP.png");
+			SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 150 });
+
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0);
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotBisonPosition0);
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotBisonPosition1);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotTigerPosition0);
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotTigerPosition1);
+			}
+		}
+		else if (2 == ImageBlinkCount)
+		{
+			ImageBlinkCount = 0;
+
+			SlotImageRenderPtr1->SetScaleToTexture("Slot_TEMP.png");
+			SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 150 });
+
+			SlotImageRenderPtr2->SetScaleToTexture("Slot_flash_TEMP.png");
+			SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 150 });
+
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotBisonPosition1);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotBisonPosition2);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotTigerPosition1);
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotTigerPosition2);
+			}
+		}
+	}
+}
+
+void Croak::RulletActivate(float _DeltaTime)
+{
+	if (false == IsRulletActivate)
+	{
+		return;
+	}
+
+	RulletDelayTime += _DeltaTime;
+
+	float MoveDis = 400.0f * _DeltaTime;
+
+	float4 CurPos0 = SlotImageRenderPtr0->GetTransform()->GetLocalPosition();
+	float4 CurPos1 = SlotImageRenderPtr1->GetTransform()->GetLocalPosition();
+	float4 CurPos2 = SlotImageRenderPtr2->GetTransform()->GetLocalPosition();
+
+	if (0.1f <= RulletDelayTime && false == RulletWave0)
+	{
+		if (true == IsVipor)
+		{
+			if (SlotViporPosition0.y >= CurPos0.y)
+			{
+				RulletWave0 = true;
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0);
+			}
+			else
+			{
+				SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsBison)
+		{
+			if (SlotBisonPosition0.y >= CurPos0.y)
+			{
+				RulletWave0 = true;
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotBisonPosition0);
+			}
+			else
+			{
+				SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsTiger)
+		{
+			if (SlotTigerPosition0.y >= CurPos0.y)
+			{
+				RulletWave0 = true;
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotTigerPosition0);
+			}
+			else
+			{
+				SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else
+		{
+			SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+
+			if (LowerLimit.y >= CurPos0.y)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0 + float4{ 0, 137 });
+			}
+		}
+	}
+
+	if (0.5f <= RulletDelayTime && false == RulletWave1)
+	{
+		if (true == IsVipor)
+		{
+			if (SlotViporPosition1.y >= CurPos1.y)
+			{
+				RulletWave1 = true;
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1);
+			}
+			else
+			{
+				SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsBison)
+		{
+			if (SlotBisonPosition1.y >= CurPos0.y)
+			{
+				RulletWave1 = true;
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotBisonPosition1);
+			}
+			else
+			{
+				SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsTiger)
+		{
+			if (SlotTigerPosition1.y >= CurPos0.y)
+			{
+				RulletWave1 = true;
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotTigerPosition1);
+			}
+			else
+			{
+				SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else
+		{
+			SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+
+			if (LowerLimit.y >= CurPos1.y)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1 + float4{ 0, 137 });
+			}
+		}
+	}
+
+	if (1.0f <= RulletDelayTime && false == RulletWave2)
+	{
+		if (true == IsVipor)
+		{
+			if (SlotViporPosition2.y >= CurPos2.y)
+			{
+				RulletWave2 = true;
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
+			}
+			else
+			{
+				SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsBison)
+		{
+			if (SlotBisonPosition2.y >= CurPos0.y)
+			{
+				RulletWave2 = true;
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotBisonPosition2);
+			}
+			else
+			{
+				SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else if (true == IsTiger)
+		{
+			if (SlotTigerPosition2.y >= CurPos0.y)
+			{
+				RulletWave2 = true;
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotTigerPosition2);
+			}
+			else
+			{
+				SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+			}
+		}
+		else
+		{
+			SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+
+			if (LowerLimit.y >= CurPos2.y)
+			{
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2 + float4{ 0, 137 });
+			}
+		}
+	}
+
+	if (true == RulletWave0)
+	{
+		WaveTime0 += _DeltaTime;
+		
+		float4 LimitPos = float4::Zero;
+
+		if (true == IsVipor)
+		{
+			LimitPos = SlotViporPosition0;
+		}
+		else if (true == IsBison)
+		{
+			LimitPos = SlotBisonPosition0;
+		}
+		else if (true == IsTiger)
+		{
+			LimitPos = SlotTigerPosition0;
+		}
+		
+		LimitPos.y -= sinf(WaveTime0 * 12.f) * (30.0f - (WaveTime0 * 24.0f));
+
+		if (0.0f >= (WaveTime0 * 12.f) * (30.0f - (WaveTime0 * 24.0f)))
+		{
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotBisonPosition0);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotTigerPosition0);
+			}
+		}
+		else
+		{
+			RulletActivateEnd = true;
+			SlotImageRenderPtr0->GetTransform()->SetLocalPosition(LimitPos);
+		}
+	}
+
+	if (true == RulletWave1)
+	{
+		WaveTime1 += _DeltaTime;
+
+		float4 LimitPos = float4::Zero;
+
+		if (true == IsVipor)
+		{
+			LimitPos = SlotViporPosition1;
+		}
+		else if (true == IsBison)
+		{
+			LimitPos = SlotBisonPosition1;
+		}
+		else if (true == IsTiger)
+		{
+			LimitPos = SlotTigerPosition1;
+		}
+
+		LimitPos.y -= sinf(WaveTime1 * 12.f) * (30.0f - (WaveTime1 * 24.0f));
+
+		if (0.0f >= (WaveTime1 * 12.f) * (30.0f - (WaveTime1 * 24.0f)))
+		{
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotBisonPosition1);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotTigerPosition1);
+			}
+		}
+		else
+		{
+			SlotImageRenderPtr1->GetTransform()->SetLocalPosition(LimitPos);
+		}
+	}
+
+	if (true == RulletWave2)
+	{
+		WaveTime2 += _DeltaTime;
+
+		float4 LimitPos = float4::Zero;
+
+		if (true == IsVipor)
+		{
+			LimitPos = SlotViporPosition2;
+		}
+		else if (true == IsBison)
+		{
+			LimitPos = SlotBisonPosition2;
+		}
+		else if (true == IsTiger)
+		{
+			LimitPos = SlotTigerPosition2;
+		}
+
+		LimitPos.y -= sinf(WaveTime2 * 12.f) * (30.0f - (WaveTime2 * 24.0f));
+
+		if (0.0f >= (WaveTime2 * 12.f) * (30.0f - (WaveTime2 * 24.0f)))
+		{
+			if (true == IsVipor)
+			{
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
+			}
+			else if (true == IsBison)
+			{
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotBisonPosition2);
+			}
+			else if (true == IsTiger)
+			{
+				SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotTigerPosition2);
+			}
+		}
+		else
+		{
+			SlotImageRenderPtr2->GetTransform()->SetLocalPosition(LimitPos);
+		}
+	}
 }
 
 void Croak::CoinAttack(float _DeltaTime)
@@ -459,17 +865,17 @@ void Croak::CreateCoinProjectile()
 	Projectile->SetStartPosition(ProjectilePosition);
 }
 
-void Croak::CreatePlatform_Bison()
+void Croak::CreatePlatform_Vipor(float _DeltaTime)
 {
 
 }
 
-void Croak::CreatePlatform_Snake()
+void Croak::CreatePlatform_Bison(float _DeltaTime)
 {
 
 }
 
-void Croak::CreatePlatform_Tiger()
+void Croak::CreatePlatform_Tiger(float _DeltaTime)
 {
 
 }
@@ -779,12 +1185,13 @@ void Croak::ActorInitSetting()
 	{
 		SlotImageRenderPtr0 = CreateComponent<GameEngineSpriteRenderer>();
 		SlotImageRenderPtr0->SetScaleToTexture("Slot_TEMP.png");
+		SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 150 });
+		SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ -65, -80, 1 });
 
-		SlotImageRollSclae0 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
-		SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 200 });
-		SlotImageBasicSclae0 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotViporPosition0 = SlotImageRenderPtr0->GetTransform()->GetLocalPosition();
+		SlotBisonPosition0 = SlotViporPosition0 + float4{ 0, 51 };
+		SlotTigerPosition0 = SlotViporPosition0 + float4{ 0, 102 };
 
-		SlotImageRenderPtr0->GetTransform()->AddLocalPosition({ -65, -110, 1 });
 		SlotImageRenderPtr0->Off();
 	}
 
@@ -792,12 +1199,13 @@ void Croak::ActorInitSetting()
 	{
 		SlotImageRenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
 		SlotImageRenderPtr1->SetScaleToTexture("Slot_TEMP.png");
+		SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 150 });
+		SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ -12, -80, 1 });
 
-		SlotImageRollSclae1 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
-		SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 200 });
-		SlotImageBasicSclae1 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotViporPosition1 = SlotImageRenderPtr1->GetTransform()->GetLocalPosition();
+		SlotBisonPosition1 = SlotViporPosition1 + float4{ 0, 51 };
+		SlotTigerPosition1 = SlotViporPosition1 + float4{ 0, 102 };
 
-		SlotImageRenderPtr1->GetTransform()->AddLocalPosition({ -12, -110, 1 });
 		SlotImageRenderPtr1->Off();
 	}
 
@@ -805,12 +1213,13 @@ void Croak::ActorInitSetting()
 	{
 		SlotImageRenderPtr2 = CreateComponent<GameEngineSpriteRenderer>();
 		SlotImageRenderPtr2->SetScaleToTexture("Slot_TEMP.png");
+		SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 150 });
+		SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 43, -80, 1 });
 
-		SlotImageRollSclae2 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
-		SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 200 });
-		SlotImageBasicSclae2 = SlotImageRenderPtr0->GetTransform()->GetLocalScale();
+		SlotViporPosition2 = SlotImageRenderPtr2->GetTransform()->GetLocalPosition();
+		SlotBisonPosition2 = SlotViporPosition2 + float4{ 0, 51 };
+		SlotTigerPosition2 = SlotViporPosition2 + float4{ 0, 102 };
 
-		SlotImageRenderPtr2->GetTransform()->AddLocalPosition({ 43, -110, 1 });
 		SlotImageRenderPtr2->Off();
 	}
 

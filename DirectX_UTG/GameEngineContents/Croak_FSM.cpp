@@ -787,6 +787,21 @@ void Croak::Slot_Morph_OutroEnd()
 void Croak::Slot_InitialOpenStart()
 {
 	RenderPtr->ChangeAnimation("Slot_InitialOpen");
+
+	SlotImageRenderPtr0->SetScaleToTexture("Slot_TEMP.png");
+	SlotImageRenderPtr0->GetTransform()->SetLocalScale({ 60, 150 });
+
+	SlotImageRenderPtr1->SetScaleToTexture("Slot_TEMP.png");
+	SlotImageRenderPtr1->GetTransform()->SetLocalScale({ 60, 150 });
+
+	SlotImageRenderPtr2->SetScaleToTexture("Slot_TEMP.png");
+	SlotImageRenderPtr2->GetTransform()->SetLocalScale({ 60, 150 });
+
+	SlotImageRenderPtr0->GetTransform()->SetLocalPosition(SlotViporPosition0);
+	SlotImageRenderPtr1->GetTransform()->SetLocalPosition(SlotViporPosition1);
+	SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
+
+	LowerLimit = SlotViporPosition0 + float4{ 0, -45 };
 }
 void Croak::Slot_InitialOpenUpdate(float _DeltaTime)
 {
@@ -807,6 +822,8 @@ void Croak::Slot_IdleStart()
 	{
 		SlotInvincibility = true;
 	}
+
+	RulletSelectCount = 1;
 	
 	RenderPtr->ChangeAnimation("Slot_Idle");
 }
@@ -826,7 +843,33 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 	{
 		RulletTime += _DeltaTime; // 임시
 
-		if (3.0f <= RulletTime)
+		if (3.5f <= RulletTime && 1 == RulletSelectCount)
+		{
+			RulletSelectCount = 0;
+
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+			if (0 == RandC)
+			{
+				IsVipor = true;
+			}
+			else if (1 == RandC)
+			{
+				IsBison = true;
+			}
+			else
+			{
+				IsTiger = true;
+			}
+		}
+
+		if (true == RulletActivateEnd)
+		{
+			RulletSelectDelayTime += _DeltaTime;
+			RulletImageBlink(_DeltaTime);
+		}
+
+		if (3.0f <= RulletSelectDelayTime)
 		{
 			ChangeState(CroakState::Slot_Attack_Intro);
 			return;
@@ -836,11 +879,24 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 void Croak::Slot_IdleEnd()
 {
 	CoinAttackTime = 0.0f;
-	RulletTime = 0.0f;     // 임시
+	RulletSelectDelayTime = 0.0f;
+	ImageBlinkTime = 0.0f;
+	RulletTime = 0.0f;
 }
 
 void Croak::Slot_ArmMove_IntroStart()
 {
+	WaveTime0 = 0.0f;
+	WaveTime1 = 0.0f;
+	WaveTime2 = 0.0f;
+	RulletDelayTime = 0.0f;
+
+	RulletWave0 = false;
+	RulletWave1 = false;
+	RulletWave2 = false;
+	IsRulletActivate = false;
+	RulletActivateEnd = false;
+
 	RenderPtr->ChangeAnimation("Slot_ArmMove_Intro");
 }
 void Croak::Slot_ArmMove_IntroUpdate(float _DeltaTime)
@@ -856,6 +912,8 @@ void Croak::Slot_ArmMove_IntroEnd()
 
 }
 
+bool RollCheck = false;
+
 void Croak::Slot_ArmMove_LoopStart()
 {
 	ParryCollisionPtr->On();
@@ -868,6 +926,7 @@ void Croak::Slot_ArmMove_LoopUpdate(float _DeltaTime)
 	if (true == IsArmParry)
 	{
 		IsRullet = true;
+		IsRulletActivate = true;
 		ChangeState(CroakState::Slot_ArmMove_Outro);
 		return;
 	}
@@ -966,6 +1025,19 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 		ChangeState(CroakState::Slot_Attack_Outro);
 		return;
 	}
+
+	if (true == IsVipor)
+	{
+		//CreatePlatform_Vipor(_DeltaTime)
+	}
+	else if (true == IsBison)
+	{
+		//CreatePlatform_Bison(_DeltaTime)
+	}
+	else if (true == IsTiger)
+	{
+		//CreatePlatform_Tiger(_DeltaTime)
+	}
 }
 void Croak::Slot_Attack_LoopEnd()
 {
@@ -993,6 +1065,9 @@ void Croak::Slot_Attack_OutroUpdate(float _DeltaTime)
 }
 void Croak::Slot_Attack_OutroEnd()
 {
+	IsVipor = false;
+	IsBison = false;
+	IsTiger = false;
 	IsRullet = false;
 }
 

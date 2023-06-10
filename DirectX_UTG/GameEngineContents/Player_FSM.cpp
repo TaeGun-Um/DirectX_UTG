@@ -349,12 +349,6 @@ void Player::IdleStart()
 }
 void Player::IdleUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("Test"))
-	{
-		ChangeState(PlayerState::Death);
-		return;
-	}
-
 	if (true == IsIntro)
 	{
 		ChangeState(PlayerState::Intro);
