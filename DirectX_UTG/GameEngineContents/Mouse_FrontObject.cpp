@@ -11,27 +11,56 @@ Mouse_FrontObject::~Mouse_FrontObject()
 {
 }
 
+void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _Brightness)
+{
+	float4 ControlColor = float4::Zero;
+
+	ControlColor.r = _Brightness;
+	ControlColor.g = _Brightness;
+	ControlColor.b = _Brightness;
+
+	_Object->ColorOptionValue.MulColor += ControlColor;
+}
+
 void Mouse_FrontObject::Start()
 {
-	//if (nullptr == GameEngineTexture::Find("Backstage_1.png"))
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
-	//	NewDir.Move("Image");
-	//	NewDir.Move("Level");
-	//	NewDir.Move("1_Ribby_and_Croaks");
+	if (nullptr == GameEngineTexture::Find("mouse_bg_foreground_a.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Mouse_FrontMapObject");
 
-	//	GameEngineTexture::Load(NewDir.GetPlusFileName("Backstage_1.png").GetFullPath());
-	//}
+		GameEngineTexture::Load(NewDir.GetPlusFileName("mouse_bg_foreground_a.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("mouse_bg_foreground_b1.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("mouse_bg_foreground_b2.png").GetFullPath());
+	}
 
-	//if (nullptr == RenderPtr)
-	//{
-	//	RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	RenderPtr->SetTexture("Backstage_1.png");
-	//	RenderPtr->GetTransform()->SetLocalScale({ 1941, 480 });
-	//	RenderPtr->GetTransform()->SetLocalPosition({ 40, 130 });
-	//}
+	if (nullptr == FrontRenderPtr_1)
+	{
+		FrontRenderPtr_1 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_1->SetScaleToTexture("mouse_bg_foreground_b2.png");
+		FrontRenderPtr_1->GetTransform()->SetWorldPosition({ 630, 380, -4 });
+	}
+	if (nullptr == FrontRenderPtr_2)
+	{
+		FrontRenderPtr_2 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_2->SetScaleToTexture("mouse_bg_foreground_a.png");
+		FrontRenderPtr_2->GetTransform()->SetWorldPosition({ 600, 650, -4 });
+	}
+	if (nullptr == FrontRenderPtr_3)
+	{
+		FrontRenderPtr_3 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_3->SetScaleToTexture("mouse_bg_foreground_b1.png");
+		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 635, 100, -4 });
+	}
+
+	BrightnessControl(FrontRenderPtr_1, 1.2f);
+	BrightnessControl(FrontRenderPtr_2, 1.2f);
+	BrightnessControl(FrontRenderPtr_3, 1.2f);
 }
 
 void Mouse_FrontObject::Update(float _DeltaTime)

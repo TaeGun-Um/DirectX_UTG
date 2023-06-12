@@ -41,6 +41,7 @@ void Mouse_Map::Start()
 	{
 		WallBGRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		WallBGRenderPtr->SetScaleToTexture("Mouse_BackGround_Phase_1.png");
+		//WallBGRenderPtr->GetTransform()->AddLocalPosition({ 0, -10 });
 	}
 
 	if (nullptr == HouseBGRenderPtr)

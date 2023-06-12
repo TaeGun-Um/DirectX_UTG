@@ -133,20 +133,20 @@ void MouseLevel::Update(float _DeltaTime)
 
 void MouseLevel::LevelChangeStart()
 {
-	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
+	if (nullptr == GameEngineTexture::Find("Mouse_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Image");
 		NewDir.Move("Level");
-		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("3_Werner_Werman");
 
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Frog_ColMap.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_ColMap.png").GetFullPath());
 	}
 
 	// ColMap
-	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("Frog_ColMap.png");
+	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("Mouse_ColMap.png");
 	int PlayMapWidth = PlayMap->GetWidth();
 	int PlayMapHeight = PlayMap->GetHeight();
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
@@ -198,20 +198,20 @@ void MouseLevel::LevelChangeStart()
 		PlayerObject->SetIntro();
 	}
 	{
-		//if (nullptr == FrontObject)
-		//{
-		//	FrontObject = CreateActor<Frog_FrontObject>();
-		//}
+		if (nullptr == FrontMapObject)
+		{
+			FrontMapObject = CreateActor<Mouse_FrontObject>();
+		}
 
-		//FrontObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
+		FrontMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
 	}
 	{
-		//if (nullptr == ThisColMap)
-		//{
-		//	ThisColMap = CreateActor<Frog_ColMap>();
-		//}
+		if (nullptr == ThisColMap)
+		{
+			ThisColMap = CreateActor<Mouse_ColMap>();
+		}
 
-		//ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
+		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	{
 		if (nullptr == WeaponObject)
@@ -418,9 +418,15 @@ void MouseLevel::PlayerDebugRenderOff()
 }
 void MouseLevel::LevelDebugOn()
 {
-
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOn();
+	}
 }
 void MouseLevel::LevelDebugOff()
 {
-
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOff();
+	}
 }

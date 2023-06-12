@@ -14,6 +14,16 @@ public:
 	Mouse_ColMap& operator=(const Mouse_ColMap& _Other) = delete;
 	Mouse_ColMap& operator=(Mouse_ColMap&& _Other) noexcept = delete;
 
+	void ColMapDebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void ColMapDebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -22,5 +32,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 
+	bool IsDebugRender = false;
 };
 

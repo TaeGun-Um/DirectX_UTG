@@ -23,8 +23,8 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_1 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_2 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_3 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_4 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_5 = nullptr;
+
+	void BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _Brightness);
 
 };
 

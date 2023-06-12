@@ -87,7 +87,6 @@ public:
 		return ReLoad(_Path, NewPath.GetFileName());
 	}
 
-
 	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource<GameEngineSprite>::Find(_Name);
