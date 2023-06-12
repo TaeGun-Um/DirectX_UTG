@@ -103,10 +103,14 @@ void Player::PlayerReset()
 	HitTime = 0.0f;
 	IsHit = false;
 	IsSlap = false;
+	IsDash = false;
+	IsEXAttack = false;
+	PortalAble = false;
 	Directbool = true;
 	HitTimeCheck = false;
 	IsPlayerDeath = false;
 	BottomJumpBlock = false;
+	// IsIntro
 
 	GetTransform()->SetLocalPositiveScaleX();
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
