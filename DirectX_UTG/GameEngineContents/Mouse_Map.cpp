@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Mouse_Map.h"
 
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include "HBSCSpriteRenderer.h"
 
 Mouse_Map::Mouse_Map() 
 {
@@ -11,7 +11,7 @@ Mouse_Map::~Mouse_Map()
 {
 }
 
-void Mouse_Map::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _Brightness)
+void Mouse_Map::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _Brightness)
 {
 	float4 ControlColor = float4::Zero;
 
@@ -39,14 +39,14 @@ void Mouse_Map::Start()
 
 	if (nullptr == WallBGRenderPtr)
 	{
-		WallBGRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		WallBGRenderPtr = CreateComponent<HBSCSpriteRenderer>();
 		WallBGRenderPtr->SetScaleToTexture("Mouse_BackGround_Phase_1.png");
 		//WallBGRenderPtr->GetTransform()->AddLocalPosition({ 0, -10 });
 	}
 
 	if (nullptr == HouseBGRenderPtr)
 	{
-		HouseBGRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		HouseBGRenderPtr = CreateComponent<HBSCSpriteRenderer>();
 		HouseBGRenderPtr->SetTexture("Mouse_House_BackGround.png");
 		HouseBGRenderPtr->GetTransform()->SetLocalScale({ 1400, 719 });
 		HouseBGRenderPtr->GetTransform()->AddLocalPosition({ 0, 100, 10 });

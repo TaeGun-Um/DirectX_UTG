@@ -20,21 +20,21 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Bullet1 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Bullet2 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Bullet3 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Bullet4 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Bullet1 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Bullet2 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Bullet3 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Bullet4 = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Stool1 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Stool2 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Stool1 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Stool2 = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Thimble1 = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Thimble2 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Thimble1 = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Thimble2 = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Dice = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> BackRenderPtr_Table = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Dice = nullptr;
+	std::shared_ptr<class HBSCSpriteRenderer> BackRenderPtr_Table = nullptr;
 
 
-	void BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _Brightness);
+	void BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _Brightness);
 };
 

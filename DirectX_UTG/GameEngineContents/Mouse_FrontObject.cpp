@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Mouse_FrontObject.h"
 
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include "HBSCSpriteRenderer.h"
 
 Mouse_FrontObject::Mouse_FrontObject() 
 {
@@ -11,7 +11,7 @@ Mouse_FrontObject::~Mouse_FrontObject()
 {
 }
 
-void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _Brightness)
+void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _Brightness)
 {
 	float4 ControlColor = float4::Zero;
 
@@ -41,19 +41,19 @@ void Mouse_FrontObject::Start()
 
 	if (nullptr == FrontRenderPtr_1)
 	{
-		FrontRenderPtr_1 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_1 = CreateComponent<HBSCSpriteRenderer>();
 		FrontRenderPtr_1->SetScaleToTexture("mouse_bg_foreground_b2.png");
 		FrontRenderPtr_1->GetTransform()->SetWorldPosition({ 630, 380, -4 });
 	}
 	if (nullptr == FrontRenderPtr_2)
 	{
-		FrontRenderPtr_2 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_2 = CreateComponent<HBSCSpriteRenderer>();
 		FrontRenderPtr_2->SetScaleToTexture("mouse_bg_foreground_a.png");
 		FrontRenderPtr_2->GetTransform()->SetWorldPosition({ 600, 650, -4 });
 	}
 	if (nullptr == FrontRenderPtr_3)
 	{
-		FrontRenderPtr_3 = CreateComponent<GameEngineSpriteRenderer>();
+		FrontRenderPtr_3 = CreateComponent<HBSCSpriteRenderer>();
 		FrontRenderPtr_3->SetScaleToTexture("mouse_bg_foreground_b1.png");
 		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 635, 100, -4 });
 	}

@@ -127,6 +127,16 @@ void CupheadCore::ContentsResourcesCreate()
 	//	Pipe->SetDepthState("EngineDepth");
 	//}
 
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("HBSCSprite");
+
+		Pipe->SetVertexShader("HBSCShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("HBSCShader.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
 	// IMGUI Create
 	GameEngineGUI::GUIWindowCreate<TransformGUI>("TransformGUI");
 	GameEngineGUI::GUIWindowCreate<OverworldGUI>("OverworldGUI");
