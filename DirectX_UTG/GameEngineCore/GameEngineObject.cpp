@@ -10,6 +10,7 @@ GameEngineObject::~GameEngineObject()
 {
 }
 
+
 void GameEngineObject::Release()
 {
 	Transform.ChildRelease();
@@ -88,8 +89,8 @@ void GameEngineObject::AllRelease()
 	{
 		Object->AllRelease();
 	}
-}
 
+}
 bool GameEngineObject::IsDeath()
 {
 	GameEngineTransform* Trans = GetTransform()->GetParent();
@@ -116,6 +117,16 @@ bool GameEngineObject::IsUpdate()
 	}
 
 	return GameEngineObjectBase::IsUpdate();
+}
+
+void GameEngineObject::AllDestroy()
+{
+	Destroy();
+
+	for (std::shared_ptr<GameEngineObject> Object : Childs)
+	{
+		Object->AllDestroy();
+	}
 }
 
 void GameEngineObject::AllLevelChangeStart()

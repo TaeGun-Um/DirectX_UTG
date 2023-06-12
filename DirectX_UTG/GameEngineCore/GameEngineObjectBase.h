@@ -30,19 +30,19 @@ public:
 	}
 
 	// 상속한 Object 랜더상태 On
-	void On()
+	virtual void On()
 	{
 		UpdateValue = true;
 	}
 
 	// 상속한 Object의 랜더상태 Off
-	void Off()
+	virtual void Off()
 	{
 		UpdateValue = false;
 	}
 
 	// 상속한 Object를 Death 처리
-	void Death()
+	virtual void Death()
 	{
 		DeathValue = true;
 	}
@@ -56,7 +56,7 @@ public:
 	// 업데이트가 on인지 체크, 부모자식간의 관계를 파악하기 위한 virtual
 	virtual bool IsUpdate()
 	{
-		return UpdateValue;
+		return UpdateValue && (false == DeathValue);
 	}
 
 	// 상속한 Object의 디버그밸류 On

@@ -120,6 +120,15 @@ float4& float4::operator*=(const class float4x4& _Other)
 	return *this;
 }
 
+float float4::XYDistance(float4 _Value)
+{
+	return sqrtf((x - _Value.x) * (x - _Value.x) + (y - _Value.y) * (y - _Value.y));
+}
+float float4::XYZDistance(float4 _Value)
+{
+	return sqrtf((x - _Value.x) * (x - _Value.x) + (y - _Value.y) * (y - _Value.y) + (z - _Value.z) * (z - _Value.z));
+}
+
 // 제로행렬
 const float4x4 float4x4::Zero = float4x4(float4::Null, float4::Null, float4::Null, float4::Null);
 

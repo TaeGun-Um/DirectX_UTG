@@ -102,6 +102,7 @@ void Player::PlayerReset()
 	BodyCollisionPtr->On();
 	HitTime = 0.0f;
 	IsHit = false;
+	IsSlap = false;
 	Directbool = true;
 	HitTimeCheck = false;
 	IsPlayerDeath = false;

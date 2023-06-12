@@ -183,6 +183,9 @@ public:
 	// 쿼터니온을 오일러 각도로 변환하여 리턴(Radian)
 	float4 QuaternionToEulerRad();
 
+	float XYDistance(float4 _Value);
+	float XYZDistance(float4 _Value);
+
 	// float4의 x, y, z, w의 절반값(1/2)를 리턴
 	float hx() const
 	{
@@ -723,7 +726,7 @@ public:
 
 	// SRT(변환 행렬) 분리
 	// 변환행렬은 위치벡터에서 크기, 회전, 위치변환을 위해 곱해지는 행렬을 말한다.
-	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos) const
 	{
 		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
 	}
