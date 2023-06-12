@@ -383,6 +383,7 @@
     <ClInclude Include="Mouse_BackObject.h">
       <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
     </ClInclude>
+    <ClInclude Include="HBSCSpriteRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -662,5 +663,6 @@
     <ClCompile Include="Mouse_BackObject.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
     </ClCompile>
+    <ClCompile Include="HBSCSpriteRenderer.cpp" />
   </ItemGroup>
 </Project>
