@@ -11,15 +11,17 @@ Mouse_Map::~Mouse_Map()
 {
 }
 
-void Mouse_Map::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _Brightness)
+void Mouse_Map::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
 {
+	float4 OriginColor = _Object->ColorOptionValue.MulColor;
 	float4 ControlColor = float4::Zero;
 
-	ControlColor.r = _Brightness;
-	ControlColor.g = _Brightness;
-	ControlColor.b = _Brightness;
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
 
-	_Object->ColorOptionValue.MulColor += ControlColor;
+	_Object->HBSCColorValue.HBSCColor = ControlColor;
 }
 
 void Mouse_Map::Start()
@@ -52,8 +54,8 @@ void Mouse_Map::Start()
 		HouseBGRenderPtr->GetTransform()->AddLocalPosition({ 0, 100, 10 });
 	}
 
-	BrightnessControl(WallBGRenderPtr, 0.6f);
-	BrightnessControl(HouseBGRenderPtr, 0.6f);
+	BrightnessControl(WallBGRenderPtr, 0.6f, 0.6f, 0.6f);
+	BrightnessControl(HouseBGRenderPtr, 0.6f, 0.6f, 0.6f);
 }
 
 void Mouse_Map::Update(float _DeltaTime)

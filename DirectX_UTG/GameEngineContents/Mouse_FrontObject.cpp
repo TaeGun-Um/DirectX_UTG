@@ -11,15 +11,18 @@ Mouse_FrontObject::~Mouse_FrontObject()
 {
 }
 
-void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _Brightness)
+// saturation 채도 // brightness 밝기 // contrast 대비
+void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class HBSCSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
 {
+	float4 OriginColor = _Object->ColorOptionValue.MulColor;
 	float4 ControlColor = float4::Zero;
 
-	ControlColor.r = _Brightness;
-	ControlColor.g = _Brightness;
-	ControlColor.b = _Brightness;
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
 
-	_Object->ColorOptionValue.MulColor += ControlColor;
+	_Object->HBSCColorValue.HBSCColor = ControlColor;
 }
 
 void Mouse_FrontObject::Start()
@@ -58,9 +61,9 @@ void Mouse_FrontObject::Start()
 		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 635, 100, -4 });
 	}
 
-	BrightnessControl(FrontRenderPtr_1, 1.2f);
-	BrightnessControl(FrontRenderPtr_2, 1.2f);
-	BrightnessControl(FrontRenderPtr_3, 1.2f);
+	BrightnessControl(FrontRenderPtr_1, 0.6f, 0.6f, 0.6f);
+	BrightnessControl(FrontRenderPtr_2, 0.6f, 0.6f, 0.6f);
+	BrightnessControl(FrontRenderPtr_3, 0.6f, 0.6f, 0.6f);
 }
 
 void Mouse_FrontObject::Update(float _DeltaTime)
