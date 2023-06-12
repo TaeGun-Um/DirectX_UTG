@@ -50,8 +50,11 @@ protected:
 
 private:
 	std::shared_ptr<class Loading> LoadingPtr = nullptr;
-	std::shared_ptr<class Frog_Map> MapObject = nullptr;
-	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
+	std::shared_ptr<class Mouse_Map> MapObject = nullptr;
+	std::shared_ptr<class Mouse_ColMap> ThisColMap = nullptr;
+	std::shared_ptr<class Mouse_FrontObject> FrontMapObject = nullptr;
+	std::shared_ptr<class Mouse_BackObject> BackMapObject = nullptr;
+	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
 	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;

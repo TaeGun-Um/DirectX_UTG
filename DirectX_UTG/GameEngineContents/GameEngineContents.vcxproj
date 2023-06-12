@@ -333,6 +333,22 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Mouse_BackObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Mouse_ColMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Mouse_FrontObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Mouse_Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MoveDust.h">
       <SubType>
       </SubType>
@@ -670,6 +686,22 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MouseLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Mouse_BackObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Mouse_ColMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Mouse_FrontObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Mouse_Map.cpp">
       <SubType>
       </SubType>
     </ClCompile>

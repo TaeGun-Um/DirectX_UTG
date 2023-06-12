@@ -6,7 +6,12 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
+#include "Mouse_Map.h"
+#include "Mouse_ColMap.h"
+#include "Mouse_FrontObject.h"
+#include "Mouse_BackObject.h"
 #include "Player.h"
+#include "WeaponUI.h"
 #include "CardUI.h"
 #include "HealthUI.h"
 #include "Werner_Werman.h"
@@ -36,40 +41,41 @@ void MouseLevel::Update(float _DeltaTime)
 {
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
-	//if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
+	//if (true == MouseObject->GetIsStageEnd() && 1 == EndSetCount)
 	//{
+	//	PlayerObject->SetStageEndHP();
 	//	EndSetCount = 0;
 	//	KnockoutPtr->StartMessage();
 	//	IsBossEnd = true;
 	//	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
 	//}
 
-	if (true == IsBossEnd)
-	{
-		EndTime += _DeltaTime;
+	//if (true == IsBossEnd)
+	//{
+	//	EndTime += _DeltaTime;
 
-		if (true == KnockoutPtr->GetIsEnd())
-		{
-			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+	//	if (true == KnockoutPtr->GetIsEnd())
+	//	{
+	//		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
-			if (EndTime >= 3.0f && 1 == EndSetCount2)
-			{
-				EndSetCount2 = 0;
-				BlackBoxPtr->BoxSettingReset();
-				BlackBoxPtr->SetEnter();
-			}
-		}
+	//		if (EndTime >= 4.5f && 1 == EndSetCount2)
+	//		{
+	//			EndSetCount2 = 0;
+	//			BlackBoxPtr->BoxSettingReset();
+	//			BlackBoxPtr->SetEnter();
+	//		}
+	//	}
 
-		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
-		{
-			IsMouseLevelEnd = true;
-			OverworldLevel::OverworldLevelPtr->SetMouseEnd();
-			LoadingOn();
-			GameEngineCore::ChangeLevel("OverworldLevel");
-		}
+	//	if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+	//	{
+	//		IsMouseLevelEnd = true;
+	//		OverworldLevel::OverworldLevelPtr->SetFrogEnd();
+	//		LoadingOn();
+	//		GameEngineCore::ChangeLevel("OverworldLevel");
+	//	}
 
-		return;
-	}
+	//	return;
+	//}
 
 	////////////////////////////////////////// Player Death //////////////////////////////////////////
 
@@ -105,24 +111,24 @@ void MouseLevel::Update(float _DeltaTime)
 
 	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
-	ReadyWallopTime += _DeltaTime;
+	//ReadyWallopTime += _DeltaTime;
 
-	if (1.0f <= ReadyWallopTime && 1 == ReadyWallopCount)
-	{
-		ReadyWallopCount = 0;
-		ReadyWallopPtr->StartMessage();
-	}
+	//if (1.5f <= ReadyWallopTime && 1 == ReadyWallopCount)
+	//{
+	//	ReadyWallopCount = 0;
+	//	ReadyWallopPtr->StartMessage();
+	//}
 
-	// readywallop이 끝나는 시점에 게임 시작
-	if (true == ReadyWallopPtr->GetIsEnd())
-	{
-		int a = 0;
-	}
+	//// readywallop이 끝나는 시점에 게임 시작
+	//if (true == ReadyWallopPtr->GetIsEnd())
+	//{
+	//	int a = 0;
+	//}
 
-	if (true == GameEngineInput::IsDown("PrevLevel"))
-	{
-		GameEngineCore::ChangeLevel("OverworldLevel");
-	}
+	//if (true == GameEngineInput::IsDown("PrevLevel"))
+	//{
+	//	GameEngineCore::ChangeLevel("OverworldLevel");
+	//}
 }
 
 void MouseLevel::LevelChangeStart()
@@ -152,20 +158,30 @@ void MouseLevel::LevelChangeStart()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	{
-		//if (nullptr == MapObject)
-		//{
-		//	MapObject = CreateActor<Frog_Map>();
-		//}
+		if (nullptr == MapObject)
+		{
+			MapObject = CreateActor<Mouse_Map>();
+		}
 
-		//MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 10 });
+		MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 10 });
 	}
+	// back
+	{
+		if (nullptr == BackMapObject)
+		{
+			BackMapObject = CreateActor<Mouse_BackObject>();
+		}
+
+		BackMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 9 });
+	}
+	// Boss
 	{
 		//if (nullptr == MouseObject)
 		//{
 		//	MouseObject = CreateActor<Werner_Werman>();
 		//}
 
-		//MouseObject->GetTransform()->SetLocalPosition({ 1000 , 250 });
+		//MouseObject->GetTransform()->SetLocalPosition({ 1020 , 280 });
 		//MouseObject->SetInitReset();
 	}
 	{
@@ -174,10 +190,20 @@ void MouseLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 
-		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half });
-		PlayerObject->SetCorrectionFalse();
+		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
+		PlayerObject->SetCorrectionFalse();
+		PlayerObject->PlayerReset();
+		PlayerObject->SetIntro();
+	}
+	{
+		//if (nullptr == FrontObject)
+		//{
+		//	FrontObject = CreateActor<Frog_FrontObject>();
+		//}
+
+		//FrontObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
 	}
 	{
 		//if (nullptr == ThisColMap)
@@ -188,16 +214,22 @@ void MouseLevel::LevelChangeStart()
 		//ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	{
+		if (nullptr == WeaponObject)
+		{
+			WeaponObject = CreateActor<WeaponUI>();
+		}
 		if (nullptr == HealthObject)
 		{
 			HealthObject = CreateActor<HealthUI>();
 		}
-
 		if (nullptr == CardObject)
 		{
 			CardObject = CreateActor<CardUI>();
 		}
 
+		WeaponObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		WeaponObject->SetMainPalyer(PlayerObject);
+		WeaponObject->StartPositionSetting(WeaponObject->GetTransform()->GetLocalPosition());
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
 		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });
@@ -243,9 +275,10 @@ void MouseLevel::LevelChangeStart()
 		{
 			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		}
+
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
-		GUI->SetMouseBoss(MouseObject);
+		//GUI->SetMouseBoss(MouseObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&MouseLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&MouseLevel::PlayerDebugRenderOff, this);
@@ -255,7 +288,6 @@ void MouseLevel::LevelChangeStart()
 	{
 		if (nullptr == LoadingPtr)
 		{
-
 			LoadingPtr = CreateActor<Loading>();
 		}
 
@@ -267,16 +299,6 @@ void MouseLevel::LevelChangeStart()
 
 void MouseLevel::LevelChangeEnd()
 {
-	//if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
-//{
-//	GameEngineTexture::UnLoad("Backstage_1_1.png");
-//	GameEngineTexture::UnLoad("Backstage_2_2.png");
-//	GameEngineTexture::UnLoad("Backstage_3_3.png");
-//}
-//if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-//{
-//	GameEngineSprite::UnLoad("Ribby_Idle");
-//}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
@@ -335,16 +357,6 @@ void MouseLevel::LevelChangeEnd()
 
 void MouseLevel::ReLoadSetting()
 {
-	//if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
-//{
-//	GameEngineTexture::ReLoad("Backstage_1_1.png");
-//	GameEngineTexture::ReLoad("Backstage_2_2.png");
-//	GameEngineTexture::ReLoad("Backstage_3_3.png");
-//}
-//if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-//{
-//	GameEngineSprite::ReLoad("Ribby_Idle");
-//}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::ReLoad("Peashooter_Spawn.png");
