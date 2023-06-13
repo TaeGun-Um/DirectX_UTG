@@ -52,8 +52,9 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CanRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CanUpRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> WheelRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> MouseUpRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> WheelRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -78,14 +79,12 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
-	float4 IntroStartPos = float4::Zero;
-	float4 IntroDownPos = float4::Zero;
-	float IntroLerpTime = 0.0f;
-
 	MouseState StateValue = MouseState::Intro;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
+
+	void SetIntroTexture();
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);

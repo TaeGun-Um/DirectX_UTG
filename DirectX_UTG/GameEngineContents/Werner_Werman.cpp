@@ -252,6 +252,49 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_003.png").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("Mouse_Intro_Top_007.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Mouse_Intro_Front");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_010.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_011.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_012.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_013.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_014.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_015.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_016.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_017.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_018.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_019.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_020.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_021.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_022.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_023.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_024.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_025.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_026.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_027.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_028.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_029.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_030.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_031.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_032.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_046.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_047.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_048.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_049.png").GetFullPath());
+	}
+
 	if (nullptr == CanRenderPtr)
 	{
 		CanRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -261,20 +304,27 @@ void Werner_Werman::ActorInitSetting()
 		CanRenderPtr->ChangeAnimation("Can_Idle");
 	}
 
+	if (nullptr == MouseRenderPtr)
+	{
+		MouseRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 230 });
+		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
+	}
+
 	if (nullptr == CanUpRenderPtr)
 	{
 		CanUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		//CanUpRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
 		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
-		CanUpRenderPtr->Off();
 	}
 
-	if (nullptr == MouseRenderPtr)
+	if (nullptr == MouseUpRenderPtr)
 	{
-		MouseRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-		MouseRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
-		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
+		MouseUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		MouseUpRenderPtr->SetScaleToTexture("Mouse_Intro_Top_007.png");
+		MouseUpRenderPtr->GetTransform()->AddLocalPosition({ 0, 230 });
+		MouseUpRenderPtr->Off();
 	}
 
 	if (nullptr == WheelRenderPtr)
