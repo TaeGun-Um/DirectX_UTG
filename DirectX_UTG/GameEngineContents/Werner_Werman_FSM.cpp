@@ -16,6 +16,9 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 	case MouseState::Idle:
 		IdleStart();
 		break;
+	case MouseState::Move:
+		MoveStart();
+		break;
 	default:
 		break;
 	}
@@ -27,6 +30,9 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 		break;
 	case MouseState::Idle:
 		IdleEnd();
+		break;
+	case MouseState::Move:
+		MoveEnd();
 		break;
 	default:
 		break;
@@ -43,6 +49,9 @@ void Werner_Werman::UpdateState(float _DeltaTime)
 	case MouseState::Idle:
 		IdleUpdate(_DeltaTime);
 		break;
+	case MouseState::Move:
+		MoveUpdate(_DeltaTime);
+		break;
 	default:
 		break;
 	}
@@ -55,20 +64,9 @@ void Werner_Werman::IntroStart()
 }
 void Werner_Werman::IntroUpdate(float _DeltaTime)
 {
-	SetIntroTexture();
-
-	if (2 == CanRenderPtr->GetCurrentFrame())
-	{
-		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_003.png");
-	}
-	else if (1 == CanRenderPtr->GetCurrentFrame())
-	{
-		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_002.png");
-	}
-	else if (0 == CanRenderPtr->GetCurrentFrame())
-	{
-		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
-	}
+	SetIntroMouseUpTexture();
+	SetIntroCanUpTexture();
+	SetIntroCanBackTexture();
 
 	if (true == MouseRenderPtr->IsAnimationEnd())
 	{
@@ -79,7 +77,7 @@ void Werner_Werman::IntroUpdate(float _DeltaTime)
 }
 void Werner_Werman::IntroEnd()
 {
-
+	IsIntro = false;
 }
 
 void Werner_Werman::IdleStart()
@@ -88,12 +86,159 @@ void Werner_Werman::IdleStart()
 }
 void Werner_Werman::IdleUpdate(float _DeltaTime)
 {
+	SetIntroCanUpTexture();
+	SetIntroCanBackTexture();
+
 	if (true == IsIntro)
 	{
 		ChangeState(MouseState::Intro);
 		return;
 	}
 
+	if (false == IsIntro)
+	{
+		CanUpRenderPtr->Off();
+		ChangeState(MouseState::Move);
+		return;
+	}
+}
+void Werner_Werman::IdleEnd()
+{
+
+}
+
+void Werner_Werman::MoveStart()
+{
+	CanBackRenderPtr->GetTransform()->AddLocalPosition({ 0, -20, 0 });
+	CanRenderPtr->ChangeAnimation("Can_Move");
+}
+void Werner_Werman::MoveUpdate(float _DeltaTime)
+{
+	SetMoveCanBackTexture();
+}
+void Werner_Werman::MoveEnd()
+{
+
+}
+
+void Werner_Werman::SetMoveCanBackTexture()
+{
+	if (23 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_024.png");
+	}
+	else if (22 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_023.png");
+	}
+	else if (21 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_022.png");
+	}
+	else if (20 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_021.png");
+	}
+	else if (19 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_020.png");
+	}
+	else if (18 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_019.png");
+	}
+	else if (17 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_018.png");
+	}
+	else if (16 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_017.png");
+	}
+	else if (15 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_016.png");
+	}
+	else if (14 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_015.png");
+	}
+	else if (13 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_014.png");
+	}
+	else if (12 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_013.png");
+	}
+	else if (11 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_012.png");
+	}
+	else if (10 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_011.png");
+	}
+	else if (9 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_010.png");
+	}
+	else if (8 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_009.png");
+	}
+	else if (7 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_008.png");
+	}
+	else if (6 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_007.png");
+	}
+	else if (5 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_006.png");
+	}
+	else if (4 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_005.png");
+	}
+	else if (3 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_004.png");
+	}
+	else if (2 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_003.png");
+	}
+	else if (1 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_002.png");
+	}
+	else if (0 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Move_Back_001.png");
+	}
+}
+
+void Werner_Werman::SetIntroCanBackTexture()
+{
+	if (2 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_003.png");
+	}
+	else if (1 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_002.png");
+	}
+	else if (0 == CanRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
+	}
+}
+
+void Werner_Werman::SetIntroCanUpTexture()
+{
 	if (2 == CanRenderPtr->GetCurrentFrame())
 	{
 		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_003.png");
@@ -107,25 +252,8 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
 	}
 }
-void Werner_Werman::IdleEnd()
-{
 
-}
-
-void Werner_Werman::MoveStart()
-{
-	CanRenderPtr->ChangeAnimation("Can_Move");
-}
-void Werner_Werman::MoveUpdate(float _DeltaTime)
-{
-
-}
-void Werner_Werman::MoveEnd()
-{
-
-}
-
-void Werner_Werman::SetIntroTexture()
+void Werner_Werman::SetIntroMouseUpTexture()
 {
 	if (48 == MouseRenderPtr->GetCurrentFrame())
 	{

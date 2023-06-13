@@ -80,12 +80,15 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
-	MouseState StateValue = MouseState::Intro;
+	MouseState StateValue = MouseState::Idle;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
 
-	void SetIntroTexture();
+	void SetIntroMouseUpTexture();
+	void SetIntroCanUpTexture();
+	void SetIntroCanBackTexture();
+	void SetMoveCanBackTexture();
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);

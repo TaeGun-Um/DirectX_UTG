@@ -363,24 +363,23 @@ void Werner_Werman::ActorInitSetting()
 	{
 		CanRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Idle", .SpriteName = "Can_Part_Body_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Stop", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Stop", .SpriteName = "Can_Part_Body_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		CanRenderPtr->ChangeAnimation("Can_Idle");
 	}
 
 	if (nullptr == CanBackRenderPtr)
 	{
 		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//CanUpRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
+		CanBackRenderPtr->GetTransform()->AddLocalPosition({ 0, 144 });
 		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
-		CanBackRenderPtr->Off();
 	}
 
 	if (nullptr == MouseRenderPtr)
 	{
 		MouseRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 230 });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
 	}
 
@@ -395,7 +394,7 @@ void Werner_Werman::ActorInitSetting()
 	{
 		MouseUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		MouseUpRenderPtr->SetScaleToTexture("Mouse_Intro_Top_007.png");
-		MouseUpRenderPtr->GetTransform()->AddLocalPosition({ 0, 230 });
+		MouseUpRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseUpRenderPtr->Off();
 	}
 
