@@ -305,10 +305,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="HBSCSpriteRenderer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="HealthUI.h">
       <SubType>
       </SubType>
@@ -662,10 +658,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GrimMatchstick.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="HBSCSpriteRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

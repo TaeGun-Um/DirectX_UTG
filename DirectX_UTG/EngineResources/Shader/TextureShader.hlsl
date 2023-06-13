@@ -141,6 +141,7 @@ cbuffer ColorOption : register(b0)
 {
     float4 MulColor;
     float4 PlusColor;
+    float4 HBSCColor;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -156,12 +157,22 @@ struct OutColor
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    // 스위즐링 표현법
-    // float4를 float2로 할 수 있음 : float4.xy == float2
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
-    
+    //float4 outputColor = startColor;
+    //float hue = 360 * HBSCColor.r;
+    float saturation = HBSCColor.g * 2;
+    float brightness = HBSCColor.b * 2 - 1;
+    float contrast = HBSCColor.a * 2;
+
     Color += PlusColor;
     Color *= MulColor;
-    
+
+    //Color.rgb = applyHue(Color.rgb, hue);
+    Color.rgb = (Color.rgb - 0.5f) * contrast + 0.5f;
+    Color.rgb = Color.rgb + brightness;
+    float3 intensity = dot(Color.rgb, float3(0.39, 0.59, 0.11));
+
+    Color.rgb = lerp(intensity, Color.rgb, saturation);
+
     return Color;
 }
