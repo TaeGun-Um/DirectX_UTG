@@ -210,6 +210,7 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Intro_Smoke").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Idle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Idle_Back").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Stop").GetFullPath());
 	}
 
 
@@ -232,7 +233,8 @@ void Werner_Werman::ActorInitSetting()
 	if (nullptr == CanRenderPtr)
 	{
 		CanRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Idle", .SpriteName = "Mouse_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Idle", .SpriteName = "Mouse_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Stop", .SpriteName = "Mouse_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		CanRenderPtr->ChangeAnimation("Mouse_Idle");
 	}
 
