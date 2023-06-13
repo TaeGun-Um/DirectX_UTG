@@ -228,13 +228,8 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Move").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Stop").GetFullPath());
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Stop").GetFullPath());
-
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Wheels").GetFullPath());
 	}
-
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
 	{
@@ -250,6 +245,75 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_001.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_002.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_003.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Can_Idle_Back_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Can_Part_Back_Idle");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Back_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Back_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Back_003.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Can_Idle_Back_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Can_Part_Back_Stop");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_003.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Can_Move_Back_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Can_Part_Back_Move");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_010.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_011.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_012.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_013.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_014.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_015.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_016.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_017.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_018.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_019.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_020.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_021.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_022.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_023.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Move_Back_024.png").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Mouse_Intro_Top_007.png"))
@@ -302,6 +366,14 @@ void Werner_Werman::ActorInitSetting()
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Stop", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		CanRenderPtr->ChangeAnimation("Can_Idle");
+	}
+
+	if (nullptr == CanBackRenderPtr)
+	{
+		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		//CanUpRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
+		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
+		CanBackRenderPtr->Off();
 	}
 
 	if (nullptr == MouseRenderPtr)
