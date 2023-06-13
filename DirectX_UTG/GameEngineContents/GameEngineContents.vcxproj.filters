@@ -662,5 +662,8 @@
     <ClCompile Include="Mouse_BackObject.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Werner_Werman_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

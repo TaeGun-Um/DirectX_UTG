@@ -206,6 +206,11 @@ void TransformGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	{
 		ImGui::Text("FrogBossHP : %f", FrogBoss->GetBossHP());
 	}
+
+	if (nullptr != MouseBoss)
+	{
+		ImGui::Text("MouseBossHP : %f", MouseBoss->GetBossHP());
+	}
 }
 
 void TransformGUI::SetTarget(GameEngineTransform* _Target)

@@ -41,41 +41,41 @@ void MouseLevel::Update(float _DeltaTime)
 {
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
-	//if (true == MouseObject->GetIsStageEnd() && 1 == EndSetCount)
-	//{
-	//	PlayerObject->SetStageEndHP();
-	//	EndSetCount = 0;
-	//	KnockoutPtr->StartMessage();
-	//	IsBossEnd = true;
-	//	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
-	//}
+	if (true == MouseObject->GetIsStageEnd() && 1 == EndSetCount)
+	{
+		PlayerObject->SetStageEndHP();
+		EndSetCount = 0;
+		KnockoutPtr->StartMessage();
+		IsBossEnd = true;
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
+	}
 
-	//if (true == IsBossEnd)
-	//{
-	//	EndTime += _DeltaTime;
+	if (true == IsBossEnd)
+	{
+		EndTime += _DeltaTime;
 
-	//	if (true == KnockoutPtr->GetIsEnd())
-	//	{
-	//		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+		if (true == KnockoutPtr->GetIsEnd())
+		{
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
-	//		if (EndTime >= 4.5f && 1 == EndSetCount2)
-	//		{
-	//			EndSetCount2 = 0;
-	//			BlackBoxPtr->BoxSettingReset();
-	//			BlackBoxPtr->SetEnter();
-	//		}
-	//	}
+			if (EndTime >= 4.5f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
 
-	//	if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
-	//	{
-	//		IsMouseLevelEnd = true;
-	//		OverworldLevel::OverworldLevelPtr->SetFrogEnd();
-	//		LoadingOn();
-	//		GameEngineCore::ChangeLevel("OverworldLevel");
-	//	}
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			IsMouseLevelEnd = true;
+			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
+			LoadingOn();
+			GameEngineCore::ChangeLevel("OverworldLevel");
+		}
 
-	//	return;
-	//}
+		return;
+	}
 
 	////////////////////////////////////////// Player Death //////////////////////////////////////////
 
@@ -176,12 +176,12 @@ void MouseLevel::LevelChangeStart()
 	}
 	// Boss
 	{
-		//if (nullptr == MouseObject)
-		//{
-		//	MouseObject = CreateActor<Werner_Werman>();
-		//}
+		if (nullptr == MouseObject)
+		{
+			MouseObject = CreateActor<Werner_Werman>();
+		}
 
-		//MouseObject->GetTransform()->SetLocalPosition({ 1020 , 280 });
+		MouseObject->GetTransform()->SetLocalPosition({ 1020 , 230, -1 });
 		//MouseObject->SetInitReset();
 	}
 	{
@@ -190,7 +190,7 @@ void MouseLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 
-		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -1 });
+		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -3 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();
@@ -278,7 +278,7 @@ void MouseLevel::LevelChangeStart()
 
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
-		//GUI->SetMouseBoss(MouseObject);
+		GUI->SetMouseBoss(MouseObject);
 
 		GUI->PlayerDebugRenderOn = std::bind(&MouseLevel::PlayerDebugRenderOn, this);
 		GUI->PlayerDebugRenderOff = std::bind(&MouseLevel::PlayerDebugRenderOff, this);
@@ -410,11 +410,17 @@ void MouseLevel::ReLoadSetting()
 
 void MouseLevel::PlayerDebugRenderOn()
 {
-
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOn();
+	}
 }
 void MouseLevel::PlayerDebugRenderOff()
 {
-
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOff();
+	}
 }
 void MouseLevel::LevelDebugOn()
 {
@@ -422,11 +428,19 @@ void MouseLevel::LevelDebugOn()
 	{
 		ThisColMap->ColMapDebugRenderOn();
 	}
+	if (nullptr != MouseObject)
+	{
+		MouseObject->DebugRenderOn();
+	}
 }
 void MouseLevel::LevelDebugOff()
 {
 	if (nullptr != ThisColMap)
 	{
 		ThisColMap->ColMapDebugRenderOff();
+	}
+	if (nullptr != MouseObject)
+	{
+		MouseObject->DebugRenderOff();
 	}
 }

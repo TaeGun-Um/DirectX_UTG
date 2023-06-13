@@ -75,6 +75,7 @@ private:
 
 	float MoveAbleTime = 0.0f;
 
+	float HP = 1000.0f;
 	bool IsStageEnd = false;
 	bool IsDebugRender = false;
 	bool IsBlink = false;

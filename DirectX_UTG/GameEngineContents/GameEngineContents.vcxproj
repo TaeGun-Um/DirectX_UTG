@@ -882,6 +882,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Werner_Werman_FSM.cpp" />
     <ClCompile Include="You_Died.cpp">
       <SubType>
       </SubType>
