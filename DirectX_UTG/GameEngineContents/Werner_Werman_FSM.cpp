@@ -54,7 +54,7 @@ void Werner_Werman::IntroStart()
 	IntroDownPos = IntroStartPos + float4{ 60, -250 };
 
 	MouseRenderPtr->ChangeAnimation("Mouse_Intro");
-	CanRenderPtr->ChangeAnimation("Mouse_Idle");
+	CanRenderPtr->ChangeAnimation("Can_Idle");
 }
 void Werner_Werman::IntroUpdate(float _DeltaTime)
 {
@@ -79,7 +79,7 @@ void Werner_Werman::IntroEnd()
 
 void Werner_Werman::IdleStart()
 {
-	CanRenderPtr->ChangeAnimation("Mouse_Idle");
+	CanRenderPtr->ChangeAnimation("Can_Idle");
 }
 void Werner_Werman::IdleUpdate(float _DeltaTime)
 {
@@ -90,6 +90,19 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	}
 }
 void Werner_Werman::IdleEnd()
+{
+
+}
+
+void Werner_Werman::MoveStart()
+{
+	CanRenderPtr->ChangeAnimation("Can_Move");
+}
+void Werner_Werman::MoveUpdate(float _DeltaTime)
+{
+
+}
+void Werner_Werman::MoveEnd()
 {
 
 }

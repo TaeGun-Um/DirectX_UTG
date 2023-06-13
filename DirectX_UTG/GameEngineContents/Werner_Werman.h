@@ -4,6 +4,8 @@ enum class MouseState
 {
 	Intro,
 	Idle,
+
+	Move,
 };
 
 // Ό³Έν :
@@ -49,6 +51,8 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CanRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> CanUpRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> WheelRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
@@ -90,6 +94,10 @@ private:
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
+
+	void MoveStart();
+	void MoveUpdate(float _DeltaTime);
+	void MoveEnd();
 
 };
 

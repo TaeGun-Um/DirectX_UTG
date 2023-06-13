@@ -208,9 +208,31 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Intro_Front").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Intro_Smoke").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Idle_Back").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Stop").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_PopOut").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_ShakeFist").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Can_Part_Body_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Stop").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Back_Stop").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Wheels").GetFullPath());
 	}
 
 
@@ -223,7 +245,7 @@ void Werner_Werman::ActorInitSetting()
 		NewDir.Move("Character");
 		NewDir.Move("3_Werner_Werman");
 		NewDir.Move("Phase1");
-		NewDir.Move("Mouse_Idle_Up");
+		NewDir.Move("Can_Part_Body_IdleUp");
 
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_001.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Up_002.png").GetFullPath());
@@ -233,9 +255,18 @@ void Werner_Werman::ActorInitSetting()
 	if (nullptr == CanRenderPtr)
 	{
 		CanRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Idle", .SpriteName = "Mouse_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Stop", .SpriteName = "Mouse_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->ChangeAnimation("Mouse_Idle");
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Idle", .SpriteName = "Can_Part_Body_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Stop", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		CanRenderPtr->ChangeAnimation("Can_Idle");
+	}
+
+	if (nullptr == CanUpRenderPtr)
+	{
+		CanUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		//CanUpRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
+		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
+		CanUpRenderPtr->Off();
 	}
 
 	if (nullptr == MouseRenderPtr)
@@ -244,6 +275,15 @@ void Werner_Werman::ActorInitSetting()
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
+	}
+
+	if (nullptr == WheelRenderPtr)
+	{
+		WheelRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Wheel_Move", .SpriteName = "Can_Part_Wheels", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		//WheelRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
+		WheelRenderPtr->ChangeAnimation("Wheel_Move");
+		WheelRenderPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionPtr)
