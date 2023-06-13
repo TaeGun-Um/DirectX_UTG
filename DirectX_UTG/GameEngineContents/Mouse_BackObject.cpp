@@ -12,7 +12,7 @@ Mouse_BackObject::~Mouse_BackObject()
 }
 
 // saturation 채도 // brightness 밝기 // contrast 대비
-void Mouse_BackObject::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+void Mouse_BackObject::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
 {
 	float4 OriginColor = _Object->ColorOptionValue.MulColor;
 	float4 ControlColor = float4::Zero;
@@ -110,16 +110,16 @@ void Mouse_BackObject::Start()
 		BackRenderPtr_Thimble2->GetTransform()->SetWorldPosition({ 990, 243 });
 	}
 
-	BrightnessControl(BackRenderPtr_Bullet1, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Bullet2, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Bullet3, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Bullet4, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Dice, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Stool1, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Table, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Stool2, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Thimble1, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(BackRenderPtr_Thimble2, 0.6f, 0.6f, 0.6f);
+	HBSCControl(BackRenderPtr_Bullet1, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Bullet2, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Bullet3, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Bullet4, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Dice, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Stool1, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Table, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Stool2, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Thimble1, 0.45f, 0.6f, 0.49f);
+	HBSCControl(BackRenderPtr_Thimble2, 0.45f, 0.6f, 0.49f);
 }
 
 void Mouse_BackObject::Update(float _DeltaTime)

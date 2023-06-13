@@ -16,6 +16,19 @@ BookRender::~BookRender()
 {
 }
 
+void BookRender::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+{
+	float4 OriginColor = _Object->ColorOptionValue.MulColor;
+	float4 ControlColor = float4::Zero;
+
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
+
+	_Object->ColorOptionValue.HBSCColor = ControlColor;
+}
+
 void BookRender::Start()
 {
 	if (false == GameEngineInput::IsKey("Next"))
@@ -85,6 +98,8 @@ void BookRender::Start()
 		ArrowRenderPtr->ChangeAnimation("Arrow");
 		ArrowRenderPtr->Off();
 	}
+
+	HBSCControl(RenderPtr, 0.5f, 0.6f, 0.5f);
 }
 void BookRender::Update(float _DeltaTime)
 {

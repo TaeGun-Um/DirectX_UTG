@@ -14,6 +14,19 @@ Title_Background::~Title_Background()
 {
 }
 
+void Title_Background::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+{
+	float4 OriginColor = _Object->ColorOptionValue.MulColor;
+	float4 ControlColor = float4::Zero;
+
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
+
+	_Object->ColorOptionValue.HBSCColor = ControlColor;
+}
+
 void Title_Background::Start()
 {
 	if (nullptr == GameEngineSprite::Find("Cuphead_and_Mugman"))
@@ -61,6 +74,9 @@ void Title_Background::Start()
 		RenderPtr2->GetTransform()->AddWorldPosition({ 25, -280 });
 		RenderPtr2->Off();
 	}
+
+	HBSCControl(RenderPtr0, 0.55f, 0.56f, 0.5f);
+	HBSCControl(RenderPtr1, 0.55f, 0.5f, 0.5f);
 }
 void Title_Background::Update(float _DeltaTime)
 {

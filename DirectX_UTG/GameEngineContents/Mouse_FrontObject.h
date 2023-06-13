@@ -24,7 +24,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_2 = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FrontRenderPtr_3 = nullptr;
 
-	void BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation = 0.5f, float _brightness = 0.5f, float _contrast = 0.5f);
+	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation = 0.5f, float _brightness = 0.5f, float _contrast = 0.5f);
 
 };
 

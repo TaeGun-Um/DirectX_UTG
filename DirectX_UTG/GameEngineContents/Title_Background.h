@@ -32,4 +32,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr2 = nullptr;
 
 	float KeyRenderTime = 0.0f;
+
+	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast);
 };

@@ -11,7 +11,7 @@ Mouse_Map::~Mouse_Map()
 {
 }
 
-void Mouse_Map::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+void Mouse_Map::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
 {
 	float4 OriginColor = _Object->ColorOptionValue.MulColor;
 	float4 ControlColor = float4::Zero;
@@ -54,8 +54,8 @@ void Mouse_Map::Start()
 		HouseBGRenderPtr->GetTransform()->AddLocalPosition({ 0, 100, 10 });
 	}
 
-	BrightnessControl(WallBGRenderPtr, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(HouseBGRenderPtr, 0.6f, 0.6f, 0.6f);
+	HBSCControl(WallBGRenderPtr, 0.47f, 0.59f, 0.5f);
+	HBSCControl(HouseBGRenderPtr, 0.47f, 0.59f, 0.5f);
 }
 
 void Mouse_Map::Update(float _DeltaTime)

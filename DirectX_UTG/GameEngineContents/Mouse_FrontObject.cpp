@@ -12,7 +12,7 @@ Mouse_FrontObject::~Mouse_FrontObject()
 }
 
 // saturation 채도 // brightness 밝기 // contrast 대비
-void Mouse_FrontObject::BrightnessControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+void Mouse_FrontObject::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
 {
 	float4 OriginColor = _Object->ColorOptionValue.MulColor;
 	float4 ControlColor = float4::Zero;
@@ -58,12 +58,12 @@ void Mouse_FrontObject::Start()
 	{
 		FrontRenderPtr_3 = CreateComponent<GameEngineSpriteRenderer>();
 		FrontRenderPtr_3->SetScaleToTexture("mouse_bg_foreground_b1.png");
-		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 635, 100, -4 });
+		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 660, 95, -4 });
 	}
 
-	BrightnessControl(FrontRenderPtr_1, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(FrontRenderPtr_2, 0.6f, 0.6f, 0.6f);
-	BrightnessControl(FrontRenderPtr_3, 0.6f, 0.6f, 0.6f);
+	HBSCControl(FrontRenderPtr_1, 0.5f, 0.57f, 0.5f);
+	HBSCControl(FrontRenderPtr_2, 0.5f, 0.57f, 0.5f);
+	HBSCControl(FrontRenderPtr_3, 0.5f, 0.57f, 0.5f);
 }
 
 void Mouse_FrontObject::Update(float _DeltaTime)

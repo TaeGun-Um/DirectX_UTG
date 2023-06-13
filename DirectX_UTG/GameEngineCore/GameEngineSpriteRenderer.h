@@ -145,7 +145,6 @@ public:
 
 	std::string GetTexName();
 
-
 protected:
 	void SpriteRenderInit();
 	float4 AtlasData;
