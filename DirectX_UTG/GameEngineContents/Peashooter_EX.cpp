@@ -69,13 +69,13 @@ void Peashooter_EX::MoveDirection(float _DeltaTime)
 
 		ProjectileCollisionPtr->Off();
 
-		if (StopTime <= 0.2f)
+		if (StopTime <= 0.03f)
 		{
 			return;
 		}
 	}
 
-	if (StopTime >= 0.27f)
+	if (StopTime >= 0.1f)
 	{
 		IsHit = false;
 		StopTime = 0.0f;
