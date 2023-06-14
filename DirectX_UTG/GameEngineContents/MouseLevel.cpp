@@ -181,7 +181,7 @@ void MouseLevel::LevelChangeStart()
 			MouseObject = CreateActor<Werner_Werman>();
 		}
 
-		MouseObject->GetTransform()->SetLocalPosition({ 1020 , 230, -1 });
+		MouseObject->GetTransform()->SetLocalPosition({ 1040 , 225, -1 });
 		//MouseObject->SetInitReset();
 	}
 	{

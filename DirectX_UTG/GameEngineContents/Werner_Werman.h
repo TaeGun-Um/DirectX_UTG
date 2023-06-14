@@ -3,6 +3,9 @@
 enum class MouseState
 {
 	Intro,
+
+	MouseIn,
+	MouseOut,
 	Idle,
 
 	Move,
@@ -71,8 +74,6 @@ private:
 	float HP = 100.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
-	bool IsIntro = true;
-	bool Directbool = false;
 	bool IsBlink = false;
 
 	float4 OriginMulColor = float4::Zero;
@@ -88,11 +89,27 @@ private:
 	void SetIntroMouseUpTexture();
 	void SetIntroCanUpTexture();
 	void SetIntroCanBackTexture();
+	void SetMouseInCanBackTexture();
+	void SetMouseOutCanBackTexture();
 	void SetMoveCanBackTexture();
+
+	bool IsIntro = true;
+	bool Directbool = false;
+
+	float DelayTime = 0.0f;
+	float MoveTime = 0.0f;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
 	void IntroEnd();
+
+	void MouseInStart();
+	void MouseInUpdate(float _DeltaTime);
+	void MouseInEnd();
+
+	void MouseOutStart();
+	void MouseOutUpdate(float _DeltaTime);
+	void MouseOutEnd();
 
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);

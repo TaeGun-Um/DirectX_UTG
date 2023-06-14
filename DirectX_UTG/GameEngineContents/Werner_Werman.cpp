@@ -226,7 +226,8 @@ void Werner_Werman::ActorInitSetting()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Idle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Move").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Stop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_In").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Out").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Wheels").GetFullPath());
 	}
@@ -263,7 +264,7 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Idle_Back_003.png").GetFullPath());
 	}
 
-	if (nullptr == GameEngineTexture::Find("Can_Idle_Back_001.png"))
+	if (nullptr == GameEngineTexture::Find("Can_Part_Back_InOut_001.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -272,11 +273,11 @@ void Werner_Werman::ActorInitSetting()
 		NewDir.Move("Character");
 		NewDir.Move("3_Werner_Werman");
 		NewDir.Move("Phase1");
-		NewDir.Move("Can_Part_Back_Stop");
+		NewDir.Move("Can_Part_Back_InOut");
 
-		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_001.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_002.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("can_stop_back_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Part_Back_InOut_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Part_Back_InOut_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Can_Part_Back_InOut_003.png").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Move_Back_001.png"))
@@ -359,20 +360,21 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_049.png").GetFullPath());
 	}
 
+	if (nullptr == CanBackRenderPtr)
+	{
+		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
+		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
+	}
+
 	if (nullptr == CanRenderPtr)
 	{
 		CanRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Idle", .SpriteName = "Can_Part_Body_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Stop", .SpriteName = "Can_Part_Body_Stop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseIn", .SpriteName = "Can_Part_Body_In", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseOut", .SpriteName = "Can_Part_Body_Out", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		CanRenderPtr->ChangeAnimation("Can_Idle");
-	}
-
-	if (nullptr == CanBackRenderPtr)
-	{
-		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		CanBackRenderPtr->GetTransform()->AddLocalPosition({ 0, 144 });
-		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
 	}
 
 	if (nullptr == MouseRenderPtr)
@@ -401,8 +403,8 @@ void Werner_Werman::ActorInitSetting()
 	if (nullptr == WheelRenderPtr)
 	{
 		WheelRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		WheelRenderPtr->CreateAnimation({ .AnimationName = "Wheel_Move", .SpriteName = "Can_Part_Wheels", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		//WheelRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Wheel_Move", .SpriteName = "Can_Part_Wheels", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->GetTransform()->SetLocalPosition({ 20, -130 });
 		WheelRenderPtr->ChangeAnimation("Wheel_Move");
 		WheelRenderPtr->Off();
 	}
@@ -411,8 +413,8 @@ void Werner_Werman::ActorInitSetting()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
-		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)
@@ -429,8 +431,8 @@ void Werner_Werman::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, 1 });
-		EXCollisionPtr->GetTransform()->SetLocalPosition({ 60, -40 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
 	if (nullptr == EXCollisionRenderPtr)
