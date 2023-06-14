@@ -182,6 +182,7 @@ void MouseLevel::LevelChangeStart()
 		}
 
 		MouseObject->GetTransform()->SetLocalPosition({ 1040 , 225, -1 });
+		MouseObject->SetInitPosition(MouseObject->GetTransform()->GetWorldPosition());
 		//MouseObject->SetInitReset();
 	}
 	{

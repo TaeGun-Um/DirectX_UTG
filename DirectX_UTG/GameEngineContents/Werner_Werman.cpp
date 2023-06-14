@@ -214,6 +214,40 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Mouse_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_Cannon");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_In").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Out").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Shoot").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Mouse_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_Cannon");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_In").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Out").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Shoot").GetFullPath());
+	}
+
 	if (nullptr == GameEngineSprite::Find("Can_Part_Body_Idle"))
 	{
 		GameEngineDirectory NewDir;

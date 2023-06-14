@@ -178,7 +178,7 @@ void Werner_Werman::IdleEnd()
 
 void Werner_Werman::MoveStart()
 {
-	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 130 });
+	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 150 });
 	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 20 });
 	WheelRenderPtr->On();
 	CanRenderPtr->ChangeAnimation("Can_Move");
@@ -189,10 +189,17 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 
 	MoveTime += _DeltaTime;
 
+	float CosTime = MoveTime * 2.5f;
 	float CurXPos = GetTransform()->GetLocalPosition().x;
 	float CurYPos = GetTransform()->GetLocalPosition().y;
 
-	float SinX = (cosf(MoveTime * 2.5f) * 0.8f) + CurXPos;
+	float SinX = (cosf(CosTime + GameEngineMath::PIE) * 0.8f) + CurXPos;
+
+	if (GameEngineMath::PIE2 <= CosTime)
+	{
+		MoveTime = 0.0f;
+		GetTransform()->SetWorldPosition(InitPosition);
+	}
 
 	GetTransform()->SetLocalPosition({ SinX, CurYPos });
 }

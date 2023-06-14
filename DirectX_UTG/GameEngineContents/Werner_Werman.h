@@ -32,6 +32,11 @@ public:
 
 	//void SetInitReset();
 
+	void SetInitPosition(float4 _Value)
+	{
+		InitPosition = _Value;
+	}
+
 	float GetBossHP()
 	{
 		return HP;
@@ -92,6 +97,8 @@ private:
 	void SetMouseInCanBackTexture();
 	void SetMouseOutCanBackTexture();
 	void SetMoveCanBackTexture();
+
+	float4 InitPosition = float4::Zero;
 
 	bool IsIntro = true;
 	bool Directbool = false;

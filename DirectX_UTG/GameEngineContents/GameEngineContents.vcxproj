@@ -192,7 +192,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CatapultProjectile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Cheerer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CherryBomb.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CherryBomb_Fire.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -547,7 +559,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="CatapultProjectile.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Cheerer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CherryBomb.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CherryBomb_Fire.cpp">
       <SubType>
       </SubType>
     </ClCompile>
