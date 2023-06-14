@@ -11,6 +11,20 @@ enum class MouseState
 	Move,
 };
 
+enum class CannonState
+{
+	Out,
+	Idle,
+	Fire,
+	In,
+};
+
+enum class CatapultState
+{
+	Loop,
+	Fire,
+};
+
 // Ό³Έν :
 class Werner_Werman : public GameEngineActor
 {
@@ -62,6 +76,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CanBackRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CanUpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> WeaponRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseUpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> WheelRenderPtr = nullptr;
 
@@ -87,6 +102,8 @@ private:
 	int BlinkCount = 1;
 
 	MouseState StateValue = MouseState::Idle;
+	CannonState CannonStateValue = CannonState::Out;
+	CatapultState CatapultStateValue = CatapultState::Loop;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -102,9 +119,16 @@ private:
 
 	bool IsIntro = true;
 	bool Directbool = false;
+	bool WeaponType = true;
+	bool IsFire = false;
+	bool CannonAble = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
+	float FireTime = 0.0f;
+	float WeaponSwapTime = 0.0f;
+
+	int CannonfireCount = 0;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -125,6 +149,28 @@ private:
 	void MoveStart();
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
+
+	void ChangeState_Cannon(CannonState _StateValue);
+	void UpdateState_Cannon(float _DeltaTime);
+
+	void Cannon_OutStart();
+	void Cannon_OutUpdate(float _DeltaTime);
+	void Cannon_OutEnd();
+
+	void Cannon_InStart();
+	void Cannon_InUpdate(float _DeltaTime);
+	void Cannon_InEnd();
+
+	void Cannon_IdleStart();
+	void Cannon_IdleUpdate(float _DeltaTime);
+	void Cannon_IdleEnd();
+
+	void Cannon_FireStart();
+	void Cannon_FireUpdate(float _DeltaTime);
+	void Cannon_FireEnd();
+
+	void ChangeState_Catapult(CatapultState _StateValue);
+	void UpdateState_Catapult(float _DeltaTime);
 
 };
 

@@ -214,24 +214,7 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Mouse_Intro"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("3_Werner_Werman");
-		NewDir.Move("Phase1");
-		NewDir.Move("Object_Cannon");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_In").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Out").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Shoot").GetFullPath());
-	}
-
-	if (nullptr == GameEngineSprite::Find("Mouse_Intro"))
+	if (nullptr == GameEngineSprite::Find("Cannon_In"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -399,6 +382,18 @@ void Werner_Werman::ActorInitSetting()
 		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
 		CanBackRenderPtr->SetScaleToTexture("Can_Idle_Back_001.png");
+	}
+
+	if (nullptr == WeaponRender)
+	{
+		WeaponRender = CreateComponent<GameEngineSpriteRenderer>();
+		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_In", .SpriteName = "Cannon_In", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Out", .SpriteName = "Cannon_Out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Idle", .SpriteName = "Cannon_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Fire", .SpriteName = "Cannon_Shoot", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
+		WeaponRender->ChangeAnimation("Cannon_Out");
+		WeaponRender->Off();
 	}
 
 	if (nullptr == CanRenderPtr)

@@ -547,6 +547,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BuildingDataBase.cpp" />
+    <ClCompile Include="Cannon_FSM.cpp" />
     <ClCompile Include="Canteen.cpp">
       <SubType>
       </SubType>
@@ -563,6 +564,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Catapult_FSM.cpp" />
     <ClCompile Include="Cheerer.cpp">
       <SubType>
       </SubType>

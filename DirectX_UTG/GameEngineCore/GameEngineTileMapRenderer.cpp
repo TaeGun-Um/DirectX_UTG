@@ -31,11 +31,19 @@ void GameEngineTileMapRenderer::Start()
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 }
 
-void GameEngineTileMapRenderer::CreateTileMap(int _X, int _Y, const float4& _TileSize, TileMapMode _Mode)
+void GameEngineTileMapRenderer::CreateTileMap(int _X, int _Y, const float4& _TileSize, const float4& _RenderSize, TileMapMode _Mode)
 {
 	TileSize = _TileSize;
 	TileSize.z = 1.0f;
 	TileSizeH = TileSize.half();
+
+	if (_RenderSize == float4::Zero)
+	{
+		RenderSize = TileSize;
+	}
+	else {
+		RenderSize = _RenderSize;
+	}
 
 	MapCount.x = static_cast<float>(_X);
 	MapCount.y = static_cast<float>(_Y);
@@ -55,7 +63,7 @@ void GameEngineTileMapRenderer::Clear()
 	Tiles.clear();
 }
 
-void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, size_t _Index)
 {
 	if (true == Tiles.empty())
 	{
@@ -133,7 +141,7 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 					break;
 				}
 
-				Scale.Scale(TileSize);
+				Scale.Scale(RenderSize);
 				Pos.Pos(vPos);
 				TileTransData.WorldViewProjectionMatrix = Scale * Pos * TransData.WorldMatrix;
 
@@ -173,7 +181,7 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 }
 
 
-void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, size_t _Index)
 {
 	int X = -1;
 	int Y = -1;
@@ -186,7 +194,7 @@ void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_vi
 		Y = static_cast<int>(_Pos.y / TileSize.y);
 		break;
 	case TileMapMode::Iso:
-		X = static_cast<int>(((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2));
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
 		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
 		break;
 	default:

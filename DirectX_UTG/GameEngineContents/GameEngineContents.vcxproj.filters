@@ -689,5 +689,11 @@
     <ClCompile Include="CherryBomb_Fire.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Catapult_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Cannon_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

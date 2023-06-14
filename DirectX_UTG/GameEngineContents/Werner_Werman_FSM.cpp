@@ -180,20 +180,37 @@ void Werner_Werman::MoveStart()
 {
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 150 });
 	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 20 });
+
 	WheelRenderPtr->On();
+
 	CanRenderPtr->ChangeAnimation("Can_Move");
 }
 void Werner_Werman::MoveUpdate(float _DeltaTime)
 {
 	SetMoveCanBackTexture();
-
+	
 	MoveTime += _DeltaTime;
 
-	float CosTime = MoveTime * 2.5f;
-	//float CurXPos = GetTransform()->GetLocalPosition().x;
-	//float CurYPos = GetTransform()->GetLocalPosition().y;
+	if (false == CannonAble)
+	{
+		WeaponSwapTime += _DeltaTime;
+	}
 
-	float SinX = (cosf(CosTime + GameEngineMath::PIE) * 100.0f);
+	if (false == CannonAble && 1.0f <= WeaponSwapTime)
+	{
+		CannonAble = true;
+		ChangeState_Cannon(CannonState::Out);
+	}
+
+	if (true == CannonAble)
+	{
+		WeaponSwapTime = 0.0;
+		UpdateState_Cannon(_DeltaTime);
+	}
+
+	float CosTime = MoveTime * 2.5f;
+
+	float SinX = (sinf(CosTime + GameEngineMath::PIE) * 150.0f);
 
 	if (GameEngineMath::PIE2 <= CosTime)
 	{
