@@ -190,10 +190,10 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	MoveTime += _DeltaTime;
 
 	float CosTime = MoveTime * 2.5f;
-	float CurXPos = GetTransform()->GetLocalPosition().x;
-	float CurYPos = GetTransform()->GetLocalPosition().y;
+	//float CurXPos = GetTransform()->GetLocalPosition().x;
+	//float CurYPos = GetTransform()->GetLocalPosition().y;
 
-	float SinX = (cosf(CosTime + GameEngineMath::PIE) * 0.8f) + CurXPos;
+	float SinX = (cosf(CosTime + GameEngineMath::PIE) * 100.0f);
 
 	if (GameEngineMath::PIE2 <= CosTime)
 	{
@@ -201,7 +201,7 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 		GetTransform()->SetWorldPosition(InitPosition);
 	}
 
-	GetTransform()->SetLocalPosition({ SinX, CurYPos });
+	GetTransform()->SetLocalPosition({ SinX + InitPosition.x, InitPosition.y });
 }
 void Werner_Werman::MoveEnd()
 {

@@ -191,10 +191,19 @@ void BuildingDataBase::InterAction()
 	break;
 	case BuildingValue::Mouse:
 	{
-		NextLevelPortal = false;
-		Player_Overworld::MainPlayer->SetIsPortalingfalse();
-		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-		MsgTextBox("Mouse");
+		if (1 == BlackBoxCount)
+		{
+			BlackBoxCount = 0;
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
+		}
+
+		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
+		{
+			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+			OverworldLevel::OverworldLevelPtr->LoadingOn();
+			GameEngineCore::ChangeLevel("MouseLevel");
+		}
 	}
 	break;
 	case BuildingValue::Frog:

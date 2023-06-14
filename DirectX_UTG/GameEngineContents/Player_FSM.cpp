@@ -1888,6 +1888,10 @@ void Player::HoldingAttackEnd()
 
 void Player::HitStart()
 {
+	IsSlap = false;
+	IsDash = false;
+	IsEXAttack = false;
+
 	IsCameraShaking = true;
 	ShakingMaxCount = 8;
 
