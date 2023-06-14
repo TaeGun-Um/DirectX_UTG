@@ -196,8 +196,11 @@ void Croak_Firefly::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	IdleDelayTime += _DeltaTime;
-
+	if (MoveCount <= MoveMaxCount)
+	{
+		IdleDelayTime += _DeltaTime;
+	}
+	
 	if (1.0f <= IdleDelayTime)
 	{
 		ChangeState(FlyState::Move);
@@ -237,6 +240,12 @@ void Croak_Firefly::MoveStart()
 		TrackingPosition.x = 1250.0f;
 	}
 
+	if (250.0f >= TrackingPosition.y)
+	{
+		TrackingPosition.y = 200.0f;
+		MoveCount = MoveMaxCount;
+	}
+
 	RenderPtr->ChangeAnimation("Left");
 
 	if (0 == RandC)
@@ -261,6 +270,8 @@ void Croak_Firefly::MoveStart()
 			GetTransform()->SetLocalNegativeScaleX();
 		}
 	}
+	
+	++MoveCount;
 }
 void Croak_Firefly::MoveUpdate(float _DeltaTime)
 {

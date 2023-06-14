@@ -78,6 +78,7 @@ private:
 	bool IsSecond = false;
 	bool IsThird = false;
 	bool IsFourth = false;
+	bool IsMoveMax = false;
 
 	FlyState StateValue = FlyState::Idle;
 
@@ -97,6 +98,9 @@ private:
 
 	int RandMoveCount = 0;
 	int MaxRandMoveCount = 3;
+
+	int MoveCount = 0;
+	int MoveMaxCount = 3;
 
 	void ChangeState(FlyState _StateValue);
 	void UpdateState(float _DeltaTime);
