@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Werner_Werman.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
 void Werner_Werman::ChangeState_Cannon(CannonState _StateValue)
 {
 	CannonState NextState = _StateValue;
@@ -68,6 +70,7 @@ void Werner_Werman::UpdateState_Cannon(float _DeltaTime)
 
 void Werner_Werman::Cannon_OutStart()
 {
+	WeaponRender->GetTransform()->SetLocalPosition({ -70, 250 });
 	WeaponRender->On();
 	WeaponRender->ChangeAnimation("Cannon_Out");
 }
@@ -86,7 +89,7 @@ void Werner_Werman::Cannon_OutEnd()
 void Werner_Werman::Cannon_InStart()
 {
 	IsFire = false;
-	CannonfireCount = 0;
+	CannonFireCount = 0;
 	WeaponRender->ChangeAnimation("Cannon_In");
 }
 void Werner_Werman::Cannon_InUpdate(float _DeltaTime)
@@ -94,6 +97,7 @@ void Werner_Werman::Cannon_InUpdate(float _DeltaTime)
 	if (true == WeaponRender->IsAnimationEnd())
 	{
 		CannonAble = false;
+		WeaponType = false;
 		WeaponRender->Off();
 	}
 }
@@ -104,36 +108,65 @@ void Werner_Werman::Cannon_InEnd()
 
 void Werner_Werman::Cannon_IdleStart()
 {
+	CannonFireRand = 1;
 	WeaponRender->ChangeAnimation("Cannon_Idle");
 }
 void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 {
-	if (5 >= CannonfireCount)
+	if (5 == CannonFireCount && 1 == CannonFireRand)
+	{
+		CannonFireRand = 0;
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+		if (0 == RandC)
+		{
+			++CannonFireCount;
+		}
+	}
+
+	if (7 > CannonFireCount)
 	{
 		FireTime += _DeltaTime;
 	}
 	
-	if (1.0f <= FireTime)
+	if (0.7f <= FireTime)
 	{
-		FireTime = 0.0f;
+		CannonFireTime += _DeltaTime;
+	}
+
+	if (0.5f <= CannonFireTime)
+	{
+		if (2 <= CannonLoopCount)
+		{
+			FireTime = 0.0f;
+			CannonFireTime = 0.0f;
+			CannonLoopCount = 0;
+			return;
+		}
+
+		CannonFireTime = 0.0f;
+		++CannonLoopCount;
 		IsFire = true;
 	}
 
 	if (true == IsFire)
 	{
 		IsFire = false;
-		++CannonfireCount;
+		++CannonFireCount;
 		ChangeState_Cannon(CannonState::Fire);
 	}
 
-	if (5 < CannonfireCount)
+	if (7 <= CannonFireCount)
 	{
+		CannonFireTime = 0.0f;
+		FireTime = 0.0f;
+		CannonLoopCount = 0;
 		ChangeState_Cannon(CannonState::In);
 	}
 }
 void Werner_Werman::Cannon_IdleEnd()
 {
-	FireTime = 0.0f;
+
 }
 
 void Werner_Werman::Cannon_FireStart()

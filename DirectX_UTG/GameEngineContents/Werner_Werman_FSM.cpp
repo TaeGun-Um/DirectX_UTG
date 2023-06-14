@@ -191,21 +191,35 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	
 	MoveTime += _DeltaTime;
 
-	if (false == CannonAble)
+	if (false == CannonAble || false == CatapultAble)
 	{
 		WeaponSwapTime += _DeltaTime;
 	}
 
-	if (false == CannonAble && 1.0f <= WeaponSwapTime)
+	if (false == CannonAble && 1.0f <= WeaponSwapTime
+		|| false == CatapultAble && 1.0f <= WeaponSwapTime)
 	{
-		CannonAble = true;
-		ChangeState_Cannon(CannonState::Out);
+		if (true == WeaponType)
+		{
+			CannonAble = true;
+			ChangeState_Cannon(CannonState::Out);
+		}
+		else
+		{
+			CatapultAble = true;
+			ChangeState_Catapult(CatapultState::Out);
+		}
 	}
 
 	if (true == CannonAble)
 	{
-		WeaponSwapTime = 0.0;
+		WeaponSwapTime = 0.0f;
 		UpdateState_Cannon(_DeltaTime);
+	}
+	else if (true == CatapultAble)
+	{
+		WeaponSwapTime = 0.0f;
+		UpdateState_Catapult(_DeltaTime);
 	}
 
 	float CosTime = MoveTime * 2.5f;

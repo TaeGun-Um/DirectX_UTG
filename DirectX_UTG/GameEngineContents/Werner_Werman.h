@@ -21,8 +21,12 @@ enum class CannonState
 
 enum class CatapultState
 {
+	Out,
 	Loop,
+	Reload,
+	Reload_Loop,
 	Fire,
+	In,
 };
 
 // Ό³Έν :
@@ -116,19 +120,28 @@ private:
 	void SetMoveCanBackTexture();
 
 	float4 InitPosition = float4::Zero;
+	float4 CatapultStartPosition = float4::Zero;
+	float4 CatapultEndPosition = float4::Zero;
 
 	bool IsIntro = true;
 	bool Directbool = false;
 	bool WeaponType = true;
 	bool IsFire = false;
 	bool CannonAble = false;
+	bool CatapultAble = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
-	float FireTime = 0.0f;
 	float WeaponSwapTime = 0.0f;
+	float CannonFireTime = 0.0f;
+	float CatapultLoopTime = 0.0f;
+	float CatapultReLoadLoopTime = 0.0f;
+	float FireTime = 0.0f;
 
-	int CannonfireCount = 0;
+	int CannonFireRand = 0;
+	int CannonFireCount = 0;
+	int CannonLoopCount = 0;
+	int CatapultFireCount = 0;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -171,6 +184,30 @@ private:
 
 	void ChangeState_Catapult(CatapultState _StateValue);
 	void UpdateState_Catapult(float _DeltaTime);
+
+	void Catapult_OutStart();
+	void Catapult_OutUpdate(float _DeltaTime);
+	void Catapult_OutEnd();
+
+	void Catapult_LoopStart();
+	void Catapult_LoopUpdate(float _DeltaTime);
+	void Catapult_LoopEnd();
+
+	void Catapult_ReloadStart();
+	void Catapult_ReloadUpdate(float _DeltaTime);
+	void Catapult_ReloadEnd();
+
+	void Catapult_Reload_LoopStart();
+	void Catapult_Reload_LoopUpdate(float _DeltaTime);
+	void Catapult_Reload_LoopEnd();
+
+	void Catapult_FireStart();
+	void Catapult_FireUpdate(float _DeltaTime);
+	void Catapult_FireEnd();
+
+	void Catapult_InStart();
+	void Catapult_InUpdate(float _DeltaTime);
+	void Catapult_InEnd();
 
 };
 

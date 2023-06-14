@@ -231,6 +231,23 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cannon_Shoot").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Catapult_Loop"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_Catapult");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Catapult_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Catapult_Reload").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Catapult_Reload_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Catapult_Fire").GetFullPath());
+	}
+
 	if (nullptr == GameEngineSprite::Find("Can_Part_Body_Idle"))
 	{
 		GameEngineDirectory NewDir;
@@ -391,6 +408,12 @@ void Werner_Werman::ActorInitSetting()
 		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Out", .SpriteName = "Cannon_Out", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Idle", .SpriteName = "Cannon_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		WeaponRender->CreateAnimation({ .AnimationName = "Cannon_Fire", .SpriteName = "Cannon_Shoot", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+
+		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Loop", .SpriteName = "Catapult_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Reload", .SpriteName = "Catapult_Reload", .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Reload_Loop", .SpriteName = "Catapult_Reload_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Fire", .SpriteName = "Catapult_Fire", .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true });
+
 		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
 		WeaponRender->ChangeAnimation("Cannon_Out");
 		WeaponRender->Off();
@@ -403,6 +426,7 @@ void Werner_Werman::ActorInitSetting()
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseIn", .SpriteName = "Can_Part_Body_In", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseOut", .SpriteName = "Can_Part_Body_Out", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
 		CanRenderPtr->ChangeAnimation("Can_Idle");
 	}
 
