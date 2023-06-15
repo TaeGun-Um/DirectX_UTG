@@ -6,6 +6,8 @@
 class MouseLevel : public GameEngineLevel
 {
 public:
+	static MouseLevel* MouseLevelPtr;
+
 	// constrcuter destructer
 	MouseLevel();
 	~MouseLevel();

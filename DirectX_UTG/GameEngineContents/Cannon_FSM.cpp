@@ -109,11 +109,12 @@ void Werner_Werman::Cannon_InEnd()
 void Werner_Werman::Cannon_IdleStart()
 {
 	CannonFireRand = 1;
+	CannonFireMaxCount = 6;
 	WeaponRender->ChangeAnimation("Cannon_Idle");
 }
 void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 {
-	if (5 == CannonFireCount && 1 == CannonFireRand)
+	if ((CannonFireMaxCount - 2) == CannonFireCount && 1 == CannonFireRand)
 	{
 		CannonFireRand = 0;
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
@@ -124,7 +125,7 @@ void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 		}
 	}
 
-	if (7 > CannonFireCount)
+	if (CannonFireMaxCount > CannonFireCount)
 	{
 		FireTime += _DeltaTime;
 	}
@@ -152,11 +153,10 @@ void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 	if (true == IsFire)
 	{
 		IsFire = false;
-		++CannonFireCount;
 		ChangeState_Cannon(CannonState::Fire);
 	}
 
-	if (7 <= CannonFireCount)
+	if (CannonFireMaxCount <= CannonFireCount)
 	{
 		CannonFireTime = 0.0f;
 		FireTime = 0.0f;
@@ -172,9 +172,17 @@ void Werner_Werman::Cannon_IdleEnd()
 void Werner_Werman::Cannon_FireStart()
 {
 	WeaponRender->ChangeAnimation("Cannon_Fire");
+	IsCreateCherryBomb = true;
 }
 void Werner_Werman::Cannon_FireUpdate(float _DeltaTime)
 {
+	if (1 == WeaponRender->GetCurrentFrame() && true == IsCreateCherryBomb)
+	{
+		IsCreateCherryBomb = false;
+		CreateCherryBomb();
+		++CannonFireCount;
+	}
+
 	if (true == WeaponRender->IsAnimationEnd())
 	{
 		ChangeState_Cannon(CannonState::Idle);

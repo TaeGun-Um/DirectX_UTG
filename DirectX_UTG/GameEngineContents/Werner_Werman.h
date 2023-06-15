@@ -97,6 +97,8 @@ private:
 	void CollisionCheck();
 	void CollisionSetting();
 	void HitBlink(float _DeltaTime);
+	void CreateCherryBomb();
+	void CreateCatapultProjectile();
 
 	float HP = 100.0f;
 	bool IsDebugRender = false;
@@ -134,11 +136,14 @@ private:
 	bool Directbool = false;
 	bool WeaponType = true;
 	bool IsFire = false;
+	bool ParryBombCreate = false;
 	bool CannonAble = false;
 	bool CatapultAble = false;
 	bool AlreadyCannonOn = false;
 	bool AlreadyCatapultOn = false;
 	bool IsDash = false;
+	bool IsCreateCherryBomb = false;
+	bool IsCreateCatapultProjectile = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
@@ -150,6 +155,7 @@ private:
 
 	int CannonFireRand = 0;
 	int CannonFireCount = 0;
+	int CannonFireMaxCount = 0;
 	int CannonLoopCount = 0;
 	int CatapultFireCount = 0;
 	int WeaponSwapCount = 0;

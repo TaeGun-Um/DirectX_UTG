@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Werner_Werman.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -9,6 +10,9 @@
 #include "Peashooter_EX.h"
 #include "Spread.h"
 #include "Spread_EX.h"
+
+#include "CherryBomb.h"
+#include "CatapultProjectile.h"
 
 Werner_Werman::Werner_Werman() 
 {
@@ -173,6 +177,56 @@ void Werner_Werman::CollisionSetting()
 ///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Werner_Werman::CreateCherryBomb()
+{
+	std::shared_ptr<CherryBomb> Projectile = GetLevel()->CreateActor<CherryBomb>();
+	float4 StartPosition = WeaponRender->GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ -10, 0, -1 };
+
+	//int RandC = GameEngineRandom::MainRandom.RandomInt(0, (6 - CannonFireCount));
+
+	//if (0 == RandC && false == ParryBombCreate)
+	//{
+	//	ParryBombCreate = true;
+	//	Projectile->SetParryBombCreate();
+	//}
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
+
+	int RandC2 = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC2)
+	{
+		Projectile->SetJumpPower(550.0f);
+	}
+	else if (1 == RandC2)
+	{
+		Projectile->SetJumpPower(600.0f);
+	}
+	else if (2 == RandC2)
+	{
+		Projectile->SetJumpPower(700.0f);
+	}
+
+	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Projectile->SetStartPosition(ProjectilePosition);
+	Projectile->SetDirection(Directbool);
+
+	//CreateFistSFX(ProjectilePosition);
+}
+
+void Werner_Werman::CreateCatapultProjectile()
+{
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,6 +321,23 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Body_Out").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Part_Wheels").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("CherryBomb_Normal"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_CherryBomb");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Normal").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Pink").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Explode").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))

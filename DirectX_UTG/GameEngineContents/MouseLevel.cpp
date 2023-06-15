@@ -25,6 +25,8 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+MouseLevel* MouseLevel::MouseLevelPtr = nullptr;
+
 MouseLevel::MouseLevel() 
 {
 }
@@ -35,7 +37,7 @@ MouseLevel::~MouseLevel()
 
 void MouseLevel::Start()
 {
-
+	MouseLevelPtr = this;
 }
 void MouseLevel::Update(float _DeltaTime)
 {

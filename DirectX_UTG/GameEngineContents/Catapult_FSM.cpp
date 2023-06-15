@@ -208,6 +208,7 @@ void Werner_Werman::Catapult_Reload_LoopEnd()
 void Werner_Werman::Catapult_FireStart()
 {
 	WeaponRender->ChangeAnimation("Catapult_Fire");
+	IsCreateCatapultProjectile = true;
 }
 void Werner_Werman::Catapult_FireUpdate(float _DeltaTime)
 {

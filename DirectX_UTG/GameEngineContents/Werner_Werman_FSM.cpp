@@ -285,7 +285,7 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 		//	}
 		//}
 
-		if (false == CannonAble)
+		if (false == CannonAble)/////////////////////////////////////////////////////////////////////////
 		{
 			++WeaponSwapCount;
 			CannonAble = true;
@@ -293,6 +293,8 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 		}
 
 	}
+
+	WeaponSwapCount = 0; //////////////////////////////////////////////////////////////////////////////
 
 	if (2 >= WeaponSwapCount)
 	{
@@ -360,8 +362,6 @@ void Werner_Werman::MoveEnd()
 void Werner_Werman::Dash_IntroStart()
 {
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
-
-	float ZZZ = MouseRenderPtr->GetTransform()->GetLocalPosition().z; // == 0
 	MouseRenderPtr->GetTransform()->SetLocalPosition({ -70, 190, -1 });
 	
 	MouseRenderPtr->On();
