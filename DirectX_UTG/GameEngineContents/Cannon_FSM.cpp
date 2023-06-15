@@ -115,6 +115,16 @@ void Werner_Werman::Cannon_IdleStart()
 }
 void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 {
+	if (HP <= 750.0f)
+	{
+		CannonFireTime = 0.0f;
+		FireTime = 0.0f;
+		CannonLoopCount = 0;
+		WeaponSwapCount = 2;
+		ChangeState_Cannon(CannonState::In);
+		return;
+	}
+
 	if ((CannonFireMaxCount - 2) == CannonFireCount && 1 == CannonFireRand)
 	{
 		CannonFireRand = 0;

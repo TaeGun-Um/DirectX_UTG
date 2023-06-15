@@ -794,7 +794,14 @@ void Player::JumpStart()
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 220, 1 });
 
 	// มกวมทย
-	if (true == SlapJump)
+	if (true == SlapJump && true == IsSpringParry)
+	{
+		MoveDirect.y = 1600.0f;
+		IsSpringParry = false;
+		SlapJump = false;
+		IsJump = true;
+	}
+	else if (true == SlapJump)
 	{
 		MoveDirect.y = 1000.0f;
 		SlapJump = false;

@@ -12,6 +12,10 @@ enum class MouseState
 	Dash_Intro,
 	Dash,
 	Dash_Outro,
+
+	//Phase2
+
+	Idle_Phase2
 };
 
 enum class CannonState
@@ -99,8 +103,9 @@ private:
 	void HitBlink(float _DeltaTime);
 	void CreateCherryBomb();
 	void CreateCatapultProjectile();
+	void CreateSpringObject();
 
-	float HP = 100.0f;
+	float HP = 1000.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;
@@ -127,6 +132,7 @@ private:
 	float4 FowardPosition = float4::Zero;
 	float4 InitPosition = float4::Zero;
 	float4 LeftInitPosition = float4::Zero;
+	float4 Phase2InitPosition = float4::Zero;
 	float4 MoveDistance = float4::Zero;
 	float4 CatapultStartPosition = float4::Zero;
 	float4 CatapultEndPosition = float4::Zero;
@@ -144,6 +150,7 @@ private:
 	bool IsDash = false;
 	bool IsCreateProjectile = false;
 	bool IsCreateCatapultProjectile = false;
+	bool IsCreateSpringObject = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
@@ -159,6 +166,7 @@ private:
 	int CannonLoopCount = 0;
 	int CatapultFireCount = 0;
 	int WeaponSwapCount = 0;
+	int Phase2PositionSetting = 1;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -191,6 +199,10 @@ private:
 	void Dash_OutroStart();
 	void Dash_OutroUpdate(float _DeltaTime);
 	void Dash_OutroEnd();
+
+	void Idle_Phase2Start();
+	void Idle_Phase2Update(float _DeltaTime);
+	void Idle_Phase2End();
 
 	void ChangeState_Cannon(CannonState _StateValue);
 	void UpdateState_Cannon(float _DeltaTime);

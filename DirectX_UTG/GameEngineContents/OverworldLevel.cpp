@@ -85,6 +85,14 @@ void OverworldLevel::BuildingFlagOn()
 		BuildingDataBase::FrogPtr->FlagUpSetting();
 		PlayerObject->WinFSMSetting();
 	}
+
+	if (true == MouseEnd && 1 == MouseEndCount)
+	{
+		MouseEndCount = 0;
+		BuildingDataBase::MousePtr->InterActionOff();
+		BuildingDataBase::MousePtr->FlagUpSetting();
+		PlayerObject->WinFSMSetting();
+	}
 }
 
 void OverworldLevel::LevelChangeStart()

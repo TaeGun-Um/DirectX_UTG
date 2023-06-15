@@ -103,6 +103,7 @@ void Player::PlayerReset()
 	HitTime = 0.0f;
 	IsHit = false;
 	IsSlap = false;
+	IsSpringParry = false;
 	IsDash = false;
 	IsEXAttack = false;
 	PortalAble = false;

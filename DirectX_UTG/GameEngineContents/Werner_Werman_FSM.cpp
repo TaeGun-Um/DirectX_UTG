@@ -228,7 +228,8 @@ void Werner_Werman::MoveStart()
 
 	CanRenderPtr->ChangeAnimation("Can_Move");
 
-	//WeaponSwapCount = 3; /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	IsCreateSpringObject = true;
+	//WeaponSwapCount = 2; /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 void Werner_Werman::MoveUpdate(float _DeltaTime)
 {
@@ -282,18 +283,9 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 				ChangeState_Cannon(CannonState::Out);
 			}
 		}
-
-		//if (false == CatapultAble)/////////////////////////////////////////////////////////////////////////
-		//{
-		//	++WeaponSwapCount;
-		//	CatapultAble = true;
-		//	ChangeState_Catapult(CatapultState::Out);
-		//}
 	}
 
-	//WeaponSwapCount = 0; //////////////////////////////////////////////////////////////////////////////
-
-	if (2 >= WeaponSwapCount)
+	if (2 >= WeaponSwapCount && 1 == Phase2PositionSetting)
 	{
 		if (true == CannonAble)
 		{
@@ -321,6 +313,12 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 
 		GetTransform()->SetLocalPosition({ SinX + InitPosition.x, InitPosition.y });
 
+		if ((GameEngineMath::PIE / 4) <= CosTime && 3 <= WeaponSwapCount && true == IsCreateSpringObject)
+		{
+			IsCreateSpringObject = false;
+			CreateSpringObject();
+		}
+
 		if ((GameEngineMath::PIE + (GameEngineMath::PIE / 2)) <= CosTime && 3 <= WeaponSwapCount)
 		{
 			MoveTime = 0.0f;
@@ -331,23 +329,56 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	}
 	else
 	{
-		float CosTime = MoveTime * 2.5f;
-
-		float SinX = (sinf(CosTime) * 150.0f);
-
-		if (GameEngineMath::PIE2 <= CosTime)
+		if (3 <= WeaponSwapCount && HP <= 750.0f)
 		{
-			MoveTime = 0.0f;
-			GetTransform()->SetWorldPosition(LeftInitPosition);
+			if (1 == Phase2PositionSetting)
+			{
+				Phase2PositionSetting = 0;
+				Phase2InitPosition = float4{ 680.0f , InitPosition.y, 0.0f };
+				
+				FowardPosition = Phase2InitPosition;
+			}
+			
+			float4 CurPos = GetTransform()->GetWorldPosition();
+			float4 Movedir = float4::Zero;
+
+			Movedir = (Phase2InitPosition - CurPos);
+
+			MoveDistance = Movedir * 1.2f * _DeltaTime;
+			MoveDistance.z = 0.0f;
+
+			GetTransform()->AddWorldPosition(MoveDistance);
+
+			if ((Phase2InitPosition.x - 40.0f) <= CurPos.x)
+			{
+				GetTransform()->SetLocalPosition({ 640.0f , InitPosition.y, 0.0f });
+				ChangeState(MouseState::Idle_Phase2);
+				return;
+			}
 		}
 
-		GetTransform()->SetLocalPosition({ SinX + LeftInitPosition.x, LeftInitPosition.y });
+		float CosTime = MoveTime * 2.5f;
 
-		if (/*(GameEngineMath::PIE / 2)*/ GameEngineMath::PIE2 <= CosTime && 3 <= WeaponSwapCount)
+		if (1 == Phase2PositionSetting)
 		{
-			WeaponSwapCount = 0;
-			AlreadyCannonOn = false;
-			AlreadyCatapultOn = false;
+			if ((GameEngineMath::PIE / 4) <= CosTime && 3 <= WeaponSwapCount)
+			{
+				WeaponSwapCount = 0;
+				AlreadyCannonOn = false;
+				AlreadyCatapultOn = false;
+			}
+			else
+			{
+				float SinX = (sinf(CosTime) * 150.0f);
+
+				if (GameEngineMath::PIE2 <= CosTime)
+				{
+					MoveTime = 0.0f;
+					GetTransform()->SetWorldPosition(LeftInitPosition);
+				}
+
+				GetTransform()->SetLocalPosition({ SinX + LeftInitPosition.x, LeftInitPosition.y });
+			}
 		}
 	}
 }
@@ -430,6 +461,19 @@ void Werner_Werman::DashUpdate(float _DeltaTime)
 void Werner_Werman::DashEnd()
 {
 	IsDash = false;
+}
+
+void Werner_Werman::Idle_Phase2Start()
+{
+
+}
+void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
+{
+
+}
+void Werner_Werman::Idle_Phase2End()
+{
+
 }
 
 void Werner_Werman::Dash_OutroStart()

@@ -13,6 +13,7 @@
 
 #include "CherryBomb.h"
 #include "CatapultProjectile.h"
+#include "SpringObject.h"
 
 Werner_Werman::Werner_Werman() 
 {
@@ -77,6 +78,9 @@ void Werner_Werman::HitBlink(float _DeltaTime)
 		BlinkMulColor.g = 0.2f;
 		BlinkMulColor.b = 0.35f;
 		CanRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		CanBackRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		MouseRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		WeaponRender->ColorOptionValue.MulColor += BlinkMulColor;
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -86,6 +90,9 @@ void Werner_Werman::HitBlink(float _DeltaTime)
 		IsBlink = false;
 
 		CanRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		CanBackRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		MouseRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		WeaponRender->ColorOptionValue.MulColor = OriginMulColor;
 	}
 }
 
@@ -181,7 +188,16 @@ void Werner_Werman::CreateCherryBomb()
 {
 	std::shared_ptr<CherryBomb> Projectile = GetLevel()->CreateActor<CherryBomb>();
 	float4 StartPosition = WeaponRender->GetTransform()->GetWorldPosition();
-	float4 ProjectilePosition = StartPosition + float4{ -10, 0, -1 };
+	float4 ProjectilePosition = float4::Zero;
+
+	if (false == Directbool)
+	{
+		ProjectilePosition = StartPosition + float4{ -25, 10, -1 };
+	}
+	else
+	{
+		ProjectilePosition = StartPosition + float4{ 25, 10, -1 };
+	}
 
 	int RandC = GameEngineRandom::MainRandom.RandomInt(0, (6 - CannonFireCount));
 
@@ -238,11 +254,9 @@ void Werner_Werman::CreateCatapultProjectile()
 	float4 ProjectileRotation3 = float4::Zero;
 	float4 ProjectileRotation4 = float4::Zero;
 
-	//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
-
 	if (false == Directbool)
 	{
-		ProjectilePosition = StartPosition + float4{ -40, 100, -1 };
+		ProjectilePosition = StartPosition + float4{ -50, 100, -1 };
 
 		ProjectileRotation0 += float4{ 0, 0, 350 };
 		ProjectileRotation1 += float4{ 0, 0, 5 };
@@ -252,7 +266,7 @@ void Werner_Werman::CreateCatapultProjectile()
 	}
 	else
 	{
-		ProjectilePosition = StartPosition + float4{ 40, 100, -1 };
+		ProjectilePosition = StartPosition + float4{ 45, 100, -1 };
 
 		ProjectileRotation0 += float4{ 0, 0, 10 };
 		ProjectileRotation1 += float4{ 0, 0, 355 };
@@ -301,6 +315,35 @@ void Werner_Werman::CreateCatapultProjectile()
 	Projectile0->SetProjectileRandomAnimation();
 	Projectile3->SetProjectileRandomAnimation();
 	Projectile4->SetProjectileRandomAnimation();
+}
+
+void Werner_Werman::CreateSpringObject()
+{
+	std::shared_ptr<SpringObject> Spring0 = GetLevel()->CreateActor<SpringObject>();
+	std::shared_ptr<SpringObject> Spring1 = GetLevel()->CreateActor<SpringObject>();
+
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{0, 250};
+
+	if (true == IsDebugRender)
+	{
+		Spring0->SetCollisionRenderOn();
+		Spring1->SetCollisionRenderOn();
+	}
+	else
+	{
+		Spring0->SetCollisionRenderOff();
+		Spring1->SetCollisionRenderOff();
+	}
+
+	Spring0->SetStartPosition(ProjectilePosition);
+	Spring1->SetStartPosition(ProjectilePosition);
+
+	Spring0->SetMoveSpeed(300.0f);
+	Spring1->SetMoveSpeed(500.0f);
+
+	Spring0->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Spring1->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -434,6 +477,24 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Nut").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Popcap").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Tooth").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Spring_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_Spring");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Land").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Idle_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Launch").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Death").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
@@ -616,7 +677,6 @@ void Werner_Werman::ActorInitSetting()
 	if (nullptr == CanUpRenderPtr)
 	{
 		CanUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//CanUpRenderPtr->GetTransform()->SetLocalPosition({ 0, 250 });
 		CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
 	}
 

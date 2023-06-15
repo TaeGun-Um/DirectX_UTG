@@ -71,7 +71,7 @@ void MouseLevel::Update(float _DeltaTime)
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
 			IsMouseLevelEnd = true;
-			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
+			OverworldLevel::OverworldLevelPtr->SetMouseEnd();
 			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}

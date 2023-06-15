@@ -56,6 +56,14 @@ public:
 		AddPlayerEXStack();
 	}
 
+	void SetSpringOn()
+	{
+		ParryCheck = true;
+		IsSpringParry = true;
+		CreateParryEffect();
+		AddPlayerEXStack();
+	}
+
 	void StartCameraShaking(int _ShakingMaxCount)
 	{
 		ShakingMaxCount = _ShakingMaxCount;
@@ -290,6 +298,7 @@ private:
 	bool IsSlap = false;
 	bool SlapJump = false;
 	bool ParryCheck = false;
+	bool IsSpringParry = false;
 	bool OuterParryCheck = false;
 	bool IsBottomJump = false;
 	bool BottomJumpBlock = false;

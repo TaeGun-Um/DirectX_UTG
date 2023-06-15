@@ -398,6 +398,9 @@
     <ClInclude Include="CherryBomb_Fire.h">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="SpringObject.h">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -694,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="Cannon_FSM.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringObject.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

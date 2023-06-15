@@ -100,7 +100,7 @@ void Werner_Werman::Catapult_OutUpdate(float _DeltaTime)
 {
 	CatapultLoopTime += _DeltaTime;
 
-	float4 NewPos = float4::Lerp(CatapultStartPosition, CatapultEndPosition, CatapultLoopTime * 1.2f);
+	float4 NewPos = float4::Lerp(CatapultStartPosition, CatapultEndPosition, CatapultLoopTime * 1.3f);
 	WeaponRender->GetTransform()->SetLocalPosition(NewPos);
 
 	float4 CurPos = WeaponRender->GetTransform()->GetLocalPosition();
@@ -124,7 +124,7 @@ void Werner_Werman::Catapult_InUpdate(float _DeltaTime)
 {
 	CatapultLoopTime += _DeltaTime;
 
-	float4 NewPos = float4::Lerp(CatapultEndPosition, CatapultStartPosition, CatapultLoopTime * 1.2f);
+	float4 NewPos = float4::Lerp(CatapultEndPosition, CatapultStartPosition, CatapultLoopTime * 1.3f);
 	WeaponRender->GetTransform()->SetLocalPosition(NewPos);
 
 	float4 CurPos = WeaponRender->GetTransform()->GetLocalPosition();
@@ -149,6 +149,13 @@ void Werner_Werman::Catapult_LoopStart()
 }
 void Werner_Werman::Catapult_LoopUpdate(float _DeltaTime)
 {
+	if (HP <= 750.0f)
+	{
+		WeaponSwapCount = 2;
+		ChangeState_Catapult(CatapultState::In);
+		return;
+	}
+
 	CatapultLoopTime += _DeltaTime;
 
 	if (CatapultFireCount < 2)
