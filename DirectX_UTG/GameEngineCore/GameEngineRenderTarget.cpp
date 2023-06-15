@@ -83,6 +83,11 @@ void GameEngineRenderTarget::Setting()
 	ID3D11DepthStencilView* DSV
 		= DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
+	if (false == DepthSetting)
+	{
+		DSV = nullptr;
+	}
+
 	// 지금 당장은 z값을 쓰지 않겠습니다.
 	GameEngineDevice::GetContext()->OMSetRenderTargets(1, RTV, DSV);
 }

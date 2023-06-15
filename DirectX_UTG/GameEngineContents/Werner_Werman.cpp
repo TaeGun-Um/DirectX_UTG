@@ -218,13 +218,89 @@ void Werner_Werman::CreateCherryBomb()
 	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetDirection(Directbool);
-
-	//CreateFistSFX(ProjectilePosition);
 }
 
 void Werner_Werman::CreateCatapultProjectile()
 {
+	std::shared_ptr<CatapultProjectile> Projectile0 = GetLevel()->CreateActor<CatapultProjectile>();
+	std::shared_ptr<CatapultProjectile> Projectile1 = GetLevel()->CreateActor<CatapultProjectile>();
+	std::shared_ptr<CatapultProjectile> Projectile2 = GetLevel()->CreateActor<CatapultProjectile>();
+	std::shared_ptr<CatapultProjectile> Projectile3 = GetLevel()->CreateActor<CatapultProjectile>();
+	std::shared_ptr<CatapultProjectile> Projectile4 = GetLevel()->CreateActor<CatapultProjectile>();
 
+	float4 StartPosition = WeaponRender->GetTransform()->GetWorldPosition();
+
+	float4 ProjectilePosition = float4::Zero;
+
+	float4 ProjectileRotation0 = float4::Zero;
+	float4 ProjectileRotation1 = float4::Zero;
+	float4 ProjectileRotation2 = float4::Zero;
+	float4 ProjectileRotation3 = float4::Zero;
+	float4 ProjectileRotation4 = float4::Zero;
+
+	//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (false == Directbool)
+	{
+		ProjectilePosition = StartPosition + float4{ -40, 100, -1 };
+
+		ProjectileRotation0 += float4{ 0, 0, 350 };
+		ProjectileRotation1 += float4{ 0, 0, 5 };
+		ProjectileRotation2 += float4{ 0, 0, 20 };
+		ProjectileRotation3 += float4{ 0, 0, 35 };
+		ProjectileRotation4 += float4{ 0, 0, 50 };
+	}
+	else
+	{
+		ProjectilePosition = StartPosition + float4{ 40, 100, -1 };
+
+		ProjectileRotation0 += float4{ 0, 0, 10 };
+		ProjectileRotation1 += float4{ 0, 0, 355 };
+		ProjectileRotation2 += float4{ 0, 0, 340 };
+		ProjectileRotation3 += float4{ 0, 0, 325 };
+		ProjectileRotation4 += float4{ 0, 0, 310 };
+	}
+
+	if (true == IsDebugRender)
+	{
+		Projectile0->SetCollisionRenderOn();
+		Projectile1->SetCollisionRenderOn();
+		Projectile2->SetCollisionRenderOn();
+		Projectile3->SetCollisionRenderOn();
+		Projectile4->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile0->SetCollisionRenderOff();
+		Projectile1->SetCollisionRenderOff();
+		Projectile2->SetCollisionRenderOff();
+		Projectile3->SetCollisionRenderOff();
+		Projectile4->SetCollisionRenderOff();
+	}
+
+	Projectile0->SetStartPosition(ProjectilePosition);
+	Projectile1->SetStartPosition(ProjectilePosition);
+	Projectile2->SetStartPosition(ProjectilePosition);
+	Projectile3->SetStartPosition(ProjectilePosition);
+	Projectile4->SetStartPosition(ProjectilePosition);
+
+	Projectile0->SetProjectileRotation(ProjectileRotation0);
+	Projectile1->SetProjectileRotation(ProjectileRotation1);
+	Projectile2->SetProjectileRotation(ProjectileRotation2);
+	Projectile3->SetProjectileRotation(ProjectileRotation3);
+	Projectile4->SetProjectileRotation(ProjectileRotation4);
+
+	Projectile0->SetDirection(Directbool);
+	Projectile1->SetDirection(Directbool);
+	Projectile2->SetDirection(Directbool);
+	Projectile3->SetDirection(Directbool);
+	Projectile4->SetDirection(Directbool);
+
+	Projectile1->SetParryProjectileCreate();
+	Projectile2->SetParryProjectileCreate();
+	Projectile0->SetProjectileRandomAnimation();
+	Projectile3->SetProjectileRandomAnimation();
+	Projectile4->SetProjectileRandomAnimation();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,6 +415,25 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Explode").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire_Loop").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("CatapultProjectile_Bolt"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase1");
+		NewDir.Move("Object_CatapultProjectile");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Bolt").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Coin").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Gum").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Nut").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Popcap").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CatapultProjectile_Tooth").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))

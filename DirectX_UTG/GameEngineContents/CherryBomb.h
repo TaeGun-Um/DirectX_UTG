@@ -74,7 +74,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 
 	float4 MoveDirect = float4::Zero;
-	float MoveSpeed = 300.0f;
+	float MoveSpeed = 330.0f;
 	float JumpPower = 0.0f;
 
 	bool Directbool = false;

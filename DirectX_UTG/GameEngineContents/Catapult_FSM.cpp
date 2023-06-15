@@ -212,6 +212,12 @@ void Werner_Werman::Catapult_FireStart()
 }
 void Werner_Werman::Catapult_FireUpdate(float _DeltaTime)
 {
+	if (5 == WeaponRender ->GetCurrentFrame() && true == IsCreateCatapultProjectile)
+	{
+		IsCreateCatapultProjectile = false;
+		CreateCatapultProjectile();
+	}
+
 	if (true == WeaponRender->IsAnimationEnd())
 	{
 		++CatapultFireCount;

@@ -51,7 +51,7 @@ void CherryBomb::Start()
 	{
 		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
 		ParryCollisionPtr->SetColType(ColType::SPHERE2D);
-		ParryCollisionPtr->GetTransform()->SetLocalScale({ 110, 110, 1 });
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 70, 70, 1 });
 		ParryCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		ParryCollisionPtr->Off();
 	}
