@@ -20,6 +20,8 @@ public:
 		{
 			GetTransform()->SetLocalNegativeScaleX();
 		}
+
+		Directbool = _Direction;
 	}
 
 	void SetStartPosition(const float4& _PlayerPosition)
@@ -75,6 +77,7 @@ private:
 	float MoveSpeed = 300.0f;
 	float JumpPower = 0.0f;
 
+	bool Directbool = false;
 	bool IsJump = false;
 	bool IsDeath = false;
 	bool IsParryProjectile = false;

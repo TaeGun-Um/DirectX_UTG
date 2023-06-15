@@ -631,6 +631,7 @@ void Croak::CollisionCheck()
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::SPHERE2D))
 	{
 		ParryCollisionPtr->Off();
+		Player::MainPlayer->SetParryOn();
 		IsArmParry = true;
 	}
 	else

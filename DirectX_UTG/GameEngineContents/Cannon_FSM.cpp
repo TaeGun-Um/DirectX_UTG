@@ -70,6 +70,7 @@ void Werner_Werman::UpdateState_Cannon(float _DeltaTime)
 
 void Werner_Werman::Cannon_OutStart()
 {
+	ParryBombCreate = false;
 	WeaponRender->GetTransform()->SetLocalPosition({ -70, 250 });
 	WeaponRender->On();
 	WeaponRender->ChangeAnimation("Cannon_Out");
@@ -121,7 +122,7 @@ void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 
 		if (0 == RandC)
 		{
-			++CannonFireCount;
+			CannonFireCount = (CannonFireMaxCount -1);
 		}
 	}
 
@@ -172,13 +173,13 @@ void Werner_Werman::Cannon_IdleEnd()
 void Werner_Werman::Cannon_FireStart()
 {
 	WeaponRender->ChangeAnimation("Cannon_Fire");
-	IsCreateCherryBomb = true;
+	IsCreateProjectile = true;
 }
 void Werner_Werman::Cannon_FireUpdate(float _DeltaTime)
 {
-	if (1 == WeaponRender->GetCurrentFrame() && true == IsCreateCherryBomb)
+	if (1 == WeaponRender->GetCurrentFrame() && true == IsCreateProjectile)
 	{
-		IsCreateCherryBomb = false;
+		IsCreateProjectile = false;
 		CreateCherryBomb();
 		++CannonFireCount;
 	}

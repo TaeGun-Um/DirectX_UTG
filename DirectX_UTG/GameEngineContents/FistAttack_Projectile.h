@@ -71,6 +71,5 @@ private:
 	void MoveDirection(float _DeltaTime);
 	void CollisionCheck();
 	void DeathCheck();
-	void SetFistDeath();
 
 };

@@ -183,13 +183,13 @@ void Werner_Werman::CreateCherryBomb()
 	float4 StartPosition = WeaponRender->GetTransform()->GetWorldPosition();
 	float4 ProjectilePosition = StartPosition + float4{ -10, 0, -1 };
 
-	//int RandC = GameEngineRandom::MainRandom.RandomInt(0, (6 - CannonFireCount));
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, (6 - CannonFireCount));
 
-	//if (0 == RandC && false == ParryBombCreate)
-	//{
-	//	ParryBombCreate = true;
-	//	Projectile->SetParryBombCreate();
-	//}
+	if (0 == RandC && false == ParryBombCreate)
+	{
+		ParryBombCreate = true;
+		Projectile->SetParryBombCreate();
+	}
 
 	if (true == IsDebugRender)
 	{

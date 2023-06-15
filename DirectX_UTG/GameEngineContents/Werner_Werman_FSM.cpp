@@ -244,66 +244,66 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	if (false == CannonAble && 1.0f <= WeaponSwapTime
 		|| false == CatapultAble && 1.0f <= WeaponSwapTime)
 	{
-		WeaponSwapTime = 0.0f;
-
-		//if (2 <= WeaponSwapCount)
-		//{
-		//	++WeaponSwapCount;
-		//}
-		//else
-		//{
-		//	if (false == AlreadyCannonOn && false == AlreadyCatapultOn)
-		//	{
-		//		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
-
-		//		if (0 == RandC)
-		//		{
-		//			AlreadyCannonOn = true;
-		//			++WeaponSwapCount;
-		//			CannonAble = true;
-		//			ChangeState_Cannon(CannonState::Out);
-		//		}
-		//		else
-		//		{
-		//			AlreadyCatapultOn = true;
-		//			++WeaponSwapCount;
-		//			CatapultAble = true;
-		//			ChangeState_Catapult(CatapultState::Out);
-		//		}
-		//	}
-		//	else if (true == AlreadyCannonOn)
-		//	{
-		//		++WeaponSwapCount;
-		//		CatapultAble = true;
-		//		ChangeState_Catapult(CatapultState::Out);
-		//	}
-		//	else if (true == AlreadyCatapultOn)
-		//	{
-		//		++WeaponSwapCount;
-		//		CannonAble = true;
-		//		ChangeState_Cannon(CannonState::Out);
-		//	}
-		//}
-
-		if (false == CannonAble)/////////////////////////////////////////////////////////////////////////
+		if (2 <= WeaponSwapCount)
 		{
 			++WeaponSwapCount;
-			CannonAble = true;
-			ChangeState_Cannon(CannonState::Out);
 		}
+		else
+		{
+			if (false == AlreadyCannonOn && false == AlreadyCatapultOn)
+			{
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+				if (0 == RandC)
+				{
+					AlreadyCannonOn = true;
+					++WeaponSwapCount;
+					CannonAble = true;
+					ChangeState_Cannon(CannonState::Out);
+				}
+				else
+				{
+					AlreadyCatapultOn = true;
+					++WeaponSwapCount;
+					CatapultAble = true;
+					ChangeState_Catapult(CatapultState::Out);
+				}
+			}
+			else if (true == AlreadyCannonOn)
+			{
+				++WeaponSwapCount;
+				CatapultAble = true;
+				ChangeState_Catapult(CatapultState::Out);
+			}
+			else if (true == AlreadyCatapultOn)
+			{
+				++WeaponSwapCount;
+				CannonAble = true;
+				ChangeState_Cannon(CannonState::Out);
+			}
+		}
+
+		//if (false == CannonAble)/////////////////////////////////////////////////////////////////////////
+		//{
+		//	++WeaponSwapCount;
+		//	CannonAble = true;
+		//	ChangeState_Cannon(CannonState::Out);
+		//}
 
 	}
 
-	WeaponSwapCount = 0; //////////////////////////////////////////////////////////////////////////////
+	//WeaponSwapCount = 0; //////////////////////////////////////////////////////////////////////////////
 
 	if (2 >= WeaponSwapCount)
 	{
 		if (true == CannonAble)
 		{
+			WeaponSwapTime = 0.0f;
 			UpdateState_Cannon(_DeltaTime);
 		}
 		else if (true == CatapultAble)
 		{
+			WeaponSwapTime = 0.0f;
 			UpdateState_Catapult(_DeltaTime);
 		}
 	}
@@ -322,13 +322,13 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 
 		GetTransform()->SetLocalPosition({ SinX + InitPosition.x, InitPosition.y });
 
-		//if ((GameEngineMath::PIE + (GameEngineMath::PIE / 2)) <= CosTime && 3 <= WeaponSwapCount)
-		//{
-		//	MoveTime = 0.0f;
-		//	IsDash = true;
-		//	ChangeState(MouseState::Idle);
-		//	return;
-		//}
+		if ((GameEngineMath::PIE + (GameEngineMath::PIE / 2)) <= CosTime && 3 <= WeaponSwapCount)
+		{
+			MoveTime = 0.0f;
+			IsDash = true;
+			ChangeState(MouseState::Idle);
+			return;
+		}
 	}
 	else
 	{

@@ -142,7 +142,7 @@ private:
 	bool AlreadyCannonOn = false;
 	bool AlreadyCatapultOn = false;
 	bool IsDash = false;
-	bool IsCreateCherryBomb = false;
+	bool IsCreateProjectile = false;
 	bool IsCreateCatapultProjectile = false;
 
 	float DelayTime = 0.0f;

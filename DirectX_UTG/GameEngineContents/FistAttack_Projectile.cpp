@@ -117,6 +117,7 @@ void FistAttack_Projectile::CollisionCheck()
 {
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
+		Player::MainPlayer->SetParryOn();
 		IsDeath = true;
 	}
 }

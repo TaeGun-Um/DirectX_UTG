@@ -49,6 +49,13 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void SetParryOn()
+	{
+		ParryCheck = true;
+		CreateParryEffect();
+		AddPlayerEXStack();
+	}
+
 	void StartCameraShaking(int _ShakingMaxCount)
 	{
 		ShakingMaxCount = _ShakingMaxCount;
@@ -245,7 +252,6 @@ private:
 	void CollisionSetting();
 	void PlatformBottomJump(float _DeltaTime);
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
-	void ParryCollisionCheck();
 	void HitCollisionCheck(float _DeltaTime);
 	void WallCollisionCheck(float _DeltaTime);
 	void ElderKettleCheck();
@@ -284,6 +290,7 @@ private:
 	bool IsSlap = false;
 	bool SlapJump = false;
 	bool ParryCheck = false;
+	bool OuterParryCheck = false;
 	bool IsBottomJump = false;
 	bool BottomJumpBlock = false;
 	bool BottomJumpAble = false;

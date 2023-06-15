@@ -351,11 +351,6 @@ void Player::CollisionCalculation(float _DeltaTime)
 		PlatformBottomJump(_DeltaTime);
 	}
 
-	if (true == IsSlap)
-	{
-		ParryCollisionCheck();
-	}
-
 	HitCollisionCheck(_DeltaTime);
 
 	PortalCheck();
@@ -741,16 +736,6 @@ void Player::PlatformBottomJumpStateCheck(float _DeltaTime)
 		{
 			IsBottomJump = false;
 		}
-	}
-}
-
-void Player::ParryCollisionCheck()
-{
-	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::ParrySpot), ColType::AABBBOX2D, ColType::AABBBOX2D))
-	{
-		ParryCheck = true;
-		CreateParryEffect();
-		AddPlayerEXStack();
 	}
 }
 

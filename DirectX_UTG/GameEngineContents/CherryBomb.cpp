@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Player.h"
 #include "MouseLevel.h"
 #include "You_Died.h"
 #include "CherryBomb_Fire.h"
@@ -50,8 +51,8 @@ void CherryBomb::Start()
 	{
 		ParryCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ParrySpot));
 		ParryCollisionPtr->SetColType(ColType::SPHERE2D);
-		ParryCollisionPtr->GetTransform()->SetLocalScale({ 120, 120, 1 });
-		ParryCollisionPtr->GetTransform()->SetLocalPosition({ 40, 0 });
+		ParryCollisionPtr->GetTransform()->SetLocalScale({ 110, 110, 1 });
+		ParryCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		ParryCollisionPtr->Off();
 	}
 
@@ -72,22 +73,12 @@ void CherryBomb::Update(float _DeltaTime)
 		Death();
 	}
 
-	//if (true == IsParryProjectile)
-	//{
-	//	IsParryProjectile = false;
-	//	ParryCollisionPtr->On();
-	//	RenderPtr->ChangeAnimation("Pink_Spawn");
-	//}
-
-	//if (true == RenderPtr->FindAnimation("Pink_Spawn")->IsEnd() && false == IsDeath)
-	//{
-	//	RenderPtr->ChangeAnimation("Pink_Loop", false);
-	//}
-
-	//if (true == RenderPtr->FindAnimation("Normal_Spawn")->IsEnd() && false == IsDeath)
-	//{
-	//	RenderPtr->ChangeAnimation("Normal_Loop", false);
-	//}
+	if (true == IsParryProjectile)
+	{
+		IsParryProjectile = false;
+		ParryCollisionPtr->On();
+		RenderPtr->ChangeAnimation("CherryBomb_Pink");
+	}
 
 	MoveDirection(_DeltaTime);
 	PixelCheck(_DeltaTime);
@@ -116,7 +107,14 @@ void CherryBomb::MoveDirection(float _DeltaTime)
 
 	float MoveDist = MoveSpeed * _DeltaTime;
 
-	GetTransform()->AddLocalPosition({ -MoveDist, 0 });
+	if (false == Directbool)
+	{
+		GetTransform()->AddLocalPosition({ -MoveDist, 0 });
+	}
+	else
+	{
+		GetTransform()->AddLocalPosition({ MoveDist, 0 });
+	}
 
 	GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
 }
@@ -125,7 +123,8 @@ void CherryBomb::CollisionCheck()
 {
 	if (nullptr != ParryCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerParry), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
-		IsDeath = true;
+		Player::MainPlayer->SetParryOn();
+		Death();
 	}
 }
 
@@ -135,6 +134,9 @@ void CherryBomb::DeathCheck()
 	{
 		ProjectileCollisionPtr->Off();
 		ProjectileCollisionRenderPtr->Off();
+		ParryCollisionPtr->Off();
+		ParryCollisionRenderPtr->Off();
+		
 		RenderPtr->GetTransform()->SetLocalPosition({0, 170});
 		RenderPtr->ChangeAnimation("CherryBomb_Explode", false);
 	}
