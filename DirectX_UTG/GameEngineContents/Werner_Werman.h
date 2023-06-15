@@ -7,8 +7,11 @@ enum class MouseState
 	MouseIn,
 	MouseOut,
 	Idle,
-
 	Move,
+
+	Dash_Intro,
+	Dash,
+	Dash_Outro,
 };
 
 enum class CannonState
@@ -119,16 +122,23 @@ private:
 	void SetMouseOutCanBackTexture();
 	void SetMoveCanBackTexture();
 
+	float4 FowardPosition = float4::Zero;
 	float4 InitPosition = float4::Zero;
+	float4 LeftInitPosition = float4::Zero;
+	float4 MoveDistance = float4::Zero;
 	float4 CatapultStartPosition = float4::Zero;
 	float4 CatapultEndPosition = float4::Zero;
 
 	bool IsIntro = true;
+	bool IsShake = false;
 	bool Directbool = false;
 	bool WeaponType = true;
 	bool IsFire = false;
 	bool CannonAble = false;
 	bool CatapultAble = false;
+	bool AlreadyCannonOn = false;
+	bool AlreadyCatapultOn = false;
+	bool IsDash = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
@@ -142,6 +152,7 @@ private:
 	int CannonFireCount = 0;
 	int CannonLoopCount = 0;
 	int CatapultFireCount = 0;
+	int WeaponSwapCount = 0;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -162,6 +173,18 @@ private:
 	void MoveStart();
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
+
+	void Dash_IntroStart();
+	void Dash_IntroUpdate(float _DeltaTime);
+	void Dash_IntroEnd();
+
+	void DashStart();
+	void DashUpdate(float _DeltaTime);
+	void DashEnd();
+
+	void Dash_OutroStart();
+	void Dash_OutroUpdate(float _DeltaTime);
+	void Dash_OutroEnd();
 
 	void ChangeState_Cannon(CannonState _StateValue);
 	void UpdateState_Cannon(float _DeltaTime);

@@ -211,7 +211,10 @@ void Werner_Werman::ActorInitSetting()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_PopOut").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_ShakeFist").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Dash_Outro").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Cannon_In"))
@@ -434,6 +437,11 @@ void Werner_Werman::ActorInitSetting()
 	{
 		MouseRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Intro", .SpriteName = "Mouse_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_PopOut", .SpriteName = "Mouse_PopOut", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_ShakeFist", .SpriteName = "Mouse_ShakeFist", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Intro", .SpriteName = "Mouse_Dash_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Loop", .SpriteName = "Mouse_Dash_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Outro", .SpriteName = "Mouse_Dash_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
 	}
@@ -466,7 +474,7 @@ void Werner_Werman::ActorInitSetting()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
 		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
@@ -484,7 +492,7 @@ void Werner_Werman::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
 		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 

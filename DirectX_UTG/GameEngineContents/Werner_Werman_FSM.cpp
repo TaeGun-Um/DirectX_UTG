@@ -2,6 +2,7 @@
 #include "Werner_Werman.h"
 
 #include <cmath>
+#include <GameEngineBase/GameEngineRandom.h>
 
 void Werner_Werman::ChangeState(MouseState _StateValue)
 {
@@ -27,6 +28,15 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 	case MouseState::Move:
 		MoveStart();
 		break;
+	case MouseState::Dash_Intro:
+		Dash_IntroStart();
+		break;
+	case MouseState::Dash:
+		DashStart();
+		break;
+	case MouseState::Dash_Outro:
+		Dash_OutroStart();
+		break;
 	default:
 		break;
 	}
@@ -47,6 +57,15 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 		break;
 	case MouseState::Move:
 		MoveEnd();
+		break;
+	case MouseState::Dash_Intro:
+		Dash_IntroEnd();
+		break;
+	case MouseState::Dash:
+		DashEnd();
+		break;
+	case MouseState::Dash_Outro:
+		Dash_OutroEnd();
 		break;
 	default:
 		break;
@@ -71,6 +90,15 @@ void Werner_Werman::UpdateState(float _DeltaTime)
 		break;
 	case MouseState::Move:
 		MoveUpdate(_DeltaTime);
+		break;
+	case MouseState::Dash_Intro:
+		Dash_IntroUpdate(_DeltaTime);
+		break;
+	case MouseState::Dash:
+		DashUpdate(_DeltaTime);
+		break;
+	case MouseState::Dash_Outro:
+		Dash_OutroUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -126,6 +154,8 @@ void Werner_Werman::MouseInEnd()
 
 void Werner_Werman::MouseOutStart()
 {
+	WheelRenderPtr->Off();
+
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
 	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	CanRenderPtr->ChangeAnimation("Can_MouseOut");
@@ -134,19 +164,26 @@ void Werner_Werman::MouseOutUpdate(float _DeltaTime)
 {
 	SetMouseOutCanBackTexture();
 
+	DelayTime += _DeltaTime;
+
 	if (true == MouseRenderPtr->IsAnimationEnd() && DelayTime >= 0.21f)
 	{
-		//ChangeState(MouseState::Idle);
-		//return;
+		ChangeState(MouseState::Dash_Intro);
+		return;
 	}
 }
 void Werner_Werman::MouseOutEnd()
 {
-
+	DelayTime = 0.0f;
 }
 
 void Werner_Werman::IdleStart()
 {
+	DirectCheck();
+
+	CanBackRenderPtr->On();
+	CanRenderPtr->On();
+
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
 	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	CanRenderPtr->ChangeAnimation("Can_Idle");
@@ -162,9 +199,15 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == IsDash)
+	{
+		ChangeState(MouseState::MouseOut);
+		return;
+	}
+
 	DelayTime += _DeltaTime;
 
-	if (false == IsIntro && DelayTime >= 0.7f)
+	if (false == IsIntro && false == IsDash && DelayTime >= 0.3f)
 	{
 		CanUpRenderPtr->Off();
 		ChangeState(MouseState::Move);
@@ -184,6 +227,8 @@ void Werner_Werman::MoveStart()
 	WheelRenderPtr->On();
 
 	CanRenderPtr->ChangeAnimation("Can_Move");
+
+	//WeaponSwapCount = 3; /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 void Werner_Werman::MoveUpdate(float _DeltaTime)
 {
@@ -199,44 +244,252 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	if (false == CannonAble && 1.0f <= WeaponSwapTime
 		|| false == CatapultAble && 1.0f <= WeaponSwapTime)
 	{
-		if (true == WeaponType)
+		WeaponSwapTime = 0.0f;
+
+		//if (2 <= WeaponSwapCount)
+		//{
+		//	++WeaponSwapCount;
+		//}
+		//else
+		//{
+		//	if (false == AlreadyCannonOn && false == AlreadyCatapultOn)
+		//	{
+		//		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+		//		if (0 == RandC)
+		//		{
+		//			AlreadyCannonOn = true;
+		//			++WeaponSwapCount;
+		//			CannonAble = true;
+		//			ChangeState_Cannon(CannonState::Out);
+		//		}
+		//		else
+		//		{
+		//			AlreadyCatapultOn = true;
+		//			++WeaponSwapCount;
+		//			CatapultAble = true;
+		//			ChangeState_Catapult(CatapultState::Out);
+		//		}
+		//	}
+		//	else if (true == AlreadyCannonOn)
+		//	{
+		//		++WeaponSwapCount;
+		//		CatapultAble = true;
+		//		ChangeState_Catapult(CatapultState::Out);
+		//	}
+		//	else if (true == AlreadyCatapultOn)
+		//	{
+		//		++WeaponSwapCount;
+		//		CannonAble = true;
+		//		ChangeState_Cannon(CannonState::Out);
+		//	}
+		//}
+
+		if (false == CannonAble)
 		{
+			++WeaponSwapCount;
 			CannonAble = true;
 			ChangeState_Cannon(CannonState::Out);
 		}
-		else
+
+	}
+
+	if (2 >= WeaponSwapCount)
+	{
+		if (true == CannonAble)
 		{
-			CatapultAble = true;
-			ChangeState_Catapult(CatapultState::Out);
+			UpdateState_Cannon(_DeltaTime);
+		}
+		else if (true == CatapultAble)
+		{
+			UpdateState_Catapult(_DeltaTime);
 		}
 	}
 
-	if (true == CannonAble)
+	if (false == Directbool)
 	{
-		WeaponSwapTime = 0.0f;
-		UpdateState_Cannon(_DeltaTime);
+		float CosTime = MoveTime * 2.5f;
+
+		float SinX = (sinf(CosTime + GameEngineMath::PIE) * 150.0f);
+
+		if (GameEngineMath::PIE2 <= CosTime)
+		{
+			MoveTime = 0.0f;
+			GetTransform()->SetWorldPosition(InitPosition);
+		}
+
+		GetTransform()->SetLocalPosition({ SinX + InitPosition.x, InitPosition.y });
+
+		//if ((GameEngineMath::PIE + (GameEngineMath::PIE / 2)) <= CosTime && 3 <= WeaponSwapCount)
+		//{
+		//	MoveTime = 0.0f;
+		//	IsDash = true;
+		//	ChangeState(MouseState::Idle);
+		//	return;
+		//}
 	}
-	else if (true == CatapultAble)
+	else
 	{
-		WeaponSwapTime = 0.0f;
-		UpdateState_Catapult(_DeltaTime);
+		float CosTime = MoveTime * 2.5f;
+
+		float SinX = (sinf(CosTime) * 150.0f);
+
+		if (GameEngineMath::PIE2 <= CosTime)
+		{
+			MoveTime = 0.0f;
+			GetTransform()->SetWorldPosition(LeftInitPosition);
+		}
+
+		GetTransform()->SetLocalPosition({ SinX + LeftInitPosition.x, LeftInitPosition.y });
+
+		if (/*(GameEngineMath::PIE / 2)*/ GameEngineMath::PIE2 <= CosTime && 3 <= WeaponSwapCount)
+		{
+			WeaponSwapCount = 0;
+			AlreadyCannonOn = false;
+			AlreadyCatapultOn = false;
+		}
 	}
-
-	float CosTime = MoveTime * 2.5f;
-
-	float SinX = (sinf(CosTime + GameEngineMath::PIE) * 150.0f);
-
-	if (GameEngineMath::PIE2 <= CosTime)
-	{
-		MoveTime = 0.0f;
-		GetTransform()->SetWorldPosition(InitPosition);
-	}
-
-	GetTransform()->SetLocalPosition({ SinX + InitPosition.x, InitPosition.y });
 }
 void Werner_Werman::MoveEnd()
 {
+	AlreadyCannonOn = false;
+	AlreadyCatapultOn = false;
+	WeaponSwapCount = 0;
+}
 
+void Werner_Werman::Dash_IntroStart()
+{
+	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
+
+	float ZZZ = MouseRenderPtr->GetTransform()->GetLocalPosition().z; // == 0
+	MouseRenderPtr->GetTransform()->SetLocalPosition({ -70, 190, -1 });
+	
+	MouseRenderPtr->On();
+	CanUpRenderPtr->On();
+
+	MouseRenderPtr->ChangeAnimation("Mouse_PopOut");
+	CanRenderPtr->ChangeAnimation("Can_Idle");
+}
+void Werner_Werman::Dash_IntroUpdate(float _DeltaTime)
+{
+	SetIntroCanUpTexture();
+	SetIntroCanBackTexture();
+
+	if (true == MouseRenderPtr->FindAnimation("Mouse_PopOut")->IsEnd() && false == IsShake)
+	{
+		IsShake = true;
+		MouseRenderPtr->ChangeAnimation("Mouse_ShakeFist", false);
+	}
+
+	if (true == MouseRenderPtr->FindAnimation("Mouse_ShakeFist")->IsEnd())
+	{
+		CanBackRenderPtr->Off();
+		CanRenderPtr->Off();
+		CanUpRenderPtr->Off();
+		MouseRenderPtr->GetTransform()->SetLocalPosition({ -20, 150 });
+		MouseRenderPtr->ChangeAnimation("Mouse_Dash_Intro", false);
+	}
+
+	if (true == MouseRenderPtr->FindAnimation("Mouse_Dash_Intro")->IsEnd())
+	{
+		ChangeState(MouseState::Dash);
+		return;
+	}
+}
+void Werner_Werman::Dash_IntroEnd()
+{
+	IsShake = false;
+}
+
+void Werner_Werman::DashStart()
+{
+	LeftInitPosition = float4{ InitPosition.x - 800.0f, InitPosition.y, 0.0f };
+	FowardPosition = GetTransform()->GetLocalPosition();
+	FowardPosition.z = 0.0f;
+	MouseRenderPtr->ChangeAnimation("Mouse_Dash_Loop");
+}
+void Werner_Werman::DashUpdate(float _DeltaTime)
+{
+	float4 CurPos = GetTransform()->GetLocalPosition();
+
+	if (LeftInitPosition.x >= CurPos.x)
+	{
+		GetTransform()->SetLocalPosition(LeftInitPosition);
+		ChangeState(MouseState::Dash_Outro);
+		return;
+	}
+
+	FowardPosition.x += 200.0f * _DeltaTime;
+	float4 Movedir = float4::Zero;
+
+	Movedir = (FowardPosition - CurPos);
+
+	MoveDistance = -(Movedir * 2.0f * _DeltaTime);
+
+	GetTransform()->AddWorldPosition(MoveDistance);
+}
+void Werner_Werman::DashEnd()
+{
+	IsDash = false;
+}
+
+void Werner_Werman::Dash_OutroStart()
+{
+	MouseRenderPtr->ChangeAnimation("Mouse_Dash_Outro");
+}
+void Werner_Werman::Dash_OutroUpdate(float _DeltaTime)
+{
+	if (false == Directbool)
+	{
+		if (41 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -2, 150 });
+		}
+		else if (40 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -4, 150 });
+		}
+		else if (39 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -6, 150 });
+		}
+		else if (38 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -8, 150 });
+		}
+		else if (37 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 150 });
+		}
+		else if (36 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -12, 150 });
+		}
+		else if (35 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -14, 150 });
+		}
+		else if (34 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -16, 150 });
+		}
+		else if (33 == MouseRenderPtr->GetCurrentFrame())
+		{
+			MouseRenderPtr->GetTransform()->SetLocalPosition({ -18, 150 });
+		}
+	}
+
+	if (true == MouseRenderPtr->IsAnimationEnd())
+	{
+		MouseRenderPtr->Off();
+		Directbool = true;
+		ChangeState(MouseState::Idle);
+		return;
+	}
+}
+void Werner_Werman::Dash_OutroEnd()
+{
+	IsDash = false;
 }
 
 void Werner_Werman::SetMoveCanBackTexture()
