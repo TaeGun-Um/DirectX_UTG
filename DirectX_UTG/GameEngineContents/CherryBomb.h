@@ -72,7 +72,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 
 	float4 MoveDirect = float4::Zero;
-	float MoveSpeed = 350.0f;
+	float MoveSpeed = 300.0f;
 	float JumpPower = 0.0f;
 
 	bool IsJump = false;
@@ -83,7 +83,7 @@ private:
 	void PixelCheck(float _DeltaTime);
 	void CollisionCheck();
 	void DeathCheck();
-	void SetFistDeath();
+	void CreateBombSFX();
 
 	PixelCollision PixelCollisionCheck;
 

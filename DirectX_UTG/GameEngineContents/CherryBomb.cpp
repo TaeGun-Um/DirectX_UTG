@@ -6,6 +6,7 @@
 
 #include "MouseLevel.h"
 #include "You_Died.h"
+#include "CherryBomb_Fire.h"
 
 CherryBomb::CherryBomb() 
 {
@@ -159,6 +160,20 @@ void CherryBomb::PixelCheck(float _DeltaTime)
 	if (true == PixelCollisionCheck.IsBlack(ExplodePixel))
 	{
 		IsDeath = true;
-		//CreateBombSFX();
+		CreateBombSFX();
 	}
+}
+
+void CherryBomb::CreateBombSFX()
+{
+	std::shared_ptr<CherryBomb_Fire> Object = GetLevel()->CreateActor<CherryBomb_Fire>();
+	std::shared_ptr<CherryBomb_Fire> Object2 = GetLevel()->CreateActor<CherryBomb_Fire>();
+
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 LeftObjectPosition = StartPosition + float4{ 120, 65, 3 };
+	float4 RightObjectPosition = StartPosition + float4{ -120, 65, 3 };
+
+	Object->SetStartPosition(LeftObjectPosition);
+	Object2->SetStartPosition(RightObjectPosition);
+	Object2->SetDirectionNegative();
 }

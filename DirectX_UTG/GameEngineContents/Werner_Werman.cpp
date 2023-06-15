@@ -337,7 +337,8 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Normal").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Pink").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Explode").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("CherryBomb_Fire_Loop").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
