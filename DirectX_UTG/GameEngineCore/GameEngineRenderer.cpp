@@ -185,18 +185,7 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
 		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
 	}
 
-
 	Unit->SetPipeLine(_Name);
-
-	{
-		const GameEngineShaderResHelper& Res = Unit->Pipe->GetVertexShader()->GetShaderResHelper();
-		Unit->ShaderResHelper.Copy(Res);
-	}
-
-	{
-		const GameEngineShaderResHelper& Res = Unit->Pipe->GetPixelShader()->GetShaderResHelper();
-		Unit->ShaderResHelper.Copy(Res);
-	}
 
 	if (true == Unit->ShaderResHelper.IsConstantBuffer("TransformData"))
 	{

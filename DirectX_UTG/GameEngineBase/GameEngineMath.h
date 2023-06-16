@@ -363,7 +363,7 @@ public:
 		float Result = acosf(AngleCheck.x);
 
 		// 노말라이즈한 this의 y 값이 0보다 크면 0으로 초기화(2파이)
-		if (AngleCheck.y > 0)
+		if (AngleCheck.y < 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}
