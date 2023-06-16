@@ -780,6 +780,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Phase2Mouse_FSM.cpp" />
     <ClCompile Include="PixelCollision.cpp">
       <SubType>
       </SubType>

@@ -707,5 +707,8 @@
     <ClCompile Include="CanExplosion_SFX.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Phase2Mouse_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

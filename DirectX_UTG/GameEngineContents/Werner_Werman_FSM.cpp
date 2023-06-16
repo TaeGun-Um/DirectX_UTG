@@ -236,16 +236,16 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	}
 
 	/// Test
-	{
-		Directbool = true;
+	//{
+	//	Directbool = true;
 
-		Phase2PositionSetting = 0;
-		Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
-		GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+	//	Phase2PositionSetting = 0;
+	//	Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
+	//	GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
 
-		ChangeState(MouseState::Explosion_Intro);
-		return;
-	}
+	//	ChangeState(MouseState::Explosion_Intro);
+	//	return;
+	//}
 
 	if (true == IsDash)
 	{
@@ -583,12 +583,26 @@ void Werner_Werman::Explosion_LoopEnd()
 
 void Werner_Werman::ExplosionStart()
 {
-	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
 	CanRenderPtr->SetAnimationStartEvent("Can_Explosion_Outro", 4, std::bind(&Werner_Werman::CreateExplosionSFX, this));
+	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
+	WheelRenderPtr->ChangeAnimation("Plat_Loop", false);
+
+	WheelRenderPtr->GetTransform()->SetLocalPosition({ -10, -90 });
+	WheelRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, 1 });
 }
 void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 {
+	if (7 == CanRenderPtr->GetCurrentFrame())
+	{
+		WheelRenderPtr->On();
+	}
 
+	if (true == CanRenderPtr->IsAnimationEnd())
+	{
+		WheelRenderPtr->On();
+		ChangeState(MouseState::Idle_Phase2);
+		return;
+	}
 }
 void Werner_Werman::ExplosionEnd()
 {
@@ -597,11 +611,14 @@ void Werner_Werman::ExplosionEnd()
 
 void Werner_Werman::Idle_Phase2Start()
 {
-
+	CanRenderPtr->Off();
+	MouseRenderPtr->On();
+	MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 130 });
+	ChangeState_Phase2(Phase2State::Trans);
 }
 void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 {
-
+	UpdateState_Phase2(_DeltaTime);
 }
 void Werner_Werman::Idle_Phase2End()
 {

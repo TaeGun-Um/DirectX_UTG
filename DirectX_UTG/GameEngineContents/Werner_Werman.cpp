@@ -538,6 +538,41 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_SFX").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Plat_Loop"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveLeft").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveRight").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Mouse_TransitionA"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionA").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionA_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionB").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionB_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionC").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionC_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionD").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionD_Loop").GetFullPath());
+	}
+
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -716,6 +751,15 @@ void Werner_Werman::ActorInitSetting()
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Intro", .SpriteName = "Mouse_Dash_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Loop", .SpriteName = "Mouse_Dash_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Outro", .SpriteName = "Mouse_Dash_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionA", .SpriteName = "Mouse_TransitionA", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionA_Loop", .SpriteName = "Mouse_TransitionA_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionB", .SpriteName = "Mouse_TransitionB", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionB_Loop", .SpriteName = "Mouse_TransitionB_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC", .SpriteName = "Mouse_TransitionC", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC_Loop", .SpriteName = "Mouse_TransitionC_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD", .SpriteName = "Mouse_TransitionD", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD_Loop", .SpriteName = "Mouse_TransitionD_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
 	}
@@ -738,6 +782,9 @@ void Werner_Werman::ActorInitSetting()
 	{
 		WheelRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		WheelRenderPtr->CreateAnimation({ .AnimationName = "Wheel_Move", .SpriteName = "Can_Part_Wheels", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_Loop", .SpriteName = "Plat_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveLeft", .SpriteName = "Plat_MoveLeft", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveRight", .SpriteName = "Plat_MoveRight", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		WheelRenderPtr->GetTransform()->SetLocalPosition({ 20, -130 });
 		WheelRenderPtr->ChangeAnimation("Wheel_Move");
 		WheelRenderPtr->Off();

@@ -39,6 +39,12 @@ enum class CatapultState
 	In,
 };
 
+enum class Phase2State
+{
+	Trans,
+	Trans_Loop,
+};
+
 // Ό³Έν :
 class Werner_Werman : public GameEngineActor
 {
@@ -122,6 +128,7 @@ private:
 	MouseState StateValue = MouseState::Idle;
 	CannonState CannonStateValue = CannonState::Out;
 	CatapultState CatapultStateValue = CatapultState::Loop;
+	Phase2State Phase2StateValue = Phase2State::Trans;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -172,6 +179,7 @@ private:
 	int CatapultFireCount = 0;
 	int WeaponSwapCount = 0;
 	int Phase2PositionSetting = 1;
+	int MouseTransSetting = 0;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -266,6 +274,17 @@ private:
 	void Catapult_InStart();
 	void Catapult_InUpdate(float _DeltaTime);
 	void Catapult_InEnd();
+
+	void ChangeState_Phase2(Phase2State _StateValue);
+	void UpdateState_Phase2(float _DeltaTime);
+
+	void TransStart();
+	void TransUpdate(float _DeltaTime);
+	void TransEnd();
+
+	void Trans_LoopStart();
+	void Trans_LoopUpdate(float _DeltaTime);
+	void Trans_LoopEnd();
 
 };
 
