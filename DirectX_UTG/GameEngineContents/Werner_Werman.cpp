@@ -497,6 +497,23 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Spring_Death").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Can_Explosion_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_SFX").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_IntroBomb").GetFullPath());
+	}
+
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -645,6 +662,8 @@ void Werner_Werman::ActorInitSetting()
 		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Reload_Loop", .SpriteName = "Catapult_Reload_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Fire", .SpriteName = "Catapult_Fire", .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true });
 
+		WeaponRender->CreateAnimation({ .AnimationName = "Object_IntroBomb", .SpriteName = "Object_IntroBomb", .FrameInter = 0.045f, .Loop = false, .ScaleToTexture = true });
+
 		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
 		WeaponRender->ChangeAnimation("Cannon_Out");
 		WeaponRender->Off();
@@ -657,6 +676,9 @@ void Werner_Werman::ActorInitSetting()
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Move", .SpriteName = "Can_Part_Body_Move", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseIn", .SpriteName = "Can_Part_Body_In", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_MouseOut", .SpriteName = "Can_Part_Body_Out", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Explosion_Intro", .SpriteName = "Can_Explosion_Intro", .FrameInter = 0.045f, .Loop = false, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Explosion_Loop", .SpriteName = "Can_Explosion_Loop", .FrameInter = 0.045f, .Loop = true, .ScaleToTexture = true });
+		CanRenderPtr->CreateAnimation({ .AnimationName = "Can_Explosion_Outro", .SpriteName = "Can_Explosion_Outro", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
 		CanRenderPtr->ChangeAnimation("Can_Idle");
 	}

@@ -37,6 +37,18 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 	case MouseState::Dash_Outro:
 		Dash_OutroStart();
 		break;
+	case MouseState::Explosion_Intro:
+		Explosion_IntroStart();
+		break;
+	case MouseState::Explosion_Loop:
+		Explosion_LoopStart();
+		break;
+	case MouseState::Explosion:
+		ExplosionStart();
+		break;
+	case MouseState::Idle_Phase2:
+		Idle_Phase2Start();
+		break;
 	default:
 		break;
 	}
@@ -66,6 +78,18 @@ void Werner_Werman::ChangeState(MouseState _StateValue)
 		break;
 	case MouseState::Dash_Outro:
 		Dash_OutroEnd();
+		break;
+	case MouseState::Explosion_Intro:
+		Explosion_IntroEnd();
+		break;
+	case MouseState::Explosion_Loop:
+		Explosion_LoopEnd();
+		break;
+	case MouseState::Explosion:
+		ExplosionEnd();
+		break;
+	case MouseState::Idle_Phase2:
+		Idle_Phase2End();
 		break;
 	default:
 		break;
@@ -99,6 +123,18 @@ void Werner_Werman::UpdateState(float _DeltaTime)
 		break;
 	case MouseState::Dash_Outro:
 		Dash_OutroUpdate(_DeltaTime);
+		break;
+	case MouseState::Explosion_Intro:
+		Explosion_IntroUpdate(_DeltaTime);
+		break;
+	case MouseState::Explosion_Loop:
+		Explosion_LoopUpdate(_DeltaTime);
+		break;
+	case MouseState::Explosion:
+		ExplosionUpdate(_DeltaTime);
+		break;
+	case MouseState::Idle_Phase2:
+		Idle_Phase2Update(_DeltaTime);
 		break;
 	default:
 		break;
@@ -199,6 +235,18 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	/// Test
+	{
+		Directbool = true;
+
+		Phase2PositionSetting = 0;
+		Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
+		GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+
+		ChangeState(MouseState::Explosion_Intro);
+		return;
+	}
+
 	if (true == IsDash)
 	{
 		ChangeState(MouseState::MouseOut);
@@ -229,7 +277,11 @@ void Werner_Werman::MoveStart()
 	CanRenderPtr->ChangeAnimation("Can_Move");
 
 	IsCreateSpringObject = true;
-	//WeaponSwapCount = 2; /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	if (HP <= 750.0f)
+	{
+		WeaponSwapCount = 2;
+	}
 }
 void Werner_Werman::MoveUpdate(float _DeltaTime)
 {
@@ -329,14 +381,12 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 	}
 	else
 	{
-		if (3 <= WeaponSwapCount && HP <= 750.0f)
+		if (3 <= WeaponSwapCount && HP <= 700.0f)
 		{
 			if (1 == Phase2PositionSetting)
 			{
 				Phase2PositionSetting = 0;
-				Phase2InitPosition = float4{ 680.0f , InitPosition.y, 0.0f };
-				
-				FowardPosition = Phase2InitPosition;
+				Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
 			}
 			
 			float4 CurPos = GetTransform()->GetWorldPosition();
@@ -349,10 +399,10 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 
 			GetTransform()->AddWorldPosition(MoveDistance);
 
-			if ((Phase2InitPosition.x - 40.0f) <= CurPos.x)
+			if ((Phase2InitPosition.x - 60.0f) <= CurPos.x)
 			{
-				GetTransform()->SetLocalPosition({ 640.0f , InitPosition.y, 0.0f });
-				ChangeState(MouseState::Idle_Phase2);
+				GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+				ChangeState(MouseState::Explosion_Intro);
 				return;
 			}
 		}
@@ -461,6 +511,73 @@ void Werner_Werman::DashUpdate(float _DeltaTime)
 void Werner_Werman::DashEnd()
 {
 	IsDash = false;
+}
+
+void Werner_Werman::Explosion_IntroStart()
+{
+	WheelRenderPtr->Off();
+	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
+	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+	WeaponRender->GetTransform()->SetLocalPosition({ -70, 250 });
+
+	WeaponRender->On();
+
+	WeaponRender->ChangeAnimation("Object_IntroBomb");
+	CanRenderPtr->ChangeAnimation("Can_Idle");
+}
+void Werner_Werman::Explosion_IntroUpdate(float _DeltaTime)
+{
+	SetIntroCanBackTexture();
+
+	if (true == WeaponRender->IsAnimationEnd())
+	{
+		CanBackRenderPtr->Off();
+		WeaponRender->Off();
+		CanRenderPtr->GetTransform()->SetLocalPosition({ -10, 105 });
+		CanRenderPtr->ChangeAnimation("Can_Explosion_Intro", false);
+
+		if (CanRenderPtr->FindAnimation("Can_Explosion_Intro")->IsEnd())
+		{
+			ChangeState(MouseState::Explosion_Loop);
+			return;
+		}
+	}
+}
+void Werner_Werman::Explosion_IntroEnd()
+{
+
+}
+
+void Werner_Werman::Explosion_LoopStart()
+{
+	CanRenderPtr->ChangeAnimation("Can_Explosion_Loop");
+}
+void Werner_Werman::Explosion_LoopUpdate(float _DeltaTime)
+{
+	ExplosionLoopTime += _DeltaTime;
+
+	if (1.0f <= ExplosionLoopTime)
+	{
+		ChangeState(MouseState::Explosion);
+		return;
+	}
+}
+void Werner_Werman::Explosion_LoopEnd()
+{
+	ExplosionLoopTime = 0.0f;
+}
+
+void Werner_Werman::ExplosionStart()
+{
+	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
+}
+void Werner_Werman::ExplosionUpdate(float _DeltaTime)
+{
+
+}
+void Werner_Werman::ExplosionEnd()
+{
+
 }
 
 void Werner_Werman::Idle_Phase2Start()

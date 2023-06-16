@@ -149,7 +149,7 @@ void Werner_Werman::Catapult_LoopStart()
 }
 void Werner_Werman::Catapult_LoopUpdate(float _DeltaTime)
 {
-	if (HP <= 750.0f)
+	if (HP <= 700.0f)
 	{
 		WeaponSwapCount = 2;
 		ChangeState_Catapult(CatapultState::In);

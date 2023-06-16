@@ -14,6 +14,9 @@ enum class MouseState
 	Dash_Outro,
 
 	//Phase2
+	Explosion_Intro,
+	Explosion_Loop,
+	Explosion,
 
 	Idle_Phase2
 };
@@ -159,6 +162,7 @@ private:
 	float CatapultLoopTime = 0.0f;
 	float CatapultReLoadLoopTime = 0.0f;
 	float FireTime = 0.0f;
+	float ExplosionLoopTime = 0.0f;
 
 	int CannonFireRand = 0;
 	int CannonFireCount = 0;
@@ -199,6 +203,18 @@ private:
 	void Dash_OutroStart();
 	void Dash_OutroUpdate(float _DeltaTime);
 	void Dash_OutroEnd();
+
+	void Explosion_IntroStart();
+	void Explosion_IntroUpdate(float _DeltaTime);
+	void Explosion_IntroEnd();
+
+	void Explosion_LoopStart();
+	void Explosion_LoopUpdate(float _DeltaTime);
+	void Explosion_LoopEnd();
+
+	void ExplosionStart();
+	void ExplosionUpdate(float _DeltaTime);
+	void ExplosionEnd();
 
 	void Idle_Phase2Start();
 	void Idle_Phase2Update(float _DeltaTime);

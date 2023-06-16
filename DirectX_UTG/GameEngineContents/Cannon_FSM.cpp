@@ -115,7 +115,7 @@ void Werner_Werman::Cannon_IdleStart()
 }
 void Werner_Werman::Cannon_IdleUpdate(float _DeltaTime)
 {
-	if (HP <= 750.0f)
+	if (HP <= 700.0f)
 	{
 		CannonFireTime = 0.0f;
 		FireTime = 0.0f;
