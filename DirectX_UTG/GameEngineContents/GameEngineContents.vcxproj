@@ -180,6 +180,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="BuildingDataBase.h" />
+    <ClInclude Include="CanExplosion_SFX.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Canteen.h">
       <SubType>
       </SubType>
@@ -551,6 +555,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BuildingDataBase.cpp" />
+    <ClCompile Include="CanExplosion_SFX.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Cannon_FSM.cpp" />
     <ClCompile Include="Canteen.cpp">
       <SubType>

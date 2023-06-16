@@ -107,6 +107,7 @@ private:
 	void CreateCherryBomb();
 	void CreateCatapultProjectile();
 	void CreateSpringObject();
+	void CreateExplosionSFX();
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;

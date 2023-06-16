@@ -518,7 +518,8 @@ void Werner_Werman::Explosion_IntroStart()
 	WheelRenderPtr->Off();
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 144 });
 	CanRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
-	WeaponRender->GetTransform()->SetLocalPosition({ -70, 250 });
+
+	WeaponRender->GetTransform()->SetLocalPosition({ -50, 230 });
 
 	WeaponRender->On();
 
@@ -528,6 +529,19 @@ void Werner_Werman::Explosion_IntroStart()
 void Werner_Werman::Explosion_IntroUpdate(float _DeltaTime)
 {
 	SetIntroCanBackTexture();
+	
+	if (0 == WeaponRender->GetCurrentFrame())
+	{
+		WeaponRender->GetTransform()->SetLocalPosition({ -30, 230 });
+	}
+	else if (1 == WeaponRender->GetCurrentFrame())
+	{
+		WeaponRender->GetTransform()->SetLocalPosition({ -45, 230 });
+	}
+	else
+	{
+		WeaponRender->GetTransform()->SetLocalPosition({ -50, 230 });
+	}
 
 	if (true == WeaponRender->IsAnimationEnd())
 	{
@@ -556,7 +570,7 @@ void Werner_Werman::Explosion_LoopUpdate(float _DeltaTime)
 {
 	ExplosionLoopTime += _DeltaTime;
 
-	if (1.0f <= ExplosionLoopTime)
+	if (0.7f <= ExplosionLoopTime)
 	{
 		ChangeState(MouseState::Explosion);
 		return;
@@ -570,6 +584,7 @@ void Werner_Werman::Explosion_LoopEnd()
 void Werner_Werman::ExplosionStart()
 {
 	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
+	CanRenderPtr->SetAnimationStartEvent("Can_Explosion_Outro", 4, std::bind(&Werner_Werman::CreateExplosionSFX, this));
 }
 void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 {

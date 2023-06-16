@@ -14,6 +14,7 @@
 #include "CherryBomb.h"
 #include "CatapultProjectile.h"
 #include "SpringObject.h"
+#include "CanExplosion_SFX.h"
 
 Werner_Werman::Werner_Werman() 
 {
@@ -346,6 +347,16 @@ void Werner_Werman::CreateSpringObject()
 	Spring1->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
 }
 
+void Werner_Werman::CreateExplosionSFX()
+{
+	std::shared_ptr<CanExplosion_SFX> CanExplosion = GetLevel()->CreateActor<CanExplosion_SFX>();
+
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 CanExplosionPosition = StartPosition + float4{ 0, 0, -5 };
+
+	CanExplosion->SetStartPosition(CanExplosionPosition);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -514,6 +525,19 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_IntroBomb").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Can_Explosion_SFX"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Explosion_SFX").GetFullPath());
+	}
+
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -662,7 +686,7 @@ void Werner_Werman::ActorInitSetting()
 		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Reload_Loop", .SpriteName = "Catapult_Reload_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		WeaponRender->CreateAnimation({ .AnimationName = "Catapult_Fire", .SpriteName = "Catapult_Fire", .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true });
 
-		WeaponRender->CreateAnimation({ .AnimationName = "Object_IntroBomb", .SpriteName = "Object_IntroBomb", .FrameInter = 0.045f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Object_IntroBomb", .SpriteName = "Object_IntroBomb", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
 
 		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
 		WeaponRender->ChangeAnimation("Cannon_Out");
