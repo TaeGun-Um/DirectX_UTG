@@ -710,5 +710,8 @@
     <ClCompile Include="Phase2Mouse_FSM.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Scissor_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

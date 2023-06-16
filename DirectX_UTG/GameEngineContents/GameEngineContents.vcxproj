@@ -837,6 +837,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Scissor_FSM.cpp" />
     <ClCompile Include="Screen_FX.cpp">
       <SubType>
       </SubType>

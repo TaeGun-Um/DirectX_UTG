@@ -573,6 +573,49 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionD_Loop").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Can_Tin_Up"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Can_Tin_Up").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Object_Flamecannon"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Flamecannon").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Scissor_Down"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+		NewDir.Move("Object_Scissor");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Down").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Down_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Up").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Up_Loop").GetFullPath());
+	}
+
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -701,6 +744,22 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_Intro_Top_049.png").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("Tin_Boil_Back_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+		NewDir.Move("Can_Tin_Back");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_003.png").GetFullPath());
+	}
+
 	if (nullptr == CanBackRenderPtr)
 	{
 		CanBackRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -723,9 +782,30 @@ void Werner_Werman::ActorInitSetting()
 
 		WeaponRender->CreateAnimation({ .AnimationName = "Object_IntroBomb", .SpriteName = "Object_IntroBomb", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
 
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down", .SpriteName = "Scissor_Down", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down_Loop", .SpriteName = "Scissor_Down_Loop", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up", .SpriteName = "Scissor_Up", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up_Loop", .SpriteName = "Scissor_Up_Loop", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+
 		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
 		WeaponRender->ChangeAnimation("Cannon_Out");
 		WeaponRender->Off();
+	}
+
+	if (nullptr == FlamecannonRenderPtr_Left)
+	{
+		FlamecannonRenderPtr_Left = CreateComponent<GameEngineSpriteRenderer>();
+		FlamecannonRenderPtr_Left->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
+		FlamecannonRenderPtr_Left->ChangeAnimation("Object_Flamecannon");
+		FlamecannonRenderPtr_Left->Off();
+	}
+
+	if (nullptr == FlamecannonRenderPtr_Right)
+	{
+		FlamecannonRenderPtr_Right = CreateComponent<GameEngineSpriteRenderer>();
+		FlamecannonRenderPtr_Right->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
+		FlamecannonRenderPtr_Right->ChangeAnimation("Object_Flamecannon");
+		FlamecannonRenderPtr_Right->Off();
 	}
 
 	if (nullptr == CanRenderPtr)

@@ -45,6 +45,14 @@ enum class Phase2State
 	Trans_Loop,
 };
 
+enum class ScissorState
+{
+	Down,
+	Down_Loop,
+	Up,
+	Up_Loop,
+};
+
 // Ό³Έν :
 class Werner_Werman : public GameEngineActor
 {
@@ -99,6 +107,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> WeaponRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> MouseUpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> WheelRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FlamecannonRenderPtr_Right = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FlamecannonRenderPtr_Left = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> Phase2Parent = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -129,6 +140,7 @@ private:
 	CannonState CannonStateValue = CannonState::Out;
 	CatapultState CatapultStateValue = CatapultState::Loop;
 	Phase2State Phase2StateValue = Phase2State::Trans;
+	ScissorState ScissorStateValue = ScissorState::Down_Loop;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -139,6 +151,7 @@ private:
 	void SetMouseInCanBackTexture();
 	void SetMouseOutCanBackTexture();
 	void SetMoveCanBackTexture();
+	void SetCanTinBackTexture();
 
 	float4 FowardPosition = float4::Zero;
 	float4 InitPosition = float4::Zero;
@@ -147,6 +160,8 @@ private:
 	float4 MoveDistance = float4::Zero;
 	float4 CatapultStartPosition = float4::Zero;
 	float4 CatapultEndPosition = float4::Zero;
+	float4 Phase2IdleDownPosition = float4::Zero;
+	float4 Phase2IdleUpPosition = float4::Zero;
 
 	bool IsIntro = true;
 	bool IsShake = false;
@@ -285,6 +300,25 @@ private:
 	void Trans_LoopStart();
 	void Trans_LoopUpdate(float _DeltaTime);
 	void Trans_LoopEnd();
+
+	void ChangeState_Scissor(ScissorState _StateValue);
+	void UpdateState_Scissor(float _DeltaTime);
+
+	void DownStart();
+	void DownUpdate(float _DeltaTime);
+	void DownEnd();
+
+	void Down_LoopStart();
+	void Down_LoopUpdate(float _DeltaTime);
+	void Down_LoopEnd();
+
+	void UpStart();
+	void UpUpdate(float _DeltaTime);
+	void UpEnd();
+
+	void Up_LoopStart();
+	void Up_LoopUpdate(float _DeltaTime);
+	void Up_LoopEnd();
 
 };
 

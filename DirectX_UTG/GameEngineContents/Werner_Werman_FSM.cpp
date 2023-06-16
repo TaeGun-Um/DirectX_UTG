@@ -236,16 +236,16 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	}
 
 	/// Test
-	//{
-	//	Directbool = true;
+	{
+		Directbool = true;
 
-	//	Phase2PositionSetting = 0;
-	//	Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
-	//	GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+		Phase2PositionSetting = 0;
+		Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
+		GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
 
-	//	ChangeState(MouseState::Explosion_Intro);
-	//	return;
-	//}
+		ChangeState(MouseState::Explosion_Intro);
+		return;
+	}
 
 	if (true == IsDash)
 	{
@@ -583,12 +583,39 @@ void Werner_Werman::Explosion_LoopEnd()
 
 void Werner_Werman::ExplosionStart()
 {
+	CanUpRenderPtr->CreateAnimation({ .AnimationName = "Can_Tin_Up", .SpriteName = "Can_Tin_Up", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 	CanRenderPtr->SetAnimationStartEvent("Can_Explosion_Outro", 4, std::bind(&Werner_Werman::CreateExplosionSFX, this));
 	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
 	WheelRenderPtr->ChangeAnimation("Plat_Loop", false);
+	WeaponRender->ChangeAnimation("Scissor_Down_Loop");
+	CanUpRenderPtr->ChangeAnimation("Can_Tin_Up");
+	CanBackRenderPtr->SetScaleToTexture("Tin_Boil_Back_001.png");
 
+	WeaponRender->GetTransform()->SetLocalPosition({ -10, 100 });
+	CanUpRenderPtr->GetTransform()->SetLocalPosition({ -10, 0 });
+	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 40 });
+	MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 130 });
 	WheelRenderPtr->GetTransform()->SetLocalPosition({ -10, -90 });
 	WheelRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, 1 });
+
+	FlamecannonRenderPtr_Right->GetTransform()->SetLocalRotation({ 0, 0, 20 });
+	FlamecannonRenderPtr_Left->GetTransform()->SetLocalRotation({0, 180, 20});
+
+	FlamecannonRenderPtr_Left->GetTransform()->SetLocalPosition({ 25, -35 });
+	FlamecannonRenderPtr_Right->GetTransform()->SetLocalPosition({ -50, -35 });
+
+	if (nullptr == Phase2Parent)
+	{
+		Phase2Parent = CreateComponent<GameEngineSpriteRenderer>();
+		Phase2Parent->SetScaleToTexture("RedBox.png");
+		Phase2Parent->GetTransform()->SetLocalScale({ 1, 1, 1 });
+	}
+
+	CanUpRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
+	CanBackRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
+	MouseRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
+	FlamecannonRenderPtr_Left->GetTransform()->SetParent(Phase2Parent->GetTransform());
+	FlamecannonRenderPtr_Right->GetTransform()->SetParent(Phase2Parent->GetTransform());
 }
 void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 {
@@ -599,7 +626,14 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 
 	if (true == CanRenderPtr->IsAnimationEnd())
 	{
-		WheelRenderPtr->On();
+		CanRenderPtr->Off();
+		MouseRenderPtr->On();
+		CanUpRenderPtr->On();
+		CanBackRenderPtr->On();
+		WeaponRender->On();
+		FlamecannonRenderPtr_Left->On();
+		FlamecannonRenderPtr_Right->On();
+
 		ChangeState(MouseState::Idle_Phase2);
 		return;
 	}
@@ -611,14 +645,19 @@ void Werner_Werman::ExplosionEnd()
 
 void Werner_Werman::Idle_Phase2Start()
 {
-	CanRenderPtr->Off();
-	MouseRenderPtr->On();
-	MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 130 });
+	Phase2IdleDownPosition = GetTransform()->GetWorldPosition();
+	Phase2IdleUpPosition = Phase2IdleDownPosition + float4{0, 500, 0};
 	ChangeState_Phase2(Phase2State::Trans);
 }
 void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 {
+	SetCanTinBackTexture();
 	UpdateState_Phase2(_DeltaTime);
+	UpdateState_Scissor(_DeltaTime);
+
+	//float Movedis = 100.0f * _DeltaTime;
+
+	//Phase2Parent->GetTransform()->AddLocalPosition({ 0, Movedis, 0 });
 }
 void Werner_Werman::Idle_Phase2End()
 {
@@ -682,6 +721,22 @@ void Werner_Werman::Dash_OutroUpdate(float _DeltaTime)
 void Werner_Werman::Dash_OutroEnd()
 {
 	IsDash = false;
+}
+
+void Werner_Werman::SetCanTinBackTexture()
+{
+	if (2 == CanUpRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Tin_Boil_Back_003.png");
+	}
+	else if (1 == CanUpRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Tin_Boil_Back_002.png");
+	}
+	else if (0 == CanUpRenderPtr->GetCurrentFrame())
+	{
+		CanBackRenderPtr->SetScaleToTexture("Tin_Boil_Back_001.png");
+	}
 }
 
 void Werner_Werman::SetMoveCanBackTexture()
