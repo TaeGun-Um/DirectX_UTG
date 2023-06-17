@@ -63,6 +63,8 @@ enum class ScissorState
 class Werner_Werman : public GameEngineActor
 {
 public:
+	static Werner_Werman* WernerWermanPtr;
+
 	// constrcuter destructer
 	Werner_Werman();
 	~Werner_Werman();
@@ -100,6 +102,11 @@ public:
 		IsDebugRender = false;
 	}
 
+	void SetIsFlameEnd()
+	{
+		IsFlameEnd = true;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -135,6 +142,7 @@ private:
 	void CreateCatapultProjectile();
 	void CreateSpringObject();
 	void CreateExplosionSFX();
+	void CreateFlamethrower();
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;
@@ -187,6 +195,8 @@ private:
 	bool IsCreateProjectile = false;
 	bool IsCreateCatapultProjectile = false;
 	bool IsCreateSpringObject = false;
+	bool IsCreateFlamethrower = false;
+	bool IsFlameEnd = false;
 
 	bool IsPhase2 = false;
 	bool Phase2InitCorrection = false;

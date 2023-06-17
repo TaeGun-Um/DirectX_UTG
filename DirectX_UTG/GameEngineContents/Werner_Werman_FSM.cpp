@@ -703,17 +703,29 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 		else if (true == IsPhase2UpPosition)
 		{
 			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleUpPosition.x , Phase2IdleUpPosition.y - 20.0f });
-			DelayTime += _DeltaTime;
 		}
 		else if (Phase2IdleUpPosition.y <= CurPos.y)
 		{
 			IsPhase2UpPosition = true;
+			IsCreateFlamethrower = true;
 		}
 
-		if (1.0f <= DelayTime)
+		if (true == IsCreateFlamethrower)
+		{
+			IsCreateFlamethrower = false;
+			CreateFlamethrower();
+		}
+
+		if (true == IsFlameEnd)
+		{
+			DelayTime += _DeltaTime;
+		}
+
+		if (0.8f <= DelayTime)
 		{
 			MoveTime = 0.0f;
 			DelayTime = 0.0f;
+			IsFlameEnd = false;
 			IsMoveState = true;
 			IsPhase2UpPosition = false;
 		}
@@ -730,17 +742,29 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 		else if (true == IsPhase2DownPosition)
 		{
 			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleDownPosition.x , Phase2IdleDownPosition.y + 10.0f });
-			DelayTime += _DeltaTime;
 		}
 		else if (Phase2IdleDownPosition.y >= CurPos.y)
 		{
 			IsPhase2DownPosition = true;
+			IsCreateFlamethrower = true;
 		}
 
-		if (1.0f <= DelayTime)
+		if (true == IsCreateFlamethrower)
+		{
+			IsCreateFlamethrower = false;
+			CreateFlamethrower();
+		}
+
+		if (true == IsFlameEnd)
+		{
+			DelayTime += _DeltaTime;
+		}
+
+		if (0.8f <= DelayTime)
 		{
 			MoveTime = 0.0f;
 			DelayTime = 0.0f;
+			IsFlameEnd = false;
 			IsMoveState = false;
 			IsPhase2DownPosition = false;
 		}

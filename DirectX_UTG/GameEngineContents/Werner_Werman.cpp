@@ -15,6 +15,9 @@
 #include "CatapultProjectile.h"
 #include "SpringObject.h"
 #include "CanExplosion_SFX.h"
+#include "Flamethrower.h"
+
+Werner_Werman* Werner_Werman::WernerWermanPtr = nullptr;
 
 Werner_Werman::Werner_Werman() 
 {
@@ -26,6 +29,8 @@ Werner_Werman::~Werner_Werman()
 
 void Werner_Werman::Start()
 {
+	WernerWermanPtr = this;
+
 	ActorInitSetting();
 }
 
@@ -387,9 +392,45 @@ void Werner_Werman::CreateExplosionSFX()
 	std::shared_ptr<CanExplosion_SFX> CanExplosion = GetLevel()->CreateActor<CanExplosion_SFX>();
 
 	float4 StartPosition = GetTransform()->GetWorldPosition();
-	float4 CanExplosionPosition = StartPosition + float4{ 0, 0, -5 };
+	float4 CanExplosionPosition = StartPosition + float4{ 0, 0, -50 };
 
 	CanExplosion->SetStartPosition(CanExplosionPosition);
+}
+
+void Werner_Werman::CreateFlamethrower()
+{
+	std::shared_ptr<Flamethrower> FlamethrowerObject0 = GetLevel()->CreateActor<Flamethrower>();
+	std::shared_ptr<Flamethrower> FlamethrowerObject1 = GetLevel()->CreateActor<Flamethrower>();
+
+	float4 StartPosition = Phase2Parent->GetTransform()->GetWorldPosition();
+	float4 FlamethrowerObjectPosition0 = float4::Zero;
+	float4 FlamethrowerObjectPosition1 = float4::Zero;
+
+	if (false == IsMoveState)
+	{
+		FlamethrowerObjectPosition0 = StartPosition + float4{ 300, 15, -1 };
+		FlamethrowerObjectPosition1 = StartPosition + float4{ -295, 15, -1 };
+	}
+	else
+	{
+		FlamethrowerObjectPosition0 = StartPosition + float4{ 300, 45, -1 };
+		FlamethrowerObjectPosition1 = StartPosition + float4{ -295, 45, -1 };
+	}
+
+	if (true == IsDebugRender)
+	{
+		FlamethrowerObject0->SetCollisionRenderOn();
+		FlamethrowerObject1->SetCollisionRenderOn();
+	}
+	else
+	{
+		FlamethrowerObject0->SetCollisionRenderOff();
+		FlamethrowerObject1->SetCollisionRenderOff();
+	}
+
+	FlamethrowerObject0->SetStartPosition(FlamethrowerObjectPosition0);
+	FlamethrowerObject1->SetStartPosition(FlamethrowerObjectPosition1);
+	FlamethrowerObject1->SetDirectionNegative();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -650,6 +691,23 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Down_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Up").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Up_Loop").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Flamethrower_Intro_Loop"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+		NewDir.Move("Object_Flamethrower");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
