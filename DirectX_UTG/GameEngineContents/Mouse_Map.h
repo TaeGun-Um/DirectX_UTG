@@ -3,7 +3,10 @@
 // Ό³Έν :
 class Mouse_Map : public GameEngineActor
 {
+	friend class Werner_Werman;
 public:
+	static Mouse_Map* MouseMapPtr;
+
 	// constrcuter destructer
 	Mouse_Map();
 	~Mouse_Map();
@@ -14,6 +17,16 @@ public:
 	Mouse_Map& operator=(const Mouse_Map& _Other) = delete;
 	Mouse_Map& operator=(Mouse_Map&& _Other) noexcept = delete;
 
+	void DebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void DebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -22,6 +35,13 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> WallBGRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> HouseBGRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> Phase2PlatformRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
+
+	bool IsDebugRender = false;
+	bool IsPhase2 = false;
+	bool IsPhase3 = false;
 
 	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation = 0.5f, float _brightness = 0.5f, float _contrast = 0.5f);
 };

@@ -599,7 +599,7 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Flamecannon").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Scissor_Down"))
+	if (nullptr == GameEngineSprite::Find("Scissor_Intro"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -610,6 +610,7 @@ void Werner_Werman::ActorInitSetting()
 		NewDir.Move("Phase2");
 		NewDir.Move("Object_Scissor");
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Down").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Down_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Scissor_Up").GetFullPath());
@@ -782,10 +783,11 @@ void Werner_Werman::ActorInitSetting()
 
 		WeaponRender->CreateAnimation({ .AnimationName = "Object_IntroBomb", .SpriteName = "Object_IntroBomb", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
 
-		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down", .SpriteName = "Scissor_Down", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
-		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down_Loop", .SpriteName = "Scissor_Down_Loop", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
-		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up", .SpriteName = "Scissor_Up", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
-		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up_Loop", .SpriteName = "Scissor_Up_Loop", .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Intro", .SpriteName = "Scissor_Intro", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down", .SpriteName = "Scissor_Down", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Down_Loop", .SpriteName = "Scissor_Down_Loop", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up", .SpriteName = "Scissor_Up", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		WeaponRender->CreateAnimation({ .AnimationName = "Scissor_Up_Loop", .SpriteName = "Scissor_Up_Loop", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 
 		WeaponRender->GetTransform()->AddLocalPosition({ -70, 250 });
 		WeaponRender->ChangeAnimation("Cannon_Out");

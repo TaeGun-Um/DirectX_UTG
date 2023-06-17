@@ -809,7 +809,7 @@ void Player::JumpStart()
 	}
 	else if (false == IsJump && false == IsSlap)
 	{
-		MoveDirect.y = 850.0f;
+		MoveDirect.y = 900.0f;
 		IsJump = true;
 	}
 }

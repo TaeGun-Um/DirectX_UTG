@@ -4,6 +4,8 @@
 #include <cmath>
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Mouse_Map.h"
+
 void Werner_Werman::ChangeState(MouseState _StateValue)
 {
 	MouseState NextState = _StateValue;
@@ -583,6 +585,8 @@ void Werner_Werman::Explosion_LoopEnd()
 
 void Werner_Werman::ExplosionStart()
 {
+	Mouse_Map::MouseMapPtr->IsPhase2 = true;
+
 	CanUpRenderPtr->CreateAnimation({ .AnimationName = "Can_Tin_Up", .SpriteName = "Can_Tin_Up", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 	CanRenderPtr->SetAnimationStartEvent("Can_Explosion_Outro", 4, std::bind(&Werner_Werman::CreateExplosionSFX, this));
 	CanRenderPtr->ChangeAnimation("Can_Explosion_Outro");
@@ -591,18 +595,19 @@ void Werner_Werman::ExplosionStart()
 	CanUpRenderPtr->ChangeAnimation("Can_Tin_Up");
 	CanBackRenderPtr->SetScaleToTexture("Tin_Boil_Back_001.png");
 
-	WeaponRender->GetTransform()->SetLocalPosition({ -10, 100 });
+	WeaponRender->GetTransform()->SetLocalPosition({ 0, 100 });
 	CanUpRenderPtr->GetTransform()->SetLocalPosition({ -10, 0 });
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 40 });
 	MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 130 });
 	WheelRenderPtr->GetTransform()->SetLocalPosition({ -10, -90 });
 	WheelRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, 1 });
 
-	FlamecannonRenderPtr_Right->GetTransform()->SetLocalRotation({ 0, 0, 20 });
-	FlamecannonRenderPtr_Left->GetTransform()->SetLocalRotation({0, 180, 20});
+	//FlamecannonRenderPtr_Right->GetTransform()->SetLocalRotation({ 0, 0, 20 });
+	//FlamecannonRenderPtr_Left->GetTransform()->SetLocalRotation({0, 180, 20});
+	FlamecannonRenderPtr_Left->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 
-	FlamecannonRenderPtr_Left->GetTransform()->SetLocalPosition({ 25, -35 });
-	FlamecannonRenderPtr_Right->GetTransform()->SetLocalPosition({ -50, -35 });
+	FlamecannonRenderPtr_Left->GetTransform()->SetLocalPosition({ 50, -55 });
+	FlamecannonRenderPtr_Right->GetTransform()->SetLocalPosition({ -60, -55 });
 
 	if (nullptr == Phase2Parent)
 	{
@@ -634,6 +639,10 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 		FlamecannonRenderPtr_Left->On();
 		FlamecannonRenderPtr_Right->On();
 
+		DelayTime = 0.0f;
+		MoveTime = 0.0f;
+		WeaponType = false;
+
 		ChangeState(MouseState::Idle_Phase2);
 		return;
 	}
@@ -645,19 +654,55 @@ void Werner_Werman::ExplosionEnd()
 
 void Werner_Werman::Idle_Phase2Start()
 {
-	Phase2IdleDownPosition = GetTransform()->GetWorldPosition();
-	Phase2IdleUpPosition = Phase2IdleDownPosition + float4{0, 500, 0};
+	Phase2IdleDownPosition = Phase2Parent->GetTransform()->GetLocalPosition() + float4{ 0, 50, 0 };
+	Phase2IdleUpPosition = Phase2IdleDownPosition + float4{0, 250, 0};
 	ChangeState_Phase2(Phase2State::Trans);
 }
 void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 {
 	SetCanTinBackTexture();
+
+	float4 CurPos = Phase2Parent->GetTransform()->GetLocalPosition();
+
+	if (false == Phase2InitCorrection)
+	{
+		
+		float Movedis = 700.0f * _DeltaTime;
+
+		if (Phase2IdleDownPosition.y >= CurPos.y)
+		{
+			Phase2Parent->GetTransform()->AddLocalPosition({ 0, Movedis, 0 });
+			return;
+		}
+		else
+		{
+			Phase2InitCorrection = true;
+			Phase2Parent->GetTransform()->SetLocalPosition(Phase2IdleDownPosition);
+		}
+	}
+
+	if (true)
+	{
+		DelayTime += _DeltaTime;
+		MoveTime += _DeltaTime;
+		WeaponType = true;
+
+		if (Phase2IdleUpPosition.y > CurPos.y && false == IsPhase2UpPosition)
+		{
+			Phase2Parent->GetTransform()->SetLocalPosition(float4::Lerp(Phase2IdleDownPosition, Phase2IdleUpPosition, MoveTime * 2.5f));
+		}
+		else if (true == IsPhase2UpPosition)
+		{
+			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleUpPosition.x , Phase2IdleUpPosition.y - 20.0f });
+		}
+		else if (Phase2IdleUpPosition.y <= CurPos.y)
+		{
+			IsPhase2UpPosition = true;
+		}
+	}
+
 	UpdateState_Phase2(_DeltaTime);
 	UpdateState_Scissor(_DeltaTime);
-
-	//float Movedis = 100.0f * _DeltaTime;
-
-	//Phase2Parent->GetTransform()->AddLocalPosition({ 0, Movedis, 0 });
 }
 void Werner_Werman::Idle_Phase2End()
 {

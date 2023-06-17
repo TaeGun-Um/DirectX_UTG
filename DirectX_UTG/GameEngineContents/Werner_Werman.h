@@ -47,6 +47,7 @@ enum class Phase2State
 
 enum class ScissorState
 {
+	Scissor_Intro,
 	Down,
 	Down_Loop,
 	Up,
@@ -140,7 +141,7 @@ private:
 	CannonState CannonStateValue = CannonState::Out;
 	CatapultState CatapultStateValue = CatapultState::Loop;
 	Phase2State Phase2StateValue = Phase2State::Trans;
-	ScissorState ScissorStateValue = ScissorState::Down_Loop;
+	ScissorState ScissorStateValue = ScissorState::Scissor_Intro;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -177,6 +178,9 @@ private:
 	bool IsCreateProjectile = false;
 	bool IsCreateCatapultProjectile = false;
 	bool IsCreateSpringObject = false;
+	bool Phase2InitCorrection = false;
+	bool IsPhase2UpPosition = false;
+	bool IsPhase2DownPosition = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
@@ -303,6 +307,10 @@ private:
 
 	void ChangeState_Scissor(ScissorState _StateValue);
 	void UpdateState_Scissor(float _DeltaTime);
+
+	void Scissor_IntroStart();
+	void Scissor_IntroUpdate(float _DeltaTime);
+	void Scissor_IntroEnd();
 
 	void DownStart();
 	void DownUpdate(float _DeltaTime);
