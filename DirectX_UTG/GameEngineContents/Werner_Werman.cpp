@@ -175,10 +175,18 @@ void Werner_Werman::CollisionCheck()
 void Werner_Werman::CollisionSetting()
 {
 	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
-	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
-
 	EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
-	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
+	
+	if (false == IsPhase2)
+	{
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
+	}
+	else
+	{
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(Phase2Parent->GetTransform()->GetLocalPosition() + BodyCollisionPtr->GetTransform()->GetLocalPosition());
+		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(Phase2Parent->GetTransform()->GetLocalPosition() + EXCollisionPtr->GetTransform()->GetLocalPosition());
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

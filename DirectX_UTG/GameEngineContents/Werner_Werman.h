@@ -178,7 +178,10 @@ private:
 	bool IsCreateProjectile = false;
 	bool IsCreateCatapultProjectile = false;
 	bool IsCreateSpringObject = false;
+
+	bool IsPhase2 = false;
 	bool Phase2InitCorrection = false;
+	bool IsMoveState = false;
 	bool IsPhase2UpPosition = false;
 	bool IsPhase2DownPosition = false;
 

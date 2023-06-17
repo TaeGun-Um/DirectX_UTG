@@ -97,7 +97,11 @@ void Werner_Werman::DownStart()
 }
 void Werner_Werman::DownUpdate(float _DeltaTime)
 {
-
+	if (true == WeaponRender->IsAnimationEnd())
+	{
+		ChangeState_Scissor(ScissorState::Down_Loop);
+		return;
+	}
 }
 void Werner_Werman::DownEnd()
 {
@@ -110,9 +114,9 @@ void Werner_Werman::Down_LoopStart()
 }
 void Werner_Werman::Down_LoopUpdate(float _DeltaTime)
 {
-	if (true == WeaponRender->IsAnimationEnd())
+	if (true == WeaponType)
 	{
-		ChangeState_Scissor(ScissorState::Down_Loop);
+		ChangeState_Scissor(ScissorState::Up);
 		return;
 	}
 }
@@ -144,7 +148,11 @@ void Werner_Werman::Up_LoopStart()
 }
 void Werner_Werman::Up_LoopUpdate(float _DeltaTime)
 {
-
+	if (false == WeaponType)
+	{
+		ChangeState_Scissor(ScissorState::Down);
+		return;
+	}
 }
 void Werner_Werman::Up_LoopEnd()
 {

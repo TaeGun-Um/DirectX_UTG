@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "Mouse_Map.h"
 
@@ -616,6 +617,13 @@ void Werner_Werman::ExplosionStart()
 		Phase2Parent->GetTransform()->SetLocalScale({ 1, 1, 1 });
 	}
 
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 160, 320, -2 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 160, 320, -2 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 100 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 100 });
+
+	BodyCollisionPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
+	EXCollisionPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
 	CanUpRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
 	CanBackRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
 	MouseRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
@@ -626,6 +634,7 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 {
 	if (7 == CanRenderPtr->GetCurrentFrame())
 	{
+		IsPhase2 = true;
 		WheelRenderPtr->On();
 	}
 
@@ -681,23 +690,58 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 		}
 	}
 
-	if (true)
+	if (false == IsMoveState)
 	{
-		DelayTime += _DeltaTime;
-		MoveTime += _DeltaTime;
 		WeaponType = true;
 
 		if (Phase2IdleUpPosition.y > CurPos.y && false == IsPhase2UpPosition)
 		{
+			MoveTime += _DeltaTime;
 			Phase2Parent->GetTransform()->SetLocalPosition(float4::Lerp(Phase2IdleDownPosition, Phase2IdleUpPosition, MoveTime * 2.5f));
 		}
 		else if (true == IsPhase2UpPosition)
 		{
 			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleUpPosition.x , Phase2IdleUpPosition.y - 20.0f });
+			DelayTime += _DeltaTime;
 		}
 		else if (Phase2IdleUpPosition.y <= CurPos.y)
 		{
 			IsPhase2UpPosition = true;
+		}
+
+		if (1.0f <= DelayTime)
+		{
+			MoveTime = 0.0f;
+			DelayTime = 0.0f;
+			IsMoveState = true;
+			IsPhase2UpPosition = false;
+		}
+	}
+	else
+	{
+		WeaponType = false;
+
+		if (Phase2IdleDownPosition.y < CurPos.y && false == IsPhase2DownPosition)
+		{
+			MoveTime += _DeltaTime;
+			Phase2Parent->GetTransform()->SetLocalPosition(float4::Lerp(Phase2IdleUpPosition, Phase2IdleDownPosition, MoveTime * 2.5f));
+		}
+		else if (true == IsPhase2DownPosition)
+		{
+			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleDownPosition.x , Phase2IdleDownPosition.y + 10.0f });
+			DelayTime += _DeltaTime;
+		}
+		else if (Phase2IdleDownPosition.y >= CurPos.y)
+		{
+			IsPhase2DownPosition = true;
+		}
+
+		if (1.0f <= DelayTime)
+		{
+			MoveTime = 0.0f;
+			DelayTime = 0.0f;
+			IsMoveState = false;
+			IsPhase2DownPosition = false;
 		}
 	}
 
