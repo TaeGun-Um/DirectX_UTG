@@ -601,6 +601,7 @@ void Werner_Werman::ExplosionStart()
 	CanBackRenderPtr->GetTransform()->SetLocalPosition({ 0, 40 });
 	MouseRenderPtr->GetTransform()->SetLocalPosition({ -10, 130 });
 	WheelRenderPtr->GetTransform()->SetLocalPosition({ -10, -90 });
+
 	WheelRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, 1 });
 
 	//FlamecannonRenderPtr_Right->GetTransform()->SetLocalRotation({ 0, 0, 20 });
@@ -636,6 +637,7 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 	{
 		IsPhase2 = true;
 		WheelRenderPtr->On();
+		PlatformCollisionPtr->On();
 	}
 
 	if (true == CanRenderPtr->IsAnimationEnd())
@@ -665,7 +667,7 @@ void Werner_Werman::Idle_Phase2Start()
 {
 	Phase2IdleDownPosition = Phase2Parent->GetTransform()->GetLocalPosition() + float4{ 0, 50, 0 };
 	Phase2IdleUpPosition = Phase2IdleDownPosition + float4{0, 250, 0};
-	ChangeState_Phase2(Phase2State::Trans);
+	ChangeState_Phase2(Phase2State::Intro);
 }
 void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 {
@@ -675,7 +677,6 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 
 	if (false == Phase2InitCorrection)
 	{
-		
 		float Movedis = 700.0f * _DeltaTime;
 
 		if (Phase2IdleDownPosition.y >= CurPos.y)
@@ -748,9 +749,13 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 	UpdateState_Phase2(_DeltaTime);
 	UpdateState_Scissor(_DeltaTime);
 
-	float Movedis = 0.0f * _DeltaTime;
+	{
+		float Movedis = 0.0f * _DeltaTime;
 
-	PlatformCollisionCheck(Movedis);
+		GetTransform()->AddLocalPosition({ Movedis, 0 });
+
+		PlatformCollisionCheck(Movedis);
+	}
 }
 void Werner_Werman::Idle_Phase2End()
 {

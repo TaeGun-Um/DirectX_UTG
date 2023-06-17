@@ -46,19 +46,19 @@ void Mouse_FrontObject::Start()
 	{
 		FrontRenderPtr_1 = CreateComponent<GameEngineSpriteRenderer>();
 		FrontRenderPtr_1->SetScaleToTexture("mouse_bg_foreground_b2.png");
-		FrontRenderPtr_1->GetTransform()->SetWorldPosition({ 630, 380, -4 });
+		FrontRenderPtr_1->GetTransform()->SetWorldPosition({ 630, 380, -20 });
 	}
 	if (nullptr == FrontRenderPtr_2)
 	{
 		FrontRenderPtr_2 = CreateComponent<GameEngineSpriteRenderer>();
 		FrontRenderPtr_2->SetScaleToTexture("mouse_bg_foreground_a.png");
-		FrontRenderPtr_2->GetTransform()->SetWorldPosition({ 600, 650, -4 });
+		FrontRenderPtr_2->GetTransform()->SetWorldPosition({ 600, 650, -20 });
 	}
 	if (nullptr == FrontRenderPtr_3)
 	{
 		FrontRenderPtr_3 = CreateComponent<GameEngineSpriteRenderer>();
 		FrontRenderPtr_3->SetScaleToTexture("mouse_bg_foreground_b1.png");
-		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 660, 95, -4 });
+		FrontRenderPtr_3->GetTransform()->SetWorldPosition({ 660, 95, -20 });
 	}
 
 	HBSCControl(FrontRenderPtr_1, 0.5f, 0.57f, 0.5f);

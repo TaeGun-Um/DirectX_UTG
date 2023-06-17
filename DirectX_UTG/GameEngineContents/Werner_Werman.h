@@ -41,8 +41,13 @@ enum class CatapultState
 
 enum class Phase2State
 {
-	Trans,
-	Trans_Loop,
+	Intro,
+	TransA,
+	TransB,
+	Trans_LoopB,
+	TransC,
+	TransD,
+	Trans_LoopD,
 };
 
 enum class ScissorState
@@ -144,7 +149,7 @@ private:
 	MouseState StateValue = MouseState::Idle;
 	CannonState CannonStateValue = CannonState::Out;
 	CatapultState CatapultStateValue = CatapultState::Loop;
-	Phase2State Phase2StateValue = Phase2State::Trans;
+	Phase2State Phase2StateValue = Phase2State::Intro;
 	ScissorState ScissorStateValue = ScissorState::Scissor_Intro;
 
 	void ChangeState(MouseState _StateValue);
@@ -205,7 +210,6 @@ private:
 	int CatapultFireCount = 0;
 	int WeaponSwapCount = 0;
 	int Phase2PositionSetting = 1;
-	int MouseTransSetting = 0;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -304,13 +308,33 @@ private:
 	void ChangeState_Phase2(Phase2State _StateValue);
 	void UpdateState_Phase2(float _DeltaTime);
 
-	void TransStart();
-	void TransUpdate(float _DeltaTime);
-	void TransEnd();
+	void Ph2MouseIntroStart();
+	void Ph2MouseIntroUpdate(float _DeltaTime);
+	void Ph2MouseIntroEnd();
 
-	void Trans_LoopStart();
-	void Trans_LoopUpdate(float _DeltaTime);
-	void Trans_LoopEnd();
+	void TransAStart();
+	void TransAUpdate(float _DeltaTime);
+	void TransAEnd();
+
+	void TransBStart();
+	void TransBUpdate(float _DeltaTime);
+	void TransBEnd();
+
+	void Trans_LoopBStart();
+	void Trans_LoopBUpdate(float _DeltaTime);
+	void Trans_LoopBEnd();
+
+	void TransCStart();
+	void TransCUpdate(float _DeltaTime);
+	void TransCEnd();
+
+	void TransDStart();
+	void TransDUpdate(float _DeltaTime);
+	void TransDEnd();
+
+	void Trans_LoopDStart();
+	void Trans_LoopDUpdate(float _DeltaTime);
+	void Trans_LoopDEnd();
 
 	void ChangeState_Scissor(ScissorState _StateValue);
 	void UpdateState_Scissor(float _DeltaTime);

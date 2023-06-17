@@ -43,11 +43,21 @@ void Werner_Werman::Update(float _DeltaTime)
 			BodyCollisionRenderPtr->Off();
 			EXCollisionRenderPtr->Off();
 		}
+
+		if (PlatformCollisionPtr->IsUpdate())
+		{
+			PlatformCollisionRenderPtr->On();
+		}
+		else
+		{
+			PlatformCollisionRenderPtr->Off();
+		}
 	}
 	else
 	{
 		BodyCollisionRenderPtr->Off();
 		EXCollisionRenderPtr->Off();
+		PlatformCollisionRenderPtr->Off();
 	}
 
 	DirectCheck();
@@ -859,13 +869,13 @@ void Werner_Werman::ActorInitSetting()
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Loop", .SpriteName = "Mouse_Dash_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Dash_Outro", .SpriteName = "Mouse_Dash_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionA", .SpriteName = "Mouse_TransitionA", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionA", .SpriteName = "Mouse_TransitionA", .FrameInter = 0.035f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionA_Loop", .SpriteName = "Mouse_TransitionA_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionB", .SpriteName = "Mouse_TransitionB", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionB", .SpriteName = "Mouse_TransitionB", .FrameInter = 0.035f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionB_Loop", .SpriteName = "Mouse_TransitionB_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC", .SpriteName = "Mouse_TransitionC", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC", .SpriteName = "Mouse_TransitionC", .FrameInter = 0.035f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC_Loop", .SpriteName = "Mouse_TransitionC_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD", .SpriteName = "Mouse_TransitionD", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD", .SpriteName = "Mouse_TransitionD", .FrameInter = 0.035f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD_Loop", .SpriteName = "Mouse_TransitionD_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
@@ -938,6 +948,7 @@ void Werner_Werman::ActorInitSetting()
 		PlatformCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Platform));
 		PlatformCollisionPtr->GetTransform()->SetLocalScale({ 280, 40, -2 });
 		PlatformCollisionPtr->GetTransform()->SetLocalPosition({ 0, -100 });
+		PlatformCollisionPtr->Off();
 	}
 
 	if (nullptr == PlatformCollisionRenderPtr)
@@ -947,6 +958,7 @@ void Werner_Werman::ActorInitSetting()
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalPosition(PlatformCollisionPtr->GetTransform()->GetLocalPosition());
 		PlatformCollisionRenderPtr->SetTexture("GreenBox.png");
 		PlatformCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
+		PlatformCollisionRenderPtr->Off();
 	}
 
 	ChangeState(MouseState::Idle);

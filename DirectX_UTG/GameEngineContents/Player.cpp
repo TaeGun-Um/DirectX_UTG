@@ -97,17 +97,7 @@ void Player::PlayerMoveDisturbance(float _Value)
 
 void Player::PlayerBlockDisturbance(float _Value)
 {
-	float4 PlayerPos = GetTransform()->GetLocalPosition();
-
-	//float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
-	//float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
-
-	//GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
-	//GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
-
-	//GetTransform()->AddLocalPosition({ _Value , 0 });
-
-	//DisturbanceWallCheck(LeftWallPixel, RightWallPixel, GameEngineTime::GlobalTime.GetTimeScaleDeltaTime(), _Value);
+	GetTransform()->AddLocalPosition({ _Value , 0 });
 
 	if (true == IsDash)
 	{
