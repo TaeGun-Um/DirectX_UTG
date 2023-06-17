@@ -21,6 +21,7 @@ enum class CollisionOrder
 	Player,         
 	PlayerParry,
 	PlayerSensor,
+	PlayerFrontSensor,
 	PlayerBottomSensor,
 	Peashooter,
 	PeashooterEX,

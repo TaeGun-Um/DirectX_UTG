@@ -170,6 +170,7 @@ public:
 	void CheckPlayerEXGauge();
 
 	void PlayerMoveDisturbance(float _Value);
+	void PlayerBlockDisturbance(float _Value);
 
 protected:
 	void Start();

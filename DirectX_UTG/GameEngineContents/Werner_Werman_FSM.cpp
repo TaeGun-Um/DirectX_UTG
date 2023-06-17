@@ -747,6 +747,10 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 
 	UpdateState_Phase2(_DeltaTime);
 	UpdateState_Scissor(_DeltaTime);
+
+	float Movedis = 0.0f * _DeltaTime;
+
+	PlatformCollisionCheck(Movedis);
 }
 void Werner_Werman::Idle_Phase2End()
 {

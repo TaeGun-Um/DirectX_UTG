@@ -114,12 +114,16 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
 
 	void ActorInitSetting();
 	void DirectCheck();
 	void CollisionCheck();
+	void PlatformCollisionCheck(float _Value);
 	void CollisionSetting();
 	void HitBlink(float _DeltaTime);
 	void CreateCherryBomb();

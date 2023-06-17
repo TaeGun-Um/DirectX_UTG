@@ -101,6 +101,23 @@ void Werner_Werman::HitBlink(float _DeltaTime)
 ///////////////////////////////////////////                    CollisionCheck                    /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Werner_Werman::PlatformCollisionCheck(float _Value)
+{
+	/////////////// Platform
+	if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerFrontSensor), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		Player::MainPlayer->PlayerBlockDisturbance(_Value);
+	}
+
+	if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerBottomSensor), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		if (true == Player::MainPlayer->GetPlatformCheckAble())
+		{
+			Player::MainPlayer->PlayerMoveDisturbance(_Value);
+		}
+	}
+}
+
 void Werner_Werman::CollisionCheck()
 {
 	/////////////// Normal
@@ -914,6 +931,22 @@ void Werner_Werman::ActorInitSetting()
 		EXCollisionRenderPtr->SetTexture("RedLine.png");
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		EXCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == PlatformCollisionPtr)
+	{
+		PlatformCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Platform));
+		PlatformCollisionPtr->GetTransform()->SetLocalScale({ 280, 40, -2 });
+		PlatformCollisionPtr->GetTransform()->SetLocalPosition({ 0, -100 });
+	}
+
+	if (nullptr == PlatformCollisionRenderPtr)
+	{
+		PlatformCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		PlatformCollisionRenderPtr->GetTransform()->SetLocalScale(PlatformCollisionPtr->GetTransform()->GetLocalScale());
+		PlatformCollisionRenderPtr->GetTransform()->SetLocalPosition(PlatformCollisionPtr->GetTransform()->GetLocalPosition());
+		PlatformCollisionRenderPtr->SetTexture("GreenBox.png");
+		PlatformCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
 	}
 
 	ChangeState(MouseState::Idle);

@@ -95,6 +95,48 @@ void Player::PlayerMoveDisturbance(float _Value)
 	DisturbanceWallCheck(LeftWallPixel, RightWallPixel, GameEngineTime::GlobalTime.GetTimeScaleDeltaTime(), _Value);
 }
 
+void Player::PlayerBlockDisturbance(float _Value)
+{
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+
+	//float4 LeftWallCheckPos = PlayerPos + float4{ -25, 10 };
+	//float4 RightWallCheckPos = PlayerPos + float4{ 15, 10 };
+
+	//GameEnginePixelColor LeftWallPixel = PixelCollisionCheck.PixelCheck(LeftWallCheckPos);
+	//GameEnginePixelColor RightWallPixel = PixelCollisionCheck.PixelCheck(RightWallCheckPos);
+
+	//GetTransform()->AddLocalPosition({ _Value , 0 });
+
+	//DisturbanceWallCheck(LeftWallPixel, RightWallPixel, GameEngineTime::GlobalTime.GetTimeScaleDeltaTime(), _Value);
+
+	if (true == IsDash)
+	{
+		float DashDist = (MoveSpeed * 2) * GameEngineTime::GlobalTime.GetDeltaTime();
+
+		if (true == Directbool)
+		{
+			GetTransform()->AddLocalPosition({ -DashDist, 0 });
+		}
+		else
+		{
+			GetTransform()->AddLocalPosition({ DashDist, 0 });
+		}
+	}
+	else
+	{
+		float MoveDis = MoveSpeed * GameEngineTime::GlobalTime.GetDeltaTime();
+
+		if (true == Directbool)
+		{
+			GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		}
+		else
+		{
+			GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		}
+	}
+}
+
 // 플레이어 리셋
 void Player::PlayerReset()
 {
@@ -570,7 +612,7 @@ void Player::CollisionSetting()
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ -5, -3 });
 
 		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
-		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 50 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 55 });
 	}
 	else
 	{
@@ -581,7 +623,7 @@ void Player::CollisionSetting()
 		BottomSensorCollisionPtr->GetTransform()->SetLocalPosition({ 5, -3 });
 
 		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
-		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 55, 50 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 55, 55 });
 	}
 
 	if (true == IsSlap && true == ParryCollisionRenderPtr->IsUpdate() && true == ParryCollisionPtr->IsUpdate())
@@ -2248,10 +2290,10 @@ void Player::PlayerCollisionSetting()
 
 	if (nullptr == FrontSensorCollisionPtr)
 	{
-		FrontSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerSensor));
+		FrontSensorCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::PlayerFrontSensor));
 		FrontSensorCollisionPtr->SetColType(ColType::AABBBOX2D);
 		FrontSensorCollisionPtr->GetTransform()->SetLocalScale({ 8, 100 });
-		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 50 });
+		FrontSensorCollisionPtr->GetTransform()->SetLocalPosition({ 40, 55 });
 	}
 
 	if (nullptr == ParryCollisionPtr)
