@@ -626,7 +626,9 @@ void Werner_Werman::ActorInitSetting()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveLeft").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveLeft_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveRight").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Plat_MoveRight_Loop").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Mouse_TransitionA"))
@@ -958,8 +960,10 @@ void Werner_Werman::ActorInitSetting()
 		WheelRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		WheelRenderPtr->CreateAnimation({ .AnimationName = "Wheel_Move", .SpriteName = "Can_Part_Wheels", .FrameInter = 0.055f, .Loop = true, .ScaleToTexture = true });
 		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_Loop", .SpriteName = "Plat_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveLeft", .SpriteName = "Plat_MoveLeft", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveRight", .SpriteName = "Plat_MoveRight", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveLeft", .SpriteName = "Plat_MoveLeft", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveRight", .SpriteName = "Plat_MoveRight", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveLeft_Loop", .SpriteName = "Plat_MoveLeft_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		WheelRenderPtr->CreateAnimation({ .AnimationName = "Plat_MoveRight_Loop", .SpriteName = "Plat_MoveRight_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		WheelRenderPtr->GetTransform()->SetLocalPosition({ 20, -130 });
 		WheelRenderPtr->ChangeAnimation("Wheel_Move");
 		WheelRenderPtr->Off();

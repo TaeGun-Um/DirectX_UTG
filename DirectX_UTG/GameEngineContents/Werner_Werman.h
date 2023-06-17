@@ -59,6 +59,15 @@ enum class ScissorState
 	Up_Loop,
 };
 
+enum class WheelState
+{
+	Intro,
+	LeftMove,
+	LeftMove_Loop,
+	RightMove,
+	RightMove_Loop,
+};
+
 // Ό³Έν :
 class Werner_Werman : public GameEngineActor
 {
@@ -78,6 +87,11 @@ public:
 	bool GetIsStageEnd()
 	{
 		return IsStageEnd;
+	}
+
+	float GetPhase2MoveDistance()
+	{
+		return Phase2MoveDistance;
 	}
 
 	//void SetInitReset();
@@ -159,6 +173,7 @@ private:
 	CatapultState CatapultStateValue = CatapultState::Loop;
 	Phase2State Phase2StateValue = Phase2State::Intro;
 	ScissorState ScissorStateValue = ScissorState::Scissor_Intro;
+	WheelState WheelStateValue = WheelState::Intro;
 
 	void ChangeState(MouseState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -181,6 +196,9 @@ private:
 	float4 Phase2IdleDownPosition = float4::Zero;
 	float4 Phase2IdleUpPosition = float4::Zero;
 
+	float4 Phase2IdleLeftMovePosition = float4::Zero;
+	float4 Phase2IdleRightMovePosition = float4::Zero;
+
 	bool IsIntro = true;
 	bool IsShake = false;
 	bool Directbool = false;
@@ -197,6 +215,7 @@ private:
 	bool IsCreateSpringObject = false;
 	bool IsCreateFlamethrower = false;
 	bool IsFlameEnd = false;
+	bool IsWheelStart = false;
 
 	bool IsPhase2 = false;
 	bool Phase2InitCorrection = false;
@@ -212,6 +231,9 @@ private:
 	float CatapultReLoadLoopTime = 0.0f;
 	float FireTime = 0.0f;
 	float ExplosionLoopTime = 0.0f;
+	float MoveLoopTime = 0.0f;
+	float MoveDelayTime = 0.0f;
+	float Phase2MoveDistance = 0.0f;
 
 	int CannonFireRand = 0;
 	int CannonFireCount = 0;
@@ -220,6 +242,7 @@ private:
 	int CatapultFireCount = 0;
 	int WeaponSwapCount = 0;
 	int Phase2PositionSetting = 1;
+	int WheelMoveCount = 1;
 
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
@@ -368,6 +391,29 @@ private:
 	void Up_LoopStart();
 	void Up_LoopUpdate(float _DeltaTime);
 	void Up_LoopEnd();
+
+	void ChangeState_Wheel(WheelState _StateValue);
+	void UpdateState_Wheel(float _DeltaTime);
+
+	void Wheel_IntroStart();
+	void Wheel_IntroUpdate(float _DeltaTime);
+	void Wheel_IntroEnd();
+
+	void Wheel_LeftMoveStart();
+	void Wheel_LeftMoveUpdate(float _DeltaTime);
+	void Wheel_LeftMoveEnd();
+
+	void Wheel_LeftMove_LoopStart();
+	void Wheel_LeftMove_LoopUpdate(float _DeltaTime);
+	void Wheel_LeftMove_LoopEnd();
+
+	void Wheel_RightMoveStart();
+	void Wheel_RightMoveUpdate(float _DeltaTime);
+	void Wheel_RightMoveEnd();
+
+	void Wheel_RightMove_LoopStart();
+	void Wheel_RightMove_LoopUpdate(float _DeltaTime);
+	void Wheel_RightMove_LoopEnd();
 
 };
 

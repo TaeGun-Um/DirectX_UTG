@@ -719,5 +719,8 @@
     <ClCompile Include="Flamethrower.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Wheel_FSM.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

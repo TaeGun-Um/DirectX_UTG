@@ -653,6 +653,7 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 		DelayTime = 0.0f;
 		MoveTime = 0.0f;
 		WeaponType = false;
+		IsShake = false;
 
 		ChangeState(MouseState::Idle_Phase2);
 		return;
@@ -667,6 +668,10 @@ void Werner_Werman::Idle_Phase2Start()
 {
 	Phase2IdleDownPosition = Phase2Parent->GetTransform()->GetLocalPosition() + float4{ 0, 50, 0 };
 	Phase2IdleUpPosition = Phase2IdleDownPosition + float4{0, 250, 0};
+
+	Phase2IdleRightMovePosition = GetTransform()->GetLocalPosition();
+	Phase2IdleLeftMovePosition = Phase2IdleRightMovePosition + float4{ -70, 0 };
+
 	ChangeState_Phase2(Phase2State::Intro);
 }
 void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
@@ -773,13 +778,60 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 	UpdateState_Phase2(_DeltaTime);
 	UpdateState_Scissor(_DeltaTime);
 
+	if (GetTransform()->GetLocalPosition().x == Phase2IdleLeftMovePosition.x)
 	{
-		float Movedis = 0.0f * _DeltaTime;
+		MoveLoopTime = 0.0f;
 
-		GetTransform()->AddLocalPosition({ Movedis, 0 });
-
-		PlatformCollisionCheck(Movedis);
+		if (false == IsShake)
+		{
+			MoveDelayTime = 0.0f;
+			IsShake = true;
+			WheelMoveCount = 1;
+		}
 	}
+	else if (GetTransform()->GetLocalPosition().x == Phase2IdleRightMovePosition.x)
+	{
+		MoveLoopTime = 0.0f;
+
+		if (true == IsShake)
+		{
+			MoveDelayTime = 0.0f;
+			IsShake = false;
+			WheelMoveCount = 1;
+		}
+	}
+
+	MoveDelayTime += _DeltaTime;
+
+	if (1.0f <= MoveDelayTime)
+	{
+		if (1 == WheelMoveCount)
+		{
+			WheelMoveCount = 0;
+			IsWheelStart = true;
+		}
+
+		MoveLoopTime += _DeltaTime;
+	}
+	
+	float4 CurPosision = GetTransform()->GetLocalPosition();
+	float4 MoveMount = float4::Zero;
+
+	if (false == IsShake)
+	{
+		MoveMount = float4::LerpClamp(Phase2IdleRightMovePosition, Phase2IdleLeftMovePosition, MoveLoopTime * 1.5f);
+		GetTransform()->SetLocalPosition(MoveMount);
+	}
+	else
+	{
+		MoveMount = float4::LerpClamp(Phase2IdleLeftMovePosition, Phase2IdleRightMovePosition, MoveLoopTime * 1.5f);
+		GetTransform()->SetLocalPosition(MoveMount);
+	}
+
+	Phase2MoveDistance = CurPosision.x - MoveMount.x;
+
+	PlatformCollisionCheck(-Phase2MoveDistance);
+	UpdateState_Wheel(_DeltaTime);
 }
 void Werner_Werman::Idle_Phase2End()
 {

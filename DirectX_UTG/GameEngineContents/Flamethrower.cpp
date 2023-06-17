@@ -71,6 +71,10 @@ void Flamethrower::Update(float _DeltaTime)
 	}
 
 	UpdateState(_DeltaTime);
+
+	float Movedis = Werner_Werman::WernerWermanPtr->GetPhase2MoveDistance();
+
+	GetTransform()->AddLocalPosition({ -Movedis , 0 });
 }
 
 void Flamethrower::ChangeState(FireState _StateValue)
