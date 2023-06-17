@@ -1390,7 +1390,7 @@ void Croak::ActorInitSetting()
 	{
 		SlotFrontRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		SlotFrontRenderPtr->SetScaleToTexture("SlotMachine_Attack_Front_001.png");
-		SlotFrontRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -3 });
+		SlotFrontRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -2 });
 		SlotFrontRenderPtr->Off();
 	}
 }
