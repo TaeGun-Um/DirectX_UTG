@@ -76,6 +76,11 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
 	{
+		if (GetLevel()->GetMainCamera().get() != this)
+		{
+			return;
+		}
+
 		FreeCamera = !FreeCamera;
 
 		if (true == FreeCamera)
@@ -251,6 +256,8 @@ void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 		MsgAssert("랜더러가 nullptr 입니다");
 		return;
 	}
+
+	_Render->RenderCamera = this;
 
 	Renderers[_Render->GetOrder()].push_back(_Render);
 }

@@ -67,6 +67,11 @@ public:
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
+	static float GetAngleVectorToVectorDeg360(const float4& _Left, const float4& _Right)
+	{
+		return GetAngleVectorToVectorRad360(_Left, _Right) * GameEngineMath::RadToDeg;
+	}
+
 	// 벡터의 내적
 	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
 	{
@@ -79,6 +84,24 @@ public:
 		float CosSeta = DotProduct3D(Left, Right); // 벡터의 내적 실시
 
 		float Angle = acosf(CosSeta); // 내적 결과 각도
+
+		return Angle;
+	}
+
+	static float GetAngleVectorToVectorRad360(const float4& _Left, const float4& _Right)
+	{
+		float4 Left = _Left;
+		float4 Right = _Right;
+
+		Left.Normalize();
+		Right.Normalize();
+
+		float CosSeta = DotProduct3D(Left, Right);
+
+
+		float Angle = 0.f;
+		(Left.y * Right.x + Left.x * Right.y > 0.0f) ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
+
 
 		return Angle;
 	}
@@ -281,7 +304,7 @@ public:
 		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
-	UINT ColorToUint()
+	UINT ColorToUint() const
 	{
 		UINT Return;
 

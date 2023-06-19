@@ -52,29 +52,22 @@ void TransformData::LocalCalculation()
 	LocalWorldMatrix = ScaleMatrix * RotationMatrix * PositionMatrix;
 }
 
-void TransformData::LocalCalculation(const float4& _ParentQuaternion)
-{
-	ScaleMatrix.Scale(Scale);
-
-	Rotation.w = 0.0f;
-	Quaternion = DirectX::XMQuaternionMultiply(Rotation.EulerDegToQuaternion(), -_ParentQuaternion);
-
-	RotationMatrix = Quaternion.QuaternionToRotationMatrix();
-	PositionMatrix.Pos(Position);
-
-	LocalWorldMatrix = ScaleMatrix * RotationMatrix * PositionMatrix;
-}
-
-void TransformData::WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsolutePosition)
+void TransformData::WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
 {
 	float4 PScale, PRotation, PPosition;
 	_Parent.Decompose(PScale, PRotation, PPosition);
+
 
 	if (true == AbsoluteScale)
 	{
 		PScale = float4::One;
 	}
-
+	if (true == AbsoluteRotation)
+	{
+		// 부모의 회전 
+		PRotation = float4::Zero;
+		PRotation.EulerDegToQuaternion();
+	}
 	if (true == AbsolutePosition)
 	{
 		PPosition = float4::Zero;
@@ -250,24 +243,14 @@ GameEngineTransform::~GameEngineTransform()
 
 void GameEngineTransform::TransformUpdate()
 {
+	TransData.LocalCalculation();
 
 	if (nullptr == Parent)
 	{
-		TransData.LocalCalculation();
 		TransData.WorldMatrix = TransData.LocalWorldMatrix;
 	}
 	else // 차이
 	{
-		if (true == AbsoluteRotation)
-		{
-			float4 ParentQuater = Parent->GetWorldQuaternion();
-			TransData.LocalCalculation(ParentQuater);
-		}
-		else
-		{
-			TransData.LocalCalculation();
-		}
-
 		WorldCalculation();
 	}
 
@@ -280,7 +263,7 @@ void GameEngineTransform::TransformUpdate()
 void GameEngineTransform::WorldCalculation()
 {
 	float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-	TransData.WorldCalculation(ParentWorldMatrix, AbsoluteScale, AbsolutePosition);
+	TransData.WorldCalculation(ParentWorldMatrix, AbsoluteScale, AbsoluteRotation, AbsolutePosition);
 }
 
 void GameEngineTransform::LocalDecompose()
@@ -409,7 +392,8 @@ void GameEngineTransform::CalChild()
 {
 	for (GameEngineTransform* ChildTrans : Child)
 	{
-		ChildTrans->TransformUpdate();
+		ChildTrans->WorldCalculation();
+		ChildTrans->WorldDecompose();
 		ChildTrans->CalChild();
 	}
 }

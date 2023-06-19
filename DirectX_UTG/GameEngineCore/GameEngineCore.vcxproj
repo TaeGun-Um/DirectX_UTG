@@ -527,11 +527,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl" />
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
+    <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
@@ -546,11 +546,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

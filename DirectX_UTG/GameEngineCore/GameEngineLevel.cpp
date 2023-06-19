@@ -36,6 +36,21 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
+	//bool Check = false;
+	//for (std::pair<const int, std::shared_ptr<GameEngineCamera>>& Cam : Cameras)
+	//{
+	//	if (true == Cam.second->IsFreeCamera())
+	//	{
+	//		Cam.second->Update(_DeltaTime);
+	//		Check = true;
+	//	}
+	//}
+
+	//if (true == Check)
+	//{
+	//	return;
+	//}
+
 	if (true == MainCamera->IsFreeCamera())
 	{
 		MainCamera->Update(_DeltaTime);
@@ -327,6 +342,7 @@ void GameEngineLevel::ActorRelease()
 			for (; ActorStart != ActorEnd; )
 			{
 				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
+
 				RelaseActor->AllDestroy();
 
 				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
@@ -453,7 +469,6 @@ void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 void GameEngineLevel::AllActorDestroy()
 {
 	DestroyCamera();
-
 	{
 		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
@@ -487,3 +502,4 @@ void GameEngineLevel::DestroyCamera()
 	}
 	Cameras.clear();
 }
+

@@ -411,13 +411,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
       <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
       <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
       <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
     </CopyFileToFolders>
   </ItemGroup>
