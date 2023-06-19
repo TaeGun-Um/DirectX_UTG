@@ -28,6 +28,7 @@ enum class CollisionOrder
 	Spread,
 	SpreadEX,
 	Monster,			
+	MonsterHitBox,
 	MonsterAttack,
 	NPC,
 	ElderKettle,

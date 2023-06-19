@@ -240,14 +240,14 @@
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
     </ClInclude>
-    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
-      <Filter>ThirdParty\Fw1Font\Header</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineFontRenderer.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineFont.h">
       <Filter>Resources\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -411,13 +411,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
       <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
       <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="..\..\..\AR45\DirectX\DirectX45\GameEngineCore\ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
       <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
     </CopyFileToFolders>
   </ItemGroup>

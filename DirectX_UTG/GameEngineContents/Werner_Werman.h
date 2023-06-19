@@ -72,6 +72,7 @@ enum class WheelState
 // Ό³Έν :
 class Werner_Werman : public GameEngineActor
 {
+	friend class Katzenwagen;
 public:
 	static Werner_Werman* WernerWermanPtr;
 
