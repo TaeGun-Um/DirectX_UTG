@@ -239,16 +239,16 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	}
 
 	/// Test
-	{
-		Directbool = true;
+	//{
+	//	Directbool = true;
 
-		Phase2PositionSetting = 0;
-		Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
-		GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+	//	Phase2PositionSetting = 0;
+	//	Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
+	//	GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
 
-		ChangeState(MouseState::Explosion_Intro);
-		return;
-	}
+	//	ChangeState(MouseState::Explosion_Intro);
+	//	return;
+	//}
 
 	if (true == IsDash)
 	{
@@ -655,6 +655,8 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 		WeaponType = false;
 		IsShake = false;
 
+		CreateStick();
+
 		ChangeState(MouseState::Idle_Phase2);
 		return;
 	}
@@ -694,6 +696,52 @@ void Werner_Werman::Idle_Phase2Update(float _DeltaTime)
 			Phase2InitCorrection = true;
 			Phase2Parent->GetTransform()->SetLocalPosition(Phase2IdleDownPosition);
 		}
+	}
+
+	if (HP <= 450.0f)
+	{
+		Phase2End = true;
+
+		float4 ParentCurPos = Phase2Parent->GetTransform()->GetLocalPosition();
+		float4 ActorCurPos = GetTransform()->GetLocalPosition();
+		bool YEnd = false;
+		bool XEnd = false;
+		
+		if (Phase2IdleDownPosition.y + 10.0f < ParentCurPos.y)
+		{
+			float MoveDis = 500.0f * _DeltaTime;
+			Phase2Parent->GetTransform()->AddLocalPosition({ 0, -MoveDis });
+		}
+		else if (Phase2IdleDownPosition.y + 10.0f >= ParentCurPos.y)
+		{
+			Phase2Parent->GetTransform()->SetLocalPosition({ Phase2IdleDownPosition.x , Phase2IdleDownPosition.y + 10.0f });
+			YEnd = true;
+		}
+
+		if (Phase2IdleRightMovePosition.x > ActorCurPos.x)
+		{
+			float MoveDis = 200.0f * _DeltaTime;
+			GetTransform()->AddLocalPosition({ MoveDis , 0 });
+			Phase2MoveDistance = -MoveDis;
+		}
+		else if (Phase2IdleRightMovePosition.x <= ActorCurPos.x)
+		{
+			GetTransform()->SetLocalPosition(Phase2IdleRightMovePosition);
+			Phase2MoveDistance = 0.0f;
+			XEnd = true;
+		}
+
+		if (true == YEnd && true == XEnd)
+		{
+			MouseTransitionEndLoop = true;
+		}
+
+		PlatformCollisionCheck(-Phase2MoveDistance);
+		UpdateState_Phase2(_DeltaTime);
+		UpdateState_Scissor(_DeltaTime);
+		UpdateState_Wheel(_DeltaTime);
+
+		return;
 	}
 
 	if (false == IsMoveState)

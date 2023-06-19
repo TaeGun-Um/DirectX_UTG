@@ -147,6 +147,11 @@ void Flamethrower::IntroStart()
 }
 void Flamethrower::IntroUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->GetPhase2End())
+	{
+		IsEnd = true;
+	}
+
 	DelayTime += _DeltaTime;
 
 	if (1.0f >= DelayTime)
@@ -198,6 +203,13 @@ void Flamethrower::FireStart()
 }
 void Flamethrower::FireUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->GetPhase2End())
+	{
+		IsEnd = true;
+		ChangeState(FireState::Outro);
+		return;
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(FireState::FireLoop);
@@ -216,6 +228,13 @@ void Flamethrower::FireLoopStart()
 }
 void Flamethrower::FireLoopUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->GetPhase2End())
+	{
+		IsEnd = true;
+		ChangeState(FireState::Outro);
+		return;
+	}
+
 	FireLoopTime += _DeltaTime;
 
 	if (1.0f <= FireLoopTime)

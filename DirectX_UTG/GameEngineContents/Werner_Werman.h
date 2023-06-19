@@ -48,6 +48,7 @@ enum class Phase2State
 	TransC,
 	TransD,
 	Trans_LoopD,
+	Trans_EndLoop,
 };
 
 enum class ScissorState
@@ -121,6 +122,12 @@ public:
 		IsFlameEnd = true;
 	}
 
+	bool GetPhase2End()
+	{
+		return Phase2End;
+	}
+
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -146,6 +153,21 @@ private:
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
 
+	std::shared_ptr<class Stick> StickObject0 = nullptr;
+	std::shared_ptr<class Stick> StickObject1 = nullptr;
+	std::shared_ptr<class Stick> StickObject2 = nullptr;
+	std::shared_ptr<class Stick> StickObject3 = nullptr;
+	std::shared_ptr<class Stick> StickObject4 = nullptr;
+	std::shared_ptr<class Stick> StickObject5 = nullptr;
+	std::shared_ptr<class Stick> StickObject6 = nullptr;
+	std::shared_ptr<class Stick> StickObject7 = nullptr;
+	std::shared_ptr<class Stick> StickObject8 = nullptr;
+	std::shared_ptr<class Stick> StickObject9 = nullptr;
+	std::shared_ptr<class Stick> StickObject10 = nullptr;
+	std::shared_ptr<class Stick> StickObject11 = nullptr;
+
+	void StiecActivateUp(bool _Is);
+	void StiecActivateDown(bool _Is);
 	void ActorInitSetting();
 	void DirectCheck();
 	void CollisionCheck();
@@ -157,6 +179,7 @@ private:
 	void CreateSpringObject();
 	void CreateExplosionSFX();
 	void CreateFlamethrower();
+	void CreateStick();
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;
@@ -222,6 +245,8 @@ private:
 	bool IsMoveState = false;
 	bool IsPhase2UpPosition = false;
 	bool IsPhase2DownPosition = false;
+	bool Phase2End = false;
+	bool MouseTransitionEndLoop = false;
 
 	float DelayTime = 0.0f;
 	float MoveTime = 0.0f;
@@ -368,6 +393,10 @@ private:
 	void Trans_LoopDStart();
 	void Trans_LoopDUpdate(float _DeltaTime);
 	void Trans_LoopDEnd();
+
+	void Trans_EndLoopStart();
+	void Trans_EndLoopUpdate(float _DeltaTime);
+	void Trans_EndLoopEnd();
 
 	void ChangeState_Scissor(ScissorState _StateValue);
 	void UpdateState_Scissor(float _DeltaTime);

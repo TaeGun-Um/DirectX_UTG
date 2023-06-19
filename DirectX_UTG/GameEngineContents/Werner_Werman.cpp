@@ -16,6 +16,7 @@
 #include "SpringObject.h"
 #include "CanExplosion_SFX.h"
 #include "Flamethrower.h"
+#include "Stick.h"
 
 Werner_Werman* Werner_Werman::WernerWermanPtr = nullptr;
 
@@ -109,6 +110,150 @@ void Werner_Werman::HitBlink(float _DeltaTime)
 		CanBackRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 		MouseRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 		WeaponRender->ColorOptionValue.MulColor = OriginMulColor;
+	}
+}
+
+void Werner_Werman::StiecActivateUp(bool _Is)
+{
+	if (false == _Is)
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+		if (0 == RandC)
+		{
+			if (true == StickObject0->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject0->StartAction();
+		}
+		else if (1 == RandC)
+		{
+			if (true == StickObject1->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject1->StartAction();
+		}
+		else if (2 == RandC)
+		{
+			if (true == StickObject2->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject2->StartAction();
+		}
+	}
+
+	int RandN = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandN)
+	{
+		if (true == StickObject9->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject9->StartAction();
+	}
+	else if (1 == RandN)
+	{
+		if (true == StickObject10->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject10->StartAction();
+	}
+	else if (2 == RandN)
+	{
+		if (true == StickObject11->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject11->StartAction();
+	}
+}
+
+void Werner_Werman::StiecActivateDown(bool _Is)
+{
+	if (false == _Is)
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+		if (0 == RandC)
+		{
+			if (true == StickObject3->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject3->StartAction();
+		}
+		else if (1 == RandC)
+		{
+			if (true == StickObject4->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject4->StartAction();
+		}
+		else if (2 == RandC)
+		{
+			if (true == StickObject5->GetIsAction())
+			{
+				StiecActivateUp(false);
+				return;
+			}
+
+			StickObject5->StartAction();
+		}
+	}
+
+	int RandN = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandN)
+	{
+		if (true == StickObject6->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject6->StartAction();
+	}
+	else if (1 == RandN)
+	{
+		if (true == StickObject7->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject7->StartAction();
+	}
+	else if (2 == RandN)
+	{
+		if (true == StickObject8->GetIsAction())
+		{
+			StiecActivateUp(true);
+			return;
+		}
+
+		StickObject8->StartAction();
 	}
 }
 
@@ -433,6 +578,67 @@ void Werner_Werman::CreateFlamethrower()
 	FlamethrowerObject1->SetDirectionNegative();
 }
 
+void Werner_Werman::CreateStick()
+{
+	// Left
+	StickObject0 = GetLevel()->CreateActor<Stick>();
+	StickObject1 = GetLevel()->CreateActor<Stick>();
+	StickObject2 = GetLevel()->CreateActor<Stick>();
+	StickObject3 = GetLevel()->CreateActor<Stick>();
+	StickObject4 = GetLevel()->CreateActor<Stick>();
+	StickObject5 = GetLevel()->CreateActor<Stick>();
+
+	// Right
+	StickObject6 = GetLevel()->CreateActor<Stick>();
+	StickObject7 = GetLevel()->CreateActor<Stick>();
+	StickObject8 = GetLevel()->CreateActor<Stick>();
+	StickObject9 = GetLevel()->CreateActor<Stick>();
+	StickObject10 = GetLevel()->CreateActor<Stick>();
+	StickObject11 = GetLevel()->CreateActor<Stick>();
+
+	float4 StickObjectPosition0 = float4{ -350, 690, -20 };
+	float4 StickObjectPosition1 = float4{ -350, 570, -20 };
+	float4 StickObjectPosition2 = float4{ -350, 450, -20 };
+	float4 StickObjectPosition3 = float4{ -350, 330, -20 };
+	float4 StickObjectPosition4 = float4{ -350, 210, -20 };
+	float4 StickObjectPosition5 = float4{ -350, 90, -20 };
+
+	float4 StickObjectPosition6 = float4{ 1630, 690, -20 };
+	float4 StickObjectPosition7 = float4{ 1630, 570, -20 };
+	float4 StickObjectPosition8 = float4{ 1630, 450, -20 };
+	float4 StickObjectPosition9 = float4{ 1630, 330, -20 };
+	float4 StickObjectPosition10 = float4{ 1630, 210, -20 };
+	float4 StickObjectPosition11 = float4{ 1630, 90, -20 };
+
+	StickObject0->SetStartPosition(StickObjectPosition0);
+	StickObject1->SetStartPosition(StickObjectPosition1);
+	StickObject2->SetStartPosition(StickObjectPosition2);
+	StickObject3->SetStartPosition(StickObjectPosition3);
+	StickObject4->SetStartPosition(StickObjectPosition4);
+	StickObject5->SetStartPosition(StickObjectPosition5);
+
+	StickObject0->SelectRenderType(RenderType::BottleA, true);
+	StickObject1->SelectRenderType(RenderType::BottleD, true);
+	StickObject2->SelectRenderType(RenderType::BottleE, true);
+	StickObject3->SelectRenderType(RenderType::BottleA, true);
+	StickObject4->SelectRenderType(RenderType::BottleF, true);
+	StickObject5->SelectRenderType(RenderType::BottleB, true);
+
+	StickObject6->SetStartPosition(StickObjectPosition6);
+	StickObject7->SetStartPosition(StickObjectPosition7);
+	StickObject8->SetStartPosition(StickObjectPosition8);
+	StickObject9->SetStartPosition(StickObjectPosition9);
+	StickObject10->SetStartPosition(StickObjectPosition10);
+	StickObject11->SetStartPosition(StickObjectPosition11);
+
+	StickObject6->SelectRenderType(RenderType::BottleF, false);
+	StickObject7->SelectRenderType(RenderType::BottleA, false);
+	StickObject8->SelectRenderType(RenderType::BottleB, false);
+	StickObject9->SelectRenderType(RenderType::BottleC, false);
+	StickObject10->SelectRenderType(RenderType::BottleA, false);
+	StickObject11->SelectRenderType(RenderType::BottleD, false);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -649,6 +855,7 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionC_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionD").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_TransitionD_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Mouse_Transition_EndLoop").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Can_Tin_Up"))
@@ -710,6 +917,41 @@ void Werner_Werman::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire_Outro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Flamethrower_Fire").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Stick_A"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+		NewDir.Move("Sidsticks_Stick");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Stick_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Stick_B").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Stick_C").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Bottlecap_A"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase2");
+		NewDir.Move("Sidsticks_Bottlecap");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_B").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_C").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_D").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_E").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_F").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("Can_Idle_Up_001.png"))
@@ -937,6 +1179,7 @@ void Werner_Werman::ActorInitSetting()
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionC_Loop", .SpriteName = "Mouse_TransitionC_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD", .SpriteName = "Mouse_TransitionD", .FrameInter = 0.035f, .Loop = false, .ScaleToTexture = true });
 		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_TransitionD_Loop", .SpriteName = "Mouse_TransitionD_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		MouseRenderPtr->CreateAnimation({ .AnimationName = "Mouse_Transition_EndLoop", .SpriteName = "Mouse_Transition_EndLoop", .FrameInter = 0.035f, .Loop = true, .ScaleToTexture = true });
 		MouseRenderPtr->GetTransform()->AddLocalPosition({ 0, 250 });
 		MouseRenderPtr->ChangeAnimation("Mouse_Intro");
 	}

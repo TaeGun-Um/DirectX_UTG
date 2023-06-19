@@ -407,6 +407,9 @@
     <ClInclude Include="Flamethrower.h">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Stick.h">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -721,6 +724,9 @@
     </ClCompile>
     <ClCompile Include="Wheel_FSM.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Stick.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
