@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "Player.h"
 #include "Mouse_Map.h"
 
 void Katzenwagen::ChangeState_AttackHand(AttackHandState _StateValue)
@@ -74,64 +75,60 @@ void Katzenwagen::AttackHand_IntroStart()
 	if (false == Directbool)
 	{
 		AttackHandRenderPtr->GetTransform()->SetLocalPositiveScaleX();
-		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ -600, -90 });
+		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ -800, -90 });
 	}
 	else
 	{
 		AttackHandRenderPtr->GetTransform()->SetLocalNegativeScaleX();
-		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ 600, -90 });
+		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ 800, -90 });
 	}
 
-	AttackHandRenderPtr->On();
 	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Intro");
+	InitHandPosition = AttackHandRenderPtr->GetTransform()->GetLocalPosition();
+
+	AttackHandRenderPtr->SetAnimationStartEvent("Cat_Claw_Hand_Loop", 3, std::bind(&Katzenwagen::HandAttackCountFunction, this));
+	AttackHandRenderPtr->SetAnimationStartEvent("Cat_Claw_Hand_Intro", 3, std::bind(&Katzenwagen::HandAttackShake, this));
+
+	HandIntroDelayTime = 0.0f;
+	HandAttackCount = 0;
+	HandSpeed = 700.0f;
 }
 void Katzenwagen::AttackHand_IntroUpdate(float _DeltaTime)
 {
+	HandIntroDelayTime += _DeltaTime;
+
+	if (0.35f >= HandIntroDelayTime)
+	{
+		return;
+	}
+	else
+	{
+		AttackCollisionPtr->On();
+		AttackHandRenderPtr->On();
+	}
+
 	if (AttackHandRenderPtr->IsAnimationEnd())
 	{
-		ChangeState_AttackHand(AttackHandState::Loop);
+		ChangeState_AttackHand(AttackHandState::Hit);
 		return;
+	}
+
+	float MoveDis = HandSpeed * _DeltaTime;
+
+	if (false == Directbool)
+	{
+		AttackHandRenderPtr->GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		AttackCollisionPtr->GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	else
+	{
+		AttackHandRenderPtr->GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		AttackCollisionPtr->GetTransform()->AddLocalPosition({ -MoveDis, 0 });
 	}
 }
 void Katzenwagen::AttackHand_IntroEnd()
 {
 
-}
-
-void Katzenwagen::AttackHand_LoopStart()
-{
-	CurHandPosition = AttackHandRenderPtr->GetTransform()->GetLocalPosition();
-
-	if (false == Directbool)
-	{
-		HandLerpPosition = CurHandPosition + float4{ 600, 0 };
-	}
-	else
-	{
-		HandLerpPosition = CurHandPosition + float4{ -600, 0 };
-	}
-
-	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Loop");
-	AttackHandRenderPtr->SetAnimationStartEvent("Cat_Claw_Hand_Loop", 3, std::bind(&Katzenwagen::HandAttackCountFunction, this));
-	HandAttackCount = 0;
-}
-void Katzenwagen::AttackHand_LoopUpdate(float _DeltaTime)
-{
-	HandAttactTime += _DeltaTime;
-
-	float4 NewPos = float4::LerpClamp(CurHandPosition, HandLerpPosition, HandAttactTime);
-
-	AttackHandRenderPtr->GetTransform()->SetLocalPosition(NewPos);
-
-	if (2 == HandAttackCount)
-	{
-		ChangeState_AttackHand(AttackHandState::Hit);
-		return;
-	}
-}
-void Katzenwagen::AttackHand_LoopEnd()
-{
-	HandAttactTime = 0.0f;
 }
 
 void Katzenwagen::AttackHand_HitStart()
@@ -142,9 +139,20 @@ void Katzenwagen::AttackHand_HitUpdate(float _DeltaTime)
 {
 	HandAttactTime += _DeltaTime;
 
-	if (0.1f <= HandAttactTime)
+	if (0.15f <= HandAttactTime)
 	{
 		ChangeState_AttackHand(AttackHandState::Outro);
+		return;
+	}
+
+	if (2 == HandAttackCount)
+	{
+		return;
+	}
+
+	if (0.03f <= HandAttactTime)
+	{
+		ChangeState_AttackHand(AttackHandState::Loop);
 		return;
 	}
 }
@@ -153,22 +161,66 @@ void Katzenwagen::AttackHand_HitEnd()
 	HandAttactTime = 0.0f;
 }
 
+void Katzenwagen::AttackHand_LoopStart()
+{
+	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Loop");
+}
+void Katzenwagen::AttackHand_LoopUpdate(float _DeltaTime)
+{
+	float MoveDis = HandSpeed * _DeltaTime;
+
+	if (false == Directbool)
+	{
+		AttackHandRenderPtr->GetTransform()->AddLocalPosition({ MoveDis, 0 });
+		AttackCollisionPtr->GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	else
+	{
+		AttackHandRenderPtr->GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+		AttackCollisionPtr->GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	if (true == AttackHandRenderPtr->IsAnimationEnd())
+	{
+		ChangeState_AttackHand(AttackHandState::Hit);
+		return;
+	}
+}
+void Katzenwagen::AttackHand_LoopEnd()
+{
+}
+
 void Katzenwagen::AttackHand_OutroStart()
 {
+	CurHandPosition = AttackHandRenderPtr->GetTransform()->GetLocalPosition();
+
+	if (false == Directbool)
+	{
+		InitHandPosition = InitHandPosition + float4{ -150.0f , 0 };
+	}
+	else
+	{
+		InitHandPosition = InitHandPosition + float4{ 150.0f , 0 };
+	}
+
 	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Outro");
+	
+	Player::MainPlayer->StartCameraShaking(12);
 }
 void Katzenwagen::AttackHand_OutroUpdate(float _DeltaTime)
 {
 	HandAttactTime += _DeltaTime;
 
-	float4 NewPos = float4::LerpClamp(HandLerpPosition, CurHandPosition, HandAttactTime);
+	float4 NewPos = float4::LerpClamp(CurHandPosition, InitHandPosition, HandAttactTime * 0.8f);
 
 	AttackHandRenderPtr->GetTransform()->SetLocalPosition(NewPos);
+	AttackCollisionPtr->GetTransform()->SetLocalPosition(NewPos);
 
-	if (CurHandPosition == NewPos)
+	if (InitHandPosition == NewPos)
 	{
 		IsClawAttackEnd = true;
 		AttackHandRenderPtr->Off();
+		AttackCollisionPtr->Off();
 	}
 }
 void Katzenwagen::AttackHand_OutroEnd()
@@ -179,4 +231,10 @@ void Katzenwagen::AttackHand_OutroEnd()
 void Katzenwagen::HandAttackCountFunction()
 {
 	HandAttackCount += 1;
+	Player::MainPlayer->StartCameraShaking(8);
+}
+
+void Katzenwagen::HandAttackShake()
+{
+	Player::MainPlayer->StartCameraShaking(8);
 }

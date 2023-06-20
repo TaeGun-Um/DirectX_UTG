@@ -548,6 +548,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="WoodPiece.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="You_Died.h">
       <SubType>
       </SubType>
@@ -954,6 +958,10 @@
     </ClCompile>
     <ClCompile Include="Werner_Werman_FSM.cpp" />
     <ClCompile Include="Wheel_FSM.cpp" />
+    <ClCompile Include="WoodPiece.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="You_Died.cpp">
       <SubType>
       </SubType>

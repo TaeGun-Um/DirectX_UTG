@@ -576,6 +576,7 @@ void Werner_Werman::Explosion_IntroEnd()
 void Werner_Werman::Explosion_LoopStart()
 {
 	CanRenderPtr->ChangeAnimation("Can_Explosion_Loop");
+	CreateStick();
 }
 void Werner_Werman::Explosion_LoopUpdate(float _DeltaTime)
 {
@@ -660,8 +661,6 @@ void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 		MoveTime = 0.0f;
 		WeaponType = false;
 		IsShake = false;
-
-		CreateStick();
 
 		ChangeState(MouseState::Idle_Phase2);
 		return;

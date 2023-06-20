@@ -56,11 +56,21 @@ void Katzenwagen::Update(float _DeltaTime)
 			BodyCollisionRenderPtr->Off();
 			EXCollisionRenderPtr->Off();
 		}
+
+		if (true == AttackCollisionPtr->IsUpdate())
+		{
+			AttackCollisionRenderPtr->On();
+		}
+		else
+		{
+			AttackCollisionRenderPtr->Off();
+		}
 	}
 	else
 	{
 		BodyCollisionRenderPtr->Off();
 		EXCollisionRenderPtr->Off();
+		AttackCollisionRenderPtr->Off();
 	}
 
 	DirectCheck();
@@ -114,6 +124,13 @@ void Katzenwagen::CollisionSetting()
 	{
 		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
 		EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	}
+
+	if (true == AttackCollisionPtr->IsUpdate())
+	{
+		AttackCollisionPtr->GetTransform()->SetLocalPosition({ AttackHandRenderPtr->GetTransform()->GetLocalPosition().x, -300, -50 });
+		AttackCollisionRenderPtr->GetTransform()->SetLocalScale(AttackCollisionPtr->GetTransform()->GetLocalScale());
+		AttackCollisionRenderPtr->GetTransform()->SetLocalPosition(AttackCollisionPtr->GetTransform()->GetLocalPosition());
 	}
 }
 
@@ -368,7 +385,7 @@ void Katzenwagen::ActorInitSetting()
 	{
 		AttackHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Intro", .SpriteName = "Cat_Claw_Hand_Intro", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = false });
-		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Loop", .SpriteName = "Cat_Claw_Hand_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = false });
+		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Loop", .SpriteName = "Cat_Claw_Hand_Loop", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = false });
 		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Hit", .SpriteName = "Cat_Claw_Hand_Hit", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = false });
 		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Outro", .SpriteName = "Cat_Claw_Hand_Outro", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = false });
 		AttackHandRenderPtr->GetTransform()->SetLocalScale({ 1000, 710, 1 });
@@ -409,8 +426,7 @@ void Katzenwagen::ActorInitSetting()
 	{
 		AttackCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		AttackCollisionPtr->SetColType(ColType::AABBBOX2D);
-		AttackCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
-		AttackCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -50 });
+		AttackCollisionPtr->GetTransform()->SetLocalScale({ 550, 150, 1 });
 		AttackCollisionPtr->Off();
 	}
 

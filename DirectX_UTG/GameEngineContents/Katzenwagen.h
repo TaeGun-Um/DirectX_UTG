@@ -86,8 +86,8 @@ private:
 	float4 CurHeadPosition = float4::Zero;
 	float4 LerpPosition = float4::Zero;
 
+	float4 InitHandPosition = float4::Zero;
 	float4 CurHandPosition = float4::Zero;
-	float4 HandLerpPosition = float4::Zero;
 
 	bool Directbool = false;
 	bool IsLeft = false;
@@ -96,6 +96,8 @@ private:
 
 	float AttactDelayTime = 0.0f;
 	float HandAttactTime = 0.0f;
+	float HandIntroDelayTime = 0.0f;
+	float HandSpeed = 0.0f;
 
 	int InitSetting = 1;
 	int HandAttackCount = 0;
@@ -106,6 +108,7 @@ private:
 	void IntroMouseOff();
 	void IntroHeadPositionSetting();
 	void HandAttackCountFunction();
+	void HandAttackShake();
 
 	KatzenwagenState StateValue = KatzenwagenState::Idle;
 	AttackHandState AttackHandStateValue = AttackHandState::Intro;
