@@ -21,6 +21,15 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 	case KatzenwagenState::Idle:
 		IdleStart();
 		break;
+	case KatzenwagenState::ArmAttack_Intro:
+		ArmAttack_IntroStart();
+		break;
+	case KatzenwagenState::ArmAttack_Loop:
+		ArmAttack_LoopStart();
+		break;
+	case KatzenwagenState::ArmAttack_Outro:
+		ArmAttack_OutroStart();
+		break;
 	default:
 		break;
 	}
@@ -32,6 +41,15 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 		break;
 	case KatzenwagenState::Idle:
 		IdleEnd();
+		break;
+	case KatzenwagenState::ArmAttack_Intro:
+		ArmAttack_IntroEnd();
+		break;
+	case KatzenwagenState::ArmAttack_Loop:
+		ArmAttack_LoopEnd();
+		break;
+	case KatzenwagenState::ArmAttack_Outro:
+		ArmAttack_OutroEnd();
 		break;
 	default:
 		break;
@@ -47,6 +65,15 @@ void Katzenwagen::UpdateState(float _DeltaTime)
 		break;
 	case KatzenwagenState::Idle:
 		IdleUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::ArmAttack_Intro:
+		ArmAttack_IntroUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::ArmAttack_Loop:
+		ArmAttack_LoopUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::ArmAttack_Outro:
+		ArmAttack_OutroUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -90,6 +117,7 @@ void Katzenwagen::IdleStart()
 
 	HeadRenderPtr->ChangeAnimation("Cat_Idle_Head_Left");
 	HeadRenderPtr->GetTransform()->SetParent(HeadParent->GetTransform());
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, -20, -10 });
 
 	EXCollisionPtr->On();
 	BodyCollisionPtr->On();
@@ -97,6 +125,8 @@ void Katzenwagen::IdleStart()
 }
 void Katzenwagen::IdleUpdate(float _DeltaTime)
 {
+	bool IsShakeEnd = false;
+
 	if (true == HeadRenderPtr->FindAnimation("Cat_Idle_Head_Left")->IsEnd())
 	{
 		Directbool = true;
@@ -109,18 +139,132 @@ void Katzenwagen::IdleUpdate(float _DeltaTime)
 		HeadRenderPtr->ChangeAnimation("Cat_Idle_Head_Left", false);
 	}
 
-	if (false == Directbool)
+	AttactDelayTime += _DeltaTime;
+
+	bool IsAttackStart = false;
+
+	if (9 == HeadRenderPtr->GetCurrentFrame())
+	{
+		IsAttackStart = true;
+	}
+	else
+	{
+		IsAttackStart = false;
+	}
+
+	if (true == IsAttackStart && 1.f <= AttactDelayTime)
+	{
+		Directbool = !Directbool;
+
+		if (true == IsLeft)
+		{
+			IsLeft = false;
+			AttactDelayTime -= 0.5f;
+			return;
+		}
+
+		ChangeState(KatzenwagenState::ArmAttack_Intro);
+		return;
+	}
+
+	if (false == Directbool) // 왼쪽 고개
 	{
 		HeadParent->GetTransform()->SetLocalPositiveScaleX();
 	}
-	else
+	else                     // 오른쪽 고개
 	{
 		HeadParent->GetTransform()->SetLocalNegativeScaleX();
 	}
 }
 void Katzenwagen::IdleEnd()
 {
+	AttactDelayTime = 0.0f;
+}
 
+void Katzenwagen::ArmAttack_IntroStart()
+{
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ -125, -20, 1 });
+
+	if (false == Directbool)
+	{
+		IsLeft = true;
+		HeadParent->GetTransform()->SetLocalPositiveScaleX();
+		LeftHandRenderPtr->Off();
+	}
+	else
+	{
+		IsLeft = false;
+		HeadParent->GetTransform()->SetLocalNegativeScaleX();
+		RightHandRenderPtr->Off();
+	}
+
+	HeadRenderPtr->ChangeAnimation("Cat_Claw_Head_Intro");
+}
+void Katzenwagen::ArmAttack_IntroUpdate(float _DeltaTime)
+{
+	if (true == HeadRenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KatzenwagenState::ArmAttack_Loop);
+		return;
+	}
+}
+void Katzenwagen::ArmAttack_IntroEnd()
+{
+
+}
+
+void Katzenwagen::ArmAttack_LoopStart()
+{
+	CurHeadPosition = HeadRenderPtr->GetTransform()->GetLocalPosition();
+	LerpPosition = CurHeadPosition + float4{ -55, -20 };
+
+	HeadRenderPtr->ChangeAnimation("Cat_Claw_Head_Loop");
+	ClawCreateCount = 1;
+	IsClawAttackEnd = false;
+}
+void Katzenwagen::ArmAttack_LoopUpdate(float _DeltaTime)
+{
+	AttactDelayTime += _DeltaTime;
+
+	float4 NewPos = float4::LerpClamp(CurHeadPosition, LerpPosition, AttactDelayTime);
+
+	HeadRenderPtr->GetTransform()->SetLocalPosition(NewPos);
+
+	if (1 == ClawCreateCount)
+	{
+		ClawCreateCount = 0;
+		ChangeState_AttackHand(AttackHandState::Intro);
+	}
+
+	UpdateState_AttackHand(_DeltaTime);
+
+	if (true == HeadRenderPtr->IsAnimationEnd() && 2.0f <= AttactDelayTime && LerpPosition == NewPos && true == IsClawAttackEnd)
+	{
+		ChangeState(KatzenwagenState::ArmAttack_Outro);
+		return;
+	}
+}
+void Katzenwagen::ArmAttack_LoopEnd()
+{
+	AttactDelayTime = 0.0f;
+}
+
+void Katzenwagen::ArmAttack_OutroStart()
+{
+	HeadRenderPtr->ChangeAnimation("Cat_Claw_Head_Outro");
+}
+void Katzenwagen::ArmAttack_OutroUpdate(float _DeltaTime)
+{
+	if (true == HeadRenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KatzenwagenState::Idle);
+		return;
+	}
+}
+void Katzenwagen::ArmAttack_OutroEnd()
+{
+	LeftHandRenderPtr->On();
+	RightHandRenderPtr->On();
 }
 
 void Katzenwagen::IntroHeadPositionSetting()

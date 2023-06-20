@@ -737,5 +737,8 @@
     <ClCompile Include="Katzenwagen_FSM.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="AttackHand_FSMcpp.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -112,16 +112,8 @@ void Katzenwagen::CollisionSetting()
 {
 	if (true == BodyCollisionPtr->IsUpdate())
 	{
-		BodyCollisionRenderPtr->On();
-		EXCollisionRenderPtr->On();
-
 		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
 		EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
-	}
-	else
-	{
-		BodyCollisionRenderPtr->Off();
-		EXCollisionRenderPtr->Off();
 	}
 }
 
@@ -242,7 +234,7 @@ void Katzenwagen::IntroMouseOff()
 	Werner_Werman::WernerWermanPtr->WheelRenderPtr->Off();
 	Werner_Werman::WernerWermanPtr->FlamecannonRenderPtr_Right->Off();
 	Werner_Werman::WernerWermanPtr->FlamecannonRenderPtr_Left->Off();
-	Werner_Werman::WernerWermanPtr->Phase2Parent->Off();
+	//Werner_Werman::WernerWermanPtr->Phase2Parent->Off();
 
 	Werner_Werman::WernerWermanPtr->BodyCollisionPtr->Off();
 	Werner_Werman::WernerWermanPtr->EXCollisionPtr->Off();
@@ -277,10 +269,19 @@ void Katzenwagen::ActorInitSetting()
 		// Head
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Intro_Head").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_Head").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Outro").GetFullPath());
 
 		// Arm
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_LeftHand").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_RightHand").GetFullPath());
+		
+		// AttackArm
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Hit").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("UpTexture.png"))
@@ -346,6 +347,9 @@ void Katzenwagen::ActorInitSetting()
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Left", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Right", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Intro", .SpriteName = "Cat_Claw_Head_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Loop", .SpriteName = "Cat_Claw_Head_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Outro", .SpriteName = "Cat_Claw_Head_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
 		HeadRenderPtr->Off();
@@ -358,6 +362,18 @@ void Katzenwagen::ActorInitSetting()
 		BodyCollisionPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
 		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 10, -50 });
 		BodyCollisionPtr->Off();
+	}
+
+	if (nullptr == AttackHandRenderPtr)
+	{
+		AttackHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Intro", .SpriteName = "Cat_Claw_Hand_Intro", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = false });
+		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Loop", .SpriteName = "Cat_Claw_Hand_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = false });
+		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Hit", .SpriteName = "Cat_Claw_Hand_Hit", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = false });
+		AttackHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Hand_Outro", .SpriteName = "Cat_Claw_Hand_Outro", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = false });
+		AttackHandRenderPtr->GetTransform()->SetLocalScale({ 1000, 710, 1 });
+		AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Intro");
+		AttackHandRenderPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)

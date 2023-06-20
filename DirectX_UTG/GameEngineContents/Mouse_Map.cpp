@@ -130,6 +130,10 @@ void Mouse_Map::Update(float _DeltaTime)
 	{
 		Phase2PlatformRenderPtr->Off();
 	}
+	if (11 == Phase2PlatformRenderPtr->GetCurrentFrame() && true == IsEnd)
+	{
+		Phase2PlatformRenderPtr->GetTransform()->SetLocalPosition({ 0, 30, -50 });
+	}
 
 	if (true == Phase2PlatformRenderPtr->IsUpdate() && false == IsEnd)
 	{

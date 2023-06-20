@@ -558,6 +558,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="AttackHand_FSMcpp.cpp" />
     <ClCompile Include="Axeman.cpp">
       <SubType>
       </SubType>

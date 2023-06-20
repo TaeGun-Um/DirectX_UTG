@@ -444,6 +444,10 @@ void MouseLevel::LevelDebugOn()
 	{
 		MouseObject->DebugRenderOn();
 	}
+	if (nullptr != CatObject)
+	{
+		CatObject->DebugRenderOn();
+	}
 	if (nullptr != MapObject)
 	{
 		MapObject->DebugRenderOn();
@@ -458,6 +462,10 @@ void MouseLevel::LevelDebugOff()
 	if (nullptr != MouseObject)
 	{
 		MouseObject->DebugRenderOff();
+	}
+	if (nullptr != CatObject)
+	{
+		CatObject->DebugRenderOff();
 	}
 	if (nullptr != MapObject)
 	{
