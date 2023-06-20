@@ -49,6 +49,40 @@ public:
 	static const float4 White;
 	static const float4 Black;
 
+	static float4 GetSafeScaleReciprocal(const float4& _InScale, float _Tolerance)
+	{
+		float4 SafeReciprocalScale;
+
+		if (std::fabsf(_InScale.x) <= _Tolerance)
+		{
+			SafeReciprocalScale.x = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.x = 1 / _InScale.x;
+		}
+
+		if (std::fabsf(_InScale.y) <= _Tolerance)
+		{
+			SafeReciprocalScale.y = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.y = 1 / _InScale.y;
+		}
+
+		if (std::fabsf(_InScale.z) <= _Tolerance)
+		{
+			SafeReciprocalScale.z = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.z = 1 / _InScale.z;
+		}
+
+		return SafeReciprocalScale;
+	}
+
 	// Degree를 Radian으로 변환한 뒤 벡터 회전
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{
@@ -760,6 +794,13 @@ public:
 		Arr2D[3][1] = _Height * 0.5f + _Right;                   // 화면 높이 저란 + 화면 오른쪽 끝
 		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;      // 프로젝션 시 z 범위 (0 ~ 1)
 		Arr2D[3][3] = 1.0f;                                      // w = 1
+	}
+
+	void Compose(const float4& _Scale, const float4& _RotQuaternion, const float4& _Pos)
+	{
+		float4 _Rot = _RotQuaternion;
+		_Rot.QuaternionToEulerDeg();
+		*this = DirectX::XMMatrixAffineTransformation(_Scale.DirectVector, _Rot.DirectVector, _RotQuaternion.DirectVector, _Pos.DirectVector);
 	}
 
 	// SRT(변환 행렬) 분리

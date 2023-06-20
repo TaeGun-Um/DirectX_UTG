@@ -110,19 +110,19 @@ void Katzenwagen::HitBlink(float _DeltaTime)
 
 void Katzenwagen::CollisionSetting()
 {
-	//BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
-	//EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	if (true == BodyCollisionPtr->IsUpdate())
+	{
+		BodyCollisionRenderPtr->On();
+		EXCollisionRenderPtr->On();
 
-	//if (false == IsPhase2)
-	//{
-	//	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
-	//	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
-	//}
-	//else
-	//{
-	//	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(Phase2Parent->GetTransform()->GetLocalPosition() + BodyCollisionPtr->GetTransform()->GetLocalPosition());
-	//	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(Phase2Parent->GetTransform()->GetLocalPosition() + EXCollisionPtr->GetTransform()->GetLocalPosition());
-	//}
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+		EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	}
+	else
+	{
+		BodyCollisionRenderPtr->Off();
+		EXCollisionRenderPtr->Off();
+	}
 }
 
 void Katzenwagen::CollisionCheck()
@@ -204,11 +204,11 @@ void Katzenwagen::DirectCheck()
 {
 	//if (false == Directbool)
 	//{
-	//	GetTransform()->SetLocalPositiveScaleX();
+	//	HeadRenderPtr->GetTransform()->SetLocalPositiveScaleX();
 	//}
 	//else
 	//{
-	//	GetTransform()->SetLocalNegativeScaleX();
+	//	HeadRenderPtr->GetTransform()->SetLocalNegativeScaleX();
 	//}
 }
 
@@ -283,6 +283,19 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_RightHand").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("UpTexture.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("UpTexture.png").GetFullPath());
+	}
+
 	if (nullptr == TailHandRenderPtr)
 	{
 		//TailHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -318,11 +331,21 @@ void Katzenwagen::ActorInitSetting()
 		LeftHandRenderPtr->Off();
 	}
 
+	if (nullptr == BodyUpRenderPtr)
+	{
+		BodyUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BodyUpRenderPtr->SetTexture("UpTexture.png");
+		BodyUpRenderPtr->GetTransform()->SetLocalScale({ 350, 30, 1 });
+		BodyUpRenderPtr->GetTransform()->SetLocalPosition({ 10, 100, 5 });
+		BodyUpRenderPtr->Off();
+	}
+
 	if (nullptr == HeadRenderPtr)
 	{
 		HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Left", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Right", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
 		HeadRenderPtr->Off();
@@ -332,8 +355,8 @@ void Katzenwagen::ActorInitSetting()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterHitBox));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
-		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 10, -50 });
 		BodyCollisionPtr->Off();
 	}
 
@@ -351,8 +374,8 @@ void Katzenwagen::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterHitBox));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
-		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 350, 200, 1 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 10, -50 });
 		EXCollisionPtr->Off();
 	}
 
@@ -370,8 +393,8 @@ void Katzenwagen::ActorInitSetting()
 	{
 		AttackCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		AttackCollisionPtr->SetColType(ColType::AABBBOX2D);
-		AttackCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
-		AttackCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		AttackCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, 1 });
+		AttackCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0, -50 });
 		AttackCollisionPtr->Off();
 	}
 

@@ -31,7 +31,9 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> HeadRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> HeadParent = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> BodyUpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> RightHandRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> LeftHandRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> TailHandRenderPtr = nullptr;

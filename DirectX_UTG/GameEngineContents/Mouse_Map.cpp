@@ -71,7 +71,7 @@ void Mouse_Map::Start()
 	{
 		Phase2PlatformRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase2_Platform", .SpriteName = "Phase2_Platform", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase3_WallBrake", .SpriteName = "Phase3_WallBrake", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase3_WallBrake", .SpriteName = "Phase3_WallBrake", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		Phase2PlatformRenderPtr->ChangeAnimation("Phase2_Platform");
 		Phase2PlatformRenderPtr->GetTransform()->SetLocalPosition({ -2, 80 });
 		Phase2PlatformRenderPtr->Off();
@@ -124,6 +124,11 @@ void Mouse_Map::Update(float _DeltaTime)
 		IsPhase2 = false;
 		WallBGRenderPtr->SetScaleToTexture("Mouse_BackGround_Phase_2.png");
 		Phase2PlatformRenderPtr->On();
+	}
+
+	if (true == Phase2PlatformRenderPtr->IsAnimationEnd() && true == IsEnd)
+	{
+		Phase2PlatformRenderPtr->Off();
 	}
 
 	if (true == Phase2PlatformRenderPtr->IsUpdate() && false == IsEnd)

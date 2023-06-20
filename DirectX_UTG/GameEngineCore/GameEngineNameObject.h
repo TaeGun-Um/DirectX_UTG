@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-// 설명 : GEObject의 부모 클래스, Name과 관련된 기능 담당
+// 설명 :
 class GameEngineNameObject
 {
 public:
@@ -15,22 +15,26 @@ public:
 	GameEngineNameObject& operator=(const GameEngineNameObject& _Other) = delete;
 	GameEngineNameObject& operator=(GameEngineNameObject&& _Other) noexcept = delete;
 
-	// 상속한 클래스들의 Name을 지정
 	void SetName(const std::string_view& _Name)
 	{
 		Name = _Name;
 	}
 
-	// 상속한 클래스들의 Name을 리턴
 	std::string_view GetName()
 	{
 		return Name.c_str();
 	}
 
+	std::string GetNameToString()
+	{
+		return Name;
+	}
+
+
 protected:
 
 private:
-	std::string Name = "";  // 클래스들의 Name
+	std::string Name = "";
 
 };
 

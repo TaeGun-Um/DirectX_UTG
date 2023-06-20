@@ -9,7 +9,7 @@
 #include <GameEngineBase/GameEngineDebug.h>
 #include "GameEngineDevice.h"
 
-// 설명 : 템플릿 클래스, 상속받는 클래스는 <자신의 클래스명>을 붙여야 한다.
+// 설명 :
 template<typename ResourcesType>
 class GameEngineResource : public GameEngineNameObject
 {
@@ -26,37 +26,16 @@ public:
 	GameEngineResource& operator=(const GameEngineResource& _Other) = delete;
 	GameEngineResource& operator=(GameEngineResource&& _Other) noexcept = delete;
 
-	// 리소스를 상속받은 클래스의 Path를 설정
-	void SetPath(const std::string_view& _Value)
-	{
-		Path = _Value;
-	}
-
-	// 리소스를 상속받은 클래스의 Path 리턴(String_view)
 	std::string_view GetPath()
 	{
 		return Path.c_str();
 	}
 
-	// 리소스를 상속받은 클래스의 Path 리턴(String)
-	std::string GetNameToString()
+	void SetPath(const std::string_view& _Value)
 	{
-		return Name;
+		Path = _Value;
 	}
 
-	// 리소스를 상속받은 클래스의 Name을 설정
-	void SetName(const std::string_view& _Value)
-	{
-		Name = _Value;
-	}
-
-	// 리소스를 상속받은 클래스의 Name 리턴
-	std::string_view GetName()
-	{
-		return Name.c_str();
-	}
-
-	// NamedResources에서 Name을 통해 자료 검색(Find)
 	static std::shared_ptr<ResourcesType> Find(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
@@ -69,29 +48,17 @@ public:
 		return NamedResources[UpperName];
 	}
 
-	// 모든 리소스는 Setting()을 가지고 이를 통해 그래픽카드에게 영향을 주는 인터페이스로 만들 예정
-	// 상속한 클래스에게 Setting 함수를 설정하도록 함
 	virtual void Setting() {}
 
-	// 원하는 타이밍에 제거되도록 하기 위해 생성 후 Core에게 friend
+
 	static void ResourcesClear()
 	{
-		for (std::shared_ptr<ResourcesType> Type : UnNamedRes)
-		{
-			Type->IsUnLoad = true;
-		}
-
-		for (std::pair<std::string, std::shared_ptr<ResourcesType>> Type : NamedResources)
-		{
-			Type.second->IsUnLoad = true;
-		}
-
 		NamedResources.clear();
 		UnNamedRes.clear();
 	}
 
+
 protected:
-	// Name을 인자로 받지 않는 Create
 	static std::shared_ptr<ResourcesType> CreateUnNamed()
 	{
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
@@ -99,7 +66,6 @@ protected:
 		return NewRes;
 	}
 
-	// 리소스를 상속받은 클래스는 Create를 활용할 수 있다.
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
@@ -113,21 +79,22 @@ protected:
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
 		NewRes->SetName(UpperName);
 
+		// std::pair<key, value>
+		// NamedResources.insert(std::make_pair(UpperName, NewRes));
 		NamedResources.insert(std::map<std::string, std::shared_ptr<ResourcesType>>::value_type(UpperName, NewRes));
 		return NewRes;
 	}
 
-private:
-	std::string Path;  // 상속받은 클래스의 Path
-	std::string Name;  // 상속받은 클래스의 Name
-	bool IsUnLoad = false;
 
-	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources; // Create 시 map으로 insert된 리소스들
+private:
+	std::string Path;
+
+	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
+
 
 };
 
-// 템플릿 클래스는 예외적으로 헤더에서 초기화가 가능하다.
 template<typename ResourcesType>
 std::map<std::string, std::shared_ptr<ResourcesType>> GameEngineResource<ResourcesType>::NamedResources;
 
