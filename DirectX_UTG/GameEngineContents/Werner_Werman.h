@@ -182,7 +182,7 @@ private:
 	void CreateFlamethrower();
 	void CreateStick();
 
-	float HP = 450.0f;
+	float HP = 700.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;

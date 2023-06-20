@@ -54,37 +54,34 @@ void TransformData::LocalCalculation()
 
 void TransformData::WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
 {
-	float4 PScale, PRotation, PPosition;
-	_Parent.Decompose(PScale, PRotation, PPosition);
+	WorldMatrix = LocalWorldMatrix * _Parent;
 
-
-	if (true == AbsoluteScale)
+	if (true == AbsoluteScale || true == AbsoluteRotation || true == AbsolutePosition)
 	{
-		PScale = float4::One;
+		float4 WScale, WRotation, WPosition;
+		WorldMatrix.Decompose(WScale, WRotation, WPosition);
+
+		if (true == AbsoluteScale)
+		{
+			WScale = Scale;
+		}
+		if (true == AbsoluteRotation)
+		{
+			WRotation = Rotation.EulerDegToQuaternion();
+		}
+		if (true == AbsolutePosition)
+		{
+			WPosition = Position;
+		}
+
+		float4x4 MatScale, MatRot, MatPos;
+
+		MatScale.Scale(WScale);
+		MatRot = WRotation.QuaternionToRotationMatrix();
+		MatPos.Pos(WPosition);
+
+		WorldMatrix = MatScale * MatRot * MatPos;
 	}
-	if (true == AbsoluteRotation)
-	{
-		// 부모의 회전 
-		PRotation = float4::Zero;
-		PRotation.EulerDegToQuaternion();
-	}
-	if (true == AbsolutePosition)
-	{
-		PPosition = float4::Zero;
-	}
-
-	float4x4 MatScale, MatRot, MatPos;
-
-	//scale
-	MatScale.Scale(PScale);
-
-	//rot
-	MatRot = PRotation.QuaternionToRotationMatrix();
-
-	//pos
-	MatPos.Pos(PPosition);
-
-	WorldMatrix = LocalWorldMatrix * (MatScale * MatRot * MatPos);
 }
 
 void TransformData::SetViewAndProjection(const float4x4& _View, const float4x4& _Projection)
@@ -392,8 +389,7 @@ void GameEngineTransform::CalChild()
 {
 	for (GameEngineTransform* ChildTrans : Child)
 	{
-		ChildTrans->WorldCalculation();
-		ChildTrans->WorldDecompose();
+		ChildTrans->TransformUpdate();
 		ChildTrans->CalChild();
 	}
 }
