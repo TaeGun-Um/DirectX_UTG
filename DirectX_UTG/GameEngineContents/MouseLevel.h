@@ -61,6 +61,7 @@ private:
 	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class Werner_Werman> MouseObject = nullptr;
+	std::shared_ptr<class Katzenwagen> CatObject = nullptr;
 
 	std::shared_ptr<class TransformGUI> GUI = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;

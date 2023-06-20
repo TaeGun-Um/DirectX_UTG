@@ -15,6 +15,7 @@
 #include "CardUI.h"
 #include "HealthUI.h"
 #include "Werner_Werman.h"
+#include "Katzenwagen.h"
 
 #include "OverworldLevel.h"
 
@@ -185,6 +186,14 @@ void MouseLevel::LevelChangeStart()
 
 		MouseObject->GetTransform()->SetLocalPosition({ 1040 , 225, -1 });
 		MouseObject->SetInitPosition(MouseObject->GetTransform()->GetWorldPosition());
+		//MouseObject->SetInitReset();
+
+		if (nullptr == CatObject)
+		{
+			CatObject = CreateActor<Katzenwagen>();
+		}
+
+		CatObject->GetTransform()->SetLocalPosition({ 640 , 470, 10 });
 		//MouseObject->SetInitReset();
 	}
 	{

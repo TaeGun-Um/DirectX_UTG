@@ -12,6 +12,7 @@
 #include "Spread_EX.h"
 
 #include "Werner_Werman.h"
+#include "Mouse_Map.h"
 
 Katzenwagen* Katzenwagen::KatzenwagenPtr = nullptr;
 
@@ -32,6 +33,17 @@ void Katzenwagen::Start()
 
 void Katzenwagen::Update(float _DeltaTime)
 {
+	if (false == IsIntro)
+	{
+		return;
+	}
+	
+	if (true == IsIntro && 1 == InitSetting)
+	{
+		InitSetting = 0;
+		ChangeState(KatzenwagenState::Intro);
+	}
+
 	if (true == IsDebugRender)
 	{
 		if (true == BodyCollisionPtr->IsUpdate())
@@ -188,16 +200,58 @@ void Katzenwagen::CollisionCheck()
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Werner_Werman::DirectCheck()
+void Katzenwagen::DirectCheck()
 {
-	if (false == Directbool)
-	{
-		GetTransform()->SetLocalPositiveScaleX();
-	}
-	else
-	{
-		GetTransform()->SetLocalNegativeScaleX();
-	}
+	//if (false == Directbool)
+	//{
+	//	GetTransform()->SetLocalPositiveScaleX();
+	//}
+	//else
+	//{
+	//	GetTransform()->SetLocalNegativeScaleX();
+	//}
+}
+
+void Katzenwagen::IntroAnimationSetting()
+{
+	RightHandRenderPtr->On();
+	LeftHandRenderPtr->On();
+	HeadRenderPtr->On();
+
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, -105, -10 });
+
+	RightHandRenderPtr->ChangeAnimation("Cat_Idle_RightHand");
+	LeftHandRenderPtr->ChangeAnimation("Cat_Idle_LeftHand");
+	HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
+	BodyRenderPtr->ChangeAnimation("Cat_Idle_Body");
+
+	HeadRenderPtr->SetAnimationStartEvent("Cat_Intro_Head", 5, std::bind(&Katzenwagen::IntroMouseOff, this));
+	HeadRenderPtr->SetAnimationStartEvent("Cat_Intro_Head", 37, std::bind(&Katzenwagen::IntroWallBrake, this));
+}
+
+void Katzenwagen::IntroMouseOff()
+{
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, -105, -15 });
+
+	Werner_Werman::WernerWermanPtr->CanRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->CanBackRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->CanUpRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->MouseRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->WeaponRender->Off();
+	Werner_Werman::WernerWermanPtr->MouseUpRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->WheelRenderPtr->Off();
+	Werner_Werman::WernerWermanPtr->FlamecannonRenderPtr_Right->Off();
+	Werner_Werman::WernerWermanPtr->FlamecannonRenderPtr_Left->Off();
+	Werner_Werman::WernerWermanPtr->Phase2Parent->Off();
+
+	Werner_Werman::WernerWermanPtr->BodyCollisionPtr->Off();
+	Werner_Werman::WernerWermanPtr->EXCollisionPtr->Off();
+	Werner_Werman::WernerWermanPtr->PlatformCollisionPtr->Off();
+}
+
+void Katzenwagen::IntroWallBrake()
+{
+	Mouse_Map::MouseMapPtr->IsPhase3 = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,80 +260,72 @@ void Werner_Werman::DirectCheck()
 
 void Katzenwagen::ActorInitSetting()
 {
-	//if (nullptr == GameEngineSprite::Find("Bottlecap_A"))
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
-	//	NewDir.Move("Image");
-	//	NewDir.Move("Character");
-	//	NewDir.Move("3_Werner_Werman");
-	//	NewDir.Move("Phase2");
-	//	NewDir.Move("Sidsticks_Bottlecap");
+	if (nullptr == GameEngineSprite::Find("Cat_Intro_Body"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
 
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_A").GetFullPath());
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_B").GetFullPath());
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_C").GetFullPath());
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_D").GetFullPath());
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_E").GetFullPath());
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottlecap_F").GetFullPath());
-	//}
+		// Body
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Intro_Body").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_Body").GetFullPath());
 
-	//if (nullptr == GameEngineTexture::Find("Tin_Boil_Back_001.png"))
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
-	//	NewDir.Move("Image");
-	//	NewDir.Move("Character");
-	//	NewDir.Move("3_Werner_Werman");
-	//	NewDir.Move("Phase2");
-	//	NewDir.Move("Can_Tin_Back");
+		// Head
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Intro_Head").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_Head").GetFullPath());
 
-	//	GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_001.png").GetFullPath());
-	//	GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_002.png").GetFullPath());
-	//	GameEngineTexture::Load(NewDir.GetPlusFileName("Tin_Boil_Back_003.png").GetFullPath());
-	//}
-
-	//if (nullptr == CanUpRenderPtr)
-	//{
-	//	CanUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	CanUpRenderPtr->SetScaleToTexture("Can_Idle_Up_001.png");
-	//}
+		// Arm
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_LeftHand").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_RightHand").GetFullPath());
+	}
 
 	if (nullptr == TailHandRenderPtr)
 	{
-		TailHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		//TailHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		//TailHandRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
 		//TailHandRenderPtr->ChangeAnimation("Object_Flamecannon");
-	}
-
-	if (nullptr == RightHandRenderPtr)
-	{
-		RightHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//RightHandRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
-		//RightHandRenderPtr->ChangeAnimation("Object_Flamecannon");
-	}
-
-	if (nullptr == LeftHandRenderPtr)
-	{
-		LeftHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//LeftHandRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
-		//LeftHandRenderPtr->ChangeAnimation("Object_Flamecannon");
 	}
 
 	if (nullptr == BodyRenderPtr)
 	{
 		BodyRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//BodyRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
-		//BodyRenderPtr->ChangeAnimation("Object_Flamecannon");
+		BodyRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Body", .SpriteName = "Cat_Intro_Body", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		BodyRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Body", .SpriteName = "Cat_Idle_Body", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		BodyRenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 5 });
+		BodyRenderPtr->ChangeAnimation("Cat_Intro_Body");
+		BodyRenderPtr->Off();
+	}
+
+	if (nullptr == RightHandRenderPtr)
+	{
+		RightHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RightHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_RightHand", .SpriteName = "Cat_Idle_RightHand", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		RightHandRenderPtr->GetTransform()->SetLocalPosition({ 120, -100, 5 });
+		RightHandRenderPtr->ChangeAnimation("Cat_Idle_RightHand");
+		RightHandRenderPtr->Off();
+	}
+
+	if (nullptr == LeftHandRenderPtr)
+	{
+		LeftHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		LeftHandRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_LeftHand", .SpriteName = "Cat_Idle_LeftHand", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		LeftHandRenderPtr->GetTransform()->SetLocalPosition({ -120, -100, 5 });
+		LeftHandRenderPtr->ChangeAnimation("Cat_Idle_LeftHand");
+		LeftHandRenderPtr->Off();
 	}
 
 	if (nullptr == HeadRenderPtr)
 	{
 		HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//HeadRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
-		//HeadRenderPtr->ChangeAnimation("Object_Flamecannon");
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
+		HeadRenderPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionPtr)
@@ -288,6 +334,7 @@ void Katzenwagen::ActorInitSetting()
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
 		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
 		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		BodyCollisionPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionRenderPtr)
@@ -306,6 +353,7 @@ void Katzenwagen::ActorInitSetting()
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
 		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
 		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		EXCollisionPtr->Off();
 	}
 
 	if (nullptr == EXCollisionRenderPtr)
@@ -324,6 +372,7 @@ void Katzenwagen::ActorInitSetting()
 		AttackCollisionPtr->SetColType(ColType::AABBBOX2D);
 		AttackCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
 		AttackCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+		AttackCollisionPtr->Off();
 	}
 
 	if (nullptr == AttackCollisionRenderPtr)

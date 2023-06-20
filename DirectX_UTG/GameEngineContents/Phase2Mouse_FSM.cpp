@@ -3,6 +3,8 @@
 
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Katzenwagen.h"
+
 void Werner_Werman::ChangeState_Phase2(Phase2State _StateValue)
 {
 	Phase2State NextState = _StateValue;
@@ -250,11 +252,17 @@ void Werner_Werman::Trans_LoopDEnd()
 
 void Werner_Werman::Trans_EndLoopStart()
 {
+	DelayTime = 0.0f;
 	MouseRenderPtr->ChangeAnimation("Mouse_Transition_EndLoop");
 }
 void Werner_Werman::Trans_EndLoopUpdate(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
 
+	if (1.0f <= DelayTime)
+	{
+		Katzenwagen::KatzenwagenPtr->IsIntro = true;
+	}
 }
 void Werner_Werman::Trans_EndLoopEnd()
 {

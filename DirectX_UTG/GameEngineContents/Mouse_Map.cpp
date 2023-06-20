@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "Mouse_BackObject.h"
+
 Mouse_Map* Mouse_Map::MouseMapPtr = nullptr;
 
 Mouse_Map::Mouse_Map() 
@@ -43,6 +45,7 @@ void Mouse_Map::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_BackGround_Phase_1.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_BackGround_Phase_2.png").GetFullPath());
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_House_BackGround.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Mouse_BackGround_Phase_3B.png").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Phase2_Platform"))
@@ -55,6 +58,7 @@ void Mouse_Map::Start()
 		NewDir.Move("3_Werner_Werman");
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Phase2_Platform").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Phase3_WallBrake").GetFullPath());
 	}
 
 	if (nullptr == WallBGRenderPtr)
@@ -67,6 +71,7 @@ void Mouse_Map::Start()
 	{
 		Phase2PlatformRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase2_Platform", .SpriteName = "Phase2_Platform", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase3_WallBrake", .SpriteName = "Phase3_WallBrake", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		Phase2PlatformRenderPtr->ChangeAnimation("Phase2_Platform");
 		Phase2PlatformRenderPtr->GetTransform()->SetLocalPosition({ -2, 80 });
 		Phase2PlatformRenderPtr->Off();
@@ -105,6 +110,14 @@ void Mouse_Map::Start()
 
 void Mouse_Map::Update(float _DeltaTime)
 {
+	if (true == IsPhase3)
+	{
+		IsPhase3 = false;
+		Phase2PlatformRenderPtr->ChangeAnimation("Phase3_WallBrake");
+		Phase2PlatformRenderPtr->GetTransform()->SetLocalPosition({ 0, 30, -10 });
+		Phase2PlatformRenderPtr->SetAnimationStartEvent("Phase3_WallBrake", 11, std::bind(&Mouse_Map::Phase3Setting, this));
+		Mouse_BackObject::MouseBackObjectPtr->Off();
+	}
 
 	if (true == IsPhase2)
 	{
@@ -113,7 +126,7 @@ void Mouse_Map::Update(float _DeltaTime)
 		Phase2PlatformRenderPtr->On();
 	}
 
-	if (true == Phase2PlatformRenderPtr->IsUpdate())
+	if (true == Phase2PlatformRenderPtr->IsUpdate() && false == IsEnd)
 	{
 		if (true == Phase2PlatformRenderPtr->IsAnimationEnd())
 		{
@@ -129,4 +142,12 @@ void Mouse_Map::Update(float _DeltaTime)
 			PlatformCollisionRenderPtr->Off();
 		}
 	}
+}
+
+void Mouse_Map::Phase3Setting()
+{
+	WallBGRenderPtr->SetScaleToTexture("Mouse_BackGround_Phase_3B.png");
+	PlatformCollisionPtr->Off();
+	PlatformCollisionRenderPtr->Off();
+	IsEnd = true;
 }

@@ -46,6 +46,7 @@ private:
 
 	bool IsDebugRender = false;
 	bool IsBlink = false;
+	bool IsIntro = false;
 
 	float4 OriginMulColor = float4::Zero;
 	float4 BlinkMulColor = float4::Zero;
@@ -57,6 +58,15 @@ private:
 	void HitBlink(float _DeltaTime);
 	void DirectCheck();
 	void CollisionSetting();
+
+	bool Directbool = false;
+
+	int InitSetting = 1;
+
+	void IntroAnimationSetting();
+	void IntroWallBrake();
+	void IntroMouseOff();
+	void IntroHeadPositionSetting();
 
 	KatzenwagenState StateValue = KatzenwagenState::Idle;
 

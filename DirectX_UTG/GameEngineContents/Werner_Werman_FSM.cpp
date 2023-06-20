@@ -239,16 +239,16 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	}
 
 	/// Test
-	//{
-	//	Directbool = true;
+	{
+		Directbool = true;
 
-	//	Phase2PositionSetting = 0;
-	//	Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
-	//	GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
+		Phase2PositionSetting = 0;
+		Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
+		GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
 
-	//	ChangeState(MouseState::Explosion_Intro);
-	//	return;
-	//}
+		ChangeState(MouseState::Explosion_Intro);
+		return;
+	}
 
 	if (true == IsDash)
 	{

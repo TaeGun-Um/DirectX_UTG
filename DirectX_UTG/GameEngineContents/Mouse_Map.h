@@ -4,6 +4,8 @@
 class Mouse_Map : public GameEngineActor
 {
 	friend class Werner_Werman;
+	friend class Katzenwagen;
+
 public:
 	static Mouse_Map* MouseMapPtr;
 
@@ -42,7 +44,10 @@ private:
 	bool IsDebugRender = false;
 	bool IsPhase2 = false;
 	bool IsPhase3 = false;
+	bool IsEnd = false;
+	bool Phase3MapSetting = false;
 
+	void Phase3Setting();
 	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation = 0.5f, float _brightness = 0.5f, float _contrast = 0.5f);
 };
 

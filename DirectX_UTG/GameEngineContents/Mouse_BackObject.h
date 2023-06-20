@@ -4,6 +4,8 @@
 class Mouse_BackObject : public GameEngineActor
 {
 public:
+	static Mouse_BackObject* MouseBackObjectPtr;
+
 	// constrcuter destructer
 	Mouse_BackObject();
 	~Mouse_BackObject();

@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+Mouse_BackObject* Mouse_BackObject::MouseBackObjectPtr = nullptr;
+
 Mouse_BackObject::Mouse_BackObject() 
 {
 }
@@ -27,6 +29,8 @@ void Mouse_BackObject::HBSCControl(std::shared_ptr<class GameEngineSpriteRendere
 
 void Mouse_BackObject::Start()
 {
+	MouseBackObjectPtr = this;
+
 	if (nullptr == GameEngineTexture::Find("mouse_bg_bullet_a.png"))
 	{
 		GameEngineDirectory NewDir;
