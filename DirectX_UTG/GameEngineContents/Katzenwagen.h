@@ -8,6 +8,10 @@ enum class KatzenwagenState
 	ArmAttack_Loop,
 	ArmAttack_Outro,
 	
+	GhostSpawn_Intro,
+	GhostSpawn_Loop,
+	GhostSpawn_Outro,
+
 	Death,
 };
 
@@ -169,6 +173,18 @@ private:
 	void AttackHand_OutroStart();
 	void AttackHand_OutroUpdate(float _DeltaTime);
 	void AttackHand_OutroEnd();
+
+	void GhostSpawn_IntroStart();
+	void GhostSpawn_IntroUpdate(float _DeltaTime);
+	void GhostSpawn_IntroEnd();
+
+	void GhostSpawn_LoopStart();
+	void GhostSpawn_LoopUpdate(float _DeltaTime);
+	void GhostSpawn_LoopEnd();
+
+	void GhostSpawn_OutroStart();
+	void GhostSpawn_OutroUpdate(float _DeltaTime);
+	void GhostSpawn_OutroEnd();
 
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);

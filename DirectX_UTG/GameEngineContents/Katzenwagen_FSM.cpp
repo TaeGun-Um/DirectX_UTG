@@ -32,6 +32,15 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroStart();
 		break;
+	case KatzenwagenState::GhostSpawn_Intro:
+		GhostSpawn_IntroStart();
+		break;
+	case KatzenwagenState::GhostSpawn_Loop:
+		GhostSpawn_LoopStart();
+		break;
+	case KatzenwagenState::GhostSpawn_Outro:
+		GhostSpawn_OutroStart();
+		break;
 	case KatzenwagenState::Death:
 		DeathStart();
 		break;
@@ -55,6 +64,15 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 		break;
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroEnd();
+		break;
+	case KatzenwagenState::GhostSpawn_Intro:
+		GhostSpawn_IntroEnd();
+		break;
+	case KatzenwagenState::GhostSpawn_Loop:
+		GhostSpawn_LoopEnd();
+		break;
+	case KatzenwagenState::GhostSpawn_Outro:
+		GhostSpawn_OutroEnd();
 		break;
 	case KatzenwagenState::Death:
 		DeathEnd();
@@ -82,6 +100,15 @@ void Katzenwagen::UpdateState(float _DeltaTime)
 		break;
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::GhostSpawn_Intro:
+		GhostSpawn_IntroUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::GhostSpawn_Loop:
+		GhostSpawn_LoopUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::GhostSpawn_Outro:
+		GhostSpawn_OutroUpdate(_DeltaTime);
 		break;
 	case KatzenwagenState::Death:
 		DeathUpdate(_DeltaTime);
@@ -173,18 +200,31 @@ void Katzenwagen::IdleUpdate(float _DeltaTime)
 		IsAttackStart = false;
 	}
 
+	//if (true == IsAttackStart && 3.f <= AttactDelayTime)
+	//{
+	//	Directbool = !Directbool;
+
+	//	if (true == IsLeft)
+	//	{
+	//		IsLeft = false;
+	//		AttactDelayTime -= 1.5f;
+	//		return;
+	//	}
+
+	//	ChangeState(KatzenwagenState::ArmAttack_Intro);
+	//	return;
+	//}
+
 	if (true == IsAttackStart && 3.f <= AttactDelayTime)
 	{
-		Directbool = !Directbool;
+		Directbool = false;
 
-		if (true == IsLeft)
+		if (false == Directbool) // ¿ÞÂÊ °í°³
 		{
-			IsLeft = false;
-			AttactDelayTime -= 1.5f;
-			return;
+			HeadParent->GetTransform()->SetLocalPositiveScaleX();
 		}
 
-		ChangeState(KatzenwagenState::ArmAttack_Intro);
+		ChangeState(KatzenwagenState::GhostSpawn_Intro);
 		return;
 	}
 
@@ -355,6 +395,65 @@ void Katzenwagen::DeathUpdate(float _DeltaTime)
 	}
 }
 void Katzenwagen::DeathEnd()
+{
+
+}
+
+void Katzenwagen::GhostSpawn_IntroStart()
+{
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ 10, -20, -10 });
+	HeadRenderPtr->ChangeAnimation("Cat_Ghost_Spawn_Head_Intro");
+}
+void Katzenwagen::GhostSpawn_IntroUpdate(float _DeltaTime)
+{
+	if (true == HeadRenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KatzenwagenState::GhostSpawn_Loop);
+		return;
+	}
+}
+void Katzenwagen::GhostSpawn_IntroEnd()
+{
+
+}
+
+void Katzenwagen::GhostSpawn_LoopStart()
+{
+	HeadRenderPtr->ChangeAnimation("Cat_Ghost_Spawn_Head_Loop");
+}
+void Katzenwagen::GhostSpawn_LoopUpdate(float _DeltaTime)
+{
+	AttactDelayTime += _DeltaTime;
+
+	if (2.0f <= AttactDelayTime)
+	{
+		ChangeState(KatzenwagenState::GhostSpawn_Outro);
+		return;
+	}
+}
+void Katzenwagen::GhostSpawn_LoopEnd()
+{
+	AttactDelayTime = 0.0f;
+}
+
+void Katzenwagen::GhostSpawn_OutroStart()
+{
+	HeadRenderPtr->ChangeAnimation("Cat_Ghost_Spawn_Head_Outro");
+}
+void Katzenwagen::GhostSpawn_OutroUpdate(float _DeltaTime)
+{
+	if (10 == HeadRenderPtr->GetCurrentFrame())
+	{
+		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, -20, -10 });
+	}
+
+	if (true == HeadRenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KatzenwagenState::Idle);
+		return;
+	}
+}
+void Katzenwagen::GhostSpawn_OutroEnd()
 {
 
 }

@@ -591,6 +591,10 @@ void MouseLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Cat_Claw_Hand_Outro");
 		GameEngineSprite::UnLoad("Cat_Claw_Hand_Hit");
 		GameEngineSprite::UnLoad("Cat_Death_SFX");
+
+		GameEngineSprite::UnLoad("Cat_Ghost_Spawn_Head_Intro");
+		GameEngineSprite::UnLoad("Cat_Ghost_Spawn_Head_Loop");
+		GameEngineSprite::UnLoad("Cat_Ghost_Spawn_Head_Outro");
 	}
 	if (nullptr != GameEngineSprite::Find("Object_WoodPiece_Loop"))
 	{
@@ -915,6 +919,10 @@ void MouseLevel::ReLoadSetting()
 		GameEngineSprite::ReLoad("Cat_Claw_Hand_Outro");
 		GameEngineSprite::ReLoad("Cat_Claw_Hand_Hit");
 		GameEngineSprite::ReLoad("Cat_Death_SFX");
+
+		GameEngineSprite::ReLoad("Cat_Ghost_Spawn_Head_Intro");
+		GameEngineSprite::ReLoad("Cat_Ghost_Spawn_Head_Loop");
+		GameEngineSprite::ReLoad("Cat_Ghost_Spawn_Head_Outro");
 	}
 	if (nullptr != GameEngineSprite::Find("Object_WoodPiece_Loop"))
 	{

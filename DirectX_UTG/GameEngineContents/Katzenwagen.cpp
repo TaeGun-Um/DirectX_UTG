@@ -451,6 +451,9 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Outro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_HeadObject").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_HeadObject_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Ghost_Spawn_Head_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Ghost_Spawn_Head_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Ghost_Spawn_Head_Outro").GetFullPath());
 
 		// Arm
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_LeftHand").GetFullPath());
@@ -561,6 +564,9 @@ void Katzenwagen::ActorInitSetting()
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Outro", .SpriteName = "Cat_Claw_Head_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Death_HeadObject", .SpriteName = "Cat_Death_HeadObject", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Death_HeadObject_Loop", .SpriteName = "Cat_Death_HeadObject_Loop", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Ghost_Spawn_Head_Intro", .SpriteName = "Cat_Ghost_Spawn_Head_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Ghost_Spawn_Head_Loop", .SpriteName = "Cat_Ghost_Spawn_Head_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Ghost_Spawn_Head_Outro", .SpriteName = "Cat_Ghost_Spawn_Head_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
 		HeadRenderPtr->Off();

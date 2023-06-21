@@ -252,11 +252,11 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	//	return;
 	//}
 	// Test
-	//{
-	//	Off();
-	//	Mouse_Map::MouseMapPtr->IsPhase2 = true;
-	//	Katzenwagen::KatzenwagenPtr->IsIntro = true;
-	//}
+	{
+		Off();
+		Mouse_Map::MouseMapPtr->IsPhase2 = true;
+		Katzenwagen::KatzenwagenPtr->IsIntro = true;
+	}
 
 	if (true == IsDash)
 	{
