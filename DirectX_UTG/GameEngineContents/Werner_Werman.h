@@ -86,8 +86,6 @@ public:
 	Werner_Werman& operator=(const Werner_Werman& _Other) = delete;
 	Werner_Werman& operator=(Werner_Werman&& _Other) noexcept = delete;
 
-	//void SetInitReset();
-
 	bool GetIsStageEnd()
 	{
 		return IsStageEnd;
