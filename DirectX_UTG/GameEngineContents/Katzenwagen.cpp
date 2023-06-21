@@ -15,6 +15,8 @@
 #include "Werner_Werman.h"
 #include "Mouse_Map.h"
 #include "WoodPiece.h"
+#include "Cat_DeathDust.h"
+#include "DeathExplosion.h"
 
 Katzenwagen* Katzenwagen::KatzenwagenPtr = nullptr;
 
@@ -75,7 +77,6 @@ void Katzenwagen::Update(float _DeltaTime)
 		AttackCollisionRenderPtr->Off();
 	}
 
-	DirectCheck();
 	UpdateState(_DeltaTime);
 	CollisionCheck();
 	CollisionSetting();
@@ -224,6 +225,11 @@ void Katzenwagen::CreateWoodPiece_Left(float _DeltaTime)
 		return;
 	}
 
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		return;
+	}
+
 	WoodCreateTime_Left += _DeltaTime;
 
 	if (0.8f >= WoodCreateTime_Left)
@@ -286,6 +292,11 @@ void Katzenwagen::CreateWoodPiece_Right(float _DeltaTime)
 		return;
 	}
 
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		return;
+	}
+
 	WoodCreateTime_Right += _DeltaTime;
 
 	if (0.8f >= WoodCreateTime_Right)
@@ -341,21 +352,33 @@ void Katzenwagen::CreateWoodPiece_Right(float _DeltaTime)
 	Projectile->SetStartPosition(ProjectilePosition);
 }
 
+void Katzenwagen::CreateDeathDust()
+{
+	std::shared_ptr<Cat_DeathDust> Dust = GetLevel()->CreateActor<Cat_DeathDust>();
+	//float4 StartPosition = HeadRenderPtr->GetTransform()->GetLocalPosition();
+	float4 DustPosition = float4{ 640, 150, -10 };
+
+	Dust->SetStartPosition(DustPosition);
+}
+
+void Katzenwagen::CreateDeathExplosion(float _DeltaTime)
+{
+	std::shared_ptr<DeathExplosion> Explosion = GetLevel()->CreateActor<DeathExplosion>();
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+
+	int RandX = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -200 ~ 200
+	int RandY = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -350 ~ 100
+
+	float4 ExplosionPosition = StartPosition + float4{ static_cast<float>(RandX), static_cast<float>(RandY), -1 };
+
+	ExplosionPosition += float4{ 0, 0, -10 };
+
+	Explosion->SetStartPosition(ExplosionPosition);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Katzenwagen::DirectCheck()
-{
-	//if (false == Directbool)
-	//{
-	//	HeadRenderPtr->GetTransform()->SetLocalPositiveScaleX();
-	//}
-	//else
-	//{
-	//	HeadRenderPtr->GetTransform()->SetLocalNegativeScaleX();
-	//}
-}
 
 void Katzenwagen::IntroAnimationSetting()
 {
@@ -418,6 +441,7 @@ void Katzenwagen::ActorInitSetting()
 		// Body
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Intro_Body").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_Body").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_Body").GetFullPath());
 
 		// Head
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Intro_Head").GetFullPath());
@@ -425,6 +449,8 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Head_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_HeadObject").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_HeadObject_Loop").GetFullPath());
 
 		// Arm
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Idle_LeftHand").GetFullPath());
@@ -435,6 +461,9 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Outro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Claw_Hand_Hit").GetFullPath());
+
+		// SFX
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_SFX").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("UpTexture.png"))
@@ -464,6 +493,18 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Death").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
+	}
+
 	if (nullptr == TailHandRenderPtr)
 	{
 		//TailHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -476,6 +517,7 @@ void Katzenwagen::ActorInitSetting()
 		BodyRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		BodyRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Body", .SpriteName = "Cat_Intro_Body", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		BodyRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Body", .SpriteName = "Cat_Idle_Body", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		BodyRenderPtr->CreateAnimation({ .AnimationName = "Cat_Death_Body", .SpriteName = "Cat_Death_Body", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
 		BodyRenderPtr->GetTransform()->SetLocalPosition({ 0, 0, 5 });
 		BodyRenderPtr->ChangeAnimation("Cat_Intro_Body");
 		BodyRenderPtr->Off();
@@ -517,6 +559,8 @@ void Katzenwagen::ActorInitSetting()
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Intro", .SpriteName = "Cat_Claw_Head_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Loop", .SpriteName = "Cat_Claw_Head_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Outro", .SpriteName = "Cat_Claw_Head_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Death_HeadObject", .SpriteName = "Cat_Death_HeadObject", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Death_HeadObject_Loop", .SpriteName = "Cat_Death_HeadObject_Loop", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
 		HeadRenderPtr->Off();

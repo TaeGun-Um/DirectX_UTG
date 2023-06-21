@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Player.h"
+#include "Werner_Werman.h"
 #include "Mouse_Map.h"
 
 void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
@@ -30,6 +32,9 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroStart();
 		break;
+	case KatzenwagenState::Death:
+		DeathStart();
+		break;
 	default:
 		break;
 	}
@@ -50,6 +55,9 @@ void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 		break;
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroEnd();
+		break;
+	case KatzenwagenState::Death:
+		DeathEnd();
 		break;
 	default:
 		break;
@@ -74,6 +82,9 @@ void Katzenwagen::UpdateState(float _DeltaTime)
 		break;
 	case KatzenwagenState::ArmAttack_Outro:
 		ArmAttack_OutroUpdate(_DeltaTime);
+		break;
+	case KatzenwagenState::Death:
+		DeathUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -129,6 +140,12 @@ void Katzenwagen::IdleStart()
 }
 void Katzenwagen::IdleUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		ChangeState(KatzenwagenState::Death);
+		return;
+	}
+
 	bool IsShakeEnd = false;
 
 	if (true == HeadRenderPtr->FindAnimation("Cat_Idle_Head_Left")->IsEnd())
@@ -206,6 +223,12 @@ void Katzenwagen::ArmAttack_IntroStart()
 }
 void Katzenwagen::ArmAttack_IntroUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		ChangeState(KatzenwagenState::Death);
+		return;
+	}
+
 	if (true == HeadRenderPtr->IsAnimationEnd())
 	{
 		ChangeState(KatzenwagenState::ArmAttack_Loop);
@@ -231,6 +254,12 @@ void Katzenwagen::ArmAttack_LoopStart()
 }
 void Katzenwagen::ArmAttack_LoopUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		ChangeState(KatzenwagenState::Death);
+		return;
+	}
+
 	AttactDelayTime += _DeltaTime;
 
 	float4 NewPos = float4::LerpClamp(CurHeadPosition, LerpPosition, AttactDelayTime);
@@ -275,6 +304,12 @@ void Katzenwagen::ArmAttack_OutroStart()
 }
 void Katzenwagen::ArmAttack_OutroUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		ChangeState(KatzenwagenState::Death);
+		return;
+	}
+
 	if (true == HeadRenderPtr->IsAnimationEnd())
 	{
 		ChangeState(KatzenwagenState::Idle);
@@ -285,6 +320,48 @@ void Katzenwagen::ArmAttack_OutroEnd()
 {
 	LeftHandRenderPtr->On();
 	RightHandRenderPtr->On();
+}
+
+void Katzenwagen::DeathStart()
+{
+	BodyCollisionRenderPtr->Off();
+	EXCollisionRenderPtr->Off();
+	BodyCollisionPtr->Off();
+	EXCollisionPtr->Off();
+
+	BodyUpRenderPtr->Off();
+	LeftHandRenderPtr->Off();
+	RightHandRenderPtr->Off();
+
+	HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, -40, -10 });
+	BodyRenderPtr->GetTransform()->AddLocalPosition({ 0, 20 });
+
+	BodyRenderPtr->ChangeAnimation("Cat_Death_Body");
+	HeadRenderPtr->ChangeAnimation("Cat_Death_HeadObject");
+	HeadRenderPtr->SetAnimationStartEvent("Cat_Death_HeadObject", 13, std::bind(&Katzenwagen::DeathHeadObjectLoopAnimation, this));
+	HeadRenderPtr->SetAnimationStartEvent("Cat_Death_HeadObject", 9, std::bind(&Katzenwagen::CreateDeathDust, this));
+
+	ExplosionTime = 0.4f;
+}
+void Katzenwagen::DeathUpdate(float _DeltaTime)
+{
+	ExplosionTime += _DeltaTime;
+
+	if (0.4f <= ExplosionTime)
+	{
+		ExplosionTime = 0.0f;
+		Player::MainPlayer->StartCameraShaking(6);
+		CreateDeathExplosion(_DeltaTime);
+	}
+}
+void Katzenwagen::DeathEnd()
+{
+
+}
+
+void Katzenwagen::DeathHeadObjectLoopAnimation()
+{
+	HeadRenderPtr->ChangeAnimation("Cat_Death_HeadObject_Loop");
 }
 
 void Katzenwagen::IntroHeadPositionSetting()

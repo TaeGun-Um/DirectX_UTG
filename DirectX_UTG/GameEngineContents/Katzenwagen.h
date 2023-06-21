@@ -7,6 +7,8 @@ enum class KatzenwagenState
 	ArmAttack_Intro,
 	ArmAttack_Loop,
 	ArmAttack_Outro,
+	
+	Death,
 };
 
 enum class AttackHandState
@@ -80,7 +82,6 @@ private:
 	void ActorInitSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
-	void DirectCheck();
 	void CollisionSetting();
 
 	float4 CurHeadPosition = float4::Zero;
@@ -104,6 +105,7 @@ private:
 	float HandSpeed = 0.0f;
 	float WoodCreateTime_Left = 0.0f;
 	float WoodCreateTime_Right = 0.0f;
+	float ExplosionTime = 0.0f;
 
 	int InitSetting = 1;
 	int HandAttackCount = 0;
@@ -111,6 +113,8 @@ private:
 	int WoodPieceCount_Left = 0;
 	int WoodPieceCount_Right = 0;
 
+	void CreateDeathExplosion(float _DeltaTime);
+	void CreateDeathDust();
 	void CreateWoodPiece_Left(float _DeltaTime);
 	void CreateWoodPiece_Right(float _DeltaTime);
 	void IntroAnimationSetting();
@@ -119,6 +123,7 @@ private:
 	void IntroHeadPositionSetting();
 	void HandAttackCountFunction();
 	void HandAttackShake();
+	void DeathHeadObjectLoopAnimation();
 
 	KatzenwagenState StateValue = KatzenwagenState::Idle;
 	AttackHandState AttackHandStateValue = AttackHandState::Intro;
@@ -164,5 +169,9 @@ private:
 	void AttackHand_OutroStart();
 	void AttackHand_OutroUpdate(float _DeltaTime);
 	void AttackHand_OutroEnd();
+
+	void DeathStart();
+	void DeathUpdate(float _DeltaTime);
+	void DeathEnd();
 };
 

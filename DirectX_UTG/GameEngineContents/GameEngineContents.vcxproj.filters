@@ -416,6 +416,9 @@
     <ClInclude Include="WoodPiece.h">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Cat_DeathDust.h">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -744,6 +747,9 @@
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss</Filter>
     </ClCompile>
     <ClCompile Include="WoodPiece.cpp">
+      <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Cat_DeathDust.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClCompile>
   </ItemGroup>

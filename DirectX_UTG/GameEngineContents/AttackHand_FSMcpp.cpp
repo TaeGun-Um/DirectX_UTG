@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
+#include "Werner_Werman.h"
 #include "Mouse_Map.h"
 
 void Katzenwagen::ChangeState_AttackHand(AttackHandState _StateValue)
@@ -103,6 +104,12 @@ void Katzenwagen::AttackHand_IntroStart()
 }
 void Katzenwagen::AttackHand_IntroUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		AttackHandRenderPtr->Off();
+		AttackCollisionPtr->Off();
+	}
+
 	HandIntroDelayTime += _DeltaTime;
 
 	if (0.35f >= HandIntroDelayTime)
@@ -145,6 +152,12 @@ void Katzenwagen::AttackHand_HitStart()
 }
 void Katzenwagen::AttackHand_HitUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		AttackHandRenderPtr->Off();
+		AttackCollisionPtr->Off();
+	}
+
 	HandAttactTime += _DeltaTime;
 
 	if (0.15f <= HandAttactTime)
@@ -175,6 +188,12 @@ void Katzenwagen::AttackHand_LoopStart()
 }
 void Katzenwagen::AttackHand_LoopUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		AttackHandRenderPtr->Off();
+		AttackCollisionPtr->Off();
+	}
+
 	float MoveDis = HandSpeed * _DeltaTime;
 
 	if (false == Directbool)
@@ -217,6 +236,12 @@ void Katzenwagen::AttackHand_OutroStart()
 }
 void Katzenwagen::AttackHand_OutroUpdate(float _DeltaTime)
 {
+	if (true == Werner_Werman::WernerWermanPtr->IsStageEnd)
+	{
+		AttackHandRenderPtr->Off();
+		AttackCollisionPtr->Off();
+	}
+
 	HandAttactTime += _DeltaTime;
 
 	float4 NewPos = float4::LerpClamp(CurHandPosition, InitHandPosition, HandAttactTime * 0.8f);
