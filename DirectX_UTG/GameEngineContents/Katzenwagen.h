@@ -85,7 +85,9 @@ private:
 
 	float4 CurHeadPosition = float4::Zero;
 	float4 LerpPosition = float4::Zero;
-
+	float4 CurHeadPosition2 = float4::Zero;
+	float4 LerpPosition2 = float4::Zero;
+	
 	float4 InitHandPosition = float4::Zero;
 	float4 CurHandPosition = float4::Zero;
 
@@ -93,16 +95,24 @@ private:
 	bool IsLeft = false;
 	bool IsRight = false;
 	bool IsClawAttackEnd = false;
+	bool IsWoodCreate_Left = false;
+	bool IsWoodCreate_Right = false;
 
 	float AttactDelayTime = 0.0f;
 	float HandAttactTime = 0.0f;
 	float HandIntroDelayTime = 0.0f;
 	float HandSpeed = 0.0f;
+	float WoodCreateTime_Left = 0.0f;
+	float WoodCreateTime_Right = 0.0f;
 
 	int InitSetting = 1;
 	int HandAttackCount = 0;
 	int ClawCreateCount = 1;
+	int WoodPieceCount_Left = 0;
+	int WoodPieceCount_Right = 0;
 
+	void CreateWoodPiece_Left(float _DeltaTime);
+	void CreateWoodPiece_Right(float _DeltaTime);
 	void IntroAnimationSetting();
 	void IntroWallBrake();
 	void IntroMouseOff();

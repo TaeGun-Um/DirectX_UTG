@@ -113,6 +113,7 @@ void Katzenwagen::IdleStart()
 		HeadParent = CreateComponent<GameEngineSpriteRenderer>();
 		HeadParent->SetScaleToTexture("RedBox.png");
 		HeadParent->GetTransform()->SetLocalScale({ 1, 1, 1 });
+		HeadParent->ColorOptionValue.MulColor.a = 0.0f;
 	}
 
 	HeadRenderPtr->ChangeAnimation("Cat_Idle_Head_Left");
@@ -122,6 +123,9 @@ void Katzenwagen::IdleStart()
 	EXCollisionPtr->On();
 	BodyCollisionPtr->On();
 	BodyUpRenderPtr->On();
+
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 10, -50 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 10, -50 });
 }
 void Katzenwagen::IdleUpdate(float _DeltaTime)
 {
@@ -152,14 +156,14 @@ void Katzenwagen::IdleUpdate(float _DeltaTime)
 		IsAttackStart = false;
 	}
 
-	if (true == IsAttackStart && 1.f <= AttactDelayTime)
+	if (true == IsAttackStart && 3.f <= AttactDelayTime)
 	{
 		Directbool = !Directbool;
 
 		if (true == IsLeft)
 		{
 			IsLeft = false;
-			AttactDelayTime -= 0.5f;
+			AttactDelayTime -= 1.5f;
 			return;
 		}
 
@@ -218,6 +222,9 @@ void Katzenwagen::ArmAttack_LoopStart()
 	CurHeadPosition = HeadRenderPtr->GetTransform()->GetLocalPosition();
 	LerpPosition = CurHeadPosition + float4{ -55, -20 };
 
+	CurHeadPosition2 = BodyCollisionPtr->GetTransform()->GetLocalPosition() + float4{ 100, 0 };
+	LerpPosition2 = CurHeadPosition2 + float4{ 55, -20 };
+
 	HeadRenderPtr->ChangeAnimation("Cat_Claw_Head_Loop");
 	ClawCreateCount = 1;
 	IsClawAttackEnd = false;
@@ -229,6 +236,19 @@ void Katzenwagen::ArmAttack_LoopUpdate(float _DeltaTime)
 	float4 NewPos = float4::LerpClamp(CurHeadPosition, LerpPosition, AttactDelayTime);
 
 	HeadRenderPtr->GetTransform()->SetLocalPosition(NewPos);
+
+	if (false == Directbool)
+	{
+		BodyCollisionPtr->GetTransform()->SetLocalPosition(NewPos);
+		EXCollisionPtr->GetTransform()->SetLocalPosition(NewPos);
+	}
+	else
+	{
+		float4 NewPos2 = float4::LerpClamp(CurHeadPosition2, LerpPosition2, AttactDelayTime);
+
+		BodyCollisionPtr->GetTransform()->SetLocalPosition(NewPos2);
+		EXCollisionPtr->GetTransform()->SetLocalPosition(NewPos2);
+	}
 
 	if (1 == ClawCreateCount)
 	{

@@ -623,6 +623,7 @@ void Werner_Werman::ExplosionStart()
 		Phase2Parent = CreateComponent<GameEngineSpriteRenderer>();
 		Phase2Parent->SetScaleToTexture("RedBox.png");
 		Phase2Parent->GetTransform()->SetLocalScale({ 1, 1, 1 });
+		Phase2Parent->ColorOptionValue.MulColor.a = 0.0f;
 	}
 
 	BodyCollisionPtr->GetTransform()->SetLocalScale({ 160, 320, -2 });

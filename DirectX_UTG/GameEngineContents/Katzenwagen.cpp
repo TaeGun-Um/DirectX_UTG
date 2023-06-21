@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Katzenwagen.h"
 
+#include <GameEnginePlatform/GameEngineInput.h> // юс╫ц
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -13,6 +14,7 @@
 
 #include "Werner_Werman.h"
 #include "Mouse_Map.h"
+#include "WoodPiece.h"
 
 Katzenwagen* Katzenwagen::KatzenwagenPtr = nullptr;
 
@@ -78,6 +80,9 @@ void Katzenwagen::Update(float _DeltaTime)
 	CollisionCheck();
 	CollisionSetting();
 	HitBlink(_DeltaTime);
+
+	CreateWoodPiece_Left(_DeltaTime);
+	CreateWoodPiece_Right(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +129,9 @@ void Katzenwagen::CollisionSetting()
 	{
 		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
 		EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
 	}
 
 	if (true == AttackCollisionPtr->IsUpdate())
@@ -203,6 +211,134 @@ void Katzenwagen::CollisionCheck()
 
 		IsBlink = true;
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Katzenwagen::CreateWoodPiece_Left(float _DeltaTime)
+{
+	if (false == IsWoodCreate_Left)
+	{
+		return;
+	}
+
+	WoodCreateTime_Left += _DeltaTime;
+
+	if (0.8f >= WoodCreateTime_Left)
+	{
+		return;
+	}
+	else
+	{
+		WoodCreateTime_Left = 0.0f;
+		++WoodPieceCount_Left;
+	}
+
+	std::shared_ptr<WoodPiece> Projectile = GetLevel()->CreateActor<WoodPiece>();
+	float4 ProjectilePosition = float4::Zero;
+
+	if (1 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 100, 740, -1 };
+	}
+	else if (2 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 350, 740, -1 };
+	}
+	else if (3 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 550, 740, -1 };
+	}
+	else if (4 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 750, 740, -1 };
+	}
+	else if (5 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 950, 740, -1 };
+	}
+	else if (6 == WoodPieceCount_Left)
+	{
+		ProjectilePosition = float4{ 1150, 740, -1 };
+		WoodPieceCount_Left = 0;
+		IsWoodCreate_Left = false;
+	}
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
+
+	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Projectile->SetStartPosition(ProjectilePosition);
+}
+
+void Katzenwagen::CreateWoodPiece_Right(float _DeltaTime)
+{
+	if (false == IsWoodCreate_Right)
+	{
+		return;
+	}
+
+	WoodCreateTime_Right += _DeltaTime;
+
+	if (0.8f >= WoodCreateTime_Right)
+	{
+		return;
+	}
+	else
+	{
+		WoodCreateTime_Right = 0.0f;
+		++WoodPieceCount_Right;
+	}
+
+	std::shared_ptr<WoodPiece> Projectile = GetLevel()->CreateActor<WoodPiece>();
+	float4 ProjectilePosition = float4::Zero;
+
+	if (1 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 1150, 740, -1 };
+	}
+	else if (2 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 950, 740, -1 };
+	}
+	else if (3 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 750, 740, -1 };
+	}
+	else if (4 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 550, 740, -1 };
+	}
+	else if (5 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 350, 740, -1 };
+	}
+	else if (6 == WoodPieceCount_Right)
+	{
+		ProjectilePosition = float4{ 100, 740, -1 };
+		WoodPieceCount_Right = 0;
+		IsWoodCreate_Right = false;
+	}
+
+	if (true == IsDebugRender)
+	{
+		Projectile->SetCollisionRenderOn();
+	}
+	else
+	{
+		Projectile->SetCollisionRenderOff();
+	}
+
+	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Projectile->SetStartPosition(ProjectilePosition);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -312,6 +448,20 @@ void Katzenwagen::ActorInitSetting()
 		NewDir.Move("Phase3");
 
 		GameEngineTexture::Load(NewDir.GetPlusFileName("UpTexture.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Object_WoodPiece_Loop"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Death").GetFullPath());
 	}
 
 	if (nullptr == TailHandRenderPtr)

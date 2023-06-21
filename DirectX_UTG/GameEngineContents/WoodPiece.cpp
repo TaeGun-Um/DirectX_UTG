@@ -17,53 +17,161 @@ WoodPiece::~WoodPiece()
 
 void WoodPiece::Start()
 {
-	//if (nullptr == StickRenderPtr)
-	//{
-	//	StickRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	/*GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Loop").GetFullPath());
+	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Death").GetFullPath());*/
 
-	//	StickRenderPtr->CreateAnimation({ .AnimationName = "Stick_A", .SpriteName = "Stick_A", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	StickRenderPtr->CreateAnimation({ .AnimationName = "Stick_B", .SpriteName = "Stick_B", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	StickRenderPtr->CreateAnimation({ .AnimationName = "Stick_C", .SpriteName = "Stick_C", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-	//	StickRenderPtr->ChangeAnimation("Stick_A");
-	//}
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_WoodPiece_Loop", .SpriteName = "Object_WoodPiece_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_WoodPiece_Death", .SpriteName = "Object_WoodPiece_Death", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-	//if (nullptr == BottleRenderPtr)
-	//{
-	//	BottleRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RenderPtr->ChangeAnimation("Object_WoodPiece_Loop");
+		ChangeState(WoodPieceState::Loop);
+	}
 
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "A_Loop", .SpriteName = "Bottlecap_A", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "B_Loop", .SpriteName = "Bottlecap_B", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "C_Loop", .SpriteName = "Bottlecap_C", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "D_Loop", .SpriteName = "Bottlecap_D", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "E_Loop", .SpriteName = "Bottlecap_E", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
-	//	BottleRenderPtr->CreateAnimation({ .AnimationName = "F_Loop", .SpriteName = "Bottlecap_F", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
+	if (nullptr == ProjectileCollisionPtr)
+	{
+		ProjectileCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+		ProjectileCollisionPtr->SetColType(ColType::SPHERE2D);
+		ProjectileCollisionPtr->GetTransform()->SetLocalScale({ 55, 55, 1 });
+		ProjectileCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+	}
 
-	//	BottleRenderPtr->ChangeAnimation("A_Loop");
-	//	ChangeState(SitckState::Intro);
-	//}
-
-	//if (nullptr == AttackCollisionPtr)
-	//{
-	//	AttackCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
-	//	AttackCollisionPtr->SetColType(ColType::SPHERE2D);
-	//	AttackCollisionPtr->Off();
-	//}
-
-	//if (nullptr == AttackCollisionRenderPtr)
-	//{
-	//	AttackCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	AttackCollisionRenderPtr->SetTexture("GreenLine.png");
-	//	AttackCollisionRenderPtr->Off();
-	//}
+	if (nullptr == ProjectileCollisionRenderPtr)
+	{
+		ProjectileCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		ProjectileCollisionRenderPtr->SetTexture("GreenBox.png");
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalScale(ProjectileCollisionPtr->GetTransform()->GetLocalScale());
+		ProjectileCollisionRenderPtr->GetTransform()->SetLocalPosition(ProjectileCollisionPtr->GetTransform()->GetLocalPosition());
+		ProjectileCollisionRenderPtr->Off();
+	}
 }
 
 void WoodPiece::Update(float _DeltaTime)
 {
-	//if (true == MouseLevel::MouseLevelPtr->GetYouDiedPtr()->GetIsEnd())
-	//{
-	//	Death();
-	//}
+	if (true == MouseLevel::MouseLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
 
-	//UpdateState(_DeltaTime);
+	MoveDirection(_DeltaTime);
+	PixelCheck(_DeltaTime);
+	UpdateState(_DeltaTime);
+}
+
+void WoodPiece::MoveDirection(float _DeltaTime)
+{
+	if (true == IsDeath)
+	{
+		return;
+	}
+
+	if (MoveDirect.y >= -800.0f)
+	{
+		MoveDirect.y -= 1100.0f * _DeltaTime;
+	}
+
+	GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+}
+
+void WoodPiece::PixelCheck(float _DeltaTime)
+{
+	if (true == IsDeath)
+	{
+		return;
+	}
+
+	float4 ProjectilePos = GetTransform()->GetWorldPosition();
+	float4 LandPos = ProjectilePos + float4{ 0, -20 };
+
+	GameEnginePixelColor LandPixel = PixelCollisionCheck.PixelCheck(LandPos);
+
+	if (true == PixelCollisionCheck.IsBlack(LandPixel))
+	{
+		MoveDirect = float4::Zero;
+		IsDeath = true;
+	}
+}
+
+void WoodPiece::ChangeState(WoodPieceState _StateValue)
+{
+	WoodPieceState NextState = _StateValue;
+	WoodPieceState PrevState = StateValue;
+
+	StateValue = NextState;
+
+	switch (NextState)
+	{
+	case WoodPieceState::Loop:
+		LoopStart();
+		break;
+	case WoodPieceState::Death:
+		DeathStart();
+		break;
+	default:
+		break;
+	}
+
+	switch (NextState)
+	{
+	case WoodPieceState::Loop:
+		LoopEnd();
+		break;
+	case WoodPieceState::Death:
+		DeathEnd();
+			break;
+	default:
+		break;
+	}
+}
+void WoodPiece::UpdateState(float _DeltaTime)
+{
+	switch (StateValue)
+	{
+	case WoodPieceState::Loop:
+		LoopUpdate(_DeltaTime);
+		break;
+	case WoodPieceState::Death:
+		DeathUpdate(_DeltaTime);
+		break;
+	default:
+		break;
+	}
+}
+
+void WoodPiece::LoopStart()
+{
+	RenderPtr->ChangeAnimation("Object_WoodPiece_Loop");
+}
+void WoodPiece::LoopUpdate(float _DeltaTime)
+{
+	if (true == IsDeath)
+	{
+		ProjectileCollisionPtr->Off();
+		ProjectileCollisionRenderPtr->Off();
+		ChangeState(WoodPieceState::Death);
+		return;
+	}
+}
+void WoodPiece::LoopEnd()
+{
+
+}
+
+void WoodPiece::DeathStart()
+{
+	RenderPtr->ChangeAnimation("Object_WoodPiece_Death");
+}
+void WoodPiece::DeathUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		Death();
+	}
+}
+void WoodPiece::DeathEnd()
+{
+
 }

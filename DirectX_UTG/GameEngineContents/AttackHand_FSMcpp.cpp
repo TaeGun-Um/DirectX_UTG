@@ -76,11 +76,19 @@ void Katzenwagen::AttackHand_IntroStart()
 	{
 		AttackHandRenderPtr->GetTransform()->SetLocalPositiveScaleX();
 		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ -800, -90 });
+
+		IsWoodCreate_Left = true;
+		WoodCreateTime_Left = 0.0f;
+		WoodPieceCount_Left = 0;
 	}
 	else
 	{
 		AttackHandRenderPtr->GetTransform()->SetLocalNegativeScaleX();
 		AttackHandRenderPtr->GetTransform()->SetLocalPosition({ 800, -90 });
+
+		IsWoodCreate_Right = true;
+		WoodCreateTime_Right = 0.0f;
+		WoodPieceCount_Right = 0;
 	}
 
 	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Intro");
