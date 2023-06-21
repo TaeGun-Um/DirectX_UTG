@@ -186,7 +186,6 @@ void MouseLevel::LevelChangeStart()
 
 		MouseObject->GetTransform()->SetLocalPosition({ 1040 , 225, -1 });
 		MouseObject->SetInitPosition(MouseObject->GetTransform()->GetWorldPosition());
-		//MouseObject->SetInitReset();
 
 		if (nullptr == CatObject)
 		{
@@ -194,7 +193,6 @@ void MouseLevel::LevelChangeStart()
 		}
 
 		CatObject->GetTransform()->SetLocalPosition({ 640 , 470, 10 });
-		//MouseObject->SetInitReset();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -361,10 +359,29 @@ void MouseLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
 
-	ReadyWallopCount = 1;
-	ReadyWallopTime = 0.0f;
-	CardObject->CartUIReset();
-	PlayerObject->MoveAbleTimeReset();
+	{
+		ReadyWallopCount = 1;
+		ReadyWallopTime = 0.0f;
+		EndTime = 0.0f;
+		IsBossEnd = false;
+		IsMouseLevelEnd = false;
+		IsPlayerEnd = false;
+		EndSetCount = 1;
+		EndSetCount2 = 1;
+
+		CardObject->CartUIReset();
+		PlayerObject->MoveAbleTimeReset();
+
+		MouseObject->Death();
+		CatObject->Death();
+		MapObject->Death();
+		BackMapObject->Death();
+
+		MouseObject = nullptr;
+		CatObject = nullptr;
+		MapObject = nullptr;
+		BackMapObject = nullptr;
+	}
 }
 
 void MouseLevel::ReLoadSetting()

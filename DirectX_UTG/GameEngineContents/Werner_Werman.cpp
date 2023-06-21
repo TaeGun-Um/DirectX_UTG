@@ -77,6 +77,93 @@ void Werner_Werman::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//void Werner_Werman::SetInitReset()
+//{
+//	StateValue = MouseState::Idle;
+//	CannonStateValue = CannonState::Out;
+//	CatapultStateValue = CatapultState::Loop;
+//	Phase2StateValue = Phase2State::Intro;
+//	ScissorStateValue = ScissorState::Scissor_Intro;
+//	WheelStateValue = WheelState::Intro;
+//
+//	ChangeState(MouseState::Idle);
+//	HP = 1000.0f;
+//
+//	//MouseRenderPtr->GetTransform()->SetLocalScale({ 0, 250 });
+//	BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
+//	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+//	EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
+//	EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
+//
+//	WeaponRender->Off();
+//	WheelRenderPtr->Off();
+//	FlamecannonRenderPtr_Right->Off();
+//	FlamecannonRenderPtr_Left->Off();
+//	PlatformCollisionRenderPtr->Off();
+//	PlatformCollisionPtr->Off();
+//
+//	FowardPosition = float4::Zero;
+//	//InitPosition = float4::Zero;
+//	LeftInitPosition = float4::Zero;
+//	Phase2InitPosition = float4::Zero;
+//	MoveDistance = float4::Zero;
+//	CatapultStartPosition = float4::Zero;
+//	CatapultEndPosition = float4::Zero;
+//	Phase2IdleDownPosition = float4::Zero;
+//	Phase2IdleUpPosition = float4::Zero;
+//
+//	Phase2IdleLeftMovePosition = float4::Zero;
+//	Phase2IdleRightMovePosition = float4::Zero;
+//
+//	IsIntro = true;
+//	IsShake = false;
+//	Directbool = false;
+//	WeaponType = true;
+//	IsFire = false;
+//	ParryBombCreate = false;
+//	CannonAble = false;
+//	CatapultAble = false;
+//	AlreadyCannonOn = false;
+//	AlreadyCatapultOn = false;
+//	IsDash = false;
+//	IsCreateProjectile = false;
+//	IsCreateCatapultProjectile = false;
+//	IsCreateSpringObject = false;
+//	IsCreateFlamethrower = false;
+//	IsFlameEnd = false;
+//	IsWheelStart = false;
+//
+//	IsPhase2 = false;
+//	Phase2InitCorrection = false;
+//	IsMoveState = false;
+//	IsPhase2UpPosition = false;
+//	IsPhase2DownPosition = false;
+//	Phase2End = false;
+//	MouseTransitionEndLoop = false;
+//
+//	DelayTime = 0.0f;
+//	MoveTime = 0.0f;
+//	WeaponSwapTime = 0.0f;
+//	CannonFireTime = 0.0f;
+//	CatapultLoopTime = 0.0f;
+//	CatapultReLoadLoopTime = 0.0f;
+//	FireTime = 0.0f;
+//	ExplosionLoopTime = 0.0f;
+//	MoveLoopTime = 0.0f;
+//	MoveDelayTime = 0.0f;
+//	Phase2MoveDistance = 0.0f;
+//
+//	CannonFireRand = 0;
+//	CannonFireCount = 0;
+//	CannonFireMaxCount = 0;
+//	CannonLoopCount = 0;
+//	CatapultFireCount = 0;
+//	WeaponSwapCount = 0;
+//	Phase2PositionSetting = 1;
+//	WheelMoveCount = 1;
+//}
+
+
 void Werner_Werman::HitBlink(float _DeltaTime)
 {
 	if (false == IsBlink)

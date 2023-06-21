@@ -86,6 +86,8 @@ public:
 	Werner_Werman& operator=(const Werner_Werman& _Other) = delete;
 	Werner_Werman& operator=(Werner_Werman&& _Other) noexcept = delete;
 
+	//void SetInitReset();
+
 	bool GetIsStageEnd()
 	{
 		return IsStageEnd;
@@ -127,7 +129,6 @@ public:
 	{
 		return Phase2End;
 	}
-
 
 protected:
 	void Start();
@@ -182,7 +183,7 @@ private:
 	void CreateFlamethrower();
 	void CreateStick();
 
-	float HP = 10.0f;
+	float HP = 1000.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;
