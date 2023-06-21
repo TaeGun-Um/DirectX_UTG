@@ -17,6 +17,7 @@
 #include "WoodPiece.h"
 #include "Cat_DeathDust.h"
 #include "DeathExplosion.h"
+#include "GhostMouse.h"
 
 Katzenwagen* Katzenwagen::KatzenwagenPtr = nullptr;
 
@@ -48,6 +49,23 @@ void Katzenwagen::Update(float _DeltaTime)
 		ChangeState(KatzenwagenState::Intro);
 	}
 
+	UpdateState(_DeltaTime);
+	CollisionCheck();
+	CollisionSetting();
+	HitBlink(_DeltaTime);
+
+	CreateWoodPiece_Left(_DeltaTime);
+	CreateWoodPiece_Right(_DeltaTime);
+
+	DebugSetting();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Katzenwagen::DebugSetting()
+{
 	if (true == IsDebugRender)
 	{
 		if (true == BodyCollisionPtr->IsUpdate())
@@ -77,18 +95,29 @@ void Katzenwagen::Update(float _DeltaTime)
 		AttackCollisionRenderPtr->Off();
 	}
 
-	UpdateState(_DeltaTime);
-	CollisionCheck();
-	CollisionSetting();
-	HitBlink(_DeltaTime);
-
-	CreateWoodPiece_Left(_DeltaTime);
-	CreateWoodPiece_Right(_DeltaTime);
+	if (nullptr != GhostMouse_One)
+	{
+		if (true == IsDebugRender)
+		{
+			GhostMouse_One->DebugRenderOn();
+		}
+		else
+		{
+			GhostMouse_One->DebugRenderOff();
+		}
+	}
+	if (nullptr != GhostMouse_Two)
+	{
+		if (true == IsDebugRender)
+		{
+			GhostMouse_Two->DebugRenderOn();
+		}
+		else
+		{
+			GhostMouse_Two->DebugRenderOff();
+		}
+	}
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Katzenwagen::HitBlink(float _DeltaTime)
 {
@@ -217,6 +246,28 @@ void Katzenwagen::CollisionCheck()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Katzenwagen::CreateGhostMouse()
+{
+	if (1 != CreateGhostMouseCount)
+	{
+		return;
+	}
+
+	GhostMouse_One = GetLevel()->CreateActor<GhostMouse>();
+	//GhostMouse_Two = GetLevel()->CreateActor<GhostMouse>();
+
+	float4 StartPosition = HeadParent->GetTransform()->GetWorldPosition();
+	float4 GhostPosition = StartPosition + float4{ 0, 0, -12 };
+
+	GhostMouse_One->SetDirection(true);
+	//GhostMouse_Two->SetDirection(false);
+
+	GhostMouse_One->SetStartPosition(GhostPosition);
+	//GhostMouse_Two->SetStartPosition(GhostPosition);
+
+	CreateGhostMouseCount = 0;
+}
 
 void Katzenwagen::CreateWoodPiece_Left(float _DeltaTime)
 {
@@ -469,19 +520,6 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cat_Death_SFX").GetFullPath());
 	}
 
-	if (nullptr == GameEngineTexture::Find("UpTexture.png"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("3_Werner_Werman");
-		NewDir.Move("Phase3");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("UpTexture.png").GetFullPath());
-	}
-
 	if (nullptr == GameEngineSprite::Find("Object_WoodPiece_Loop"))
 	{
 		GameEngineDirectory NewDir;
@@ -506,6 +544,38 @@ void Katzenwagen::ActorInitSetting()
 		NewDir.Move("Tutorial_Normal");
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Ghost_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+		NewDir.Move("Object_Ghost");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Attack_Pink").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Attack_Blue").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Attack_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Death").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("UpTexture.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("UpTexture.png").GetFullPath());
 	}
 
 	if (nullptr == TailHandRenderPtr)

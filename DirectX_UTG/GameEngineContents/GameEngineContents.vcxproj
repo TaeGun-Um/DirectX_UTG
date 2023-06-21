@@ -325,6 +325,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GhostMouse.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GhostMouse_Projectile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GrimMatchstick.h">
       <SubType>
       </SubType>
@@ -721,6 +729,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Frog_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GhostMouse.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GhostMouse_Projectile.cpp">
       <SubType>
       </SubType>
     </ClCompile>

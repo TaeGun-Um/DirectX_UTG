@@ -74,6 +74,9 @@ private:
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> AttackCollisionPtr = nullptr;
 
+	std::shared_ptr<class GhostMouse> GhostMouse_One = nullptr;
+	std::shared_ptr<class GhostMouse> GhostMouse_Two = nullptr;
+
 	bool IsDebugRender = false;
 	bool IsBlink = false;
 	bool IsIntro = false;
@@ -83,6 +86,7 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
+	void DebugSetting();
 	void ActorInitSetting();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
@@ -116,7 +120,9 @@ private:
 	int ClawCreateCount = 1;
 	int WoodPieceCount_Left = 0;
 	int WoodPieceCount_Right = 0;
+	int CreateGhostMouseCount = 1;
 
+	void CreateGhostMouse();
 	void CreateDeathExplosion(float _DeltaTime);
 	void CreateDeathDust();
 	void CreateWoodPiece_Left(float _DeltaTime);

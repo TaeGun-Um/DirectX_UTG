@@ -609,6 +609,15 @@ void MouseLevel::LevelChangeEnd()
 	{
 		GameEngineTexture::UnLoad("UpTexture.png");
 	}
+	if (nullptr != GameEngineSprite::Find("Ghost_Intro"))
+	{
+		GameEngineSprite::UnLoad("Ghost_Intro");
+		GameEngineSprite::UnLoad("Ghost_Idle");
+		GameEngineSprite::UnLoad("Ghost_Attack_Pink");
+		GameEngineSprite::UnLoad("Ghost_Attack_Blue");
+		GameEngineSprite::UnLoad("Ghost_Attack_Outro");
+		GameEngineSprite::UnLoad("Ghost_Death");
+	}
 
 	{
 		ReadyWallopCount = 1;
@@ -936,6 +945,15 @@ void MouseLevel::ReLoadSetting()
 	if (nullptr != GameEngineTexture::Find("UpTexture.png"))
 	{
 		GameEngineTexture::ReLoad("UpTexture.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Ghost_Intro"))
+	{
+		GameEngineSprite::ReLoad("Ghost_Intro");
+		GameEngineSprite::ReLoad("Ghost_Idle");
+		GameEngineSprite::ReLoad("Ghost_Attack_Pink");
+		GameEngineSprite::ReLoad("Ghost_Attack_Blue");
+		GameEngineSprite::ReLoad("Ghost_Attack_Outro");
+		GameEngineSprite::ReLoad("Ghost_Death");
 	}
 }
 
