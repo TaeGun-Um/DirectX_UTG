@@ -114,24 +114,24 @@ void MouseLevel::Update(float _DeltaTime)
 
 	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
-	//ReadyWallopTime += _DeltaTime;
+	ReadyWallopTime += _DeltaTime;
 
-	//if (1.5f <= ReadyWallopTime && 1 == ReadyWallopCount)
-	//{
-	//	ReadyWallopCount = 0;
-	//	ReadyWallopPtr->StartMessage();
-	//}
+	if (1.5f <= ReadyWallopTime && 1 == ReadyWallopCount)
+	{
+		ReadyWallopCount = 0;
+		ReadyWallopPtr->StartMessage();
+	}
 
-	//// readywallop이 끝나는 시점에 게임 시작
-	//if (true == ReadyWallopPtr->GetIsEnd())
-	//{
-	//	int a = 0;
-	//}
+	// readywallop이 끝나는 시점에 게임 시작
+	if (true == ReadyWallopPtr->GetIsEnd())
+	{
+		int a = 0;
+	}
 
-	//if (true == GameEngineInput::IsDown("PrevLevel"))
-	//{
-	//	GameEngineCore::ChangeLevel("OverworldLevel");
-	//}
+	if (true == GameEngineInput::IsDown("PrevLevel"))
+	{
+		GameEngineCore::ChangeLevel("OverworldLevel");
+	}
 }
 
 void MouseLevel::LevelChangeStart()
