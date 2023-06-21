@@ -1216,7 +1216,7 @@ void Werner_Werman::ActorInitSetting()
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -50 });
 		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
@@ -1234,7 +1234,7 @@ void Werner_Werman::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -2 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -50 });
 		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 	}
 
