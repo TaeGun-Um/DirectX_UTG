@@ -1,5 +1,12 @@
 #pragma once
 
+enum class BallState
+{
+	Intro,
+	Loop,
+	Death,
+};
+
 // Ό³Έν :
 class GhostMouse_Projectile : public GameEngineActor
 {
@@ -17,6 +24,7 @@ public:
 	void SetStartPosition(const float4& _PlayerPosition)
 	{
 		GetTransform()->SetLocalPosition(_PlayerPosition);
+		StartPosition = GetTransform()->GetLocalPosition();
 	}
 
 	void SetCollisionRenderOn()
@@ -36,9 +44,9 @@ public:
 		ParryCollisionRenderPtr->Off();
 	}
 
-	void SetParryBombCreate()
+	void SetParryCreate(bool _Is)
 	{
-		IsParryProjectile = true;
+		IsParryProjectile = _Is;
 	}
 
 	void SetColMap(const std::shared_ptr<GameEngineTexture>& _ColMap, PixelCollision::Coordinate _Pivot)
@@ -58,13 +66,39 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> ParryCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ParryCollisionPtr = nullptr;
 
-	float4 MoveDirect = float4::Zero;
-	float MoveSpeed = 330.0f;
+	float4 StartPosition = float4::Zero;
+	float4 DirectNormal = float4::Zero;
+	float MoveSpeed = 550.0f;
 
 	bool IsDeath = false;
 	bool IsParryProjectile = false;
+	bool IsPink = false;
+	bool IsCreateSmall = false;
+
+	int MoveSet = 1;
 
 	PixelCollision PixelCollisionCheck;
 
+	void CreateSmallBall();
+	void CollisionCheck();
+	void MoveDirection(float _DeltaTime);
+	void PixelCheck(float _DeltaTime);
+
+	BallState StateValue = BallState::Intro;
+
+	void ChangeState(BallState _StateValue);
+	void UpdateState(float _DeltaTime);
+
+	void IntroStart();
+	void IntroUpdate(float _DeltaTime);
+	void IntroEnd();
+
+	void LoopStart();
+	void LoopUpdate(float _DeltaTime);
+	void LoopEnd();
+
+	void DeathStart();
+	void DeathUpdate(float _DeltaTime);
+	void DeathEnd();
 };
 

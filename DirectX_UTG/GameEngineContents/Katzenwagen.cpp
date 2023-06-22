@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Katzenwagen.h"
 
-#include <GameEnginePlatform/GameEngineInput.h> // юс╫ц
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -57,12 +56,65 @@ void Katzenwagen::Update(float _DeltaTime)
 	CreateWoodPiece_Left(_DeltaTime);
 	CreateWoodPiece_Right(_DeltaTime);
 
+	GhostMouseAttackSetting(_DeltaTime);
+
 	DebugSetting();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Katzenwagen::GhostMouseAttackSetting(float _DeltaTime)
+{
+	if (nullptr != GhostMouse_One)
+	{
+		GhostMouse_One_IsDeath = GhostMouse_One->GetIsDeath();
+	}
+	if (nullptr != GhostMouse_Two)
+	{
+		GhostMouse_Two_IsDeath = GhostMouse_Two->GetIsDeath();
+	}
+	
+	if (true == GhostMouse_One_IsDeath && true == GhostMouse_Two_IsDeath)
+	{
+		return;
+	}
+
+	if (true == GhostMouse_One_IsDeath)
+	{
+		IsTurn = true;
+	}
+
+	if (true == GhostMouse_Two_IsDeath)
+	{
+		IsTurn = false;
+	}
+
+	if (nullptr != GhostMouse_One && false == GhostMouse_One_IsDeath && false == IsTurn)
+	{
+		GhostAttackTime += _DeltaTime;
+
+		if (5.0f <= GhostAttackTime)
+		{
+			GhostAttackTime = 0.0f;
+			GhostMouse_One->SetIsAttack();
+			IsTurn = true;
+		}
+	}
+
+	if (nullptr != GhostMouse_Two && false == GhostMouse_Two_IsDeath && true == IsTurn)
+	{
+		GhostAttackTime += _DeltaTime;
+
+		if (5.0f <= GhostAttackTime)
+		{
+			GhostAttackTime = 0.0f;
+			GhostMouse_Two->SetIsAttack();
+			IsTurn = true;
+		}
+	}
+}
 
 void Katzenwagen::DebugSetting()
 {
@@ -255,16 +307,16 @@ void Katzenwagen::CreateGhostMouse()
 	}
 
 	GhostMouse_One = GetLevel()->CreateActor<GhostMouse>();
-	//GhostMouse_Two = GetLevel()->CreateActor<GhostMouse>();
+	GhostMouse_Two = GetLevel()->CreateActor<GhostMouse>();
 
 	float4 StartPosition = HeadParent->GetTransform()->GetWorldPosition();
 	float4 GhostPosition = StartPosition + float4{ 0, 0, -12 };
 
 	GhostMouse_One->SetDirection(true);
-	//GhostMouse_Two->SetDirection(false);
+	GhostMouse_Two->SetDirection(false);
 
 	GhostMouse_One->SetStartPosition(GhostPosition);
-	//GhostMouse_Two->SetStartPosition(GhostPosition);
+	GhostMouse_Two->SetStartPosition(GhostPosition);
 
 	CreateGhostMouseCount = 0;
 }
@@ -563,6 +615,38 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Attack_Blue").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Attack_Outro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ghost_Death").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("GhostBullet_Blue_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+		NewDir.Move("Object_GhostBullet_Blue");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Blue_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Blue_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Blue_Death").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("GhostBullet_Pink_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("3_Werner_Werman");
+		NewDir.Move("Phase3");
+		NewDir.Move("Object_GhostBullet_Pink");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Pink_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Pink_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("GhostBullet_Pink_Death").GetFullPath());
 	}
 
 	if (nullptr == GameEngineTexture::Find("UpTexture.png"))

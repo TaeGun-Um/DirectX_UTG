@@ -24,11 +24,6 @@ public:
 	GhostMouse& operator=(const GhostMouse& _Other) = delete;
 	GhostMouse& operator=(GhostMouse&& _Other) noexcept = delete;
 
-	void SetStartPosition(const float4& _PlayerPosition)
-	{
-		GetTransform()->SetLocalPosition(_PlayerPosition);
-	}
-
 	void SetDirection(bool _Direction)
 	{
 		if (false == _Direction)
@@ -39,6 +34,21 @@ public:
 		Directbool = _Direction;
 	}
 
+	void SetStartPosition(const float4& _PlayerPosition)
+	{
+		GetTransform()->SetLocalPosition(_PlayerPosition);
+		StartPosition = GetTransform()->GetLocalPosition();
+
+		if (true == Directbool)
+		{
+			LerpPosition = StartPosition + float4{ 280, 85 };
+		}
+		else
+		{
+			LerpPosition = StartPosition + float4{ -280, 60 };
+		}
+	}
+
 	void DebugRenderOn()
 	{
 		IsDebugRender = true;
@@ -47,6 +57,21 @@ public:
 	void DebugRenderOff()
 	{
 		IsDebugRender = false;
+	}
+
+	void SetIsAttack()
+	{
+		IsAttack = true;
+	}
+
+	void SetIsDeath()
+	{
+		IsDeath = true;
+	}
+
+	bool GetIsDeath()
+	{
+		return IsDeath;
 	}
 
 protected:
@@ -72,13 +97,20 @@ private:
 
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
+	void CreateBall(bool _Is);
 
 	GhostState StateValue = GhostState::Intro;
 
+	float4 StartPosition = float4::Zero;
+	float4 LerpPosition = float4::Zero;
+
+	bool IsPink = false;
 	bool IsDeath = false;
 	bool Directbool = false;
+	bool IsAttack = false;
 
 	float AttackDelayTime = 0.0f;
+	float LerpTime = 0.0f;
 
 	void ChangeState(GhostState _StateValue);
 	void UpdateState(float _DeltaTime);

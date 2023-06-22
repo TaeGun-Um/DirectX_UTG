@@ -6,8 +6,6 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Mouse_Map.h"
-#include "Katzenwagen.h" // 임시
-#include "Mouse_Map.h"   // 임시
 
 void Werner_Werman::ChangeState(MouseState _StateValue)
 {
@@ -238,24 +236,6 @@ void Werner_Werman::IdleUpdate(float _DeltaTime)
 	{
 		ChangeState(MouseState::Intro);
 		return;
-	}
-
-	/// Test
-	//{
-	//	Directbool = true;
-
-	//	Phase2PositionSetting = 0;
-	//	Phase2InitPosition = float4{ 700.0f , InitPosition.y, 0.0f };
-	//	GetTransform()->SetLocalPosition({ (Phase2InitPosition.x - 60.0f) , Phase2InitPosition.y, 0.0f });
-
-	//	ChangeState(MouseState::Explosion_Intro);
-	//	return;
-	//}
-	// Test
-	{
-		Off();
-		Mouse_Map::MouseMapPtr->IsPhase2 = true;
-		Katzenwagen::KatzenwagenPtr->IsIntro = true;
 	}
 
 	if (true == IsDash)

@@ -1895,6 +1895,9 @@ void Player::HoldingAttackEnd()
 
 void Player::HitStart()
 {
+	MoveDirect = float4::Zero;
+	JumpTime = 0.0f;
+
 	IsSlap = false;
 	IsDash = false;
 	IsEXAttack = false;

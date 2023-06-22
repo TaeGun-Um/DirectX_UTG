@@ -618,6 +618,18 @@ void MouseLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ghost_Attack_Outro");
 		GameEngineSprite::UnLoad("Ghost_Death");
 	}
+	if (nullptr != GameEngineSprite::Find("GhostBullet_Blue_Intro"))
+	{
+		GameEngineSprite::UnLoad("GhostBullet_Blue_Intro");
+		GameEngineSprite::UnLoad("GhostBullet_Blue_Loop");
+		GameEngineSprite::UnLoad("GhostBullet_Blue_Death");
+	}
+	if (nullptr != GameEngineSprite::Find("GhostBullet_Pink_Intro"))
+	{
+		GameEngineSprite::UnLoad("GhostBullet_Pink_Intro");
+		GameEngineSprite::UnLoad("GhostBullet_Pink_Loop");
+		GameEngineSprite::UnLoad("GhostBullet_Pink_Death");
+	}
 
 	{
 		ReadyWallopCount = 1;
@@ -954,6 +966,18 @@ void MouseLevel::ReLoadSetting()
 		GameEngineSprite::ReLoad("Ghost_Attack_Blue");
 		GameEngineSprite::ReLoad("Ghost_Attack_Outro");
 		GameEngineSprite::ReLoad("Ghost_Death");
+	}
+	if (nullptr != GameEngineSprite::Find("GhostBullet_Blue_Intro"))
+	{
+		GameEngineSprite::ReLoad("GhostBullet_Blue_Intro");
+		GameEngineSprite::ReLoad("GhostBullet_Blue_Loop");
+		GameEngineSprite::ReLoad("GhostBullet_Blue_Death");
+	}
+	if (nullptr != GameEngineSprite::Find("GhostBullet_Pink_Intro"))
+	{
+		GameEngineSprite::ReLoad("GhostBullet_Pink_Intro");
+		GameEngineSprite::ReLoad("GhostBullet_Pink_Loop");
+		GameEngineSprite::ReLoad("GhostBullet_Pink_Death");
 	}
 }
 

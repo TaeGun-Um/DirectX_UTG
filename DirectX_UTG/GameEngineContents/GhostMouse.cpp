@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GhostMouse.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -12,6 +13,7 @@
 #include "Player.h"
 #include "MouseLevel.h"
 #include "You_Died.h"
+#include "GhostMouse_Projectile.h"
 
 GhostMouse::GhostMouse() 
 {
@@ -33,15 +35,13 @@ void GhostMouse::Start()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ghost_Attack_Blue", .SpriteName = "Ghost_Attack_Blue", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ghost_Attack_Outro", .SpriteName = "Ghost_Attack_Outro", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Ghost_Death", .SpriteName = "Ghost_Death", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
-
-		ChangeState(GhostState::Intro);
 	}
 
 	if (nullptr == BodyCollisionPtr)
 	{
 		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterHitBox));
 		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, -50 });
 		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		BodyCollisionPtr->Off();
 	}
@@ -60,7 +60,7 @@ void GhostMouse::Start()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterHitBox));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 310, -50 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 270, -50 });
 		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		EXCollisionPtr->Off();
 	}
@@ -74,6 +74,8 @@ void GhostMouse::Start()
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		EXCollisionRenderPtr->Off();
 	}
+
+	ChangeState(GhostState::Intro);
 }
 
 void GhostMouse::Update(float _DeltaTime)
@@ -100,6 +102,17 @@ void GhostMouse::Update(float _DeltaTime)
 	CollisionCheck();
 	HitBlink(_DeltaTime);
 	UpdateState(_DeltaTime);
+}
+
+void GhostMouse::CreateBall(bool _Is)
+{
+	std::shared_ptr<GhostMouse_Projectile> Projectile = GetLevel()->CreateActor<GhostMouse_Projectile>();
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ 0, 0 };
+
+	Projectile->SetParryCreate(_Is);
+	Projectile->SetColMap(Player::MainPlayer->GetColMap(), PixelCollision::Coordinate::Custom);
+	Projectile->SetStartPosition(ProjectilePosition);
 }
 
 void GhostMouse::HitBlink(float _DeltaTime)
@@ -291,7 +304,14 @@ void GhostMouse::IntroStart()
 }
 void GhostMouse::IntroUpdate(float _DeltaTime)
 {
-	if (true == RenderPtr->IsAnimationEnd())
+	LerpTime += _DeltaTime;
+
+	float4 CurPos = GetTransform()->GetLocalPosition();
+	float4 NewPos = float4::LerpClamp(StartPosition, LerpPosition, LerpTime);
+
+	GetTransform()->SetLocalPosition(NewPos);
+
+	if (true == RenderPtr->IsAnimationEnd() && LerpPosition == CurPos)
 	{
 		ChangeState(GhostState::Idle);
 		return;
@@ -315,12 +335,22 @@ void GhostMouse::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	AttackDelayTime += _DeltaTime;
-
-	if (1.0f <= AttackDelayTime)
+	if (true == IsAttack)
 	{
-		ChangeState(GhostState::BlueBallAttack);
-		return;
+		IsAttack = false;
+
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+		if (0 == RandC)
+		{
+			ChangeState(GhostState::BlueBallAttack);
+			return;
+		}
+		else
+		{
+			ChangeState(GhostState::PinkBallAttack);
+			return;
+		}
 	}
 }
 void GhostMouse::IdleEnd()
@@ -330,6 +360,7 @@ void GhostMouse::IdleEnd()
 
 void GhostMouse::BlueBallAttackStart()
 {
+	IsPink = false;
 	RenderPtr->ChangeAnimation("Ghost_Attack_Blue");
 }
 void GhostMouse::BlueBallAttackUpdate(float _DeltaTime)
@@ -348,11 +379,12 @@ void GhostMouse::BlueBallAttackUpdate(float _DeltaTime)
 }
 void GhostMouse::BlueBallAttackEnd()
 {
-
+	
 }
 
 void GhostMouse::PinkBallAttackStart()
 {
+	IsPink = true;
 	RenderPtr->ChangeAnimation("Ghost_Attack_Pink");
 }
 void GhostMouse::PinkBallAttackUpdate(float _DeltaTime)
@@ -376,6 +408,7 @@ void GhostMouse::PinkBallAttackEnd()
 
 void GhostMouse::AttackOutroStart()
 {
+	CreateBall(IsPink);
 	RenderPtr->ChangeAnimation("Ghost_Attack_Outro");
 }
 void GhostMouse::AttackOutroUpdate(float _DeltaTime)

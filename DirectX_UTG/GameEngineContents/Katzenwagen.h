@@ -86,6 +86,7 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
+	void GhostMouseAttackSetting(float _DeltaTime);
 	void DebugSetting();
 	void ActorInitSetting();
 	void CollisionCheck();
@@ -106,6 +107,10 @@ private:
 	bool IsClawAttackEnd = false;
 	bool IsWoodCreate_Left = false;
 	bool IsWoodCreate_Right = false;
+	bool IsGhostMouseCreate = false;
+	bool GhostMouse_One_IsDeath = false;
+	bool GhostMouse_Two_IsDeath = false;
+	bool IsTurn = false;
 
 	float AttactDelayTime = 0.0f;
 	float HandAttactTime = 0.0f;
@@ -114,6 +119,7 @@ private:
 	float WoodCreateTime_Left = 0.0f;
 	float WoodCreateTime_Right = 0.0f;
 	float ExplosionTime = 0.0f;
+	float GhostAttackTime = 0.0f;
 
 	int InitSetting = 1;
 	int HandAttackCount = 0;

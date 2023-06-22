@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Werner_Werman.h"
 #include "Mouse_Map.h"
+#include "GhostMouse.h"
 
 void Katzenwagen::ChangeState(KatzenwagenState _StateValue)
 {
@@ -200,23 +201,9 @@ void Katzenwagen::IdleUpdate(float _DeltaTime)
 		IsAttackStart = false;
 	}
 
-	//if (true == IsAttackStart && 3.f <= AttactDelayTime)
-	//{
-	//	Directbool = !Directbool;
-
-	//	if (true == IsLeft)
-	//	{
-	//		IsLeft = false;
-	//		AttactDelayTime -= 1.5f;
-	//		return;
-	//	}
-
-	//	ChangeState(KatzenwagenState::ArmAttack_Intro);
-	//	return;
-	//}
-
-	if (true == IsAttackStart && 3.f <= AttactDelayTime)
+	if (true == IsAttackStart && 1.5f <= AttactDelayTime && false == IsGhostMouseCreate && Werner_Werman::WernerWermanPtr->HP < 250.0f)
 	{
+		IsGhostMouseCreate = true;
 		Directbool = false;
 
 		if (false == Directbool) // ¿ÞÂÊ °í°³
@@ -225,6 +212,21 @@ void Katzenwagen::IdleUpdate(float _DeltaTime)
 		}
 
 		ChangeState(KatzenwagenState::GhostSpawn_Intro);
+		return;
+	}
+
+	if (true == IsAttackStart && 3.f <= AttactDelayTime)
+	{
+		Directbool = !Directbool;
+
+		if (true == IsLeft)
+		{
+			IsLeft = false;
+			AttactDelayTime -= 1.5f;
+			return;
+		}
+
+		ChangeState(KatzenwagenState::ArmAttack_Intro);
 		return;
 	}
 
@@ -442,6 +444,15 @@ void Katzenwagen::GhostSpawn_OutroEnd()
 
 void Katzenwagen::DeathStart()
 {
+	if (nullptr != GhostMouse_One)
+	{
+		GhostMouse_One->SetIsDeath();
+	}
+	if (nullptr != GhostMouse_Two)
+	{
+		GhostMouse_Two->SetIsDeath();
+	}
+
 	BodyCollisionRenderPtr->Off();
 	EXCollisionRenderPtr->Off();
 	BodyCollisionPtr->Off();
