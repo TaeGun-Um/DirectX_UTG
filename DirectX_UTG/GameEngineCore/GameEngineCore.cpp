@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
 #include <GameEngineBase\GameEngineDebug.h>
+#include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
@@ -9,6 +10,8 @@
 #include "GameEngineDevice.h"
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
+
+GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -26,10 +29,16 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
+	// 코어이니셜라이즈
+	// Rect Box
+
 	if (false == GameEngineInput::IsKey("GUISwitch"))
 	{
 		GameEngineInput::CreateKey("GUISwitch", VK_F8);
 	}
+
+
+	JobQueue.Initialize("EngineJobQueue");
 
 	GameEngineDevice::Initialize();
 
@@ -41,7 +50,6 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	{
 		MsgAssert("시작 컨텐츠가 존재하지 않습니다.");
 	}
-
 	_ContentsStart();
 }
 
@@ -138,7 +146,6 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	LevelMap.clear();
 	CoreResourcesEnd();
-
 
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();

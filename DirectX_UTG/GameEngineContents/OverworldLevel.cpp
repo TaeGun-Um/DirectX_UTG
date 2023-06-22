@@ -397,7 +397,6 @@ void OverworldLevel::LevelChangeEnd()
 			BuildingDataBase::ZeplinPtr->IsLevelChangeReset();
 		}
 	}
-
 }
 
 void OverworldLevel::ReLoadSetting()
