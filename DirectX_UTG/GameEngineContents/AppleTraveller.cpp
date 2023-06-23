@@ -1,6 +1,10 @@
 #include "PrecompileHeader.h"
 #include "AppleTraveller.h"
 
+#include <GameEngineCore/GameEngineFont.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
+#include <GameEngineCore/GameEngineLevel.h>
+
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -50,6 +54,16 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Attack") && TextEndCount > TextCount && false == NextStep)
 	{
 		NextStep = true;
+
+		int SetCount = TextCount - 1;
+
+		if (SetCount > 0)
+		{
+			NPCScript[TextCount - 1]->Off();
+		}
+		
+		NPCScript[TextCount]->On();
+
 		++TextCount;
 	}
 	else if (true == GameEngineInput::IsDown("Attack") && TextEndCount <= TextCount && false == NextStep)
@@ -60,6 +74,15 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		Player_Overworld::MainPlayer->SetIsPortalingfalse();
 		NPC_TextBoxRender->Off();
 		BoxInterActionDelayTime = 0.0f;
+
+		int SetCount = TextCount - 1;
+
+		if (SetCount > 0)
+		{
+			NPCScript[TextCount - 1]->Off();
+		}
+
+		NPCScript[TextCount]->On();
 	}
 
 	if (true == NextStep)
@@ -232,5 +255,58 @@ void AppleTraveller::InitCollisionSetting()
 		WaveCollisionRenderPtr->GetTransform()->SetLocalScale(WaveCollisionPtr->GetTransform()->GetLocalScale());
 		WaveCollisionRenderPtr->GetTransform()->SetLocalPosition(WaveCollisionPtr->GetTransform()->GetLocalPosition());
 		WaveCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.5f;
+	}
+}
+
+void AppleTraveller::ScriptInit()
+{
+	GameEngineFont::Load("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+
+	TextRenderPtr = GetLevel()->CreateActor<NPC_TextBox>();
+
+	std::shared_ptr<GameEngineFontRenderer> FontRender0 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+	std::shared_ptr<GameEngineFontRenderer> FontRender1 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+	std::shared_ptr<GameEngineFontRenderer> FontRender2 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+	std::shared_ptr<GameEngineFontRenderer> FontRender3 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+	std::shared_ptr<GameEngineFontRenderer> FontRender4 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+
+	FontRender0->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+	FontRender1->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+	FontRender2->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+	FontRender3->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+	FontRender4->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
+
+	FontRender0->SetText("¾È³çÇÏ¼¼¿ä.");
+	FontRender1->SetText("¹Ý°©½À´Ï´Ù.");
+	FontRender2->SetText("Ã³À½ºË°Ú½À´Ï´Ù.");
+	FontRender3->SetText("È£È£È£È£");
+	FontRender4->SetText("ÇÏÇÏÇÏ");
+
+	FontRender0->SetScale(10.0f);
+	FontRender1->SetScale(10.0f);
+	FontRender2->SetScale(10.0f);
+	FontRender3->SetScale(10.0f);
+	FontRender4->SetScale(10.0f);
+
+	FontRender0->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
+	FontRender1->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
+	FontRender2->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
+	FontRender3->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
+	FontRender4->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
+
+	FontRender0->Off();
+	FontRender1->Off();
+	FontRender2->Off();
+	FontRender3->Off();
+	FontRender4->Off();
+
+	NPCScript.resize(5);
+
+	{
+		NPCScript[0] = FontRender0;
+		NPCScript[1] = FontRender1;
+		NPCScript[2] = FontRender2;
+		NPCScript[3] = FontRender3;
+		NPCScript[4] = FontRender4;
 	}
 }

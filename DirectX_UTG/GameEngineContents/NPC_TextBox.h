@@ -24,6 +24,11 @@ public:
 	bool RenderAlphaSetting(float _DeltaTime);
 	void BoxReset();
 
+	void BoxScaleChange(float4 _Value)
+	{
+		BoxRenderPtr->GetTransform()->SetLocalScale(_Value);
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;

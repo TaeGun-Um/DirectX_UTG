@@ -3,6 +3,8 @@
 #include "NPCDataBase.h"
 #include "NPC_TextBox.h"
 
+class GameEngineFontRenderer;
+
 // Ό³Έν :
 class AppleTraveller : public NPCDataBase
 {
@@ -38,6 +40,8 @@ public:
 
 		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
 		TextEndCount = 3;
+
+		ScriptInit();
 	}
 
 protected:
@@ -55,6 +59,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> WaveCollisionPtr = nullptr;
 
 	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+	std::shared_ptr<class GameEngineActor> TextRenderPtr = nullptr;
 
 	void InitRenderSetting();
 	void InitCollisionSetting();
@@ -74,5 +79,8 @@ private:
 	bool WaveEnd = false;
 	bool IsBlink = false;
 	bool NextStep = false;
+
+	std::vector<std::shared_ptr<GameEngineFontRenderer>> NPCScript;
+	void ScriptInit();
 };
 
