@@ -122,16 +122,19 @@ void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 
 void GameEngineSpriteRenderer::SetFlipX()
 {
-	float4 LocalScale = GetTransform()->GetLocalScale();
-	LocalScale.x = -LocalScale.x;
-	GetTransform()->SetLocalScale(LocalScale);
+	Flip.x = Flip.x != 0.0f ? 0.0f : 1.0f;
+	//float4 LocalScale = GetTransform()->GetLocalScale();
+	//LocalScale.x = -LocalScale.x;
+	//GetTransform()->SetLocalScale(LocalScale);
 }
 
 void GameEngineSpriteRenderer::SetFlipY()
 {
-	float4 LocalScale = GetTransform()->GetLocalScale();
-	LocalScale.y = -LocalScale.y;
-	GetTransform()->SetLocalScale(LocalScale);
+	Flip.y = Flip.y != 0.0f ? 0.0f : 1.0f;
+
+	//float4 LocalScale = GetTransform()->GetLocalScale();
+	//LocalScale.y = -LocalScale.y;
+	//GetTransform()->SetLocalScale(LocalScale);
 }
 
 void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
@@ -401,6 +404,7 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 	GetShaderResHelper().SetConstantBufferLink("ClipData", Clip);
+	GetShaderResHelper().SetConstantBufferLink("FlipData", Flip);
 }
 
 

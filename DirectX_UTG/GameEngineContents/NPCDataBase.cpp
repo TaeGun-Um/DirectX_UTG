@@ -28,9 +28,11 @@ void NPCDataBase::CollisionCheck(std::shared_ptr<class GameEngineCollision> _Col
 
 	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
 	{
+		float4 ActionPostion = _Collision->GetActor()->GetTransform()->GetWorldPosition() + float4{ -80, 50};
+
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 		Player_Overworld::MainPlayer->SetIsPortalingTrue();
-		Player_Overworld::MainPlayer->SetTextBoxCameraAction(true);
+		Player_Overworld::MainPlayer->StartTextBoxCameraAction(true, ActionPostion);
 		CreateBox = true;
 	}
 }

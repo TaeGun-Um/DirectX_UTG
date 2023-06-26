@@ -18,6 +18,12 @@ GameEngineSampler::~GameEngineSampler()
 // GetDevice->CreateSamplerState 실시
 void GameEngineSampler::ResCreate(const D3D11_SAMPLER_DESC& _Desc)
 {
+	if (nullptr != State)
+	{
+		State->Release();
+		State = nullptr;
+	}
+
 	Desc = _Desc;
 
 	// 1번 인자 : D3D11_SAMPLER_DESC

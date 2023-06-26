@@ -126,8 +126,7 @@ void OverworldLevel::LevelChangeStart()
 	{
 		// 카메라 세팅
 		GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-		//GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
-		GetMainCamera()->GetTransform()->SetLocalPosition({ 1680, 1260, -620.0f });
+		GetMainCamera()->GetTransform()->SetLocalPosition({ 805, 1435, -620.0f });
 		GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 		IsSet1 = true;
@@ -206,8 +205,7 @@ void OverworldLevel::LevelChangeStart()
 		if (nullptr == PlayerObject)
 		{
 			PlayerObject = CreateActor<Player_Overworld>();
-			PlayerObject->GetTransform()->SetLocalPosition({ 1680 , 1260, 1 });
-			//PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
+			PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
 			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		}
 		

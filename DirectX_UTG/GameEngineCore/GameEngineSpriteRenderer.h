@@ -166,6 +166,7 @@ protected:
 	void SpriteRenderInit();
 	float4 AtlasData;
 	float4 Clip = float4::One;
+	float4 Flip = float4::Zero;
 
 private:
 	void Update(float _Delta) override;

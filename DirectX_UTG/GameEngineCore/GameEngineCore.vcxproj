@@ -167,15 +167,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BlurEffect.h" />
     <ClInclude Include="GameEngineActor.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineBlend.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GameEngineButton.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -218,10 +215,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineFontRenderer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GameEngineFSM.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -305,10 +298,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameEngineTileMapRenderer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="GameEngineTransform.h">
       <SubType>
       </SubType>
@@ -346,15 +335,12 @@
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlurEffect.cpp" />
     <ClCompile Include="GameEngineActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineBlend.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GameEngineButton.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -396,10 +382,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineFontRenderer.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GameEngineFSM.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -480,10 +462,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineTexture.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GameEngineTileMapRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

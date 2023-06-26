@@ -428,6 +428,9 @@
     <ClInclude Include="SmallBall.h">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="OldFilm.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -769,6 +772,9 @@
     </ClCompile>
     <ClCompile Include="SmallBall.cpp">
       <Filter>Levels\5. Bosses\3. Mouse\Object\Boss\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="OldFilm.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

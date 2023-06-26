@@ -1,7 +1,7 @@
 #pragma once
 #include "GameEngineResource.h"
 
-// 설명 : 쉐이더의 샘플러를 위한 클래스
+// 설명 :
 class GameEngineSampler : public GameEngineResource<GameEngineSampler>
 {
 	friend class GameEngineSamplerSetter;
@@ -17,19 +17,35 @@ public:
 	GameEngineSampler& operator=(const GameEngineSampler& _Other) = delete;
 	GameEngineSampler& operator=(GameEngineSampler&& _Other) noexcept = delete;
 
-	// 생성된 샘플러를 GameEngineResource에 담는다.
 	static std::shared_ptr<GameEngineSampler> Create(const std::string_view& _Name, const D3D11_SAMPLER_DESC& Desc)
 	{
-		std::shared_ptr<GameEngineSampler> NewTexture = GameEngineResource::Create(_Name);
-		NewTexture->ResCreate(Desc);
-		return NewTexture;
+		std::shared_ptr<GameEngineSampler> NewSampler = GameEngineResource::Create(_Name);
+		NewSampler->ResCreate(Desc);
+		return NewSampler;
 	}
+
+	static std::shared_ptr<GameEngineSampler> ReSetting(const std::string_view& _Name, const D3D11_SAMPLER_DESC& Desc)
+	{
+		std::shared_ptr<GameEngineSampler> NewSampler = GameEngineResource::Find(_Name);
+		// NewTexture->ResCreate(Desc);
+
+		if (nullptr == NewSampler)
+		{
+			MsgAssert("존재하지 않는 샘플러의 옵션을 변경하려고 했습니다.");
+			return nullptr;
+		}
+
+		NewSampler->ResCreate(Desc);
+
+		return NewSampler;
+	}
+
 
 protected:
 
 private:
-	D3D11_SAMPLER_DESC Desc;   // 샘플러 정보, Core_resource에서 전달받음
-	ID3D11SamplerState* State; // CreateSamplerState 후 정보를 받을 것
+	ID3D11SamplerState* State = nullptr;
+	D3D11_SAMPLER_DESC Desc;
 
 	void ResCreate(const D3D11_SAMPLER_DESC& _Desc);
 

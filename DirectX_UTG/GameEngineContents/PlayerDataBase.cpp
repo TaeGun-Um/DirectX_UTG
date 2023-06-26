@@ -149,7 +149,7 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		}
 		else
 		{
-			TargetPosition = GetTransform()->GetLocalPosition() + float4{-80, 80};
+			TargetPosition = TextBoxActionPosition;
 		}
 
 		float CameraPosX = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().x;

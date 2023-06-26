@@ -67,9 +67,6 @@
     <Filter Include="UI\ImGui">
       <UniqueIdentifier>{6c5dc63f-07ac-49c9-b586-b1366e1a77a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ContentPattern">
-      <UniqueIdentifier>{8cced859-a6ec-4a55-b3a3-a7949cba6c3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Debug">
       <UniqueIdentifier>{085540b7-5b46-44d7-99e5-0b7cd0c580bd}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,9 @@
     </Filter>
     <Filter Include="Resources\Font">
       <UniqueIdentifier>{2e0de792-ae49-4746-87ea-732c10c31a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{8cced859-a6ec-4a55-b3a3-a7949cba6c3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,17 +225,8 @@
     <ClInclude Include="GameEngineSprite.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineTileMapRenderer.h">
-      <Filter>Object\Rendering\Component\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineFSM.h">
-      <Filter>ContentPattern</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineUIRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineButton.h">
-      <Filter>ContentPattern</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
@@ -248,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
       <Filter>ThirdParty\Fw1Font\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurEffect.h">
+      <Filter>PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,17 +371,8 @@
     <ClCompile Include="GameEngineSprite.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineTileMapRenderer.cpp">
-      <Filter>Object\Rendering\Component\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineFSM.cpp">
-      <Filter>ContentPattern</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineUIRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineButton.cpp">
-      <Filter>ContentPattern</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineDebug3D.cpp">
       <Filter>Debug</Filter>
@@ -397,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineFont.cpp">
       <Filter>Resources\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="BlurEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

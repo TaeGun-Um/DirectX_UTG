@@ -86,6 +86,12 @@ cbuffer ClipData : register(b2)
     // float4 AtlasUV;
 }
 
+cbuffer FlipData : register(b3)
+{
+    float4 Flip;
+    // float4 AtlasUV;
+}
+
 // 외부에서 쉐이더를 컴파일할 때, EntryPount를 원하는 경우가 있다.
 // 함수의 이름, "Texture_VS"를 입력하는 것이 EntryPoint 이다.
 
@@ -109,9 +115,25 @@ OutPut Texture_VS(Input _Value)
 
     // OutPutValue.Pos *= 월드뷰프로젝션;
     
-    OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
-    OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
+    //OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    //OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
     
+    float4 VtxUV = _Value.UV;
+
+    // -1 0
+    if (Flip.x != 0)
+    {
+        VtxUV.x = 1.0f - VtxUV.x;
+    }
+
+    if (Flip.y != 0)
+    {
+        VtxUV.y = 1.0f - VtxUV.y;
+    }
+
+    OutPutValue.UV.x = (VtxUV.x * FrameScale.x) + FramePos.x;
+    OutPutValue.UV.y = (VtxUV.y * FrameScale.y) + FramePos.y;
+
     OutPutValue.ClipUV = _Value.UV;
     
     return OutPutValue;
@@ -154,7 +176,7 @@ cbuffer ColorOption : register(b0)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState CLAMPSAMPLER : register(s0); // 옵션은 이렇게, 스테이트는 저렇게 이런 식으로 정보를 전달할 수 있는 것이 바로 샘플러이다.
+SamplerState SAMPLER : register(s0); // 옵션은 이렇게, 스테이트는 저렇게 이런 식으로 정보를 전달할 수 있는 것이 바로 샘플러이다.
 
 struct OutColor
 {
@@ -166,7 +188,7 @@ struct OutColor
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    float4 Color = DiffuseTex.Sample(SAMPLER, _Value.UV.xy);
     //float4 outputColor = startColor;
     //float hue = 360 * HBSCColor.r;
     float saturation = HBSCColor.g * 2;

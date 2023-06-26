@@ -35,6 +35,12 @@ public:
 		CameraSpeedRatio = _Ratio;
 	}
 
+	void StartTextBoxCameraAction(bool _Is, float4 _Value)
+	{
+		TextBoxCameraAction = _Is;
+		TextBoxActionPosition = _Value;
+	}
+
 	void SetTextBoxCameraAction(bool _Is)
 	{
 		TextBoxCameraAction = _Is;
@@ -95,6 +101,8 @@ protected:
 	float CameraYEnd = 0.0f;
 	float CameraMoveTime = 0.0f;
 	float ShakeSpeed = 1000.0f;  //
+
+	float4 TextBoxActionPosition = float4::Zero;
 
 	bool IsLeftEndPosition = false;
 	bool IsRightEndPosition = false;

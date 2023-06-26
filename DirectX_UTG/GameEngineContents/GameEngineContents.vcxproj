@@ -394,6 +394,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="OldFilm.h" />
     <ClInclude Include="OverworldGUI.h">
       <SubType>
       </SubType>
@@ -806,6 +807,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="OldFilm.cpp" />
     <ClCompile Include="OverworldGUI.cpp">
       <SubType>
       </SubType>
