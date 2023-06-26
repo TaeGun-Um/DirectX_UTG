@@ -1897,6 +1897,7 @@ void Player::HitStart()
 {
 	MoveDirect = float4::Zero;
 	JumpTime = 0.0f;
+	GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
 
 	IsSlap = false;
 	IsDash = false;

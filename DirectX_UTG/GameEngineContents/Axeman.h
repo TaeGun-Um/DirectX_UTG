@@ -35,7 +35,8 @@ public:
 		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
 
 		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
-		TextEndCount = 2;
+
+		ScriptInit();
 	}
 
 protected:
@@ -49,6 +50,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
 	
 	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
 
 	void InitRenderSetting();
 	void InitCollisionSetting();
@@ -61,5 +63,7 @@ private:
 
 	bool NextStep = false;
 
+	std::vector<std::string> NPCScript;
+	void ScriptInit();
 };
 

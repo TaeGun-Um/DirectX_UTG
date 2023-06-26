@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CupheadCore.h"
 
+#include <GameEngineCore/GameEngineFont.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineVertexShader.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
@@ -13,6 +14,8 @@
 
 void CupheadCore::ContentsResourcesLoad()
 {
+	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
 		GameEngineDirectory NewDir;

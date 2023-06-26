@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "AppleTraveller.h"
 
-#include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
@@ -36,6 +35,7 @@ void AppleTraveller::Update(float _DeltaTime)
 
 	if (true == CreateBox)
 	{
+		FontRender->On();
 		TextBoxOn(_DeltaTime);
 	}
 }
@@ -51,43 +51,32 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("Attack") && TextEndCount > TextCount && false == NextStep)
+	if (true == GameEngineInput::IsDown("Attack") && false == NextStep)
 	{
 		NextStep = true;
-
-		int SetCount = TextCount - 1;
-
-		if (SetCount > 0)
-		{
-			NPCScript[TextCount - 1]->Off();
-		}
-		
-		NPCScript[TextCount]->On();
-
 		++TextCount;
-	}
-	else if (true == GameEngineInput::IsDown("Attack") && TextEndCount <= TextCount && false == NextStep)
-	{
-		TextCount = 0;
-		CreateBox = false;
-		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-		Player_Overworld::MainPlayer->SetIsPortalingfalse();
-		NPC_TextBoxRender->Off();
-		BoxInterActionDelayTime = 0.0f;
 
-		int SetCount = TextCount - 1;
-
-		if (SetCount > 0)
+		if (TextEndCount > TextCount)
 		{
-			NPCScript[TextCount - 1]->Off();
+			FontRender->SetText(NPCScript[TextCount]);
 		}
-
-		NPCScript[TextCount]->On();
+		else if (TextEndCount <= TextCount)
+		{
+			TextCount = 0;
+			CreateBox = false;
+			NextStep = false;
+			Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+			Player_Overworld::MainPlayer->SetIsPortalingfalse();
+			NPC_TextBoxRender->Off();
+			BoxInterActionDelayTime = 0.0f;
+			FontRender->Off();
+			FontRender->SetText(NPCScript[0]);
+		}
 	}
 
 	if (true == NextStep)
 	{
-		if (true == NPC_TextBoxRender->RenderAlphaSetting(_DeltaTime))
+		if (true == NPC_TextBoxRender->RenderAlphaSetting(FontRender, _DeltaTime))
 		{
 			NextStep = false;
 			NPC_TextBoxRender->BoxReset();
@@ -260,53 +249,28 @@ void AppleTraveller::InitCollisionSetting()
 
 void AppleTraveller::ScriptInit()
 {
-	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	TextRenderPtr = GetLevel()->CreateActor<NPC_TextBox>();
+	FontRender->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+	FontRender->SetScale(20.0f);
+	FontRender->SetColor(float4::Black);
 
-	std::shared_ptr<GameEngineFontRenderer> FontRender0 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
-	std::shared_ptr<GameEngineFontRenderer> FontRender1 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
-	std::shared_ptr<GameEngineFontRenderer> FontRender2 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
-	std::shared_ptr<GameEngineFontRenderer> FontRender3 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
-	std::shared_ptr<GameEngineFontRenderer> FontRender4 = TextRenderPtr->CreateComponent<GameEngineFontRenderer>();
+	float4 Pos = NPC_TextBoxRender->GetBoxCurPosition();
 
-	FontRender0->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
-	FontRender1->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
-	FontRender2->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
-	FontRender3->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
-	FontRender4->SetFont("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
-	FontRender0->SetText("æ»≥Á«œººø‰.");
-	FontRender1->SetText("π›∞©Ω¿¥œ¥Ÿ.");
-	FontRender2->SetText("√≥¿Ω∫À∞⁄Ω¿¥œ¥Ÿ.");
-	FontRender3->SetText("»£»£»£»£");
-	FontRender4->SetText("«œ«œ«œ");
+	TextEndCount = 5;
 
-	FontRender0->SetScale(10.0f);
-	FontRender1->SetScale(10.0f);
-	FontRender2->SetScale(10.0f);
-	FontRender3->SetScale(10.0f);
-	FontRender4->SetScale(10.0f);
-
-	FontRender0->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
-	FontRender1->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
-	FontRender2->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
-	FontRender3->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
-	FontRender4->GetTransform()->SetLocalPosition(NPC_TextBoxRender->GetTransform()->GetWorldPosition());
-
-	FontRender0->Off();
-	FontRender1->Off();
-	FontRender2->Off();
-	FontRender3->Off();
-	FontRender4->Off();
-
-	NPCScript.resize(5);
+	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = FontRender0;
-		NPCScript[1] = FontRender1;
-		NPCScript[2] = FontRender2;
-		NPCScript[3] = FontRender3;
-		NPCScript[4] = FontRender4;
+		NPCScript[0] = "æ»≥Á«œººø‰.";
+		NPCScript[1] = "π›∞©Ω¿¥œ¥Ÿ.";
+		NPCScript[2] = "√≥¿Ω∫À∞⁄Ω¿¥œ¥Ÿ.";
+		NPCScript[3] = "«œ«œ«œ";
+		NPCScript[4] = "»£»£»£»£";
 	}
+
+	FontRender->SetText(NPCScript[0]);
+	FontRender->Off();
 }

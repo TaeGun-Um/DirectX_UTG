@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "NPC_TextBox.h"
 
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 NPC_TextBox::NPC_TextBox() 
@@ -27,13 +28,14 @@ void NPC_TextBox::BoxReset()
 	IsEnd = false;
 }
 
-bool NPC_TextBox::RenderAlphaSetting(float _DeltaTime)
+bool NPC_TextBox::RenderAlphaSetting(std::shared_ptr<GameEngineFontRenderer> _FontRender, float _DeltaTime)
 {
 	if (false == IsDown)
 	{
 		BoxRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
 		TailRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
 		ArrowRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime * 15.0f;
+		_FontRender->AddAlphaColor(-_DeltaTime * 15.0f);
 
 		if (BoxRenderPtr->ColorOptionValue.MulColor.a <= 0.0f)
 		{
@@ -41,6 +43,7 @@ bool NPC_TextBox::RenderAlphaSetting(float _DeltaTime)
 			BoxRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 			TailRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
 			ArrowRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+			_FontRender->SetAlphaColor(0.0f);
 		}
 	}
 	else
@@ -48,6 +51,7 @@ bool NPC_TextBox::RenderAlphaSetting(float _DeltaTime)
 		BoxRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
 		TailRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
 		ArrowRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime * 15.0f;
+		_FontRender->AddAlphaColor(_DeltaTime * 15.0f);
 
 		if (BoxRenderPtr->ColorOptionValue.MulColor.a >= 1.0f)
 		{
@@ -55,6 +59,7 @@ bool NPC_TextBox::RenderAlphaSetting(float _DeltaTime)
 			BoxRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 			TailRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 			ArrowRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+			_FontRender->SetAlphaColor(1.0f);
 		}
 	}
 

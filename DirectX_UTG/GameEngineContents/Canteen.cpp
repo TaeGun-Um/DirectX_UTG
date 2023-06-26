@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Canteen.h"
 
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -31,6 +32,7 @@ void Canteen::Update(float _DeltaTime)
 
 	if (true == CreateBox)
 	{
+		FontRender->On();
 		TextBoxOn(_DeltaTime);
 	}
 }
@@ -46,24 +48,32 @@ void Canteen::TextBoxOn(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("Attack") && TextEndCount > TextCount && false == NextStep)
+	if (true == GameEngineInput::IsDown("Attack") && false == NextStep)
 	{
 		NextStep = true;
 		++TextCount;
-	}
-	else if (true == GameEngineInput::IsDown("Attack") && TextEndCount <= TextCount && false == NextStep)
-	{
-		TextCount = 0;
-		CreateBox = false;
-		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-		Player_Overworld::MainPlayer->SetIsPortalingfalse();
-		NPC_TextBoxRender->Off();
-		BoxInterActionDelayTime = 0.0f;
+
+		if (TextEndCount > TextCount)
+		{
+			FontRender->SetText(NPCScript[TextCount]);
+		}
+		else if (TextEndCount <= TextCount)
+		{
+			TextCount = 0;
+			CreateBox = false;
+			NextStep = false;
+			Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
+			Player_Overworld::MainPlayer->SetIsPortalingfalse();
+			NPC_TextBoxRender->Off();
+			BoxInterActionDelayTime = 0.0f;
+			FontRender->Off();
+			FontRender->SetText(NPCScript[0]);
+		}
 	}
 
 	if (true == NextStep)
 	{
-		if (true == NPC_TextBoxRender->RenderAlphaSetting(_DeltaTime))
+		if (true == NPC_TextBoxRender->RenderAlphaSetting(FontRender, _DeltaTime))
 		{
 			NextStep = false;
 			NPC_TextBoxRender->BoxReset();
@@ -113,4 +123,32 @@ void Canteen::InitCollisionSetting()
 		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
 		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
 	}
+}
+
+void Canteen::ScriptInit()
+{
+	FontRender = CreateComponent<GameEngineFontRenderer>();
+
+	FontRender->SetFont("휴먼둥근헤드라인");
+	FontRender->SetScale(20.0f);
+	FontRender->SetColor(float4::Black);
+
+	float4 Pos = NPC_TextBoxRender->GetBoxCurPosition();
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+
+	TextEndCount = 5;
+
+	NPCScript.resize(TextEndCount);
+
+	{
+		NPCScript[0] = "안녕하세요.";
+		NPCScript[1] = "반갑습니다.";
+		NPCScript[2] = "처음뵙겠습니다.";
+		NPCScript[3] = "하하하";
+		NPCScript[4] = "호호호호";
+	}
+
+	FontRender->SetText(NPCScript[0]);
+	FontRender->Off();
 }

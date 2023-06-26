@@ -35,12 +35,26 @@ public:
 		FwTextFlag = _Flag;
 	}
 
+	float GetAlphaColor()
+	{
+		return FontColor.a;
+	}
+
+	void AddAlphaColor(float _Alpha)
+	{
+		FontColor.a += _Alpha;
+	}
+
+	void SetAlphaColor(float _Alpha)
+	{
+		FontColor.a = _Alpha;
+	}
+
 protected:
 	void Render(float _Delta) override;
 
 private:
 	void Start() override;
-
 
 	float FontScale = 10.0f;
 	float4 FontColor = float4::Red;

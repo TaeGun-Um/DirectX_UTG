@@ -5,6 +5,8 @@
 #include "GameEngineLevel.h"
 #include "GameEngineCamera.h"
 
+GameEngineButton* GameEngineButton::SelectButton = nullptr;
+
 GameEngineButton::GameEngineButton()
 {
 }
@@ -29,7 +31,7 @@ void GameEngineButton::Update(float _Delta)
 	//                                               마우스
 
 	// 이카메라가 원근 투영이면
-	std::shared_ptr<GameEngineCamera> Camera = GetLevel()->GetCamera(100);
+	GameEngineCamera* Camera = Render->GetCamera();
 
 	// 랜더러 
 	float4x4 ViewPort = Camera->GetViewPort();
@@ -49,12 +51,32 @@ void GameEngineButton::Update(float _Delta)
 
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render->GetTransform()->GetCollisionData(), MouseData))
 	{
+		if (HoverImage != "")
+		{
+			Render->SetTexture(HoverImage);
+		}
+
+		if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+		{
+			if (PressImage != "")
+			{
+				Render->SetTexture(PressImage);
+			}
+		}
+
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
 			if (nullptr != Click)
 			{
 				Click();
 			}
+		}
+	}
+	else
+	{
+		if (ReleaseImage != "")
+		{
+			Render->SetTexture(ReleaseImage);
 		}
 	}
 }

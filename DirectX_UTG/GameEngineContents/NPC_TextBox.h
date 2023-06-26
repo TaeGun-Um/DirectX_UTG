@@ -1,5 +1,7 @@
 #pragma once
 
+class GameEngineFontRenderer;
+
 // Ό³Έν :
 class NPC_TextBox : public GameEngineActor
 {
@@ -19,14 +21,20 @@ public:
 		BoxRenderPtr->GetTransform()->SetLocalPosition(_Value);
 		TailRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{130, -80});
 		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{ 170, -40 });
+		BoxCurPosition = BoxRenderPtr->GetTransform()->GetWorldPosition();
 	}
 
-	bool RenderAlphaSetting(float _DeltaTime);
+	bool RenderAlphaSetting(std::shared_ptr<GameEngineFontRenderer> _FontRender, float _DeltaTime);
 	void BoxReset();
 
 	void BoxScaleChange(float4 _Value)
 	{
 		BoxRenderPtr->GetTransform()->SetLocalScale(_Value);
+	}
+
+	float4 GetBoxCurPosition()
+	{
+		return BoxCurPosition;
 	}
 
 protected:
@@ -41,6 +49,7 @@ private:
 
 	void TextBoxInitSetting();
 
+	float4 BoxCurPosition = float4::Zero;
 	bool IsDown = false;
 	bool IsEnd = false;
 };
