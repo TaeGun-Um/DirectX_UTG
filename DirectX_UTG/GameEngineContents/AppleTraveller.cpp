@@ -251,11 +251,9 @@ void AppleTraveller::ScriptInit()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	FontRender->SetFont("휴먼둥근헤드라인");
-	FontRender->SetScale(20.0f);
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
-
-	float4 Pos = NPC_TextBoxRender->GetBoxCurPosition();
 
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
@@ -264,11 +262,11 @@ void AppleTraveller::ScriptInit()
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "안녕하세요.";
-		NPCScript[1] = "반갑습니다.";
-		NPCScript[2] = "처음뵙겠습니다.";
-		NPCScript[3] = "하하하";
-		NPCScript[4] = "호호호호";
+		NPCScript[0] = "HI.";
+		NPCScript[1] = "hi.";
+		NPCScript[2] = "Hi.";
+		NPCScript[3] = "hI";
+		NPCScript[4] = "AbDcEXgHHSss\naskdhfka!ASDF\nASDFASDF";
 	}
 
 	FontRender->SetText(NPCScript[0]);

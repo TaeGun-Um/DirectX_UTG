@@ -133,8 +133,6 @@ void Canteen::ScriptInit()
 	FontRender->SetScale(20.0f);
 	FontRender->SetColor(float4::Black);
 
-	float4 Pos = NPC_TextBoxRender->GetBoxCurPosition();
-
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
 	TextEndCount = 5;

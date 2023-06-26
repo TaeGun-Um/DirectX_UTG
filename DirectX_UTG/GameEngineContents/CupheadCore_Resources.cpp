@@ -15,6 +15,7 @@
 void CupheadCore::ContentsResourcesLoad()
 {
 	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
+	GameEngineFont::Load("Cuphead Felix");
 
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
