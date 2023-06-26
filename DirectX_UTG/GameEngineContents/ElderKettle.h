@@ -1,5 +1,7 @@
 #pragma once
 
+#include "NPC_TextBox.h"
+
 enum class KettleState
 {
 	Idle,
@@ -30,6 +32,13 @@ public:
 		IsDebugRender = false;
 	}
 
+	void TextBoxPositionSetting()
+	{
+		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
+		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition);
+		ScriptInit();
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -40,6 +49,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
+
+	std::shared_ptr<class NPC_TextBox> NPC_TextBoxRender = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
 
 	bool IsDebugRender = false;
 
@@ -63,5 +75,23 @@ private:
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
 
+	bool Isinteraction = false;
+	bool CreateBox = false;
+	bool NextStep = false;
+	bool IsScriptChange = false;
+
+	int TextCount = 0;
+	int TextEndCount = 0;
+
+	float BoxInterActionDelayTime = 0.0f;
+
+	std::vector<std::string_view> NPCScript;
+	void TextBoxOn(float _DeltaTime);
+	void ScriptInit();
+	void ScriptChange();
+	size_t NumberofLines();
+	size_t NumberofCharacters();
+	void TextBoxSetting();
+	void FontPositionSetting();
 };
 

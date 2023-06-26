@@ -2046,7 +2046,7 @@ void Player::ElderKettleIdleUpdate(float _DeltaTime)
 {
 	ElderKettleinterActionTime += _DeltaTime;
 
-	if (ElderKettleinterActionTime >= 1.0f)
+	if (ElderKettleinterActionTime >= 10.0f)
 	{
 		ChangeState(PlayerState::ElderKettleInterAction);
 		return;

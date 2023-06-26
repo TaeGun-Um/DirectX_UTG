@@ -112,6 +112,7 @@ void WaitingRoomLevel::LevelChangeStart()
 		}
 		
 		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 470 , PlayMapHeight_Half - 110});
+		// KettleObject->TextBoxPositionSetting();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -119,7 +120,7 @@ void WaitingRoomLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 		
-		PlayerObject->GetTransform()->SetLocalPosition({ 385 , PlayMapHeight_Half });
+		PlayerObject->GetTransform()->SetLocalPosition({ 275 , PlayMapHeight_Half });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();

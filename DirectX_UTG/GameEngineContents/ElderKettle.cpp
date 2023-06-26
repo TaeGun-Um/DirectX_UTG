@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "ElderKettle.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -80,6 +82,9 @@ void ElderKettle::Start()
 		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 15, 150, -20 });
 		EnterMessageRenderPtr->Off();
 	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->Off();
 }
 
 void ElderKettle::Update(float _DeltaTime)
@@ -95,6 +100,59 @@ void ElderKettle::Update(float _DeltaTime)
 
 	CollisionCheck(_DeltaTime);
 	UpdateState(_DeltaTime);
+
+	if (true == CreateBox)
+	{
+		FontRender->On();
+		TextBoxOn(_DeltaTime);
+	}
+}
+
+void ElderKettle::TextBoxOn(float _DeltaTime)
+{
+	NPC_TextBoxRender->On();
+
+	BoxInterActionDelayTime += _DeltaTime;
+
+	if (0.5f >= BoxInterActionDelayTime)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack") && false == NextStep)
+	{
+		NextStep = true;
+		++TextCount;
+
+		if (TextEndCount > TextCount)
+		{
+			FontRender->SetText(NPCScript[TextCount]);
+			TextBoxSetting();
+
+		}
+		else if (TextEndCount <= TextCount)
+		{
+			TextCount = 0;
+			CreateBox = false;
+			NextStep = false;
+			//Player::MainPlayer->PlayerCollisionPtrOn();
+			//Player::MainPlayer->SetIsPortalingfalse();
+			NPC_TextBoxRender->Off();
+			BoxInterActionDelayTime = 0.0f;
+			FontRender->Off();
+			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
+		}
+	}
+
+	if (true == NextStep)
+	{
+		if (true == NPC_TextBoxRender->RenderAlphaSetting(FontRender, _DeltaTime))
+		{
+			NextStep = false;
+			NPC_TextBoxRender->BoxReset();
+		}
+	}
 }
 
 void ElderKettle::CollisionCheck(float _DeltaTime)
@@ -102,10 +160,19 @@ void ElderKettle::CollisionCheck(float _DeltaTime)
 	if (nullptr != CollisionPtr->Collision(static_cast<int>(CollisionOrder::Player), ColType::AABBBOX2D, ColType::AABBBOX2D))
 	{
 		EnterMessageScaleUp(_DeltaTime);
+		Isinteraction = true;
 	}
 	else
 	{
 		EnterMessageScaleDown(_DeltaTime);
+		Isinteraction = false;
+	}
+
+	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
+	{
+		//Player::MainPlayer->PlayerCollisionPtrOff();
+		//Player::MainPlayer->SetIsPortalingTrue();
+		CreateBox = true;
 	}
 }
 
@@ -151,6 +218,101 @@ void ElderKettle::EnterMessageScaleDown(float _DeltaTime)
 	}
 }
 
+void ElderKettle::ScriptInit()
+{
+	FontRender = CreateComponent<GameEngineFontRenderer>();
+
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
+	FontRender->SetColor(float4::Black);
+
+	TextEndCount = 11;
+
+	NPCScript.resize(TextEndCount);
+
+	{
+		NPCScript[0] = "what a fine pickle you boys have gotten yourselves into!";
+		NPCScript[1] = "i know you don't want to be pawns of the devil!";
+		NPCScript[2] = "but if you refuse... i can't bear to imagine your fates!";
+		NPCScript[3] = "you must Play along for now.collect those contracts!";
+		NPCScript[4] = "and you'd best be ready for some nasty business...!";
+		NPCScript[5] = "your debtor 'friends' won't be very frindly once you confront them!";
+		NPCScript[6] = "in fact, i expect they'll transform into trrible beasts!";
+		NPCScript[7] = "take this potion so they won't hang you out to dry.";
+		NPCScript[8] = "it will give you the most remarkable magical abilities!";
+		NPCScript[9] = "now go to my writing desk and use the mystical inkwell there.";
+		NPCScript[10] = "you need to prepare yourselves for a scrap!!";
+	}
+
+	FontRender->SetText(NPCScript[0]);
+	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+void ElderKettle::ScriptChange()
+{
+	TextEndCount = 3;
+
+	NPCScript.clear();
+	NPCScript.resize(TextEndCount);
+
+	{
+		NPCScript[0] = "well, what are you rascals waiting for ? off you go!";
+		NPCScript[1] = "meanwhile, i shall try to figure some way out of this mess!";
+		NPCScript[2] = "good luck.you troublesome little mugs!!";
+	}
+
+	FontRender->SetText(NPCScript[0]);
+	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+size_t ElderKettle::NumberofLines()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+size_t ElderKettle::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void ElderKettle::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void ElderKettle::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -20 });
+}
+
 void ElderKettle::ChangeState(KettleState _StateValue)
 {
 	KettleState NextState = _StateValue;
@@ -188,20 +350,3 @@ void ElderKettle::IdleEnd()
 {
 
 }
-
-//< ¿¤´õÄ³Æ²>
-//1. what a fine pickle you boys have gotten yourselves into!
-//2. i know you don't want to be pawns of the devil!
-//3. but if you refuse... i can't bear to imagine your fates!
-//4. you must Play along for now.collect those contracts!
-//5. and you'd best be ready for some nasty business...!
-//6. your debtor 'friends' won't be very frindly once you confront them!
-//7. in fact, i expect they'll transform into trrible beasts!
-//8. take this potion so they won't hang you out to dry.
-//9. it will give you the most remarkable magical abilities!
-//10. now go to my writing desk and use the mystical inkwell there.
-//11. you need to prepare yourselves for a scrap!!
-//
-//1. well.what are you rascals waiting for ? off you go!
-//2. meanwhile, i shall try to figure some way out of this mess!
-//3. good luck.you troublesome little mugs!!
