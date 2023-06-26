@@ -36,6 +36,11 @@ void AppleTraveller::Update(float _DeltaTime)
 	if (true == CreateBox)
 	{
 		FontRender->On();
+
+		size_t Count = FindWord();
+
+		int a = 0;
+
 		TextBoxOn(_DeltaTime);
 	}
 }
@@ -59,6 +64,10 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
+
+			size_t Count = FindWord();
+
+			int a = 0;
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -255,18 +264,38 @@ void AppleTraveller::ScriptInit()
 	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
 
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10 });
 
 	TextEndCount = 3;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "Hey, guys! Good to see ya again!";
-		NPCScript[1] = "Maybe check with other folks arond here. They might help ya too!";
-		NPCScript[2] = "The ones not trayin' to kill ya, I mean.";
+		NPCScript[0] = "Hey, guys! Good to\nsee ya again!";
+		NPCScript[1] = "Maybe check with other\nfolks arond here. They\nmight help ya too!";
+		NPCScript[2] = "The ones not trayin'\nto kill ya, I mean.";
 	}
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+}
+
+size_t AppleTraveller::FindWord()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (int i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
 }

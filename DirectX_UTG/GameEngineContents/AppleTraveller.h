@@ -79,7 +79,8 @@ private:
 	bool IsBlink = false;
 	bool NextStep = false;
 
-	std::vector<std::string> NPCScript;
+	std::vector<std::string_view> NPCScript;
 	void ScriptInit();
+	size_t FindWord();
 };
 

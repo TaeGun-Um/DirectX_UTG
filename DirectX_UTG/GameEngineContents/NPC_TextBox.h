@@ -37,6 +37,16 @@ public:
 		return BoxCurPosition;
 	}
 
+	float4 GetBoxScale()
+	{
+		return BoxRenderPtr->GetTransform()->GetLocalScale();
+	}
+
+	float4 SetBoxScale(float4 _Value)
+	{
+		BoxRenderPtr->GetTransform()->SetLocalScale({ _Value.x, _Value.y, 1 });
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
