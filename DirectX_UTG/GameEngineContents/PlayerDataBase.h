@@ -35,6 +35,11 @@ public:
 		CameraSpeedRatio = _Ratio;
 	}
 
+	void SetTextBoxCameraAction(bool _Is)
+	{
+		TextBoxCameraAction = _Is;
+	}
+
 protected:
 	void Start() override {}
 	void Update(float _DeltaTime) override {}
@@ -94,6 +99,7 @@ protected:
 	bool IsLeftEndPosition = false;
 	bool IsRightEndPosition = false;
 	bool IsCameraShaking = false;
+	bool TextBoxCameraAction = false;
 
 	int LeftCount = 1;
 	int RightCount = 1;

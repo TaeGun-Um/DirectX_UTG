@@ -71,6 +71,7 @@ void Axeman::TextBoxOn(float _DeltaTime)
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
+			Player_Overworld::MainPlayer->SetTextBoxCameraAction(false);
 		}
 	}
 

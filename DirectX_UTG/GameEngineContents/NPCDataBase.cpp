@@ -30,6 +30,7 @@ void NPCDataBase::CollisionCheck(std::shared_ptr<class GameEngineCollision> _Col
 	{
 		Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 		Player_Overworld::MainPlayer->SetIsPortalingTrue();
+		Player_Overworld::MainPlayer->SetTextBoxCameraAction(true);
 		CreateBox = true;
 	}
 }

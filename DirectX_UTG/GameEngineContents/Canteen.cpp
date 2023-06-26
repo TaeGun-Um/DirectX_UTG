@@ -71,6 +71,7 @@ void Canteen::TextBoxOn(float _DeltaTime)
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
+			Player_Overworld::MainPlayer->SetTextBoxCameraAction(false);
 		}
 	}
 
@@ -142,9 +143,9 @@ void Canteen::ScriptInit()
 
 	{
 		NPCScript[0] = "Well? whaddaya think?\n";
-		NPCScript[1] = "Are those new bombs the\ncat's phamas or what?";
-		NPCScript[2] = "Aah, you can thank me later.\n";
-		NPCScript[3] = "I'm just in it for the kicks!\n";
+		NPCScript[1] = "Are those new bombs the\ncat's phamas or\nwhat?";
+		NPCScript[2] = "Aah, you can thank\nme later.";
+		NPCScript[3] = "I'm just in it for\nthe kicks!";
 	}
 
 	FontRender->SetText(NPCScript[0]);

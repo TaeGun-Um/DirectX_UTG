@@ -24,16 +24,16 @@ void NPC_TextBox::Update(float _DeltaTime)
 
 void NPC_TextBox::SetBox(size_t _Character, size_t _Line, float4 _CurActorPosition)
 {
-	size_t Width = _Character * 21;
-	size_t Height = _Line * 40;
+	float Width = static_cast<float>(_Character) * 20.5f;
+	size_t Height = _Line * 38;
 
-	BoxRenderPtr->GetTransform()->SetLocalScale({ static_cast<float>(Width), static_cast<float>(Height), 1 });
-	BoxRenderPtr->GetTransform()->SetWorldPosition(_CurActorPosition + float4{ -static_cast<float>(Width * 0.4f), static_cast<float>(Height / 2) + 90, -10 });
+	BoxRenderPtr->GetTransform()->SetLocalScale({ Width, static_cast<float>(Height), 1 });
+	BoxRenderPtr->GetTransform()->SetWorldPosition(_CurActorPosition + float4{ -(Width * 0.4f), static_cast<float>(Height / 2) + 90, -10 });
 
 	float4 BoxRenderPosition = BoxRenderPtr->GetTransform()->GetLocalPosition();
 
-	ArrowRenderPtr->GetTransform()->SetLocalPosition(BoxRenderPosition + float4{ static_cast<float>(Width / 2) - 30, -static_cast<float>(Height / 2) + 25, -1, -10 });
-	TailRenderPtr->GetTransform()->SetLocalPosition(BoxRenderPosition + float4{ static_cast<float>(Width / 2) - 60, -static_cast<float>(Height / 2) - 15, -1, -10 });
+	ArrowRenderPtr->GetTransform()->SetLocalPosition(BoxRenderPosition + float4{ (Width / 2) - 30, -static_cast<float>(Height / 2) + 25, -1, -10 });
+	TailRenderPtr->GetTransform()->SetLocalPosition(BoxRenderPosition + float4{ (Width / 2) - 60, -static_cast<float>(Height / 2) - 15, -1, -10 });
 }
 
 void NPC_TextBox::BoxReset()

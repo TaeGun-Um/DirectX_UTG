@@ -143,7 +143,14 @@ void PlayerDataBase::MoveCamera(float _DeltaTime)
 		break;
 	case PlayerDataBase::CameraFollowType::Overworld:
 	{
-		TargetPosition = GetTransform()->GetLocalPosition();
+		if (false == TextBoxCameraAction)
+		{
+			TargetPosition = GetTransform()->GetLocalPosition();
+		}
+		else
+		{
+			TargetPosition = GetTransform()->GetLocalPosition() + float4{-80, 80};
+		}
 
 		float CameraPosX = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().x;
 		float CameraPosY = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition().y;

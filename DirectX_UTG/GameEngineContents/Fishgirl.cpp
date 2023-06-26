@@ -73,6 +73,7 @@ void Fishgirl::TextBoxOn(float _DeltaTime)
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
+			Player_Overworld::MainPlayer->SetTextBoxCameraAction(false);
 		}
 	}
 
@@ -170,7 +171,7 @@ void Fishgirl::ScriptInit()
 		NPCScript[1] = "I was about to hit you\nwith the parry move!";
 		NPCScript[2] = "That's how you deal with\nghosts 'round here.";
 		NPCScript[3] = "Only a nitwit tries shootin'\nsomeone who ain't really\nthere.";
-		NPCScript[4] = "Speakin' of not bein'\nplace... would you\nfellas mind movin' on?";
+		NPCScript[4] = "Speakin' of not bein' place\n... would you fellas mind \nmovin' on?";
 		NPCScript[5] = "You're spookin' the fish.\n";
 	}
 
