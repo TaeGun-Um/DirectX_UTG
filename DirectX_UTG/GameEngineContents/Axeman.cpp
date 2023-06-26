@@ -135,16 +135,15 @@ void Axeman::ScriptInit()
 
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
-	TextEndCount = 5;
+	TextEndCount = 4;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "안녕하세요.";
-		NPCScript[1] = "반갑습니다.";
-		NPCScript[2] = "처음뵙겠습니다.";
-		NPCScript[3] = "하하하";
-		NPCScript[4] = "호호호호";
+		NPCScript[0] = "Say, fellas. thanks for settling things down around here.";
+		NPCScript[1] = "Maybe now ican collect cnough dough to pay for my chipped balde.";
+		NPCScript[2] = "Speakin' of which... i should get back to work.";
+		NPCScript[3] = "Gatta make hay while the sun shines!";
 	}
 
 	FontRender->SetText(NPCScript[0]);

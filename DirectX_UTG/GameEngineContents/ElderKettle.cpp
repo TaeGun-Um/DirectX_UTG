@@ -188,3 +188,20 @@ void ElderKettle::IdleEnd()
 {
 
 }
+
+//< ¿¤´õÄ³Æ²>
+//1. what a fine pickle you boys have gotten yourselves into!
+//2. i know you don't want to be pawns of the devil!
+//3. but if you refuse... i can't bear to imagine your fates!
+//4. you must Play along for now.collect those contracts!
+//5. and you'd best be ready for some nasty business...!
+//6. your debtor 'friends' won't be very frindly once you confront them!
+//7. in fact, i expect they'll transform into trrible beasts!
+//8. take this potion so they won't hang you out to dry.
+//9. it will give you the most remarkable magical abilities!
+//10. now go to my writing desk and use the mystical inkwell there.
+//11. you need to prepare yourselves for a scrap!!
+//
+//1. well.what are you rascals waiting for ? off you go!
+//2. meanwhile, i shall try to figure some way out of this mess!
+//3. good luck.you troublesome little mugs!!

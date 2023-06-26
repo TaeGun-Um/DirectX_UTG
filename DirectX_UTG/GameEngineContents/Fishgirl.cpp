@@ -160,17 +160,25 @@ void Fishgirl::ScriptInit()
 
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
-	TextEndCount = 5;
+	TextEndCount = 6;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "안녕하세요.";
-		NPCScript[1] = "반갑습니다.";
-		NPCScript[2] = "처음뵙겠습니다.";
-		NPCScript[3] = "하하하";
-		NPCScript[4] = "호호호호";
+		NPCScript[0] = "Begone, spirits! Oh, wait... you're real.";
+		NPCScript[1] = "I was about to hit you with the parry move!";
+		NPCScript[2] = "That's how you deal with ghosts 'round here.";
+		NPCScript[3] = "Only a nitwit tries shootin' someone who ain't really there.";
+		NPCScript[4] = "Speakin' of not bein' place... would you fellas mind movin' on?";
+		NPCScript[5] = "You're spookin' the fish.";
 	}
+
+	// 마우스 승리 시
+	// TextEndCount = 4;
+	// 0. so i hear you fellas gave some of them ghost what - for.
+	// 1. glad someone finally sorted 'em out!
+	// 2. might make the fishin' even better here.
+	// 3. then again... might not.
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();

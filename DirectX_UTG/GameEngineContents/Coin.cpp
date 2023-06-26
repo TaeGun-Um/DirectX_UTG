@@ -99,11 +99,11 @@ void Coin::ScriptInit()
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "안녕하세요.";
-		NPCScript[1] = "반갑습니다.";
-		NPCScript[2] = "처음뵙겠습니다.";
-		NPCScript[3] = "하하하";
-		NPCScript[4] = "호호호호";
+		NPCScript[0] = "Harumph!! I'll be a monkey's uncle if i'm putting my moolah in the bank!";
+		NPCScript[1] = "For all i know. The devil probably controls the place too!";
+		NPCScript[2] = "They'll never get ahold of my gold if i spread it all around.";
+		NPCScript[3] = "And if some joe happens to find a coin or two... good for him!";
+		NPCScript[4] = "That's what i say, harumph!!";
 	}
 
 	FontRender->SetText(NPCScript[0]);

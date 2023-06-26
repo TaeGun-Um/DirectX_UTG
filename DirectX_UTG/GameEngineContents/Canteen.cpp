@@ -140,11 +140,10 @@ void Canteen::ScriptInit()
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "안녕하세요.";
-		NPCScript[1] = "반갑습니다.";
-		NPCScript[2] = "처음뵙겠습니다.";
-		NPCScript[3] = "하하하";
-		NPCScript[4] = "호호호호";
+		NPCScript[0] = "Well? whaddaya think?";
+		NPCScript[1] = "Are those new bombs the cat's phamas or what?";
+		NPCScript[2] = "Aah, you can thank me later.";
+		NPCScript[3] = "I'm just in it for the kicks!";
 	}
 
 	FontRender->SetText(NPCScript[0]);

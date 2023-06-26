@@ -257,16 +257,14 @@ void AppleTraveller::ScriptInit()
 
 	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
-	TextEndCount = 5;
+	TextEndCount = 3;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "HI.";
-		NPCScript[1] = "hi.";
-		NPCScript[2] = "Hi.";
-		NPCScript[3] = "hI";
-		NPCScript[4] = "AbDcEXgHHSss\naskdhfka!ASDF\nASDFASDF";
+		NPCScript[0] = "Hey, guys! Good to see ya again!";
+		NPCScript[1] = "Maybe check with other folks arond here. They might help ya too!";
+		NPCScript[2] = "The ones not trayin' to kill ya, I mean.";
 	}
 
 	FontRender->SetText(NPCScript[0]);
