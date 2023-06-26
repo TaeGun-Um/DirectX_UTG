@@ -36,11 +36,6 @@ void AppleTraveller::Update(float _DeltaTime)
 	if (true == CreateBox)
 	{
 		FontRender->On();
-
-		size_t Count = FindWord();
-
-		int a = 0;
-
 		TextBoxOn(_DeltaTime);
 	}
 }
@@ -64,10 +59,8 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
-
-			size_t Count = FindWord();
-
-			int a = 0;
+			TextBoxSetting();
+			
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -80,6 +73,7 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
 		}
 	}
 
@@ -264,15 +258,6 @@ void AppleTraveller::ScriptInit()
 	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
 
-	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
-	float Width = BoxScale.x;
-	float Height = BoxScale.y;
-	float Width_Half = Width / 2;
-	float Height_Half = Height / 2;
-
-	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
-	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10 });
-
 	TextEndCount = 3;
 
 	NPCScript.resize(TextEndCount);
@@ -285,17 +270,50 @@ void AppleTraveller::ScriptInit()
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+
+	TextBoxSetting();
 }
 
-size_t AppleTraveller::FindWord()
+size_t AppleTraveller::NumberofLines()
 {
 	char ch = '\n';
 	size_t Count = 0;
 
-	for (int i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
 	{
 		Count++;
 	}
 
 	return Count;
+}
+
+size_t AppleTraveller::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void AppleTraveller::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void AppleTraveller::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -20 });
 }

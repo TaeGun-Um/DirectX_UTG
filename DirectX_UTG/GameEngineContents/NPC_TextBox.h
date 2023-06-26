@@ -19,8 +19,8 @@ public:
 	void LocalPositionSetting(float4 _Value)
 	{
 		BoxRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		TailRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{130, -80});
-		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value + float4{ 170, -40 });
+		TailRenderPtr->GetTransform()->SetLocalPosition(_Value);
+		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value);
 		BoxCurPosition = BoxRenderPtr->GetTransform()->GetWorldPosition();
 	}
 
@@ -34,7 +34,7 @@ public:
 
 	float4 GetBoxCurPosition()
 	{
-		return BoxCurPosition;
+		return BoxRenderPtr->GetTransform()->GetLocalPosition();
 	}
 
 	float4 GetBoxScale()
@@ -42,10 +42,7 @@ public:
 		return BoxRenderPtr->GetTransform()->GetLocalScale();
 	}
 
-	float4 SetBoxScale(float4 _Value)
-	{
-		BoxRenderPtr->GetTransform()->SetLocalScale({ _Value.x, _Value.y, 1 });
-	}
+	void SetBox(size_t _Character, size_t _Line, float4 _CurActorPosition);
 
 protected:
 	void Start();

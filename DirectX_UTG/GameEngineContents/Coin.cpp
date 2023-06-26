@@ -59,6 +59,8 @@ void Coin::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
+			TextBoxSetting();
+
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -71,6 +73,7 @@ void Coin::TextBoxOn(float _DeltaTime)
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
 		}
 	}
 
@@ -88,26 +91,70 @@ void Coin::ScriptInit()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-	FontRender->SetScale(20.0f);
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
-
-	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
 	TextEndCount = 5;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "Harumph!! I'll be a monkey's uncle if i'm putting my moolah in the bank!";
-		NPCScript[1] = "For all i know. The devil probably controls the place too!";
-		NPCScript[2] = "They'll never get ahold of my gold if i spread it all around.";
-		NPCScript[3] = "And if some joe happens to find a coin or two... good for him!";
-		NPCScript[4] = "That's what i say, harumph!!";
+		NPCScript[0] = "Harumph!! I'll be a\nmonkey' uncle if i'm\nputting my moolah\nin the bank!";
+		NPCScript[1] = "For all i know. The devil\nprobably controls the\nplace too!";
+		NPCScript[2] = "They'll never get ahold of my\ngold if i spread it all around.";
+		NPCScript[3] = "And if some joe happens\nto find a coin or two...\ngood for him!";
+		NPCScript[4] = "That's what i say,\nharumph!!";
 	}
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+size_t Coin::NumberofLines()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+size_t Coin::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void Coin::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void Coin::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -1 });
 }
 
 void Coin::InitRenderSetting()

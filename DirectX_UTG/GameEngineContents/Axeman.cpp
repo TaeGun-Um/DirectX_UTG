@@ -56,6 +56,8 @@ void Axeman::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
+			TextBoxSetting();
+
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -68,6 +70,7 @@ void Axeman::TextBoxOn(float _DeltaTime)
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
 		}
 	}
 
@@ -129,23 +132,67 @@ void Axeman::ScriptInit()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-	FontRender->SetScale(20.0f);
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
-
-	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
 	TextEndCount = 4;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "Say, fellas. thanks for settling things down around here.";
-		NPCScript[1] = "Maybe now ican collect cnough dough to pay for my chipped balde.";
-		NPCScript[2] = "Speakin' of which... i should get back to work.";
-		NPCScript[3] = "Gatta make hay while the sun shines!";
+		NPCScript[0] = "Say, fellas. thanks for\nsettling things down\naround here.";
+		NPCScript[1] = "Maybe now ican collect\ncnough dough to pay\nfor my chipped balde.";
+		NPCScript[2] = "Speakin' of which... i\nshould get back to\nwork.";
+		NPCScript[3] = "Gatta make hay while\nthe sun shines!";
 	}
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+size_t Axeman::NumberofLines()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+size_t Axeman::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void Axeman::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void Axeman::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -1 });
 }

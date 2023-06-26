@@ -206,7 +206,7 @@ void OverworldLevel::LevelChangeStart()
 		if (nullptr == PlayerObject)
 		{
 			PlayerObject = CreateActor<Player_Overworld>();
-			PlayerObject->GetTransform()->SetLocalPosition({ 1680 , 1260, 3 });
+			PlayerObject->GetTransform()->SetLocalPosition({ 1680 , 1260, 1 });
 			//PlayerObject->GetTransform()->SetLocalPosition({ 805 , 1435, 1 });
 			PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		}

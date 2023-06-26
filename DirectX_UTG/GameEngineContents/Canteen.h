@@ -31,11 +31,8 @@ public:
 
 	void TextBoxPositionSetting()
 	{
-		float4 PlusLocalPosition = float4{ -170, 140, -50 };
 		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
-
-		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition + PlusLocalPosition);
-
+		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition);
 		ScriptInit();
 	}
 
@@ -65,5 +62,9 @@ private:
 
 	std::vector<std::string> NPCScript;
 	void ScriptInit();
+	size_t NumberofLines();
+	size_t NumberofCharacters();
+	void TextBoxSetting();
+	void FontPositionSetting();
 };
 

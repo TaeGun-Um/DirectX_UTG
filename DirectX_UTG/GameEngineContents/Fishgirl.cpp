@@ -58,6 +58,8 @@ void Fishgirl::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
+			TextBoxSetting();
+
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -70,6 +72,7 @@ void Fishgirl::TextBoxOn(float _DeltaTime)
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
 		}
 	}
 
@@ -154,23 +157,21 @@ void Fishgirl::ScriptInit()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-	FontRender->SetScale(20.0f);
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
-
-	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
 
 	TextEndCount = 6;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "Begone, spirits! Oh, wait... you're real.";
-		NPCScript[1] = "I was about to hit you with the parry move!";
-		NPCScript[2] = "That's how you deal with ghosts 'round here.";
-		NPCScript[3] = "Only a nitwit tries shootin' someone who ain't really there.";
-		NPCScript[4] = "Speakin' of not bein' place... would you fellas mind movin' on?";
-		NPCScript[5] = "You're spookin' the fish.";
+		NPCScript[0] = "Begone, spirits! Oh,\nwait... you're real.";
+		NPCScript[1] = "I was about to hit you\nwith the parry move!";
+		NPCScript[2] = "That's how you deal with\nghosts 'round here.";
+		NPCScript[3] = "Only a nitwit tries shootin'\nsomeone who ain't really\nthere.";
+		NPCScript[4] = "Speakin' of not bein'\nplace... would you\nfellas mind movin' on?";
+		NPCScript[5] = "You're spookin' the fish.\n";
 	}
 
 	// ¸¶¿ì½º ½Â¸® ½Ã
@@ -182,4 +183,50 @@ void Fishgirl::ScriptInit()
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+size_t Fishgirl::NumberofLines()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+size_t Fishgirl::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void Fishgirl::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void Fishgirl::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -1 });
 }

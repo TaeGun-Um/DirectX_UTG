@@ -56,6 +56,8 @@ void Canteen::TextBoxOn(float _DeltaTime)
 		if (TextEndCount > TextCount)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
+			TextBoxSetting();
+
 		}
 		else if (TextEndCount <= TextCount)
 		{
@@ -68,6 +70,7 @@ void Canteen::TextBoxOn(float _DeltaTime)
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
+			TextBoxSetting();
 		}
 	}
 
@@ -129,23 +132,67 @@ void Canteen::ScriptInit()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>();
 
-	FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
-	FontRender->SetScale(20.0f);
+	FontRender->SetFont("Cuphead Felix");
+	FontRender->SetScale(26.0f);
 	FontRender->SetColor(float4::Black);
 
-	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
-
-	TextEndCount = 5;
+	TextEndCount = 4;
 
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "Well? whaddaya think?";
-		NPCScript[1] = "Are those new bombs the cat's phamas or what?";
-		NPCScript[2] = "Aah, you can thank me later.";
-		NPCScript[3] = "I'm just in it for the kicks!";
+		NPCScript[0] = "Well? whaddaya think?\n";
+		NPCScript[1] = "Are those new bombs the\ncat's phamas or what?";
+		NPCScript[2] = "Aah, you can thank me later.\n";
+		NPCScript[3] = "I'm just in it for the kicks!\n";
 	}
 
 	FontRender->SetText(NPCScript[0]);
 	FontRender->Off();
+
+	TextBoxSetting();
+}
+
+size_t Canteen::NumberofLines()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	for (size_t i = 0; (i = NPCScript[TextCount].find(ch, i)) != std::string::npos; i++)
+	{
+		Count++;
+	}
+
+	return Count;
+}
+
+size_t Canteen::NumberofCharacters()
+{
+	char ch = '\n';
+	size_t Count = 0;
+
+	return Count = NPCScript[TextCount].find(ch);
+}
+
+void Canteen::TextBoxSetting()
+{
+	float4 CurActorPosition = GetTransform()->GetWorldPosition();
+	size_t LineCount = NumberofLines() + 1;
+	size_t CharacterCount = NumberofCharacters();
+
+	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+
+	FontPositionSetting();
+}
+
+void Canteen::FontPositionSetting()
+{
+	float4 BoxScale = NPC_TextBoxRender->GetBoxScale();
+	float Width = BoxScale.x;
+	float Height = BoxScale.y;
+	float Width_Half = Width / 2;
+	float Height_Half = Height / 2;
+
+	FontRender->GetTransform()->SetWorldPosition(NPC_TextBoxRender->GetBoxCurPosition());
+	FontRender->GetTransform()->AddWorldPosition({ -Width_Half + 20, Height_Half - 10, -1 });
 }
