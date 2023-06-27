@@ -5,7 +5,13 @@
 enum class KettleState
 {
 	Idle,
-
+	TalkA,
+	TalkAtoB,
+	TalkBtoA,
+	TalkB,
+	Bottle_Intro,
+	Bottle_Loop,
+	Bottle_Outro,
 };
 
 // Ό³Έν :
@@ -60,6 +66,7 @@ private:
 
 	bool IsDebugRender = false;
 
+	void ActorInitSetting();
 	void CollisionCheck(float _DeltaTime);
 	void EnterMessageScaleUp(float _DeltaTime);
 	void EnterMessageScaleDown(float _DeltaTime);
@@ -72,14 +79,6 @@ private:
 	int ScaleCount = 1;
 	bool ScaleCheckStart = false;
 
-	void ChangeState(KettleState _StateValue);
-	void UpdateState(float _DeltaTime);
-	KettleState StateValue = KettleState::Idle;
-
-	void IdleStart();
-	void IdleUpdate(float _DeltaTime);
-	void IdleEnd();
-
 	bool Isinteraction = false;
 	bool CreateBox = false;
 	bool NextStep = false;
@@ -89,6 +88,7 @@ private:
 	int TextEndCount = 0;
 
 	float BoxInterActionDelayTime = 0.0f;
+	float TalkStateChangeTime = 0.0f;
 
 	std::vector<std::string_view> NPCScript;
 	void TextBoxOn(float _DeltaTime);
@@ -98,5 +98,43 @@ private:
 	size_t NumberofCharacters();
 	void TextBoxSetting();
 	void FontPositionSetting();
+
+	KettleState StateValue = KettleState::Idle;
+
+	void ChangeState(KettleState _StateValue);
+	void UpdateState(float _DeltaTime);
+
+	void IdleStart();
+	void IdleUpdate(float _DeltaTime);
+	void IdleEnd();
+
+	void TalkAStart();
+	void TalkAUpdate(float _DeltaTime);
+	void TalkAEnd();
+
+	void TalkAtoBStart();
+	void TalkAtoBUpdate(float _DeltaTime);
+	void TalkAtoBEnd();
+
+	void TalkBtoAStart();
+	void TalkBtoAUpdate(float _DeltaTime);
+	void TalkBtoAEnd();
+
+	void TalkBStart();
+	void TalkBUpdate(float _DeltaTime);
+	void TalkBEnd();
+
+	void Bottle_IntroStart();
+	void Bottle_IntroUpdate(float _DeltaTime);
+	void Bottle_IntroEnd();
+
+	void Bottle_LoopStart();
+	void Bottle_LoopUpdate(float _DeltaTime);
+	void Bottle_LoopEnd();
+
+	void Bottle_OutroStart();
+	void Bottle_OutroUpdate(float _DeltaTime);
+	void Bottle_OutroEnd();
+
 };
 

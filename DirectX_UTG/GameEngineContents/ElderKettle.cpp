@@ -22,73 +22,7 @@ void ElderKettle::Start()
 {
 	ElderKettlePtr = this;
 
-	if (nullptr == GameEngineSprite::Find("Kettle_Idle"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Character");
-		NewDir.Move("ElderKettle");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Kettle_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Boil").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Trans_Idle").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_A").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_AToB").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_B").GetFullPath());
-	}
-
-	if (RenderPtr == nullptr)
-	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "Kettle_Idle", .SpriteName = "Kettle_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop", .SpriteName = "Bottle_Pop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Boil", .SpriteName = "Bottle_Pop_Boil", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Trans_Idle", .SpriteName = "Bottle_Pop_Trans_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Talk_A", .SpriteName = "Talk_A", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Talk_AToB", .SpriteName = "Talk_AToB", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Talk_B", .SpriteName = "Talk_B", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("Kettle_Idle");
-	}
-
-	if (nullptr == CollisionRenderPtr)
-	{
-		CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	}
-
-	if (nullptr == CollisionPtr)
-	{
-		CollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ElderKettle));
-	}
-
-	if (nullptr != CollisionPtr)
-	{
-		CollisionPtr->GetTransform()->SetLocalScale({ 120, 200, 1 });
-		CollisionPtr->GetTransform()->SetLocalPosition({ 10, -20, -17 });
-	}
-
-	if (nullptr != CollisionRenderPtr)
-	{
-		CollisionRenderPtr->SetTexture("GreenLine.png");
-		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
-		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
-	}
-
-	if (nullptr == EnterMessageRenderPtr)
-	{
-		EnterMessageRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		EnterMessageRenderPtr->SetScaleToTexture("EnterMessage.png");
-		EnterMessageRenderMaxScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
-		EnterMessageRenderPtr->GetTransform()->SetLocalScale(float4{ 1, 1, 1 });
-		EnterMessageRenderMinScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
-		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 15, 150, -20 });
-		EnterMessageRenderPtr->Off();
-	}
-
-	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
-	NPC_TextBoxRender->Off();
+	ActorInitSetting();
 }
 
 void ElderKettle::Update(float _DeltaTime)
@@ -333,6 +267,59 @@ void ElderKettle::ChangeState(KettleState _StateValue)
 	case KettleState::Idle:
 		IdleStart();
 		break;
+	case KettleState::TalkA:
+		TalkAStart();
+		break;
+	case KettleState::TalkAtoB:
+		TalkAtoBStart();
+		break;
+	case KettleState::TalkBtoA:
+		TalkBtoAStart();
+		break;
+	case KettleState::TalkB:
+		TalkBStart();
+		break;
+	case KettleState::Bottle_Intro:
+		Bottle_IntroStart();
+		break;
+	case KettleState::Bottle_Loop:
+		Bottle_LoopStart();
+		break;
+	case KettleState::Bottle_Outro:
+		Bottle_OutroStart();
+		break;
+	default:
+		break;
+	}
+
+	switch (PrevState)
+	{
+	case KettleState::Idle:
+		IdleEnd();
+		break;
+	case KettleState::TalkA:
+		TalkAEnd();
+		break;
+	case KettleState::TalkAtoB:
+		TalkAtoBEnd();
+		break;
+	case KettleState::TalkBtoA:
+		TalkBtoAEnd();
+		break;
+	case KettleState::TalkB:
+		TalkBEnd();
+		break;
+	case KettleState::Bottle_Intro:
+		Bottle_IntroEnd();
+		break;
+	case KettleState::Bottle_Loop:
+		Bottle_LoopEnd();
+		break;
+	case KettleState::Bottle_Outro:
+		Bottle_OutroEnd();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -343,18 +330,238 @@ void ElderKettle::UpdateState(float _DeltaTime)
 	case KettleState::Idle:
 		IdleUpdate(_DeltaTime);
 		break;
+	case KettleState::TalkA:
+		TalkAUpdate(_DeltaTime);
+		break;
+	case KettleState::TalkAtoB:
+		TalkAtoBUpdate(_DeltaTime);
+		break;
+	case KettleState::TalkBtoA:
+		TalkBtoAUpdate(_DeltaTime);
+		break;
+	case KettleState::TalkB:
+		TalkBUpdate(_DeltaTime);
+		break;
+	case KettleState::Bottle_Intro:
+		Bottle_IntroUpdate(_DeltaTime);
+		break;
+	case KettleState::Bottle_Loop:
+		Bottle_LoopUpdate(_DeltaTime);
+		break;
+	case KettleState::Bottle_Outro:
+		Bottle_OutroUpdate(_DeltaTime);
+		break;
+	default:
+		break;
 	}
 }
 
 void ElderKettle::IdleStart()
 {
-
+	RenderPtr->ChangeAnimation("Kettle_Idle");
 }
 void ElderKettle::IdleUpdate(float _DeltaTime)
 {
-
+	if (true == CreateBox)
+	{
+		ChangeState(KettleState::TalkA);
+		return;
+	}
 }
 void ElderKettle::IdleEnd()
 {
 
+}
+
+void ElderKettle::TalkAStart()
+{
+	RenderPtr->ChangeAnimation("Talk_A");
+}
+void ElderKettle::TalkAUpdate(float _DeltaTime)
+{
+	TalkStateChangeTime += _DeltaTime;
+
+	if (7.0f <= TalkStateChangeTime)
+	{
+		ChangeState(KettleState::TalkAtoB);
+		return;
+	}
+}
+void ElderKettle::TalkAEnd()
+{
+	TalkStateChangeTime = 0.0f;
+}
+	 
+void ElderKettle::TalkAtoBStart()
+{
+	RenderPtr->ChangeAnimation("Talk_AToB");
+}
+void ElderKettle::TalkAtoBUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KettleState::TalkB);
+		return;
+	}
+}
+void ElderKettle::TalkAtoBEnd()
+{
+
+}
+
+void ElderKettle::TalkBtoAStart()
+{
+	RenderPtr->ChangeAnimation("Talk_BToA");
+}
+void ElderKettle::TalkBtoAUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KettleState::TalkA);
+		return;
+	}
+}
+void ElderKettle::TalkBtoAEnd()
+{
+
+}
+	 
+void ElderKettle::TalkBStart()
+{
+	RenderPtr->ChangeAnimation("Talk_B");
+}
+void ElderKettle::TalkBUpdate(float _DeltaTime)
+{
+	TalkStateChangeTime += _DeltaTime;
+
+	if (7.0f <= TalkStateChangeTime)
+	{
+		ChangeState(KettleState::TalkBtoA);
+		return;
+	}
+}
+void ElderKettle::TalkBEnd()
+{
+	TalkStateChangeTime = 0.0f;
+}
+	 
+void ElderKettle::Bottle_IntroStart()
+{
+	RenderPtr->ChangeAnimation("Bottle_Pop");
+}
+void ElderKettle::Bottle_IntroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KettleState::Bottle_Loop);
+		return;
+	}
+}
+void ElderKettle::Bottle_IntroEnd()
+{
+
+}
+	 
+void ElderKettle::Bottle_LoopStart()
+{
+	RenderPtr->ChangeAnimation("Bottle_Pop_Boil");
+}
+void ElderKettle::Bottle_LoopUpdate(float _DeltaTime)
+{
+
+}
+void ElderKettle::Bottle_LoopEnd()
+{
+
+}
+	 
+void ElderKettle::Bottle_OutroStart()
+{
+	RenderPtr->ChangeAnimation("Bottle_Pop_Trans_Idle");
+}
+void ElderKettle::Bottle_OutroUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KettleState::Idle);
+		return;
+	}
+}
+void ElderKettle::Bottle_OutroEnd()
+{
+
+}
+
+void ElderKettle::ActorInitSetting()
+{
+	if (nullptr == GameEngineSprite::Find("Kettle_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("ElderKettle");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Kettle_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Boil").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Bottle_Pop_Trans_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_AToB").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_BToA").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_B").GetFullPath());
+	}
+
+	if (RenderPtr == nullptr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RenderPtr->CreateAnimation({ .AnimationName = "Kettle_Idle", .SpriteName = "Kettle_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop", .SpriteName = "Bottle_Pop", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Boil", .SpriteName = "Bottle_Pop_Boil", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Bottle_Pop_Trans_Idle", .SpriteName = "Bottle_Pop_Trans_Idle", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_A", .SpriteName = "Talk_A", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_AToB", .SpriteName = "Talk_AToB", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_BToA", .SpriteName = "Talk_BToA", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Talk_B", .SpriteName = "Talk_B", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+		
+		ChangeState(KettleState::Idle);
+	}
+
+	if (nullptr == CollisionRenderPtr)
+	{
+		CollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	}
+
+	if (nullptr == CollisionPtr)
+	{
+		CollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::ElderKettle));
+	}
+
+	if (nullptr != CollisionPtr)
+	{
+		CollisionPtr->GetTransform()->SetLocalScale({ 120, 200, 1 });
+		CollisionPtr->GetTransform()->SetLocalPosition({ 10, -20, -17 });
+	}
+
+	if (nullptr != CollisionRenderPtr)
+	{
+		CollisionRenderPtr->SetTexture("GreenLine.png");
+		CollisionRenderPtr->GetTransform()->SetLocalScale(CollisionPtr->GetTransform()->GetLocalScale());
+		CollisionRenderPtr->GetTransform()->SetLocalPosition(CollisionPtr->GetTransform()->GetLocalPosition());
+	}
+
+	if (nullptr == EnterMessageRenderPtr)
+	{
+		EnterMessageRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		EnterMessageRenderPtr->SetScaleToTexture("EnterMessage.png");
+		EnterMessageRenderMaxScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
+		EnterMessageRenderPtr->GetTransform()->SetLocalScale(float4{ 1, 1, 1 });
+		EnterMessageRenderMinScale = EnterMessageRenderPtr->GetTransform()->GetLocalScale();
+		EnterMessageRenderPtr->GetTransform()->SetLocalPosition(RenderPtr->GetTransform()->GetLocalPosition() + float4{ 15, 150, -20 });
+		EnterMessageRenderPtr->Off();
+	}
+
+	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
+	NPC_TextBoxRender->Off();
 }
