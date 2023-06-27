@@ -125,9 +125,6 @@ void ElderKettle::CollisionCheck(float _DeltaTime)
 
 	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
 	{
-		//Player::MainPlayer->PlayerCollisionPtrOff();
-		//Player::MainPlayer->SetIsPortalingTrue();
-		
 		CreateBox = true;
 	}
 }
@@ -609,7 +606,6 @@ void ElderKettle::Bottle_OutroUpdate(float _DeltaTime)
 
 	if (true == BottleRenderPtr->IsAnimationEnd())
 	{
-		//Player::MainPlayer->SetPopInterAction();
 		ChangeState(KettleState::Idle);
 		return;
 	}

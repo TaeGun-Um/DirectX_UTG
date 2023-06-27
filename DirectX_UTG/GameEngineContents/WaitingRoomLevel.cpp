@@ -195,7 +195,15 @@ void WaitingRoomLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Bottle_Pop_Trans_Idle");
 		GameEngineSprite::UnLoad("Talk_A");
 		GameEngineSprite::UnLoad("Talk_AToB");
+		GameEngineSprite::UnLoad("Talk_BToA");
 		GameEngineSprite::UnLoad("Talk_B");
+	}
+
+	if (nullptr != GameEngineSprite::Find("Bottle_Appear.png"))
+	{
+		GameEngineSprite::UnLoad("Bottle_Appear.png");
+		GameEngineSprite::UnLoad("Bottle_Hold.png");
+		GameEngineSprite::UnLoad("Bottle_FX.png");
 	}
 
 	if (nullptr != GameEngineTexture::Find("WaitingRoom_ColMap.png"))
