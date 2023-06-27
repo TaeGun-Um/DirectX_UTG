@@ -8,6 +8,8 @@
 
 #include "Player.h"
 
+ElderKettle* ElderKettle::ElderKettlePtr = nullptr;
+
 ElderKettle::ElderKettle() 
 {
 }
@@ -18,6 +20,8 @@ ElderKettle::~ElderKettle()
 
 void ElderKettle::Start()
 {
+	ElderKettlePtr = this;
+
 	if (nullptr == GameEngineSprite::Find("Kettle_Idle"))
 	{
 		GameEngineDirectory NewDir;
@@ -142,6 +146,7 @@ void ElderKettle::TextBoxOn(float _DeltaTime)
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
+			Player::MainPlayer->SetElderKettleInterActioning(false);
 		}
 	}
 
@@ -161,17 +166,20 @@ void ElderKettle::CollisionCheck(float _DeltaTime)
 	{
 		EnterMessageScaleUp(_DeltaTime);
 		Isinteraction = true;
+		Player::MainPlayer->SetElderKettleInterAction(true);
 	}
 	else
 	{
 		EnterMessageScaleDown(_DeltaTime);
 		Isinteraction = false;
+		Player::MainPlayer->SetElderKettleInterAction(false);
 	}
 
 	if (true == Isinteraction && true == GameEngineInput::IsDown("Attack"))
 	{
 		//Player::MainPlayer->PlayerCollisionPtrOff();
 		//Player::MainPlayer->SetIsPortalingTrue();
+		
 		CreateBox = true;
 	}
 }
@@ -231,17 +239,17 @@ void ElderKettle::ScriptInit()
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "what a fine pickle you boys have gotten yourselves into!";
-		NPCScript[1] = "i know you don't want to be pawns of the devil!";
-		NPCScript[2] = "but if you refuse... i can't bear to imagine your fates!";
-		NPCScript[3] = "you must Play along for now.collect those contracts!";
-		NPCScript[4] = "and you'd best be ready for some nasty business...!";
-		NPCScript[5] = "your debtor 'friends' won't be very frindly once you confront them!";
-		NPCScript[6] = "in fact, i expect they'll transform into trrible beasts!";
-		NPCScript[7] = "take this potion so they won't hang you out to dry.";
-		NPCScript[8] = "it will give you the most remarkable magical abilities!";
-		NPCScript[9] = "now go to my writing desk and use the mystical inkwell there.";
-		NPCScript[10] = "you need to prepare yourselves for a scrap!!";
+		NPCScript[0] = "What a fine pickle you\nboys have gotten\nyourselves into!";
+		NPCScript[1] = "I know you don't want to\nbe pawns of the devil!";
+		NPCScript[2] = "But if you refuse...\ni can't bear to\nimagine your fates!";
+		NPCScript[3] = "You must Play along for\nnow, collect those\ncontracts!";
+		NPCScript[4] = "And you'd best be ready for\nsome nasty business...!";
+		NPCScript[5] = "Your debtor 'friends' won't\nbe very frindly once you\nconfront them!";
+		NPCScript[6] = "In fact, i expect they'll\ntransform into trrible\nbeasts!";
+		NPCScript[7] = "Take this potion so \nwon't hang you out\nto dry.";
+		NPCScript[8] = "It will give you the most\nremarkable magical\nabilities!";
+		NPCScript[9] = "Now go to my writing desk\nand use the mystical\ninkwell there.";
+		NPCScript[10] = "You need to prepare\nyourselves for a\nscrap!!";
 	}
 
 	FontRender->SetText(NPCScript[0]);
@@ -296,7 +304,7 @@ void ElderKettle::TextBoxSetting()
 	size_t LineCount = NumberofLines() + 1;
 	size_t CharacterCount = NumberofCharacters();
 
-	NPC_TextBoxRender->SetBox(CharacterCount, LineCount, CurActorPosition);
+	NPC_TextBoxRender->SetBoxKettle(CharacterCount, LineCount, CurActorPosition);
 
 	FontPositionSetting();
 }

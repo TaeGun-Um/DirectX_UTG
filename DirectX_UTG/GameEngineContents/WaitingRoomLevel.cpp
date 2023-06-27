@@ -112,7 +112,7 @@ void WaitingRoomLevel::LevelChangeStart()
 		}
 		
 		KettleObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 470 , PlayMapHeight_Half - 110});
-		// KettleObject->TextBoxPositionSetting();
+		KettleObject->TextBoxPositionSetting();
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -124,6 +124,7 @@ void WaitingRoomLevel::LevelChangeStart()
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();
+		PlayerObject->SetIsWattingRoomIntroTrue();
 
 		PlayerDist = PlayerObject->GetTransform()->GetLocalPosition().x;
 	}

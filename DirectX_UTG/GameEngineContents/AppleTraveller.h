@@ -35,8 +35,6 @@ public:
 
 	void TextBoxPositionSetting()
 	{
-		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
-		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition);
 		ScriptInit();
 	}
 

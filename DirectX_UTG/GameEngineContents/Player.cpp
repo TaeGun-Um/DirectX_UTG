@@ -389,8 +389,6 @@ void Player::CollisionCalculation(float _DeltaTime)
 	PortalCheck();
 
 	WallCollisionCheck(_DeltaTime);
-
-	ElderKettleCheck();
 }
 
 void Player::HitBlink(float _DeltaTime)
@@ -442,18 +440,6 @@ void Player::PortalCheck()
 	else
 	{
 		PortalAble = false;
-	}
-}
-
-void Player::ElderKettleCheck()
-{
-	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::ElderKettle), ColType::AABBBOX2D, ColType::AABBBOX2D))
-	{
-		ElderKettleInterAction = true;
-	}
-	else
-	{
-		ElderKettleInterAction = false;
 	}
 }
 

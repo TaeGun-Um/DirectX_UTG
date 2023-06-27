@@ -16,14 +16,6 @@ public:
 	NPC_TextBox& operator=(const NPC_TextBox& _Other) = delete;
 	NPC_TextBox& operator=(NPC_TextBox&& _Other) noexcept = delete;
 
-	void LocalPositionSetting(float4 _Value)
-	{
-		BoxRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		TailRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		ArrowRenderPtr->GetTransform()->SetLocalPosition(_Value);
-		BoxCurPosition = BoxRenderPtr->GetTransform()->GetWorldPosition();
-	}
-
 	bool RenderAlphaSetting(std::shared_ptr<GameEngineFontRenderer> _FontRender, float _DeltaTime);
 	void BoxReset();
 
@@ -43,6 +35,7 @@ public:
 	}
 
 	void SetBox(size_t _Character, size_t _Line, float4 _CurActorPosition);
+	void SetBoxKettle(size_t _Character, size_t _Line, float4 _CurActorPosition);
 
 protected:
 	void Start();

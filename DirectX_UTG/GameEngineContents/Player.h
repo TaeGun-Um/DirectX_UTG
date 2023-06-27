@@ -49,6 +49,21 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void SetElderKettleInterAction(bool _Is)
+	{
+		ElderKettleInterAction = _Is;
+	}
+
+	void SetElderKettleInterActioning(bool _Is)
+	{
+		ElderKettleInterActioning = _Is;
+	}
+
+	void SetIsWattingRoomIntroTrue()
+	{
+		IsWattingRoomIntro = true;
+	}
+
 	void SetParryOn()
 	{
 		ParryCheck = true;
@@ -263,7 +278,6 @@ private:
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
 	void HitCollisionCheck(float _DeltaTime);
 	void WallCollisionCheck(float _DeltaTime);
-	void ElderKettleCheck();
 
 	// CreateActor
 	void ProjectileCreate(float _DeltaTime);
@@ -320,11 +334,14 @@ private:
 	bool IsDeath = false;
 	bool PortalAble = false;
 	bool Portaling = false;
-	bool ElderKettleInterAction = false;
-	bool ElderKettleInterActioning = false;
-	bool IsElderKettleEnd = false;
 	bool IsIntro = false;
 	bool IsPlayerDeath = false;
+
+	bool ElderKettleInterAction = false;
+	bool IsWattingRoomIntro = false;
+	bool ElderKettleInterActioning = false;
+
+	bool IsElderKettleEnd = false;
 
 	float MoveAbleTime = 0.0f;
 	float JumpTime = 0.0f;
@@ -334,6 +351,7 @@ private:
 	float MoveTime = 0.0f;
 	float HitTime = 0.0f;
 	float NormalDeltaTime = 0.0f;
+
 	float ElderKettleinterActionTime = 0.0f;
 
 	int CreateEXCount = 1;

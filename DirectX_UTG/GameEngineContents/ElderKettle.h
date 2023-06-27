@@ -12,6 +12,8 @@ enum class KettleState
 class ElderKettle : public GameEngineActor
 {
 public:
+	static ElderKettle* ElderKettlePtr;
+
 	// constrcuter destructer
 	ElderKettle();
 	~ElderKettle();
@@ -34,9 +36,12 @@ public:
 
 	void TextBoxPositionSetting()
 	{
-		float4 ActorLocalPosition = GetTransform()->GetLocalPosition();
-		NPC_TextBoxRender->LocalPositionSetting(ActorLocalPosition);
 		ScriptInit();
+	}
+	
+	void CreateBoxOn()
+	{
+		CreateBox = true;
 	}
 
 protected:

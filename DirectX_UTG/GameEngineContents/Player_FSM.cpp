@@ -7,6 +7,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "ElderKettle.h"
+
 void Player::ChangeState(PlayerState _StateValue)
 {
 	PlayerState NextState = _StateValue;
@@ -399,6 +401,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == IsWattingRoomIntro)
+	{
+		ChangeState(PlayerState::ElderKettleMove);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("Attack") && true == ElderKettleInterAction)
 	{
 		ChangeState(PlayerState::ElderKettleMove);
@@ -502,6 +510,12 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("EX") && 0 < PlayerEXStack)
 	{
 		ChangeState(PlayerState::EXAttack);
+		return;
+	}
+
+	if (true == IsWattingRoomIntro)
+	{
+		ChangeState(PlayerState::ElderKettleMove);
 		return;
 	}
 
@@ -2010,10 +2024,16 @@ void Player::DeathEnd()
 
 void Player::ElderKettleMoveStart()
 {
-	Directbool = false;
-	GetTransform()->SetLocalNegativeScaleX();
-	RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
 	ElderKettleInterActioning = true;
+
+	if (false == IsWattingRoomIntro)
+	{
+		Directbool = false;
+		GetTransform()->SetLocalNegativeScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 15, 90 });
+		ElderKettleInterActioning = true;
+	}
+
 	RenderPtr->ChangeAnimation("Move");
 	RenderPtr->GetTransform()->SetLocalScale({ 170, 200, 1 });
 }
@@ -2021,12 +2041,26 @@ void Player::ElderKettleMoveUpdate(float _DeltaTime)
 {
 	float MoveDis = MoveSpeed * _DeltaTime;
 
-	GetTransform()->AddLocalPosition({ -MoveDis, 0 });
-
-	if (880 >= GetTransform()->GetWorldPosition().x)
+	if (true == IsWattingRoomIntro)
 	{
-		ChangeState(PlayerState::ElderKettleIdle);
-		return;
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+
+		if (920 <= GetTransform()->GetWorldPosition().x)
+		{
+			IsWattingRoomIntro = false;
+			ChangeState(PlayerState::ElderKettleIdle);
+			return;
+		}
+	}
+	else
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+
+		if (920 >= GetTransform()->GetWorldPosition().x)
+		{
+			ChangeState(PlayerState::ElderKettleIdle);
+			return;
+		}
 	}
 }
 void Player::ElderKettleMoveEnd()
@@ -2036,26 +2070,38 @@ void Player::ElderKettleMoveEnd()
 
 void Player::ElderKettleIdleStart()
 {
-	Directbool = true;
-	GetTransform()->SetLocalPositiveScaleX();
-	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	ElderKettle::ElderKettlePtr->CreateBoxOn();
+
+	if (true == IsElderKettleEnd)
+	{
+		Directbool = true;
+		GetTransform()->SetLocalPositiveScaleX();
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+	}
+
 	RenderPtr->ChangeAnimation("Idle", false);
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
 }
 void Player::ElderKettleIdleUpdate(float _DeltaTime)
 {
-	ElderKettleinterActionTime += _DeltaTime;
-
-	if (ElderKettleinterActionTime >= 10.0f)
+	if (false == ElderKettleInterActioning)
 	{
-		ChangeState(PlayerState::ElderKettleInterAction);
+		IsElderKettleEnd = true;
+		ChangeState(PlayerState::Idle);
 		return;
 	}
 
+	//ElderKettleinterActionTime += _DeltaTime;
+
+	//if (ElderKettleinterActionTime >= 10.0f)
+	//{
+	//	ChangeState(PlayerState::ElderKettleInterAction);
+	//	return;
+	//}
 }
 void Player::ElderKettleIdleEnd()
 {
-	ElderKettleinterActionTime = 0.0f;
+	//ElderKettleinterActionTime = 0.0f;
 }
 
 void Player::ElderKettleInterActionStart()
@@ -2065,17 +2111,24 @@ void Player::ElderKettleInterActionStart()
 }
 void Player::ElderKettleInterActionUpdate(float _DeltaTime)
 {
+	if (false == ElderKettleInterActioning && true == RenderPtr->IsAnimationEnd())
+	{
+		IsElderKettleEnd = true;
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
-		ChangeState(PlayerState::Idle);
+		ChangeState(PlayerState::ElderKettleIdle);
 		return;
 	}
 }
 void Player::ElderKettleInterActionEnd()
 {
-	ElderKettleInterActioning = false;
-	IsElderKettleEnd = true;
+	
 }
 
 void Player::IntroStart()

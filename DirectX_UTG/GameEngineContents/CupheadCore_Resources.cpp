@@ -96,7 +96,7 @@ void CupheadCore::ContentsResourcesCreate()
 {
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
-		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
