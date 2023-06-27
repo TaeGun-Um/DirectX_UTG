@@ -22,8 +22,9 @@
 #include "Screen_FX.h"
 #include "Loading.h"
 #include "RoundBlackBox.h"
-
 #include "TransformGUI.h"
+
+#include "OldFilm.h"
 
 TutorialLevel* TutorialLevel::TutorialLevelPtr = nullptr;
 
@@ -38,6 +39,7 @@ TutorialLevel::~TutorialLevel()
 void TutorialLevel::Start()
 {
 	TutorialLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 
 void TutorialLevel::Update(float _DeltaTime)

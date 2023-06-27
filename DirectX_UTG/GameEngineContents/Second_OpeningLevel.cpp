@@ -15,6 +15,8 @@
 #include "BookRender.h"
 #include "Loading.h"
 
+#include "OldFilm.h"
+
 Second_OpeningLevel::Second_OpeningLevel() 
 {
 }
@@ -25,8 +27,9 @@ Second_OpeningLevel::~Second_OpeningLevel()
 
 void Second_OpeningLevel::Start()
 {
-
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
+
 void Second_OpeningLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("PrevLevel"))

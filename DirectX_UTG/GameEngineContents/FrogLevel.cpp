@@ -33,6 +33,8 @@
 #include "OverworldLevel.h"
 #include "TransformGUI.h"
 
+#include "OldFilm.h"
+
 FrogLevel* FrogLevel::FrogLevelPtr = nullptr;
 
 FrogLevel::FrogLevel() 
@@ -46,6 +48,7 @@ FrogLevel::~FrogLevel()
 void FrogLevel::Start()
 {
 	FrogLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void FrogLevel::Update(float _DeltaTime)
 {

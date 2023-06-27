@@ -24,6 +24,8 @@
 #include "Loading.h"
 #include "RoundBlackBox.h"
 
+#include "OldFilm.h"
+
 OverworldLevel* OverworldLevel::OverworldLevelPtr = nullptr;
 
 OverworldLevel::OverworldLevel()
@@ -37,6 +39,7 @@ OverworldLevel::~OverworldLevel()
 void OverworldLevel::Start()
 {
 	OverworldLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 
 void OverworldLevel::Update(float _DeltaTime)

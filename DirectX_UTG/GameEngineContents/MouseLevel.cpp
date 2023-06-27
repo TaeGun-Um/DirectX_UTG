@@ -26,6 +26,8 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+#include "OldFilm.h"
+
 MouseLevel* MouseLevel::MouseLevelPtr = nullptr;
 
 MouseLevel::MouseLevel() 
@@ -39,6 +41,7 @@ MouseLevel::~MouseLevel()
 void MouseLevel::Start()
 {
 	MouseLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void MouseLevel::Update(float _DeltaTime)
 {

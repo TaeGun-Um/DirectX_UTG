@@ -19,6 +19,8 @@
 #include "Title_Background.h"
 #include "Loading.h"
 
+#include "OldFilm.h"
+
 First_OpeningLevel* First_OpeningLevel::First_OpeningLevelPtr = nullptr;
 
 First_OpeningLevel::First_OpeningLevel() 
@@ -32,6 +34,7 @@ First_OpeningLevel::~First_OpeningLevel()
 void First_OpeningLevel::Start()
 {
 	First_OpeningLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {

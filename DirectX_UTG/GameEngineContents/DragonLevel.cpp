@@ -20,6 +20,8 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+#include "OldFilm.h"
+
 DragonLevel::DragonLevel() 
 {
 }
@@ -30,7 +32,7 @@ DragonLevel::~DragonLevel()
 
 void DragonLevel::Start()
 {
-
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void DragonLevel::Update(float _DeltaTime)
 {

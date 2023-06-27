@@ -31,6 +31,7 @@ WaitingRoomLevel::~WaitingRoomLevel()
 void WaitingRoomLevel::Start()
 {
 	WaitingRoomLevelPtr = this;
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {
@@ -64,8 +65,6 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 void WaitingRoomLevel::LevelChangeStart()
 {
-	GetLastTarget()->CreateEffect<OldFilm>();
-
 	if (nullptr == GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineDirectory NewDir;
