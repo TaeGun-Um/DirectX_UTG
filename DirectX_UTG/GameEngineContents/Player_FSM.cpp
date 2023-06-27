@@ -2076,11 +2076,11 @@ void Player::ElderKettleIdleStart()
 	{
 		Directbool = true;
 		GetTransform()->SetLocalPositiveScaleX();
-		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 	}
 
 	RenderPtr->ChangeAnimation("Idle", false);
 	RenderPtr->GetTransform()->SetLocalScale({ 150, 200, 1 });
+	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 }
 void Player::ElderKettleIdleUpdate(float _DeltaTime)
 {
@@ -2091,21 +2091,20 @@ void Player::ElderKettleIdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	//ElderKettleinterActionTime += _DeltaTime;
-
-	//if (ElderKettleinterActionTime >= 10.0f)
-	//{
-	//	ChangeState(PlayerState::ElderKettleInterAction);
-	//	return;
-	//}
+	if (true == PopInterAction)
+	{
+		ChangeState(PlayerState::ElderKettleInterAction);
+		return;
+	}
 }
 void Player::ElderKettleIdleEnd()
 {
-	//ElderKettleinterActionTime = 0.0f;
+
 }
 
 void Player::ElderKettleInterActionStart()
 {
+	PopInterAction = false;
 	RenderPtr->ChangeAnimation("ElderKettleInteraction");
 	RenderPtr->GetTransform()->SetLocalPosition({ -55, 140 });
 }
@@ -2114,14 +2113,12 @@ void Player::ElderKettleInterActionUpdate(float _DeltaTime)
 	if (false == ElderKettleInterActioning && true == RenderPtr->IsAnimationEnd())
 	{
 		IsElderKettleEnd = true;
-		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 		ChangeState(PlayerState::Idle);
 		return;
 	}
 
 	if (true == RenderPtr->IsAnimationEnd())
 	{
-		RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });
 		ChangeState(PlayerState::ElderKettleIdle);
 		return;
 	}

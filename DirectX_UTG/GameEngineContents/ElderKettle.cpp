@@ -67,20 +67,34 @@ void ElderKettle::TextBoxOn(float _DeltaTime)
 			FontRender->SetText(NPCScript[TextCount]);
 			TextBoxSetting();
 
+			if (7 == TextCount)
+			{
+				IsPop = true;
+			}
+			else
+			{
+				IsPop = false;
+			}
 		}
 		else if (TextEndCount <= TextCount)
 		{
+			int Script = TextCount;
+
 			TextCount = 0;
 			CreateBox = false;
 			NextStep = false;
-			//Player::MainPlayer->PlayerCollisionPtrOn();
-			//Player::MainPlayer->SetIsPortalingfalse();
+			TextEnd = true;
 			NPC_TextBoxRender->Off();
 			BoxInterActionDelayTime = 0.0f;
 			FontRender->Off();
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
 			Player::MainPlayer->SetElderKettleInterActioning(false);
+
+			if (11 == Script)
+			{
+				ScriptChange();
+			}
 		}
 	}
 
@@ -200,9 +214,9 @@ void ElderKettle::ScriptChange()
 	NPCScript.resize(TextEndCount);
 
 	{
-		NPCScript[0] = "well, what are you rascals waiting for ? off you go!";
-		NPCScript[1] = "meanwhile, i shall try to figure some way out of this mess!";
-		NPCScript[2] = "good luck.you troublesome little mugs!!";
+		NPCScript[0] = "well, what are you rascals\nwaiting for? off you\ngo!";
+		NPCScript[1] = "meanwhile, i shall try\nto figure some way\nout of this mess!";
+		NPCScript[2] = "good luck. you troublesome\nlittle mugs!!";
 	}
 
 	FontRender->SetText(NPCScript[0]);
@@ -362,6 +376,13 @@ void ElderKettle::IdleStart()
 }
 void ElderKettle::IdleUpdate(float _DeltaTime)
 {
+	if (true == IsPop && 1 == PopCount)
+	{
+		PopCount = 0;
+		ChangeState(KettleState::Bottle_Intro);
+		return;
+	}
+
 	if (true == CreateBox)
 	{
 		ChangeState(KettleState::TalkA);
@@ -379,6 +400,20 @@ void ElderKettle::TalkAStart()
 }
 void ElderKettle::TalkAUpdate(float _DeltaTime)
 {
+	if (true == TextEnd)
+	{
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (true == IsPop && 1 == PopCount)
+	{
+		PopCount = 0;
+		ChangeState(KettleState::Bottle_Intro);
+		return;
+	}
+
 	TalkStateChangeTime += _DeltaTime;
 
 	if (7.0f <= TalkStateChangeTime)
@@ -398,6 +433,20 @@ void ElderKettle::TalkAtoBStart()
 }
 void ElderKettle::TalkAtoBUpdate(float _DeltaTime)
 {
+	if (true == TextEnd)
+	{
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (true == IsPop && 1 == PopCount)
+	{
+		PopCount = 0;
+		ChangeState(KettleState::Bottle_Intro);
+		return;
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(KettleState::TalkB);
@@ -415,6 +464,20 @@ void ElderKettle::TalkBtoAStart()
 }
 void ElderKettle::TalkBtoAUpdate(float _DeltaTime)
 {
+	if (true == TextEnd)
+	{
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (true == IsPop && 1 == PopCount)
+	{
+		PopCount = 0;
+		ChangeState(KettleState::Bottle_Intro);
+		return;
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		ChangeState(KettleState::TalkA);
@@ -432,6 +495,20 @@ void ElderKettle::TalkBStart()
 }
 void ElderKettle::TalkBUpdate(float _DeltaTime)
 {
+	if (true == TextEnd)
+	{
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (true == IsPop && 1 == PopCount)
+	{
+		PopCount = 0;
+		ChangeState(KettleState::Bottle_Intro);
+		return;
+	}
+
 	TalkStateChangeTime += _DeltaTime;
 
 	if (7.0f <= TalkStateChangeTime)
@@ -444,14 +521,39 @@ void ElderKettle::TalkBEnd()
 {
 	TalkStateChangeTime = 0.0f;
 }
-	 
+
 void ElderKettle::Bottle_IntroStart()
 {
 	RenderPtr->ChangeAnimation("Bottle_Pop");
+	BottleRenderPtr->ChangeAnimation("Bottle_Appear");
+	BottleRenderPtr->On();
+
+	BottleRenderPtr->GetTransform()->SetLocalPosition({ -20, 80 });
 }
 void ElderKettle::Bottle_IntroUpdate(float _DeltaTime)
 {
-	if (true == RenderPtr->IsAnimationEnd())
+	if (true == TextEnd)
+	{
+		BottleRenderPtr->Off();
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (9 == BottleRenderPtr->GetCurrentFrame())
+	{
+		BottleRenderPtr->GetTransform()->SetLocalPosition({ -30, 70 });
+	}
+	else if (9 == BottleRenderPtr->GetCurrentFrame())
+	{
+		BottleRenderPtr->GetTransform()->SetLocalPosition({ -30, 50 });
+	}
+	else if (10 == BottleRenderPtr->GetCurrentFrame())
+	{
+		BottleRenderPtr->GetTransform()->SetLocalPosition({ -120, -15 });
+	}
+
+	if (true == BottleRenderPtr->IsAnimationEnd())
 	{
 		ChangeState(KettleState::Bottle_Loop);
 		return;
@@ -465,10 +567,24 @@ void ElderKettle::Bottle_IntroEnd()
 void ElderKettle::Bottle_LoopStart()
 {
 	RenderPtr->ChangeAnimation("Bottle_Pop_Boil");
+	BottleRenderPtr->ChangeAnimation("Bottle_Hold");
+	BottleRenderPtr->GetTransform()->SetLocalPosition({ -90, -15 });
 }
 void ElderKettle::Bottle_LoopUpdate(float _DeltaTime)
 {
+	if (true == TextEnd)
+	{
+		BottleRenderPtr->Off();
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
 
+	if (true == BottleRenderPtr->IsAnimationEnd())
+	{
+		ChangeState(KettleState::Bottle_Outro);
+		return;
+	}
 }
 void ElderKettle::Bottle_LoopEnd()
 {
@@ -478,18 +594,29 @@ void ElderKettle::Bottle_LoopEnd()
 void ElderKettle::Bottle_OutroStart()
 {
 	RenderPtr->ChangeAnimation("Bottle_Pop_Trans_Idle");
+	BottleRenderPtr->ChangeAnimation("Bottle_FX");
+	BottleRenderPtr->GetTransform()->SetLocalScale({ 1024, 1024, 1 });
+	Player::MainPlayer->SetPopInterAction();
 }
 void ElderKettle::Bottle_OutroUpdate(float _DeltaTime)
 {
-	if (true == RenderPtr->IsAnimationEnd())
+	if (true == TextEnd)
 	{
+		TextEnd = false;
+		ChangeState(KettleState::Idle);
+		return;
+	}
+
+	if (true == BottleRenderPtr->IsAnimationEnd())
+	{
+		//Player::MainPlayer->SetPopInterAction();
 		ChangeState(KettleState::Idle);
 		return;
 	}
 }
 void ElderKettle::Bottle_OutroEnd()
 {
-
+	BottleRenderPtr->Off();
 }
 
 void ElderKettle::ActorInitSetting()
@@ -513,6 +640,20 @@ void ElderKettle::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Talk_B").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Bottle_Appear.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("ElderKettle");
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Bottle_Appear.png").GetFullPath(), 5, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Bottle_Hold.png").GetFullPath(), 3, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Bottle_FX.png").GetFullPath(), 5, 3);
+	}
+
 	if (RenderPtr == nullptr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -526,6 +667,16 @@ void ElderKettle::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Talk_B", .SpriteName = "Talk_B", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 		
 		ChangeState(KettleState::Idle);
+	}
+
+	if (BottleRenderPtr == nullptr)
+	{
+		BottleRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BottleRenderPtr->CreateAnimation({ "Bottle_Appear", "Bottle_Appear.png", 0, 18, 0.05f, false, false });
+		BottleRenderPtr->CreateAnimation({ "Bottle_Hold", "Bottle_Hold.png", 0, 2, 0.05f, true, false });
+		BottleRenderPtr->CreateAnimation({ "Bottle_FX", "Bottle_FX.png", 0, 12, 0.05f, false, false });
+		BottleRenderPtr->GetTransform()->SetLocalScale({ 512, 512, 1 });
+		BottleRenderPtr->Off();
 	}
 
 	if (nullptr == CollisionRenderPtr)

@@ -44,5 +44,5 @@ void CupheadCore::GameStart()
 
 void CupheadCore::GameEnd()
 {
-}
 
+}

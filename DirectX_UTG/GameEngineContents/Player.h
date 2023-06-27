@@ -64,6 +64,11 @@ public:
 		IsWattingRoomIntro = true;
 	}
 
+	void SetPopInterAction()
+	{
+		PopInterAction = true;
+	}
+
 	void SetParryOn()
 	{
 		ParryCheck = true;
@@ -340,7 +345,7 @@ private:
 	bool ElderKettleInterAction = false;
 	bool IsWattingRoomIntro = false;
 	bool ElderKettleInterActioning = false;
-
+	bool PopInterAction = false;
 	bool IsElderKettleEnd = false;
 
 	float MoveAbleTime = 0.0f;
@@ -351,8 +356,6 @@ private:
 	float MoveTime = 0.0f;
 	float HitTime = 0.0f;
 	float NormalDeltaTime = 0.0f;
-
-	float ElderKettleinterActionTime = 0.0f;
 
 	int CreateEXCount = 1;
 	int ParryCountSet = 1;

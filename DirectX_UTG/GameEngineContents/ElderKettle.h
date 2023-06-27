@@ -57,6 +57,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> BottleRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> CollisionPtr = nullptr;
@@ -83,9 +84,12 @@ private:
 	bool CreateBox = false;
 	bool NextStep = false;
 	bool IsScriptChange = false;
+	bool IsPop = false;
+	bool TextEnd = false;
 
 	int TextCount = 0;
 	int TextEndCount = 0;
+	int PopCount = 1;
 
 	float BoxInterActionDelayTime = 0.0f;
 	float TalkStateChangeTime = 0.0f;
