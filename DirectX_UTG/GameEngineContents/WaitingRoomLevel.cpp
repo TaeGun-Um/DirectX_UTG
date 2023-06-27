@@ -16,6 +16,8 @@
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
+#include "OldFilm.h"
+
 WaitingRoomLevel* WaitingRoomLevel::WaitingRoomLevelPtr = nullptr;
 
 WaitingRoomLevel::WaitingRoomLevel() 
@@ -62,6 +64,8 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 void WaitingRoomLevel::LevelChangeStart()
 {
+	GetLastTarget()->CreateEffect<OldFilm>();
+
 	if (nullptr == GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineDirectory NewDir;

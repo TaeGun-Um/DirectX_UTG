@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineRenderTarget.h>
+#include <GameEngineCore/GameEngineSprite.h>
 
 // 카메라를 1개 더만들고 말지.
 // 설명 :
@@ -22,6 +23,10 @@ protected:
 
 private:
 	std::shared_ptr<GameEngineRenderUnit> OldUnit;
+	std::shared_ptr<GameEngineSprite> OldSprite;
 
+	float4 OldData;
+
+	int Index = 0;
 };
 
