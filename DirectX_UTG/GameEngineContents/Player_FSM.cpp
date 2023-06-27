@@ -2110,6 +2110,8 @@ void Player::ElderKettleInterActionStart()
 }
 void Player::ElderKettleInterActionUpdate(float _DeltaTime)
 {
+	RenderPtr->GetTransform()->SetLocalPosition({ -55, 140 });
+
 	if (false == ElderKettleInterActioning && true == RenderPtr->IsAnimationEnd())
 	{
 		IsElderKettleEnd = true;
