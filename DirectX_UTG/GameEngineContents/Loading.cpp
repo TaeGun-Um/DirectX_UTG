@@ -16,11 +16,13 @@ Loading::~Loading()
 void Loading::SetLoadingPtrOn()
 {
 	RenderPtr->On();
+	GlassRenderPtr->On();
 }
 
 void Loading::SetLoadingPtrOff()
 {
 	RenderPtr->Off();
+	GlassRenderPtr->Off();
 }
 
 void Loading::Start()
@@ -29,16 +31,19 @@ void Loading::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineUIRenderer>();
 		RenderPtr->SetScaleToTexture("Loading.png");
+		//RenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -100 });
 		RenderPtr->Off();
 	}
 
-	if (nullptr == RenderPtr)
+	if (nullptr == GlassRenderPtr)
 	{
-		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "HOURGLASS", .SpriteName = "HOURGLASS", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->ChangeAnimation("HOURGLASS");
-		RenderPtr->ColorOptionValue.MulColor.a = 0.0f;
-		RenderPtr->Off();
+		GlassRenderPtr = CreateComponent<GameEngineUIRenderer>();
+		GlassRenderPtr->CreateAnimation({ .AnimationName = "HOURGLASS", .SpriteName = "HOURGLASS", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		GlassRenderPtr->GetTransform()->AddLocalPosition({470, -150, -10});
+		GlassRenderPtr->ChangeAnimation("HOURGLASS");
+		
+		//GlassRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+		//GlassRenderPtr->Off();
 	}
 }
 
@@ -68,16 +73,16 @@ void Loading::FadeIn(float _DeltaTime)
 	}
 	else
 	{
-		RenderPtr->On();
+		GlassRenderPtr->On();
 	}
 
-	if (1.0f > RenderPtr->ColorOptionValue.MulColor.a)
+	if (1.0f > GlassRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		RenderPtr->ColorOptionValue.MulColor.a += _DeltaTime;
+		GlassRenderPtr->ColorOptionValue.MulColor.a += _DeltaTime;
 	}
-	else if (1.0f <= RenderPtr->ColorOptionValue.MulColor.a)
+	else if (1.0f <= GlassRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		RenderPtr->ColorOptionValue.MulColor.a = 1.0f;
+		GlassRenderPtr->ColorOptionValue.MulColor.a = 1.0f;
 	}
 }
 
@@ -88,14 +93,14 @@ void Loading::FadeOut(float _DeltaTime)
 		return;
 	}
 
-	if (0.0f < RenderPtr->ColorOptionValue.MulColor.a)
+	if (0.0f < GlassRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		RenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime;
+		GlassRenderPtr->ColorOptionValue.MulColor.a -= _DeltaTime;
 	}
-	else if (0.0f >= RenderPtr->ColorOptionValue.MulColor.a)
+	else if (0.0f >= GlassRenderPtr->ColorOptionValue.MulColor.a)
 	{
-		RenderPtr->ColorOptionValue.MulColor.a = 0.0f;
-		RenderPtr->Off();
+		GlassRenderPtr->ColorOptionValue.MulColor.a = 0.0f;
+		GlassRenderPtr->Off();
 
 		IsStart = false;
 		IsEnd = false;

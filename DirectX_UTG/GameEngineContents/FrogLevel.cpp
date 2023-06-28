@@ -146,6 +146,16 @@ void FrogLevel::Update(float _DeltaTime)
 
 void FrogLevel::LevelChangeStart()
 {
+	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
+		}
+
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -324,17 +334,12 @@ void FrogLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&FrogLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&FrogLevel::LevelDebugOff, this);
 	}
-	{
-		if (nullptr == LoadingPtr)
-		{
-
-			LoadingPtr = CreateActor<Loading>();
-		}
-		
-		LoadingPtr->SetLoadingPtrOff();
-	}
 
 	ReLoadSetting();
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 
 void FrogLevel::LevelChangeEnd()

@@ -59,18 +59,19 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 
 void Second_OpeningLevel::LevelChangeStart()
 {
-	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
-
 	{
 		if (nullptr == LoadingPtr)
 		{
 			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
 		}
 
-		LoadingPtr->SetLoadingPtrOff();
+		LoadingPtr->SetLoadingPtrOn();
 	}
+
+	// 카메라 세팅
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
 	{
 		if (nullptr == BookRenderObject)
@@ -89,6 +90,10 @@ void Second_OpeningLevel::LevelChangeStart()
 		
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
+	}
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
 	}
 }
 void Second_OpeningLevel::LevelChangeEnd()

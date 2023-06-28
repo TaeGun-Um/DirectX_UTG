@@ -139,6 +139,16 @@ void MouseLevel::Update(float _DeltaTime)
 
 void MouseLevel::LevelChangeStart()
 {
+	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
+		}
+
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 	if (nullptr == GameEngineTexture::Find("Mouse_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -298,16 +308,12 @@ void MouseLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&MouseLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&MouseLevel::LevelDebugOff, this);
 	}
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-		}
-
-		LoadingPtr->SetLoadingPtrOff();
-	}
 
 	ReLoadSetting();
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 
 void MouseLevel::LevelChangeEnd()

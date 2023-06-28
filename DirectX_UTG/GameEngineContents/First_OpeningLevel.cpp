@@ -110,9 +110,10 @@ void First_OpeningLevel::LevelChangeStart()
 		if (nullptr == LoadingPtr)
 		{
 			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
 		}
 
-		LoadingPtr->SetLoadingPtrOff();
+		LoadingPtr->SetLoadingPtrOn();
 	}
 
 	// CreateActor
@@ -133,6 +134,10 @@ void First_OpeningLevel::LevelChangeStart()
 	}
 
 	ReLoadSetting();
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 void First_OpeningLevel::LevelChangeEnd()
 {

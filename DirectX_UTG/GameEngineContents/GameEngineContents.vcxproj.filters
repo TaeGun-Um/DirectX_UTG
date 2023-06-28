@@ -106,12 +106,6 @@
     <Filter Include="Levels\Message">
       <UniqueIdentifier>{4767de92-3b96-4a95-97c8-7bb905896ece}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Levels\5. Bosses\4. Zepplin">
-      <UniqueIdentifier>{944ef87c-b025-47d1-a102-a0aaac7095a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels\5. Bosses\5. Djimmi">
-      <UniqueIdentifier>{f3eb41c7-ae40-4a61-b83e-e6a4a518b5a4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Levels\5. Bosses\1. Frog\Object\Boss\Effect">
       <UniqueIdentifier>{b3a11292-c48f-4f52-9070-bf2e1f261dc9}</UniqueIdentifier>
     </Filter>

@@ -132,6 +132,16 @@ void DragonLevel::Update(float _DeltaTime)
 
 void DragonLevel::LevelChangeStart()
 {
+	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
+		}
+
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -257,17 +267,12 @@ void DragonLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&DragonLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&DragonLevel::LevelDebugOff, this);
 	}
-	{
-		if (nullptr == LoadingPtr)
-		{
-
-			LoadingPtr = CreateActor<Loading>();
-		}
-
-		LoadingPtr->SetLoadingPtrOff();
-	}
 
 	ReLoadSetting();
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 
 void DragonLevel::LevelChangeEnd()

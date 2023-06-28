@@ -100,9 +100,19 @@ void OverworldLevel::BuildingFlagOn()
 
 void OverworldLevel::LevelChangeStart()
 {
-	if (nullptr == FEffect)
+	//if (nullptr == FEffect)
+	//{
+	//	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+	//}
+
 	{
-		FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
+		}
+
+		LoadingPtr->SetLoadingPtrOn();
 	}
 	
 	// ÄÝ¸Ê¿ë
@@ -229,11 +239,6 @@ void OverworldLevel::LevelChangeStart()
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
 	}
-	// ScreenSFX
-	{
-		//std::shared_ptr<Screen_FX> Object = CreateActor<Screen_FX>();
-		//Object->GetTransform()->SetLocalPosition({ 640 , PlayMapHeight_Half - 100, -10 });
-	}
 
 	// GUI
 	{
@@ -250,15 +255,12 @@ void OverworldLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&OverworldLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&OverworldLevel::LevelDebugOff, this);
 	}
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-		}
-		LoadingPtr->SetLoadingPtrOff();
-	}
 
 	ReLoadSetting();
+
+	{
+		LoadingPtr->SetLoadingPtrOff();
+	}
 }
 void OverworldLevel::LevelChangeEnd()
 {

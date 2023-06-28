@@ -65,6 +65,16 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 void WaitingRoomLevel::LevelChangeStart()
 {
+	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
+		}
+
+		LoadingPtr->SetLoadingPtrOn();
+	}
+
 	if (nullptr == GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -161,12 +171,8 @@ void WaitingRoomLevel::LevelChangeStart()
 		GUI->ColMapRenderOn = std::bind(&WaitingRoomLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&WaitingRoomLevel::LevelDebugOff, this);
 	}
+
 	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-		}
-		
 		LoadingPtr->SetLoadingPtrOff();
 	}
 }
