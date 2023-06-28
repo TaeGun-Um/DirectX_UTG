@@ -49,8 +49,10 @@ private:
 	float EndTime = 0.0f; // Å×½ºÆ®
 
 	void LevelChange();
+	void TextureLoadLevelSelect();
 
-	void OpeningTexture();
+	void First_OpeningTexture();
+	void Second_OpeningTexture();
 	void WaitingTexture();
 	void TutorialTexture();
 	void OverworldTexture();

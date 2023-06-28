@@ -39,7 +39,7 @@ void LoadingLevel::Update(float _DeltaTime)
 
 	if (true == LoadingObject->GetIsEnd())
 	{
-		int a = 0;
+		LevelChange();
 	}
 }
 
@@ -56,7 +56,6 @@ void LoadingLevel::LevelChangeStart()
 		LoadingObject->GetTransform()->SetLocalPosition({ 0 , 0, -10.0f });
 		LoadingObject->SetStart();
 	}
-	
 }
 
 void LoadingLevel::LevelChangeEnd()
@@ -101,10 +100,51 @@ void LoadingLevel::LevelChange()
 	}
 }
 
-void LoadingLevel::OpeningTexture()
+void LoadingLevel::TextureLoadLevelSelect()
+{
+	switch (LevelState)
+	{
+	case LevelValue::First_OpeningLevel:
+		First_OpeningTexture();
+		break;
+	case LevelValue::Second_OpeningLevel:
+		Second_OpeningTexture();
+		break;
+	case LevelValue::WaitingRoomLevel:
+		WaitingTexture();
+		break;
+	case LevelValue::TutorialLevel:
+		TutorialTexture();
+		break;
+	case LevelValue::OverworldLevel:
+		OverworldTexture();
+		break;
+	case LevelValue::FrogLevel:
+		FrogTexture();
+		break;
+	case LevelValue::DragonLevel:
+		DragonTexture();
+		break;
+	case LevelValue::MouseLevel:
+		MouseTexture();
+		break;
+	case LevelValue::EndingLevel:
+		EndingTexture();
+		break;
+	default:
+		break;
+	}
+}
+
+void LoadingLevel::First_OpeningTexture()
 {
 
 } 
+
+void LoadingLevel::Second_OpeningTexture()
+{
+
+}
 
 void LoadingLevel::WaitingTexture()
 {
