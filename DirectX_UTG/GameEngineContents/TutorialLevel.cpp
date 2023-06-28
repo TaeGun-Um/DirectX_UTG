@@ -23,6 +23,7 @@
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 TutorialLevel* TutorialLevel::TutorialLevelPtr = nullptr;
@@ -38,6 +39,7 @@ TutorialLevel::~TutorialLevel()
 void TutorialLevel::Start()
 {
 	TutorialLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 

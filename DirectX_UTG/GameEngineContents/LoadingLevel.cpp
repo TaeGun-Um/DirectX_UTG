@@ -6,6 +6,9 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include <GameEngineCore/BlurEffect.h>
+#include "OldFilm.h"
+
 #include "Loading.h"
 
 LoadingLevel* LoadingLevel::LoadingLevelPtr = nullptr;
@@ -21,6 +24,8 @@ LoadingLevel::~LoadingLevel()
 void LoadingLevel::Start()
 {
 	LoadingLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
+	GetLastTarget()->CreateEffect<OldFilm>();
 }
 
 void LoadingLevel::Update(float _DeltaTime)

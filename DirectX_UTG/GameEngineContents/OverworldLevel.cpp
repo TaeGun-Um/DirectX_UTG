@@ -23,6 +23,7 @@
 #include "Screen_FX.h"
 #include "RoundBlackBox.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 OverworldLevel* OverworldLevel::OverworldLevelPtr = nullptr;
@@ -38,6 +39,7 @@ OverworldLevel::~OverworldLevel()
 void OverworldLevel::Start()
 {
 	OverworldLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 

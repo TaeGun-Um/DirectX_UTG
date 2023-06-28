@@ -18,6 +18,7 @@
 #include "MDHR_Logo.h"
 #include "Title_Background.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 First_OpeningLevel* First_OpeningLevel::First_OpeningLevelPtr = nullptr;
@@ -33,6 +34,7 @@ First_OpeningLevel::~First_OpeningLevel()
 void First_OpeningLevel::Start()
 {
 	First_OpeningLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void First_OpeningLevel::Update(float _DeltaTime)

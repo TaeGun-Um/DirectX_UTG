@@ -32,6 +32,7 @@
 #include "OverworldLevel.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 FrogLevel* FrogLevel::FrogLevelPtr = nullptr;
@@ -47,6 +48,7 @@ FrogLevel::~FrogLevel()
 void FrogLevel::Start()
 {
 	FrogLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void FrogLevel::Update(float _DeltaTime)

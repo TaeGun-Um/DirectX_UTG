@@ -14,6 +14,7 @@
 #include "Screen_FX.h"
 #include "BookRender.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 Second_OpeningLevel::Second_OpeningLevel() 
@@ -26,6 +27,7 @@ Second_OpeningLevel::~Second_OpeningLevel()
 
 void Second_OpeningLevel::Start()
 {
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 

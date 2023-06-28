@@ -74,7 +74,7 @@ public:
 protected:
 
 private:
-	static class GameEngineLevel* CurLoadLevel;
+	static std::shared_ptr<class GameEngineLevel> CurLoadLevel;
 
 	static void CoreResourcesInit();
 	static void CoreResourcesEnd();

@@ -25,6 +25,7 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 MouseLevel* MouseLevel::MouseLevelPtr = nullptr;
@@ -40,6 +41,7 @@ MouseLevel::~MouseLevel()
 void MouseLevel::Start()
 {
 	MouseLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void MouseLevel::Update(float _DeltaTime)
