@@ -26,6 +26,7 @@ private:
 	std::shared_ptr<GameEngineSprite> OldSprite;
 
 	float4 OldData;
+	float IndexTime = 0.0f;
 
 	int Index = 0;
 };

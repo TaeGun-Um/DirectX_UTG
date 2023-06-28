@@ -176,10 +176,6 @@ void OverworldLevel::LevelChangeStart()
 			HomeObject->BuildingSetting(BuildingValue::Home);
 			HomeObject->GetTransform()->SetLocalPosition({ 780 , 1560, 3 });
 
-			std::shared_ptr<BuildingDataBase> ZeplinObject = CreateActor<BuildingDataBase>();
-			ZeplinObject->BuildingSetting(BuildingValue::Zeplin);
-			ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 3 });
-
 			std::shared_ptr<BuildingDataBase> FrogObject = CreateActor<BuildingDataBase>();
 			FrogObject->BuildingSetting(BuildingValue::Frog);
 			FrogObject->GetTransform()->SetLocalPosition({ 2200 , 370, -1 });
@@ -192,13 +188,17 @@ void OverworldLevel::LevelChangeStart()
 			MouseObject->BuildingSetting(BuildingValue::Mouse);
 			MouseObject->GetTransform()->SetLocalPosition({ 3280 , 620, 3 });
 
-			std::shared_ptr<BuildingDataBase> DjimmiObject = CreateActor<BuildingDataBase>();
-			DjimmiObject->BuildingSetting(BuildingValue::Djimmi);
-			DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 3 });
-
 			std::shared_ptr<BuildingDataBase> DragonObject = CreateActor<BuildingDataBase>();
 			DragonObject->BuildingSetting(BuildingValue::Dragon);
-			DragonObject->GetTransform()->SetLocalPosition({ 2280 , 1650, 3 });
+			DragonObject->GetTransform()->SetLocalPosition({ 3420 , 2090, 3 });
+
+			//std::shared_ptr<BuildingDataBase> ZeplinObject = CreateActor<BuildingDataBase>();
+			//ZeplinObject->BuildingSetting(BuildingValue::Zeplin);
+			//ZeplinObject->GetTransform()->SetLocalPosition({ 3370 , 2015, 3 });
+
+			//std::shared_ptr<BuildingDataBase> DjimmiObject = CreateActor<BuildingDataBase>();
+			//DjimmiObject->BuildingSetting(BuildingValue::Djimmi);
+			//DjimmiObject->GetTransform()->SetLocalPosition({ 3670 , 1480, 3 });
 		}
 
 		IsSet2 = true;

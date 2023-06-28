@@ -29,7 +29,7 @@ void OldFilm::Start(GameEngineRenderTarget* _Target)
 	OldUnit->SetMesh("FullRect");
 	OldUnit->SetPipeLine("OldFilm");
 
-	OldData.x = 5.0f;
+	OldData.x = 10.0f;
 
 	OldUnit->ShaderResHelper.SetConstantBufferLink("OldFilmData", OldData);
 
@@ -42,7 +42,15 @@ void OldFilm::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	std::shared_ptr<GameEngineSprite> Sprite = GameEngineSprite::Find("Screen_FX");
 	SpriteInfo Info = Sprite->GetSpriteInfo(Index);
 
-	if (Sprite->GetSpriteCount() <= ++Index)
+	IndexTime += _DeltaTime;
+
+	if (0.06f <= IndexTime)
+	{
+		IndexTime = 0.0f;
+		++Index;
+	}
+
+	if (Sprite->GetSpriteCount() <= Index)
 	{
 		Index = 0;
 	}
