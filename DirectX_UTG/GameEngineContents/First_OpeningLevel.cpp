@@ -106,6 +106,15 @@ void First_OpeningLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
+	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+
+		LoadingPtr->SetLoadingPtrOff();
+	}
+
 	// CreateActor
 	{
 		TitleMenuObject = CreateActor<TitleMenu>();
@@ -121,15 +130,6 @@ void First_OpeningLevel::LevelChangeStart()
 	}
 	{
 		BlackBoxPtr = CreateActor<RoundBlackBox>();
-	}
-
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-		}
-
-		LoadingPtr->SetLoadingPtrOff();
 	}
 
 	ReLoadSetting();

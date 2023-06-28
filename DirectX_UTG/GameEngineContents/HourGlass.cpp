@@ -1,37 +1,19 @@
 #include "PrecompileHeader.h"
-#include "Loading.h"
+#include "HourGlass.h"
 
-#include <GameEnginePlatform/GameEngineInput.h>       // Å×½ºÆ® ÀÎÇ²
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEngineCore/GameEngineUIRenderer.h>
 
-Loading::Loading() 
+HourGlass::HourGlass() 
 {
 }
 
-Loading::~Loading() 
+HourGlass::~HourGlass() 
 {
 }
 
-void Loading::SetLoadingPtrOn()
+void HourGlass::Start()
 {
-	RenderPtr->On();
-}
-
-void Loading::SetLoadingPtrOff()
-{
-	RenderPtr->Off();
-}
-
-void Loading::Start()
-{
-	if (nullptr == RenderPtr)
-	{
-		RenderPtr = CreateComponent<GameEngineUIRenderer>();
-		RenderPtr->SetScaleToTexture("Loading.png");
-		RenderPtr->Off();
-	}
-
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -42,9 +24,8 @@ void Loading::Start()
 	}
 }
 
-void Loading::Update(float _DeltaTime)
+void HourGlass::Update(float _DeltaTime)
 {
-	// Å×½ºÆ® ÀÎÇ²
 	if (true == GameEngineInput::IsDown("Test"))
 	{
 		IsStart = true;
@@ -54,13 +35,12 @@ void Loading::Update(float _DeltaTime)
 	{
 		IsEnd = true;
 	}
-	//
 
 	FadeIn(_DeltaTime);
 	FadeOut(_DeltaTime);
 }
 
-void Loading::FadeIn(float _DeltaTime)
+void HourGlass::FadeIn(float _DeltaTime)
 {
 	if (false == IsStart || true == IsEnd)
 	{
@@ -81,7 +61,7 @@ void Loading::FadeIn(float _DeltaTime)
 	}
 }
 
-void Loading::FadeOut(float _DeltaTime)
+void HourGlass::FadeOut(float _DeltaTime)
 {
 	if (false == IsEnd)
 	{

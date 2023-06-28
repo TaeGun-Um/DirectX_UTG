@@ -431,6 +431,12 @@
     <ClInclude Include="OldFilm.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="HourGlass.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -775,6 +781,12 @@
     </ClCompile>
     <ClCompile Include="OldFilm.cpp">
       <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="HourGlass.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

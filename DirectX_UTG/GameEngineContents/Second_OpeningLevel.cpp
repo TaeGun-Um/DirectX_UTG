@@ -64,6 +64,15 @@ void Second_OpeningLevel::LevelChangeStart()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
 	{
+		if (nullptr == LoadingPtr)
+		{
+			LoadingPtr = CreateActor<Loading>();
+		}
+
+		LoadingPtr->SetLoadingPtrOff();
+	}
+
+	{
 		if (nullptr == BookRenderObject)
 		{
 			BookRenderObject = CreateActor<BookRender>();
@@ -80,14 +89,6 @@ void Second_OpeningLevel::LevelChangeStart()
 		
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
-	}
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-		}
-		
-		LoadingPtr->SetLoadingPtrOff();
 	}
 }
 void Second_OpeningLevel::LevelChangeEnd()

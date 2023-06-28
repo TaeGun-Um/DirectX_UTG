@@ -13,6 +13,8 @@
 #include "MouseLevel.h"
 #include "EndingLevel.h"
 
+#include "TestLevel.h"
+
 CupheadCore::CupheadCore()
 {
 }
@@ -39,7 +41,9 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<MouseLevel>();
 	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::ChangeLevel("OverworldLevel");
+	GameEngineCore::CreateLevel<TestLevel>();
+
+	GameEngineCore::ChangeLevel("First_OpeningLevel");
 }
 
 void CupheadCore::GameEnd()

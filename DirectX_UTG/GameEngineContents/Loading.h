@@ -26,6 +26,13 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> GlassRenderPtr = nullptr;
 
+	float FadeTime = 0.0f;
+	bool IsStart = false;
+	bool IsEnd = false;
+
+	void FadeIn(float _DeltaTime);
+	void FadeOut(float _DeltaTime);
 };
 

@@ -61,6 +61,18 @@ void CupheadCore::ContentsResourcesLoad()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Enter").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Exit").GetFullPath());
 	}
+
+	if (nullptr == GameEngineSprite::Find("HOURGLASS"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("LoadingScreen");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("HOURGLASS").GetFullPath());
+	}
 }
 
 void CupheadCore::ContentsKeyBind()
@@ -96,23 +108,6 @@ void CupheadCore::ContentsKeyBind()
 void CupheadCore::ContentsResourcesCreate()
 {
 	{
-		D3D11_SAMPLER_DESC SamperData = {};
-		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		// ≈ÿΩ∫√≥∞° ∏÷∏Æ¿÷¿ª∂ß π∂∞∂≤®≥ƒ
-		// æ»π∂∞µ¥Ÿ.
-		SamperData.MipLODBias = 0.0f;
-		SamperData.MaxAnisotropy = 1;
-		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		SamperData.MinLOD = -FLT_MAX;
-		SamperData.MaxLOD = FLT_MAX;
-
-		GameEngineSampler::ReSetting("ENGINEBASE", SamperData);
-	}
-
-	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
@@ -127,7 +122,22 @@ void CupheadCore::ContentsResourcesCreate()
 	}
 
 	{
-		// ∫Ì∑£µÂ
+		D3D11_SAMPLER_DESC SamperData = {};
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::ReSetting("ENGINEBASE", SamperData);
+	}
+
+	{
 		D3D11_BLEND_DESC Desc = { 0, };
 		Desc.AlphaToCoverageEnable = false;
 		Desc.IndependentBlendEnable = false;
@@ -148,8 +158,6 @@ void CupheadCore::ContentsResourcesCreate()
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldFilm");
 
-		//Pipe->SetVertexBuffer("FullRect");
-		//Pipe->SetIndexBuffer("FullRect");
 		Pipe->SetVertexShader("OldFilmShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("OldFilmShader.hlsl");
@@ -160,8 +168,6 @@ void CupheadCore::ContentsResourcesCreate()
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Fade");
 
-		//Pipe->SetVertexBuffer("FullRect");
-		//Pipe->SetIndexBuffer("FullRect");
 		Pipe->SetVertexShader("FadeShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("FadeShader.hlsl");
@@ -176,16 +182,6 @@ void CupheadCore::ContentsResourcesCreate()
 	//	Pipe->SetVertexShader("DebugMeshRender.hlsl");
 	//	Pipe->SetRasterizer("Engine2DBase");
 	//	Pipe->SetPixelShader("DebugMeshRender.hlsl");
-	//	Pipe->SetBlendState("AlphaBlend");
-	//	Pipe->SetDepthState("EngineDepth");
-	//}
-
-	//{
-	//	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("HBSCSprite");
-
-	//	Pipe->SetVertexShader("HBSCShader.hlsl");
-	//	Pipe->SetRasterizer("Engine2DBase");
-	//	Pipe->SetPixelShader("HBSCShader.hlsl");
 	//	Pipe->SetBlendState("AlphaBlend");
 	//	Pipe->SetDepthState("EngineDepth");
 	//}
