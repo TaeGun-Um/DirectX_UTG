@@ -33,7 +33,7 @@ void LoadingLevel::Update(float _DeltaTime)
 {
 	EndTime += _DeltaTime;
 
-	if (EndTime >= 1.5f && true == IsTextureLoadEnd)
+	if (EndTime >= 1.0f && true == IsTextureLoadEnd)
 	{
 		LoadingObject->SetOutro();
 	}

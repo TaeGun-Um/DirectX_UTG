@@ -96,6 +96,7 @@ void BookRender::Start()
 		ArrowRenderPtr->GetTransform()->SetLocalPosition({480, -310});
 		ArrowRenderPtr->CreateAnimation({ .AnimationName = "Arrow", .SpriteName = "Arrow", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
 		ArrowRenderPtr->ChangeAnimation("Arrow");
+		ArrowRenderPtr->ColorOptionValue.MulColor.a = 0.8f;
 		ArrowRenderPtr->Off();
 	}
 
