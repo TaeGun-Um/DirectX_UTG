@@ -7,6 +7,8 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "LoadingLevel.h"
+
 #include "PortalDoor.h"
 #include "Player.h"
 #include "ElderKettle.h"

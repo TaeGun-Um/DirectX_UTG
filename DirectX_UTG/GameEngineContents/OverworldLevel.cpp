@@ -11,6 +11,8 @@
 #include "Overworld_ColMap.h"
 #include "Player_Overworld.h"
 
+#include "LoadingLevel.h"
+
 #include "AppleTraveller.h"
 #include "Axeman.h"
 #include "Canteen.h"

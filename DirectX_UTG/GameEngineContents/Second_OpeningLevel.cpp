@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "LoadingLevel.h"
 #include "WaitingRoomLevel.h"
 #include "TutorialLevel.h"
 
@@ -51,7 +52,9 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
-		GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		//GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::WaitingRoomLevel);
+		GameEngineCore::ChangeLevel("LoadingLevel");
 	}
 
 	ReLoadSetting();

@@ -28,8 +28,10 @@
 #include "Ready_Wallop.h"
 #include "You_Died.h"
 
-#include "RoundBlackBox.h"
+#include "LoadingLevel.h"
 #include "OverworldLevel.h"
+
+#include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
 #include <GameEngineCore/BlurEffect.h>
@@ -84,7 +86,8 @@ void FrogLevel::Update(float _DeltaTime)
 		{
 			IsFrogLevelEnd = true;
 			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 
 		return;
@@ -115,7 +118,8 @@ void FrogLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 
 		return;

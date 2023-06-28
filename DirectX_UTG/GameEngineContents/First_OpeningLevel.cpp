@@ -10,6 +10,7 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "LoadingLevel.h"
 #include "Second_OpeningLevel.h"
 
 #include "TitleMenu.h"
@@ -96,7 +97,9 @@ void First_OpeningLevel::Update(float _DeltaTime)
 
 	if (true == BlackBoxPtr->GetIsEnd() && true == StartStep)
 	{
-		GameEngineCore::ChangeLevel("Second_OpeningLevel");
+		//GameEngineCore::ChangeLevel("Second_OpeningLevel");
+		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::Second_OpeningLevel);
+		GameEngineCore::ChangeLevel("LoadingLevel");
 	}
 }
 
@@ -145,12 +148,6 @@ void First_OpeningLevel::LevelChangeEnd()
 
 	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
 	{
-		GameEngineTexture::UnLoad("PressAnyButton.png");
-		GameEngineTexture::UnLoad("Title_Background.png");
-	}
-
-	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
-	{
 		GameEngineTexture::UnLoad("cuphead_startscreen.png");
 		GameEngineTexture::UnLoad("START.png");
 		GameEngineTexture::UnLoad("EXIT.png");
@@ -185,12 +182,6 @@ void First_OpeningLevel::ReLoadSetting()
 	if (nullptr != GameEngineSprite::Find("MDHR_Logo.png"))
 	{
 		GameEngineSprite::ReLoad("MDHR_Logo.png");
-	}
-
-	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))
-	{
-		GameEngineTexture::ReLoad("PressAnyButton.png");
-		GameEngineTexture::ReLoad("Title_Background.png");
 	}
 
 	if (nullptr != GameEngineTexture::Find("cuphead_startscreen.png"))

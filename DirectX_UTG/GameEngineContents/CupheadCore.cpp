@@ -43,7 +43,7 @@ void CupheadCore::GameStart()
 
 	GameEngineCore::CreateLevel<LoadingLevel>();
 
-	GameEngineCore::ChangeLevel("FrogLevel");
+	GameEngineCore::ChangeLevel("First_OpeningLevel");
 }
 
 void CupheadCore::GameEnd()

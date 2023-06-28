@@ -14,6 +14,8 @@
 #include "Tutorial_ColMap.h"
 #include "Tutorial_Target.h"
 
+#include "LoadingLevel.h"
+
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"

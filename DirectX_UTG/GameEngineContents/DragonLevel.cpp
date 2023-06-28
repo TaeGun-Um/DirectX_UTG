@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
+#include "LoadingLevel.h"
+
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"

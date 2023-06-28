@@ -662,13 +662,6 @@ void Katzenwagen::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("UpTexture.png").GetFullPath());
 	}
 
-	if (nullptr == TailHandRenderPtr)
-	{
-		//TailHandRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		//TailHandRenderPtr->CreateAnimation({ .AnimationName = "Object_Flamecannon", .SpriteName = "Object_Flamecannon", .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true });
-		//TailHandRenderPtr->ChangeAnimation("Object_Flamecannon");
-	}
-
 	if (nullptr == BodyRenderPtr)
 	{
 		BodyRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
