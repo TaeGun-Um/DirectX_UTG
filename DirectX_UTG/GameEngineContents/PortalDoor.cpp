@@ -109,7 +109,6 @@ void PortalDoor::LevelChange()
 
 		if (WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			WaitingRoomLevel::WaitingRoomLevelPtr->LoadingOn();
 			GameEngineCore::ChangeLevel("TutorialLevel");
 		}
 	}
@@ -125,7 +124,6 @@ void PortalDoor::LevelChange()
 
 		if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			TutorialLevel::TutorialLevelPtr->LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 	}

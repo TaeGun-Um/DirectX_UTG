@@ -13,7 +13,6 @@
 #include "RoundBlackBox.h"
 #include "Screen_FX.h"
 #include "BookRender.h"
-#include "Loading.h"
 
 #include "OldFilm.h"
 
@@ -50,7 +49,6 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
-		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("WaitingRoomLevel");
 	}
 
@@ -59,16 +57,6 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 
 void Second_OpeningLevel::LevelChangeStart()
 {
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
@@ -90,10 +78,6 @@ void Second_OpeningLevel::LevelChangeStart()
 		
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetExit();
-	}
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
 	}
 }
 void Second_OpeningLevel::LevelChangeEnd()

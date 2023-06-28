@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Loading.h"
-
 // Ό³Έν :
 class OverworldLevel : public GameEngineLevel
 {
@@ -19,11 +17,6 @@ public:
 	OverworldLevel& operator=(OverworldLevel&& _Other) noexcept = delete;
 
 	std::shared_ptr<class FadeEffect> FEffect = nullptr;
-
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
 
 	std::shared_ptr<class RoundBlackBox> GetBlackBoxPtr()
 	{
@@ -53,8 +46,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
-
 	std::shared_ptr<class Player_Overworld> PlayerObject = nullptr;
 	std::shared_ptr<class Overworld_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class OverworldGUI> GUI = nullptr;

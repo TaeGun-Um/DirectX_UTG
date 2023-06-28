@@ -18,11 +18,6 @@ public:
 	MouseLevel& operator=(const MouseLevel& _Other) = delete;
 	MouseLevel& operator=(MouseLevel&& _Other) noexcept = delete;
 
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	std::shared_ptr<class Knockout> GetKnockoutPtr()
 	{
 		return KnockoutPtr;
@@ -51,7 +46,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class Mouse_Map> MapObject = nullptr;
 	std::shared_ptr<class Mouse_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class Mouse_FrontObject> FrontMapObject = nullptr;

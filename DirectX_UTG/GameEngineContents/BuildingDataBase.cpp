@@ -201,7 +201,6 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			OverworldLevel::OverworldLevelPtr->LoadingOn();
 			GameEngineCore::ChangeLevel("MouseLevel");
 		}
 	}
@@ -218,7 +217,6 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			OverworldLevel::OverworldLevelPtr->LoadingOn();
 			GameEngineCore::ChangeLevel("FrogLevel");
 		}
 	}

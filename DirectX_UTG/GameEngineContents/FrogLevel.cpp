@@ -28,7 +28,6 @@
 #include "Ready_Wallop.h"
 #include "You_Died.h"
 
-#include "Loading.h"
 #include "RoundBlackBox.h"
 #include "OverworldLevel.h"
 #include "TransformGUI.h"
@@ -83,7 +82,6 @@ void FrogLevel::Update(float _DeltaTime)
 		{
 			IsFrogLevelEnd = true;
 			OverworldLevel::OverworldLevelPtr->SetFrogEnd();
-			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
@@ -115,7 +113,6 @@ void FrogLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
-			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
@@ -146,16 +143,6 @@ void FrogLevel::Update(float _DeltaTime)
 
 void FrogLevel::LevelChangeStart()
 {
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -336,10 +323,6 @@ void FrogLevel::LevelChangeStart()
 	}
 
 	ReLoadSetting();
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
-	}
 }
 
 void FrogLevel::LevelChangeEnd()

@@ -24,7 +24,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 	std::shared_ptr<class BookRender> BookRenderObject = nullptr;
 

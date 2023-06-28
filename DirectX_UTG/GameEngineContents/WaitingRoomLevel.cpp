@@ -8,7 +8,6 @@
 #include <GameEngineCore/GameEngineCamera.h>
 
 #include "PortalDoor.h"
-#include "Loading.h"
 #include "Player.h"
 #include "ElderKettle.h"
 #include "WaitingRoom_Map.h"
@@ -65,16 +64,6 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 void WaitingRoomLevel::LevelChangeStart()
 {
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	if (nullptr == GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -170,10 +159,6 @@ void WaitingRoomLevel::LevelChangeStart()
 		GUI->PlayerDebugRenderOff = std::bind(&WaitingRoomLevel::PlayerDebugRenderOff, this);
 		GUI->ColMapRenderOn = std::bind(&WaitingRoomLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&WaitingRoomLevel::LevelDebugOff, this);
-	}
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
 	}
 }
 

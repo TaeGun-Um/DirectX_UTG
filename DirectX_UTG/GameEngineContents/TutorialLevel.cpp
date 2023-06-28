@@ -20,7 +20,6 @@
 #include "WeaponUI.h"
 #include "PortalDoor.h"
 #include "Screen_FX.h"
-#include "Loading.h"
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
@@ -56,16 +55,6 @@ void TutorialLevel::Update(float _DeltaTime)
 
 void TutorialLevel::LevelChangeStart()
 {
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	// ÄÝ¸Ê¿ë
 	if (nullptr == GameEngineTexture::Find("Tutorial_ColMap.png"))
 	{
@@ -205,10 +194,6 @@ void TutorialLevel::LevelChangeStart()
 		GUI->PlayerDebugRenderOff = std::bind(&TutorialLevel::PlayerDebugRenderOff, this);
 		GUI->ColMapRenderOn = std::bind(&TutorialLevel::LevelDebugOn, this);
 		GUI->ColMapRenderOff = std::bind(&TutorialLevel::LevelDebugOff, this);
-	}
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
 	}
 }
 void TutorialLevel::LevelChangeEnd()

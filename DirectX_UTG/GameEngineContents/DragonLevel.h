@@ -16,11 +16,6 @@ public:
 	DragonLevel& operator=(const DragonLevel& _Other) = delete;
 	DragonLevel& operator=(DragonLevel&& _Other) noexcept = delete;
 
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	std::shared_ptr<class Knockout> GetKnockoutPtr()
 	{
 		return KnockoutPtr;
@@ -49,7 +44,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class Frog_Map> MapObject = nullptr;
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;

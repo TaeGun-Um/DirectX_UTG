@@ -345,10 +345,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="HourGlass.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Katzenwagen.h">
       <SubType>
       </SubType>
@@ -362,6 +358,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Loading.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="LoadingLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -506,10 +506,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Stick.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -765,10 +761,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="HourGlass.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="Katzenwagen.cpp">
       <SubType>
       </SubType>
@@ -783,6 +775,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Loading.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="LoadingLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -939,10 +935,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Stick.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

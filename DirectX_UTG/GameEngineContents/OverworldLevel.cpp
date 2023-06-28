@@ -21,7 +21,6 @@
 #include "FadeEffect.h"
 #include "OverworldGUI.h"
 #include "Screen_FX.h"
-#include "Loading.h"
 #include "RoundBlackBox.h"
 
 #include "OldFilm.h"
@@ -74,7 +73,6 @@ void OverworldLevel::Update(float _DeltaTime)
 
 	if (true == BlackBoxPtr->GetIsEnd() && 0 == DebugBoxCount)
 	{
-		LoadingOn();
 		GameEngineCore::ChangeLevel("FrogLevel");
 	}
 }
@@ -104,16 +102,6 @@ void OverworldLevel::LevelChangeStart()
 	//{
 	//	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	//}
-
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
 	
 	// ÄÝ¸Ê¿ë
 	if (nullptr == GameEngineTexture::Find("Overworld_ColMap.png"))
@@ -257,10 +245,6 @@ void OverworldLevel::LevelChangeStart()
 	}
 
 	ReLoadSetting();
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
-	}
 }
 void OverworldLevel::LevelChangeEnd()
 {

@@ -115,6 +115,9 @@
     <Filter Include="Levels\5. Bosses\3. Mouse\Object\Boss\Effect">
       <UniqueIdentifier>{2da5c548-cebe-4956-956c-62d31c671fa1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\0. Loading">
+      <UniqueIdentifier>{b4263228-237e-4a2f-afe5-bffbfbceaabd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -295,9 +298,6 @@
     <ClInclude Include="You_Died.h">
       <Filter>Levels\Message</Filter>
     </ClInclude>
-    <ClInclude Include="Loading.h">
-      <Filter>Levels\Message</Filter>
-    </ClInclude>
     <ClInclude Include="OverworldGUI.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
@@ -425,11 +425,11 @@
     <ClInclude Include="OldFilm.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>Levels</Filter>
+    <ClInclude Include="LoadingLevel.h">
+      <Filter>Levels\0. Loading</Filter>
     </ClInclude>
-    <ClInclude Include="HourGlass.h">
-      <Filter>Levels</Filter>
+    <ClInclude Include="Loading.h">
+      <Filter>Levels\0. Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -616,9 +616,6 @@
     <ClCompile Include="You_Died.cpp">
       <Filter>Levels\Message</Filter>
     </ClCompile>
-    <ClCompile Include="Loading.cpp">
-      <Filter>Levels\Message</Filter>
-    </ClCompile>
     <ClCompile Include="OverworldGUI.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
@@ -776,11 +773,11 @@
     <ClCompile Include="OldFilm.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>Levels</Filter>
+    <ClCompile Include="LoadingLevel.cpp">
+      <Filter>Levels\0. Loading</Filter>
     </ClCompile>
-    <ClCompile Include="HourGlass.cpp">
-      <Filter>Levels</Filter>
+    <ClCompile Include="Loading.cpp">
+      <Filter>Levels\0. Loading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

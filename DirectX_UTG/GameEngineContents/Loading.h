@@ -15,9 +15,20 @@ public:
 	Loading& operator=(const Loading& _Other) = delete;
 	Loading& operator=(Loading&& _Other) noexcept = delete;
 
-	void SetLoadingPtrOn();
+	void SetStart()
+	{
+		IsStart = true;
+	}
 
-	void SetLoadingPtrOff();
+	void SetOutro()
+	{
+		IsOutro = true;
+	}
+
+	bool GetIsEnd()
+	{
+		return IsEnd;
+	}
 
 protected:
 	void Start() override;
@@ -25,11 +36,12 @@ protected:
 	void Render(float _DeltaTime) override {};
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> GlassRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> GlassRenderPtr = nullptr;
 
 	float FadeTime = 0.0f;
 	bool IsStart = false;
+	bool IsOutro = false;
 	bool IsEnd = false;
 
 	void FadeIn(float _DeltaTime);

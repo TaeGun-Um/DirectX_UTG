@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Loading.h"
-
 // Ό³Έν :
 class TutorialLevel : public GameEngineLevel
 {
@@ -18,11 +16,6 @@ public:
 	TutorialLevel& operator=(const TutorialLevel& _Other) = delete;
 	TutorialLevel& operator=(TutorialLevel&& _Other) noexcept = delete;
 
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	std::shared_ptr<class RoundBlackBox> GetBlackBoxPtr()
 	{
 		return BlackBoxPtr;
@@ -36,8 +29,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
-
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
 	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Loading.h"
-
 // Ό³Έν :
 class WaitingRoomLevel : public GameEngineLevel
 {
@@ -18,11 +16,6 @@ public:
 	WaitingRoomLevel& operator=(const WaitingRoomLevel& _Other) = delete;
 	WaitingRoomLevel& operator=(WaitingRoomLevel&& _Other) noexcept = delete;
 
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	std::shared_ptr<class RoundBlackBox> GetBlackBoxPtr()
 	{
 		return BlackBoxPtr;
@@ -36,7 +29,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class ElderKettle> KettleObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class WaitingRoom_ColMap> ThisColMap = nullptr;

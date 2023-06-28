@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Loading.h"
-
 // Ό³Έν :
 class FrogLevel : public GameEngineLevel
 {
@@ -17,11 +15,6 @@ public:
 	FrogLevel(FrogLevel&& _Other) noexcept = delete;
 	FrogLevel& operator=(const FrogLevel& _Other) = delete;
 	FrogLevel& operator=(FrogLevel&& _Other) noexcept = delete;
-
-	void LoadingOn()
-	{
-		LoadingPtr->SetLoadingPtrOn();
-	}
 
 	std::shared_ptr<class Knockout> GetKnockoutPtr()
 	{
@@ -51,7 +44,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class Loading> LoadingPtr = nullptr;
 	std::shared_ptr<class Frog_FrontObject> FrontObject = nullptr;
 	std::shared_ptr<class Frog_Map> MapObject = nullptr;
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;

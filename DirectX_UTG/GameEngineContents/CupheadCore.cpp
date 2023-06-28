@@ -13,7 +13,7 @@
 #include "MouseLevel.h"
 #include "EndingLevel.h"
 
-#include "TestLevel.h"
+#include "LoadingLevel.h"
 
 CupheadCore::CupheadCore()
 {
@@ -41,9 +41,9 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<MouseLevel>();
 	GameEngineCore::CreateLevel<EndingLevel>();
 
-	GameEngineCore::CreateLevel<TestLevel>();
+	GameEngineCore::CreateLevel<LoadingLevel>();
 
-	GameEngineCore::ChangeLevel("First_OpeningLevel");
+	GameEngineCore::ChangeLevel("LoadingLevel");
 }
 
 void CupheadCore::GameEnd()

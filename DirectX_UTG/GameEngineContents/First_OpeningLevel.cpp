@@ -17,7 +17,6 @@
 #include "Screen_FX.h"
 #include "MDHR_Logo.h"
 #include "Title_Background.h"
-#include "Loading.h"
 
 #include "OldFilm.h"
 
@@ -95,7 +94,6 @@ void First_OpeningLevel::Update(float _DeltaTime)
 
 	if (true == BlackBoxPtr->GetIsEnd() && true == StartStep)
 	{
-		LoadingPtr->SetLoadingPtrOn();
 		GameEngineCore::ChangeLevel("Second_OpeningLevel");
 	}
 }
@@ -105,16 +103,6 @@ void First_OpeningLevel::LevelChangeStart()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
-
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
 
 	// CreateActor
 	{
@@ -134,10 +122,6 @@ void First_OpeningLevel::LevelChangeStart()
 	}
 
 	ReLoadSetting();
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
-	}
 }
 void First_OpeningLevel::LevelChangeEnd()
 {

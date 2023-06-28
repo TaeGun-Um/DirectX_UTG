@@ -13,7 +13,6 @@
 
 #include "OverworldLevel.h"
 
-#include "Loading.h"
 #include "RoundBlackBox.h"
 #include "Knockout.h"
 #include "Ready_Wallop.h"
@@ -66,7 +65,6 @@ void DragonLevel::Update(float _DeltaTime)
 		{
 			IsDragonLevelEnd = true;
 			OverworldLevel::OverworldLevelPtr->SetDragonEnd();
-			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
@@ -101,7 +99,6 @@ void DragonLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
-			LoadingOn();
 			GameEngineCore::ChangeLevel("OverworldLevel");
 		}
 
@@ -132,16 +129,6 @@ void DragonLevel::Update(float _DeltaTime)
 
 void DragonLevel::LevelChangeStart()
 {
-	{
-		if (nullptr == LoadingPtr)
-		{
-			LoadingPtr = CreateActor<Loading>();
-			LoadingPtr->GetTransform()->AddWorldPosition({ 0, 0, -100 });
-		}
-
-		LoadingPtr->SetLoadingPtrOn();
-	}
-
 	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
@@ -269,10 +256,6 @@ void DragonLevel::LevelChangeStart()
 	}
 
 	ReLoadSetting();
-
-	{
-		LoadingPtr->SetLoadingPtrOff();
-	}
 }
 
 void DragonLevel::LevelChangeEnd()
