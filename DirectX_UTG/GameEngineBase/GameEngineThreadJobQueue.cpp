@@ -59,8 +59,6 @@ void GameEngineThreadJobQueue::ThreadPoolFunction(GameEngineThreadJobQueue* _Thr
 	}
 }
 
-// 코어개수 * 2 - 1 
-// 
 void GameEngineThreadJobQueue::Initialize(const std::string& _ThreadName, int _ThreadCount)
 {
 	ThreadCount = _ThreadCount;
@@ -96,5 +94,4 @@ void GameEngineThreadJobQueue::Work(std::function<void(GameEngineThread*)> _Work
 	Job* NewJob = new Job();
 	NewJob->Function = _Work;
 	PostQueuedCompletionStatus(IOCPHandle, static_cast<DWORD>(ThreadWorkType::UserWork), reinterpret_cast<unsigned __int64>(NewJob), nullptr);
-
 }

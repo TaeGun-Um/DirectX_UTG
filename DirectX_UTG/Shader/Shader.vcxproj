@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\AR45\DirectX\DirectX45\EngineResources\Shader\MergeShader.hlsl" />
+    <FxCompile Include="..\EngineResources\Shader\BlurShader.hlsl" />
     <FxCompile Include="..\EngineResources\Shader\DebugMeshRender.hlsl" />
     <FxCompile Include="..\EngineResources\Shader\TextureShader.hlsl" />
   </ItemGroup>

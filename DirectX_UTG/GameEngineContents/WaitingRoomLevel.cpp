@@ -7,6 +7,8 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "LoadingLevel.h"
+
 #include "PortalDoor.h"
 #include "Player.h"
 #include "ElderKettle.h"
@@ -15,6 +17,7 @@
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 WaitingRoomLevel* WaitingRoomLevel::WaitingRoomLevelPtr = nullptr;
@@ -30,6 +33,7 @@ WaitingRoomLevel::~WaitingRoomLevel()
 void WaitingRoomLevel::Start()
 {
 	WaitingRoomLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void WaitingRoomLevel::Update(float _DeltaTime)

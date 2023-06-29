@@ -17,6 +17,7 @@
 #include "Werner_Werman.h"
 #include "Katzenwagen.h"
 
+#include "LoadingLevel.h"
 #include "OverworldLevel.h"
 
 #include "RoundBlackBox.h"
@@ -25,6 +26,7 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 MouseLevel* MouseLevel::MouseLevelPtr = nullptr;
@@ -40,6 +42,7 @@ MouseLevel::~MouseLevel()
 void MouseLevel::Start()
 {
 	MouseLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void MouseLevel::Update(float _DeltaTime)
@@ -75,7 +78,8 @@ void MouseLevel::Update(float _DeltaTime)
 		{
 			IsMouseLevelEnd = true;
 			OverworldLevel::OverworldLevelPtr->SetMouseEnd();
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 
 		return;
@@ -106,7 +110,8 @@ void MouseLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 
 		return;

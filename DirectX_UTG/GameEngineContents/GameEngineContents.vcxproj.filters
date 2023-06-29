@@ -118,6 +118,9 @@
     <Filter Include="Levels\0. Loading">
       <UniqueIdentifier>{b4263228-237e-4a2f-afe5-bffbfbceaabd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\0. Loading\Object">
+      <UniqueIdentifier>{4171f4e6-f266-42e6-9dc4-ea061d068024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">
@@ -429,7 +432,7 @@
       <Filter>Levels\0. Loading</Filter>
     </ClInclude>
     <ClInclude Include="Loading.h">
-      <Filter>Levels\0. Loading</Filter>
+      <Filter>Levels\0. Loading\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -777,7 +780,7 @@
       <Filter>Levels\0. Loading</Filter>
     </ClCompile>
     <ClCompile Include="Loading.cpp">
-      <Filter>Levels\0. Loading</Filter>
+      <Filter>Levels\0. Loading\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

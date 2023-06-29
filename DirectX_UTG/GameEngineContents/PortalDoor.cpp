@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "LoadingLevel.h"
+
 #include "WaitingRoomLevel.h"
 #include "TutorialLevel.h"
 #include "OverworldLevel.h"
@@ -109,7 +111,9 @@ void PortalDoor::LevelChange()
 
 		if (WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			GameEngineCore::ChangeLevel("TutorialLevel");
+			//GameEngineCore::ChangeLevel("TutorialLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::TutorialLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 	}
 	break;
@@ -124,7 +128,9 @@ void PortalDoor::LevelChange()
 
 		if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			//GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 	}
 	break;

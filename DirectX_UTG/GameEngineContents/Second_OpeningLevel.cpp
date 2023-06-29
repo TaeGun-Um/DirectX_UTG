@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "LoadingLevel.h"
 #include "WaitingRoomLevel.h"
 #include "TutorialLevel.h"
 
@@ -14,6 +15,7 @@
 #include "Screen_FX.h"
 #include "BookRender.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 Second_OpeningLevel::Second_OpeningLevel() 
@@ -26,6 +28,7 @@ Second_OpeningLevel::~Second_OpeningLevel()
 
 void Second_OpeningLevel::Start()
 {
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 
@@ -49,7 +52,9 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
-		GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		//GameEngineCore::ChangeLevel("WaitingRoomLevel");
+		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::WaitingRoomLevel);
+		GameEngineCore::ChangeLevel("LoadingLevel");
 	}
 
 	ReLoadSetting();

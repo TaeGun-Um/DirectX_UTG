@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "LoadingLevel.h"
+
 #include "Player_Overworld.h"
 #include "OverworldLevel.h"
 #include "RoundBlackBox.h"
@@ -201,7 +203,9 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			GameEngineCore::ChangeLevel("MouseLevel");
+			//GameEngineCore::ChangeLevel("MouseLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::MouseLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 	}
 	break;
@@ -217,7 +221,9 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			GameEngineCore::ChangeLevel("FrogLevel");
+			//GameEngineCore::ChangeLevel("FrogLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::FrogLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 	}
 	break;

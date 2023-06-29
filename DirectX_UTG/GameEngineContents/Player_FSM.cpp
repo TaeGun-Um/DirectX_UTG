@@ -1916,6 +1916,10 @@ void Player::HitStart()
 	IsSlap = false;
 	IsDash = false;
 	IsEXAttack = false;
+	IsDuck = false;
+	IsDuckAttack = false;
+	IsHold = false;
+	PushBackAble = false;
 
 	IsCameraShaking = true;
 	ShakingMaxCount = 8;

@@ -14,6 +14,8 @@
 #include "Tutorial_ColMap.h"
 #include "Tutorial_Target.h"
 
+#include "LoadingLevel.h"
+
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
@@ -23,6 +25,7 @@
 #include "RoundBlackBox.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 TutorialLevel* TutorialLevel::TutorialLevelPtr = nullptr;
@@ -38,6 +41,7 @@ TutorialLevel::~TutorialLevel()
 void TutorialLevel::Start()
 {
 	TutorialLevelPtr = this;
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 

@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
+#include "LoadingLevel.h"
+
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
@@ -19,6 +21,7 @@
 #include "You_Died.h"
 #include "TransformGUI.h"
 
+#include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
 DragonLevel::DragonLevel() 
@@ -31,6 +34,7 @@ DragonLevel::~DragonLevel()
 
 void DragonLevel::Start()
 {
+	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
 void DragonLevel::Update(float _DeltaTime)

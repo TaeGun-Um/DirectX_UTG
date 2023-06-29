@@ -75,7 +75,7 @@ void Peashooter_EX::MoveDirection(float _DeltaTime)
 		}
 	}
 
-	if (StopTime >= 0.1f)
+	if (StopTime >= 0.2f)
 	{
 		IsHit = false;
 		StopTime = 0.0f;

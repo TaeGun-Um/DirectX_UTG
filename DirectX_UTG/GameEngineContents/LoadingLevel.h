@@ -1,5 +1,8 @@
 #pragma once
 
+#include <GameEngineBase/GameEngineThread.h>
+#include <atomic>
+
 enum class LevelValue
 {
 	First_OpeningLevel,
@@ -49,14 +52,6 @@ private:
 	float EndTime = 0.0f; // Å×½ºÆ®
 
 	void LevelChange();
-
-	void OpeningTexture();
-	void WaitingTexture();
-	void TutorialTexture();
-	void OverworldTexture();
-	void FrogTexture();
-	void MouseTexture();
-	void DragonTexture();
-	void EndingTexture();
+	void TextureLoadLevelSelect();
 };
 
