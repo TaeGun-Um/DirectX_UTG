@@ -15,6 +15,20 @@
 
 void CupheadCore::ContentsResourcesLoad()
 {
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+
+		if (0 == AddFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+		{
+			MsgAssert("폰트 로드에 실패했습니다.");
+			return;
+		}
+
+		SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
+	}
+
 	GameEngineFont::Load("휴먼둥근헤드라인");
 	GameEngineFont::Load("Cuphead Felix");
 

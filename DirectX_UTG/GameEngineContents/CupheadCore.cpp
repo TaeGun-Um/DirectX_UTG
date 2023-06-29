@@ -48,5 +48,17 @@ void CupheadCore::GameStart()
 
 void CupheadCore::GameEnd()
 {
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
 
+		if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+		{
+			MsgAssert("폰트 삭제에 실패했습니다.");
+			return;
+		}
+
+		SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
+	}
 }
