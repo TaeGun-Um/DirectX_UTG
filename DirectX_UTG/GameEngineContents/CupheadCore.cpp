@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CupheadCore.h"
 
+#include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore\GameEngineCore.h>
 
 #include "First_OpeningLevel.h"
@@ -43,7 +44,9 @@ void CupheadCore::GameStart()
 
 	GameEngineCore::CreateLevel<LoadingLevel>();
 
-	GameEngineCore::ChangeLevel("First_OpeningLevel");
+	GameEngineCore::ChangeLevel("WaitingRoomLevel");
+
+	GameEngineFont::Load("Cuphead Felix");
 }
 
 void CupheadCore::GameEnd()

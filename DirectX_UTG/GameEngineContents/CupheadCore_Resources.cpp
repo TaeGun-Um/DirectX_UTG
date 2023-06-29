@@ -29,9 +29,6 @@ void CupheadCore::ContentsResourcesLoad()
 		SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
 	}
 
-	GameEngineFont::Load("»ﬁ∏’µ’±Ÿ«ÏµÂ∂Û¿Œ");
-	GameEngineFont::Load("Cuphead Felix");
-
 	if (nullptr == GameEngineSprite::Find("BlueBox"))
 	{
 		GameEngineDirectory NewDir;
