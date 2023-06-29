@@ -52,7 +52,6 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
-		//GameEngineCore::ChangeLevel("WaitingRoomLevel");
 		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::WaitingRoomLevel);
 		GameEngineCore::ChangeLevel("LoadingLevel");
 	}

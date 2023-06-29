@@ -2781,6 +2781,36 @@ void DragonTexture(GameEngineThread* Thread)
 
 void EndingTexture(GameEngineThread* Thread)
 {
+	if (nullptr == GameEngineSprite::Find("Page_12-13"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Ending");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_12-13").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_13-14").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_14-15").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_15-16").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_16-17").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_17-18").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_18-End").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Arrow"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("TextBox");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Arrow").GetFullPath());
+	}
 
 	IsTextureLoadEnd = true;
 }

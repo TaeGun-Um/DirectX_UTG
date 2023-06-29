@@ -434,6 +434,9 @@
     <ClInclude Include="Loading.h">
       <Filter>Levels\0. Loading\Object</Filter>
     </ClInclude>
+    <ClInclude Include="BookEndRender.h">
+      <Filter>Levels\6. Ending\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -781,6 +784,9 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>Levels\0. Loading\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="BookEndRender.cpp">
+      <Filter>Levels\6. Ending\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
