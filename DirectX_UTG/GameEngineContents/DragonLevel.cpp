@@ -11,7 +11,9 @@
 #include "Player.h"
 #include "CardUI.h"
 #include "HealthUI.h"
+#include "WeaponUI.h"
 #include "GrimMatchstick.h"
+#include "Dragon_ColMap.h"
 
 #include "OverworldLevel.h"
 
@@ -24,6 +26,8 @@
 #include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
+DragonLevel* DragonLevel::DragonLevelPtr = nullptr;
+
 DragonLevel::DragonLevel() 
 {
 }
@@ -34,6 +38,7 @@ DragonLevel::~DragonLevel()
 
 void DragonLevel::Start()
 {
+	DragonLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
 }
@@ -41,39 +46,41 @@ void DragonLevel::Update(float _DeltaTime)
 {
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
-	//if (true == RibbyObject->GetIsStageEnd() && 1 == EndSetCount)
+	//if (true == DragonObject->GetIsStageEnd() && 1 == EndSetCount)
 	//{
+	//	PlayerObject->SetStageEndHP();
 	//	EndSetCount = 0;
 	//	KnockoutPtr->StartMessage();
 	//	IsBossEnd = true;
 	//	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
 	//}
 
-	if (true == IsBossEnd)
-	{
-		EndTime += _DeltaTime;
+	//if (true == IsBossEnd)
+	//{
+	//	EndTime += _DeltaTime;
 
-		if (true == KnockoutPtr->GetIsEnd())
-		{
-			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+	//	if (true == KnockoutPtr->GetIsEnd())
+	//	{
+	//		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
-			if (EndTime >= 3.0f && 1 == EndSetCount2)
-			{
-				EndSetCount2 = 0;
-				BlackBoxPtr->BoxSettingReset();
-				BlackBoxPtr->SetEnter();
-			}
-		}
+	//		if (EndTime >= 4.5f && 1 == EndSetCount2)
+	//		{
+	//			EndSetCount2 = 0;
+	//			BlackBoxPtr->BoxSettingReset();
+	//			BlackBoxPtr->SetEnter();
+	//		}
+	//	}
 
-		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
-		{
-			IsDragonLevelEnd = true;
-			OverworldLevel::OverworldLevelPtr->SetDragonEnd();
-			GameEngineCore::ChangeLevel("OverworldLevel");
-		}
+	//	if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+	//	{
+	//		IsDragonLevelEnd = true;
+	//		OverworldLevel::OverworldLevelPtr->SetMouseEnd();
+	//		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+	//		GameEngineCore::ChangeLevel("LoadingLevel");
+	//	}
 
-		return;
-	}
+	//	return;
+	//}
 
 	////////////////////////////////////////// Player Death //////////////////////////////////////////
 
@@ -82,7 +89,6 @@ void DragonLevel::Update(float _DeltaTime)
 		EndSetCount = 0;
 		YouDiedPtr->StartMessage();
 		IsPlayerEnd = true;
-		//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
 	}
 
 	if (true == IsPlayerEnd)
@@ -91,8 +97,6 @@ void DragonLevel::Update(float _DeltaTime)
 
 		if (true == YouDiedPtr->GetIsEnd())
 		{
-			//GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
-
 			if (EndTime >= 3.0f && 1 == EndSetCount2)
 			{
 				EndSetCount2 = 0;
@@ -103,7 +107,8 @@ void DragonLevel::Update(float _DeltaTime)
 
 		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
 		{
-			GameEngineCore::ChangeLevel("OverworldLevel");
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
 
 		return;
@@ -111,42 +116,42 @@ void DragonLevel::Update(float _DeltaTime)
 
 	////////////////////////////////////////// Ready Wallop //////////////////////////////////////////
 
-	ReadyWallopTime += _DeltaTime;
+	//ReadyWallopTime += _DeltaTime;
 
-	if (1.0f <= ReadyWallopTime && 1 == ReadyWallopCount)
-	{
-		ReadyWallopCount = 0;
-		ReadyWallopPtr->StartMessage();
-	}
+	//if (1.5f <= ReadyWallopTime && 1 == ReadyWallopCount)
+	//{
+	//	ReadyWallopCount = 0;
+	//	ReadyWallopPtr->StartMessage();
+	//}
 
-	// readywallop이 끝나는 시점에 게임 시작
-	if (true == ReadyWallopPtr->GetIsEnd())
-	{
-		int a = 0;
-	}
+	//// readywallop이 끝나는 시점에 게임 시작
+	//if (true == ReadyWallopPtr->GetIsEnd())
+	//{
+	//	int a = 0;
+	//}
 
-	if (true == GameEngineInput::IsDown("PrevLevel"))
-	{
-		GameEngineCore::ChangeLevel("OverworldLevel");
-	}
+	//if (true == GameEngineInput::IsDown("PrevLevel"))
+	//{
+	//	GameEngineCore::ChangeLevel("OverworldLevel");
+	//}
 }
 
 void DragonLevel::LevelChangeStart()
 {
-	if (nullptr == GameEngineTexture::Find("Frog_ColMap.png"))
+	if (nullptr == GameEngineTexture::Find("Dragon_ColMap.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Image");
 		NewDir.Move("Level");
-		NewDir.Move("1_Ribby_and_Croaks");
+		NewDir.Move("2_Grim_Matchstick");
 
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Frog_ColMap.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_ColMap.png").GetFullPath());
 	}
 
 	// ColMap
-	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("Frog_ColMap.png");
+	std::shared_ptr<GameEngineTexture> PlayMap = GameEngineTexture::Find("Dragon_ColMap.png");
 	int PlayMapWidth = PlayMap->GetWidth();
 	int PlayMapHeight = PlayMap->GetHeight();
 	float PlayMapWidth_Half = static_cast<float>(PlayMapWidth / 2);
@@ -157,22 +162,31 @@ void DragonLevel::LevelChangeStart()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 640, PlayMapHeight_Half + 10, -620.0f });
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
-	{
-		//if (nullptr == MapObject)
-		//{
-		//	MapObject = CreateActor<Frog_Map>();
-		//}
+	// back
+	//{
+	//	if (nullptr == BackMapObject)
+	//	{
+	//		BackMapObject = CreateActor<Mouse_BackObject>();
+	//	}
 
-		//MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, 10 });
-	}
+	//	BackMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 9 });
+	//}
+	//{
+	//	if (nullptr == MapObject)
+	//	{
+	//		MapObject = CreateActor<Mouse_Map>();
+	//	}
+
+	//	MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 10 });
+	//}
+	// Boss
 	{
 		//if (nullptr == DragonObject)
 		//{
 		//	DragonObject = CreateActor<GrimMatchstick>();
 		//}
 
-		//DragonObject->GetTransform()->SetLocalPosition({ 1000 , 250 });
-		//DragonObject->SetInitReset();
+		//DragonObject->GetTransform()->SetLocalPosition({ 1040 , 225, -1 });	
 	}
 	{
 		if (nullptr == PlayerObject)
@@ -180,30 +194,46 @@ void DragonLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 
-		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half });
-		PlayerObject->SetCorrectionFalse();
+		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -3 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
+		PlayerObject->SetCorrectionFalse();
+		PlayerObject->PlayerReset();
+		PlayerObject->SetIntro();
 	}
-	{
-		//if (nullptr == ThisColMap)
-		//{
-		//	ThisColMap = CreateActor<Frog_ColMap>();
-		//}
+	//{
+	//	if (nullptr == FrontMapObject)
+	//	{
+	//		FrontMapObject = CreateActor<Mouse_FrontObject>();
+	//	}
 
-		//ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
+	//	FrontMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
+	//}
+	{
+		if (nullptr == ThisColMap)
+		{
+			ThisColMap = CreateActor<Dragon_ColMap>();
+		}
+
+		ThisColMap->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -5 });
 	}
 	{
+		if (nullptr == WeaponObject)
+		{
+			WeaponObject = CreateActor<WeaponUI>();
+		}
 		if (nullptr == HealthObject)
 		{
 			HealthObject = CreateActor<HealthUI>();
 		}
-
 		if (nullptr == CardObject)
 		{
 			CardObject = CreateActor<CardUI>();
 		}
 
+		WeaponObject->GetTransform()->SetLocalPosition({ -585, -335 });
+		WeaponObject->SetMainPalyer(PlayerObject);
+		WeaponObject->StartPositionSetting(WeaponObject->GetTransform()->GetLocalPosition());
 		HealthObject->GetTransform()->SetLocalPosition({ -585, -335 });
 		HealthObject->SetMainPalyer(PlayerObject);
 		CardObject->GetTransform()->SetLocalPosition({ -525, -350 });
@@ -249,6 +279,7 @@ void DragonLevel::LevelChangeStart()
 		{
 			GUI = GameEngineGUI::FindGUIWindowConvert<TransformGUI>("TransformGUI");
 		}
+
 		GUI->SetTarget(PlayerObject->GetTransform());
 		GUI->SetMainPalyer(PlayerObject);
 		GUI->SetDragonBoss(DragonObject);
@@ -264,16 +295,6 @@ void DragonLevel::LevelChangeStart()
 
 void DragonLevel::LevelChangeEnd()
 {
-	//if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
-	//{
-	//	GameEngineTexture::UnLoad("Backstage_1_1.png");
-	//	GameEngineTexture::UnLoad("Backstage_2_2.png");
-	//	GameEngineTexture::UnLoad("Backstage_3_3.png");
-	//}
-	//if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-	//{
-	//	GameEngineSprite::UnLoad("Ribby_Idle");
-	//}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
@@ -332,16 +353,6 @@ void DragonLevel::LevelChangeEnd()
 
 void DragonLevel::ReLoadSetting()
 {
-	//if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
-	//{
-	//	GameEngineTexture::ReLoad("Backstage_1_1.png");
-	//	GameEngineTexture::ReLoad("Backstage_2_2.png");
-	//	GameEngineTexture::ReLoad("Backstage_3_3.png");
-	//}
-	//if (nullptr != GameEngineSprite::Find("Ribby_Idle"))
-	//{
-	//	GameEngineSprite::ReLoad("Ribby_Idle");
-	//}
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::ReLoad("Peashooter_Spawn.png");
