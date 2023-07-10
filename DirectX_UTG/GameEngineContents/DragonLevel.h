@@ -49,6 +49,16 @@ private:
 	std::shared_ptr<class Dragon_BackGround> BackGroundObject = nullptr;
 	std::shared_ptr<class Dragon_FrontGround> FrontGroundObject = nullptr;
 
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject0 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject1 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject2 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject3 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject4 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject5 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject6 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject7 = nullptr;
+	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject8 = nullptr;
+
 	std::shared_ptr<class Dragon_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
@@ -79,6 +89,6 @@ private:
 	int ReadyWallopCount = 1;
 	int EndSetCount = 1;
 	int EndSetCount2 = 1;
-
+	int CloudMoveCount = 1;
 };
 

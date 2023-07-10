@@ -45,6 +45,9 @@ void Player::Update(float _DeltaTime)
 	if (false == IsCorrection)
 	{
 		PositionCorrection();			// 최초 레벨 진입 시 위치 세팅
+
+		DragonSetting();
+
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());
 		SetPlayerEXStack(GetEXStack());
@@ -207,6 +210,16 @@ void Player::PositionCorrection()
 			}
 		}
 	}
+}
+
+void Player::DragonSetting()
+{
+	if (false == IsDragonSetting)
+	{
+		return;
+	}
+
+	GetTransform()->AddLocalPosition({ -50, 230 });
 }
 
 void Player::PlayerDebugRenderer()

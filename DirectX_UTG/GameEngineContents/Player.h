@@ -49,6 +49,21 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void SetIsDragonSetting()
+	{
+		IsDragonSetting = true;
+	}
+
+	bool GetIsIntro()
+	{
+		return IsIntro;
+	}
+
+	bool GetIsBottomJump()
+	{
+		return IsBottomJump;
+	}
+
 	void SetElderKettleInterAction(bool _Is)
 	{
 		ElderKettleInterAction = _Is;
@@ -98,6 +113,11 @@ public:
 	void MoveAbleTimeReset()
 	{
 		MoveAbleTime = 0.0f;
+	}
+
+	float GetMoveAbelTime()
+	{
+		return MoveAbleTime;
 	}
 
 	void PlayerReset();
@@ -261,6 +281,7 @@ private:
 	// Assistant
 	void CheatKey();
 	void PositionCorrection();
+	void DragonSetting();
 	void PlayerDebugRenderer();
 	void HitBlink(float _DeltaTime);
 	void PortalCheck();
@@ -310,6 +331,8 @@ private:
 
 	bool Directbool = true;    // true == 오른쪽 // false == 왼쪽
 	bool WeaponType = true;    // true : Peashooter // false : Spread
+
+	bool IsDragonSetting = false; // DragonLevel에서만 사용
 
 	// Air
 	bool IsJump = false;

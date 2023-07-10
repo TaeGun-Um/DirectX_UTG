@@ -73,18 +73,18 @@ void Dragon_BackGround::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Foreground_Clouds_003.png").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Tower_Light"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("2_Grim_Matchstick");
-		NewDir.Move("Tower");
+	//if (nullptr == GameEngineSprite::Find("Tower_Light"))
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("CupHead_Resource");
+	//	NewDir.Move("CupHead_Resource");
+	//	NewDir.Move("Image");
+	//	NewDir.Move("Level");
+	//	NewDir.Move("2_Grim_Matchstick");
+	//	NewDir.Move("Tower");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
-	}
+	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
+	//}
 
 	if (nullptr == BackGroundRenderPtr_One)
 	{
@@ -140,12 +140,12 @@ void Dragon_BackGround::Start()
 		Low_BackCloudRenderPtr_Two->GetTransform()->SetLocalPosition({ 0, -250 });
 	}
 
-	if (nullptr == TowerRenderPtr)
-	{
-		TowerRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		TowerRenderPtr->CreateAnimation({ .AnimationName = "Tower_Light", .SpriteName = "Tower_Light", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
-		TowerRenderPtr->ChangeAnimation("Tower_Light");
-	}
+	//if (nullptr == TowerRenderPtr)
+	//{
+	//	TowerRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+	//	TowerRenderPtr->CreateAnimation({ .AnimationName = "Tower_Light", .SpriteName = "Tower_Light", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
+	//	TowerRenderPtr->ChangeAnimation("Tower_Light");
+	//}
 
 	if (nullptr == Low_FrontCloudRenderPtr_One)
 	{

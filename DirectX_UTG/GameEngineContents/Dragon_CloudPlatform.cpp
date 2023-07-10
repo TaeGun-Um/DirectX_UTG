@@ -32,62 +32,20 @@ void Dragon_CloudPlatform::Start()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Standing_Idle").GetFullPath());
 	}
 
-	if (nullptr == GameEngineTexture::Find("Standing_Top_001.png"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("2_Grim_Matchstick");
-		NewDir.Move("Cloud_Platform");
-		NewDir.Move("Standing_Top");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_001.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_002.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_003.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_004.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_005.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_006.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_007.png").GetFullPath());
-	}
-
-	if (nullptr == GameEngineTexture::Find("Standing_Top_Idle_001.png"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("2_Grim_Matchstick");
-		NewDir.Move("Cloud_Platform");
-		NewDir.Move("Standing_Top_Idle");
-
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_Idle_001.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_Idle_002.png").GetFullPath());
-		GameEngineTexture::Load(NewDir.GetPlusFileName("Standing_Top_Idle_003.png").GetFullPath());
-	}
-
 	if (nullptr == CloudRenderPtr)
 	{
 		CloudRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		CloudRenderPtr->CreateAnimation({ .AnimationName = "Cloud_Platform_Idle", .SpriteName = "Cloud_Platform_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Intro", .SpriteName = "Standing_Intro", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Outro", .SpriteName = "Standing_Outro", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Idle", .SpriteName = "Standing_Idle", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
+		CloudRenderPtr->CreateAnimation({ .AnimationName = "Cloud_Platform_Idle", .SpriteName = "Cloud_Platform_Idle", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
+		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Intro", .SpriteName = "Standing_Intro", .FrameInter = 0.02f, .Loop = false, .ScaleToTexture = true });
+		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Outro", .SpriteName = "Standing_Outro", .FrameInter = 0.02f, .Loop = false, .ScaleToTexture = true });
+		CloudRenderPtr->CreateAnimation({ .AnimationName = "Standing_Idle", .SpriteName = "Standing_Idle", .FrameInter = 0.09f, .Loop = true, .ScaleToTexture = true });
 		CloudRenderPtr->ChangeAnimation("Cloud_Platform_Idle");
-	}
-
-	if (nullptr == CloudUpRenderPtr)
-	{
-		CloudUpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_001.png");
-		CloudUpRenderPtr->Off();
 	}
 
 	if (nullptr == PlatformCollisionPtr)
 	{
 		PlatformCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Platform));
+		PlatformCollisionPtr->GetTransform()->SetLocalPosition({ 0, -10 });
 		PlatformCollisionPtr->GetTransform()->SetLocalScale({ 200, 35, -2 });
 	}
 
@@ -98,45 +56,47 @@ void Dragon_CloudPlatform::Start()
 		PlatformCollisionRenderPtr->GetTransform()->SetLocalPosition(PlatformCollisionPtr->GetTransform()->GetLocalPosition());
 		PlatformCollisionRenderPtr->SetTexture("GreenBox.png");
 		PlatformCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.6f;
-		//PlatformCollisionRenderPtr->Off();
+		PlatformCollisionRenderPtr->Off();
 	}
 
-	MoveSpeed = 50.0f;
+	MoveSpeed = 70.0f;
 }
 
 void Dragon_CloudPlatform::Update(float _DeltaTime)
 {
-	MoveDis = MoveSpeed * _DeltaTime;
-
-	GetTransform()->AddLocalPosition({ -MoveDis , 0 });
-
 	CollisionCheck();
 	UpdateState(_DeltaTime);
 
+	if (false == IsMove)
+	{
+		return;
+	}
+
+	MoveDis = MoveSpeed * _DeltaTime;
+	GetTransform()->AddLocalPosition({ -MoveDis , 0 });
+
 	float4 CurPos = GetTransform()->GetWorldPosition();
 
-	if (CurPos.x <= 0.0f)
+	if (CurPos.x <= -100.0f)
 	{
-		GetTransform()->SetWorldPosition(ActorInitPosition);
+		GetTransform()->SetWorldPosition({ 1370.0f , ActorInitPosition.y });
 	}
 }
 
 void Dragon_CloudPlatform::CollisionCheck()
 {
-	/////////////// Platform
-	//if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerFrontSensor), ColType::AABBBOX2D, ColType::AABBBOX2D))
-	//{
-	//	Player::MainPlayer->PlayerBlockDisturbance(MoveDis);
-	//}
-
-	if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerBottomSensor), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	if (true == Player::MainPlayer->GetPlatformCheckAble())
 	{
-		if (true == Player::MainPlayer->GetPlatformCheckAble())
+		if (nullptr != PlatformCollisionPtr->Collision(static_cast<int>(CollisionOrder::PlayerBottomSensor), ColType::AABBBOX2D, ColType::AABBBOX2D)
+			&& false == Player::MainPlayer->GetIsBottomJump())
 		{
+			IsStanding = true;
 			Player::MainPlayer->PlayerMoveDisturbance(-MoveDis);
 		}
-
-		IsStanding = true;
+	}
+	else
+	{
+		IsStanding = false;
 	}
 }
 
@@ -207,7 +167,7 @@ void Dragon_CloudPlatform::UpdateState(float _DeltaTime)
 
 void Dragon_CloudPlatform::IdleStart()
 {
-	CloudUpRenderPtr->Off();
+	CloudRenderPtr->ChangeAnimation("Cloud_Platform_Idle");
 }
 void Dragon_CloudPlatform::IdleUpdate(float _DeltaTime)
 {
@@ -225,12 +185,9 @@ void Dragon_CloudPlatform::IdleEnd()
 void Dragon_CloudPlatform::Plat_IntroStart()
 {
 	CloudRenderPtr->ChangeAnimation("Standing_Intro");
-	CloudUpRenderPtr->On();
 }
 void Dragon_CloudPlatform::Plat_IntroUpdate(float _DeltaTime)
 {
-	PlatIntroUpRenderSetting();
-
 	if (false == IsStanding)
 	{
 		ChangeState(CloudState::Plat_Outro);
@@ -253,8 +210,6 @@ void Dragon_CloudPlatform::PlatStart()
 }
 void Dragon_CloudPlatform::PlatUpdate(float _DeltaTime)
 {
-	PlatUpRenderSetting();
-
 	if (false == IsStanding)
 	{
 		ChangeState(CloudState::Plat_Outro);
@@ -272,8 +227,6 @@ void Dragon_CloudPlatform::Plat_OutroStart()
 }
 void Dragon_CloudPlatform::Plat_OutroUpdate(float _DeltaTime)
 {
-	PlatOutroUpRenderSetting();
-
 	if (true == CloudRenderPtr->IsAnimationEnd())
 	{
 		ChangeState(CloudState::Idle);
@@ -282,85 +235,5 @@ void Dragon_CloudPlatform::Plat_OutroUpdate(float _DeltaTime)
 }
 void Dragon_CloudPlatform::Plat_OutroEnd()
 {
-	CloudUpRenderPtr->Off();
-}
 
-void Dragon_CloudPlatform::PlatIntroUpRenderSetting()
-{
-	if (6 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_007.png");
-	}
-	else if (5 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_006.png");
-	}
-	else if (4 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_005.png");
-	}
-	else if (3 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_004.png");
-	}
-	else if (2 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_003.png");
-	}
-	else if (1 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_002.png");
-	}
-	else if (0 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_001.png");
-	}
-}
-
-void Dragon_CloudPlatform::PlatUpRenderSetting()
-{
-	if (2 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_Idle_003.png");
-	}
-	else if (1 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_Idle_002.png");
-	}
-	else if (0 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_Idle_001.png");
-	}
-}
-
-void Dragon_CloudPlatform::PlatOutroUpRenderSetting()
-{
-	if (6 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_001.png");
-	}
-	else if (5 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_002.png");
-	}
-	else if (4 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_003.png");
-	}
-	else if (3 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_004.png");
-	}
-	else if (2 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_005.png");
-	}
-	else if (1 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_006.png");
-	}
-	else if (0 == CloudRenderPtr->GetCurrentFrame())
-	{
-		CloudUpRenderPtr->SetScaleToTexture("Standing_Top_007.png");
-	}
 }

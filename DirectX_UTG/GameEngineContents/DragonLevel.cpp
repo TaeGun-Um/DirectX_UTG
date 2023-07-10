@@ -138,6 +138,21 @@ void DragonLevel::Update(float _DeltaTime)
 	//	GameEngineCore::ChangeLevel("OverworldLevel");
 	//}
 
+	if (false == Player::MainPlayer->GetIsIntro() && 1 == CloudMoveCount)
+	{
+		CloudMoveCount = 0;
+
+		CloudPlatformObject0->SetIsMove();
+		CloudPlatformObject1->SetIsMove();
+		CloudPlatformObject2->SetIsMove();
+		CloudPlatformObject3->SetIsMove();
+		CloudPlatformObject4->SetIsMove();
+		CloudPlatformObject5->SetIsMove();
+		CloudPlatformObject6->SetIsMove();
+		CloudPlatformObject7->SetIsMove();
+		CloudPlatformObject8->SetIsMove();
+	}
+
 	if (true == GameEngineInput::IsDown("BossHpDown"))
 	{
 		//
@@ -189,16 +204,49 @@ void DragonLevel::LevelChangeStart()
 	}
 
 	{
-		std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject = CreateActor<Dragon_CloudPlatform>();
+		if (nullptr == CloudPlatformObject0)
+		{
+			CloudPlatformObject0 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject1 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject2 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject3 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject4 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject5 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject6 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject7 = CreateActor<Dragon_CloudPlatform>();
+			CloudPlatformObject8 = CreateActor<Dragon_CloudPlatform>();
 
-		float4 CloudPlatformObjectPosition = { PlayMapWidth_Half + 20, PlayMapHeight_Half - 100 , 100 };
+			float4 CloudPlatformObjectPosition0 = { PlayMapWidth_Half - 480, PlayMapHeight_Half - 120 , 1 };
+			float4 CloudPlatformObjectPosition1 = { PlayMapWidth_Half - 450, PlayMapHeight_Half + 200 , 1 };
+			float4 CloudPlatformObjectPosition2 = { PlayMapWidth_Half - 200, PlayMapHeight_Half + 20 , 1 };
+			float4 CloudPlatformObjectPosition3 = { PlayMapWidth_Half - 160, PlayMapHeight_Half - 220 , 1 };
+			float4 CloudPlatformObjectPosition4 = { PlayMapWidth_Half + 65, PlayMapHeight_Half + 160 , 1 };
+			float4 CloudPlatformObjectPosition5 = { PlayMapWidth_Half + 170, PlayMapHeight_Half - 170 , 1 };
+			float4 CloudPlatformObjectPosition6 = { PlayMapWidth_Half + 365, PlayMapHeight_Half - 5 , 1 };
+			float4 CloudPlatformObjectPosition7 = { PlayMapWidth_Half + 550, PlayMapHeight_Half + 250 , 1 };
+			float4 CloudPlatformObjectPosition8 = { PlayMapWidth_Half + 630, PlayMapHeight_Half - 250 , 1 };
 
-		CloudPlatformObject->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition);
+			CloudPlatformObject0->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition0);
+			CloudPlatformObject1->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition1);
+			CloudPlatformObject2->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition2);
+			CloudPlatformObject3->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition3);
+			CloudPlatformObject4->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition4);
+			CloudPlatformObject5->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition5);
+			CloudPlatformObject6->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition6);
+			CloudPlatformObject7->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition7);
+			CloudPlatformObject8->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition8);
 
-		CloudPlatformObject->SetActorInitPosition(CloudPlatformObjectPosition);
+			CloudPlatformObject0->SetActorInitPosition(CloudPlatformObjectPosition0);
+			CloudPlatformObject1->SetActorInitPosition(CloudPlatformObjectPosition1);
+			CloudPlatformObject2->SetActorInitPosition(CloudPlatformObjectPosition2);
+			CloudPlatformObject3->SetActorInitPosition(CloudPlatformObjectPosition3);
+			CloudPlatformObject4->SetActorInitPosition(CloudPlatformObjectPosition4);
+			CloudPlatformObject5->SetActorInitPosition(CloudPlatformObjectPosition5);
+			CloudPlatformObject6->SetActorInitPosition(CloudPlatformObjectPosition6);
+			CloudPlatformObject7->SetActorInitPosition(CloudPlatformObjectPosition7);
+			CloudPlatformObject8->SetActorInitPosition(CloudPlatformObjectPosition8);
+		}
 	}
-
-	
 
 	// Boss
 	{
@@ -215,12 +263,14 @@ void DragonLevel::LevelChangeStart()
 			PlayerObject = CreateActor<Player>();
 		}
 
-		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -3 });
+		PlayerObject->GetTransform()->SetLocalPosition({ 220 , PlayMapHeight_Half, -1 });
 		PlayerObject->SetColMap(PlayMap, PixelCollision::Coordinate::Custom);
 		PlayerObject->SetCameraSpeedRatio(1.0f);
 		PlayerObject->SetCorrectionFalse();
 		PlayerObject->PlayerReset();
 		PlayerObject->SetIntro();
+
+		PlayerObject->SetIsDragonSetting();
 	}
 	//{
 	//	if (nullptr == FrontMapObject)
@@ -366,10 +416,31 @@ void DragonLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
 
+	CloudPlatformObject0->Death();
+	CloudPlatformObject1->Death();
+	CloudPlatformObject2->Death();
+	CloudPlatformObject3->Death();
+	CloudPlatformObject4->Death();
+	CloudPlatformObject5->Death();
+	CloudPlatformObject6->Death();
+	CloudPlatformObject7->Death();
+	CloudPlatformObject8->Death();
+
+	CloudPlatformObject0 = nullptr;
+	CloudPlatformObject1 = nullptr;
+	CloudPlatformObject2 = nullptr;
+	CloudPlatformObject3 = nullptr;
+	CloudPlatformObject4 = nullptr;
+	CloudPlatformObject5 = nullptr;
+	CloudPlatformObject6 = nullptr;
+	CloudPlatformObject7 = nullptr;
+	CloudPlatformObject8 = nullptr;
+
 	ReadyWallopCount = 1;
 	ReadyWallopTime = 0.0f;
 	CardObject->CartUIReset();
 	PlayerObject->MoveAbleTimeReset();
+	CloudMoveCount = 1;
 }
 
 void DragonLevel::ReLoadSetting()

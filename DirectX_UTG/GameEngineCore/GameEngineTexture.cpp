@@ -197,11 +197,6 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 		return DefaultColor;
 	}
 
-	if (0 > _Y)
-	{
-		return DefaultColor;
-	}
-
 	if (_X >= GetWidth())
 	{
 		return DefaultColor;
@@ -210,6 +205,12 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 	if (_Y >= GetHeight())
 	{
 		return DefaultColor;
+	}
+
+	if (0 > _Y)
+	{
+		GameEnginePixelColor Defalult(static_cast<char>(123), static_cast<char>(123), static_cast<char>(123), static_cast<char>(123));
+		return Defalult;
 	}
 
 	DXGI_FORMAT Fmt = Image.GetMetadata().format;

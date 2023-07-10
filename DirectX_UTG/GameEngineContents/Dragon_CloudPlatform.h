@@ -27,6 +27,11 @@ public:
 		ActorInitPosition = _Value;
 	}
 
+	void SetIsMove()
+	{
+		IsMove = true;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -34,7 +39,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> CloudRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> CloudUpRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> PlatformCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlatformCollisionPtr = nullptr;
@@ -45,12 +49,9 @@ private:
 	float4 ActorInitPosition = float4::Zero;
 
 	bool IsStanding = false;
+	bool IsMove = false;
 
 	void CollisionCheck();
-
-	void PlatIntroUpRenderSetting();
-	void PlatUpRenderSetting();
-	void PlatOutroUpRenderSetting();
 
 	CloudState StateValue = CloudState::Idle;
 
