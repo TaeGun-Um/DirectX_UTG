@@ -277,7 +277,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Dragon_BackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Dragon_ColMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Dragon_FrontGround.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -701,7 +709,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Dragon_BackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Dragon_ColMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Dragon_FrontGround.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -13,6 +13,8 @@
 #include "HealthUI.h"
 #include "WeaponUI.h"
 #include "GrimMatchstick.h"
+#include "Dragon_BackGround.h"
+#include "Dragon_FrontGround.h"
 #include "Dragon_ColMap.h"
 
 #include "OverworldLevel.h"
@@ -168,22 +170,23 @@ void DragonLevel::LevelChangeStart()
 	GetMainCamera()->SetSortType(0, SortType::ZSort);
 
 	// back
-	//{
-	//	if (nullptr == BackMapObject)
-	//	{
-	//		BackMapObject = CreateActor<Mouse_BackObject>();
-	//	}
+	{
+		if (nullptr == BackGroundObject)
+		{
+			BackGroundObject = CreateActor<Dragon_BackGround>();
+		}
 
-	//	BackMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 9 });
-	//}
-	//{
-	//	if (nullptr == MapObject)
-	//	{
-	//		MapObject = CreateActor<Mouse_Map>();
-	//	}
+		BackGroundObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 100 });
+	}
+	{
+		if (nullptr == FrontGroundObject)
+		{
+			FrontGroundObject = CreateActor<Dragon_FrontGround>();
+		}
 
-	//	MapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, 10 });
-	//}
+		FrontGroundObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, -100 });
+	}
+
 	// Boss
 	{
 		//if (nullptr == DragonObject)

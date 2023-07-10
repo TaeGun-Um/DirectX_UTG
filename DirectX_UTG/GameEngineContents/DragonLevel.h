@@ -46,7 +46,9 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	//std::shared_ptr<class Frog_Map> MapObject = nullptr;
+	std::shared_ptr<class Dragon_BackGround> BackGroundObject = nullptr;
+	std::shared_ptr<class Dragon_FrontGround> FrontGroundObject = nullptr;
+
 	std::shared_ptr<class Dragon_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
