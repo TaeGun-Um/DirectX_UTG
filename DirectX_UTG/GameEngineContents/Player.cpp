@@ -58,6 +58,11 @@ void Player::Update(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("TimeScale"))
+	{
+		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
+	}
+
 	CheatKey();
 
 	MoveCamera(_DeltaTime);			    // 카메라 이동 연산

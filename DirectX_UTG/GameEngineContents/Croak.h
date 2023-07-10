@@ -64,6 +64,11 @@ public:
 		return HP;
 	}
 
+	void BossHPDown()
+	{
+		HP -= 100;
+	}
+
 	void DebugRenderOn()
 	{
 		IsDebugRender = true;

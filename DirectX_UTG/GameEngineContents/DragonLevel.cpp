@@ -134,6 +134,11 @@ void DragonLevel::Update(float _DeltaTime)
 	//{
 	//	GameEngineCore::ChangeLevel("OverworldLevel");
 	//}
+
+	if (true == GameEngineInput::IsDown("BossHpDown"))
+	{
+		//
+	}
 }
 
 void DragonLevel::LevelChangeStart()

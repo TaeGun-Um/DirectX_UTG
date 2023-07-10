@@ -145,6 +145,11 @@ void FrogLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel("OverworldLevel");
 	}
+
+	if (true == GameEngineInput::IsDown("BossHpDown"))
+	{
+		CroakObject->CroakPtr->BossHPDown();
+	}
 }
 
 void FrogLevel::LevelChangeStart()

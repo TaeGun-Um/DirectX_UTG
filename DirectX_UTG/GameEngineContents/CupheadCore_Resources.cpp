@@ -104,6 +104,8 @@ void CupheadCore::ContentsKeyBind()
 		GameEngineInput::CreateKey("HPMax", VK_F1);
 		GameEngineInput::CreateKey("EXMax", VK_F2);
 		GameEngineInput::CreateKey("SpeedUp", VK_F3);
+		GameEngineInput::CreateKey("BossHpDown", VK_F4);
+		GameEngineInput::CreateKey("TimeScale", VK_F5);
 	}
 
 	if (false == GameEngineInput::IsKey("FadeIn"))

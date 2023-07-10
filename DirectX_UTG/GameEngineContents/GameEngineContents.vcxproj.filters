@@ -794,5 +794,8 @@
     <ClCompile Include="Dragon_ColMap.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClCompile>
+    <ClCompile Include="GrimMatchstick_FSM.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
