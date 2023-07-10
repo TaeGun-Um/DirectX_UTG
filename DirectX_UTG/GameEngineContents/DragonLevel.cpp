@@ -15,6 +15,7 @@
 #include "GrimMatchstick.h"
 #include "Dragon_BackGround.h"
 #include "Dragon_FrontGround.h"
+#include "Dragon_CloudPlatform.h"
 #include "Dragon_ColMap.h"
 
 #include "OverworldLevel.h"
@@ -186,6 +187,18 @@ void DragonLevel::LevelChangeStart()
 
 		FrontGroundObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half, -100 });
 	}
+
+	{
+		std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject = CreateActor<Dragon_CloudPlatform>();
+
+		float4 CloudPlatformObjectPosition = { PlayMapWidth_Half + 20, PlayMapHeight_Half - 100 , 100 };
+
+		CloudPlatformObject->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition);
+
+		CloudPlatformObject->SetActorInitPosition(CloudPlatformObjectPosition);
+	}
+
+	
 
 	// Boss
 	{
