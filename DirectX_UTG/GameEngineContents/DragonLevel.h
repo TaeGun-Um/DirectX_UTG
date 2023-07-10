@@ -58,7 +58,7 @@ private:
 	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject6 = nullptr;
 	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject7 = nullptr;
 	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject8 = nullptr;
-
+	
 	std::shared_ptr<class Dragon_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;

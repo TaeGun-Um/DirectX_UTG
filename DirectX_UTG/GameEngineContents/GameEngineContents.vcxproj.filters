@@ -452,6 +452,9 @@
     <ClInclude Include="Dragon_CloudPlatform.h">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Dragon_FallPoint.h">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -816,6 +819,9 @@
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClCompile>
     <ClCompile Include="Dragon_CloudPlatform.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Dragon_FallPoint.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object</Filter>
     </ClCompile>
   </ItemGroup>

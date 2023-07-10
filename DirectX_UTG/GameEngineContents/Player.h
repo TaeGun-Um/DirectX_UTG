@@ -26,6 +26,7 @@ enum class PlayerState
 	ElderKettleIdle,
 	ElderKettleInterAction,
 	Intro,
+	FallPoint,
 };
 
 // 설명 : Field 플레이어
@@ -48,6 +49,11 @@ public:
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
+
+	void SetHitJump()
+	{
+		IsHitJump = true;
+	}
 
 	void SetIsDragonSetting()
 	{
@@ -303,6 +309,7 @@ private:
 	void PlatformBottomJump(float _DeltaTime);
 	void PlatformBottomJumpStateCheck(float _DeltaTime);
 	void HitCollisionCheck(float _DeltaTime);
+	void FallCollisionCheck(float _DeltaTime);
 	void WallCollisionCheck(float _DeltaTime);
 
 	// CreateActor
@@ -358,7 +365,9 @@ private:
 	bool EXPushBack = false;
 	bool PushBackAble = false;
 	bool IsHit = false;
+	bool IsHitJump = false;
 	bool HitTimeCheck = false;
+	bool FallHitTimeCheck = false;
 	bool IsDeath = false;
 	bool PortalAble = false;
 	bool Portaling = false;
@@ -378,6 +387,7 @@ private:
 	float ProjectileCreateTime = 0.0f;
 	float MoveTime = 0.0f;
 	float HitTime = 0.0f;
+	float FallHitTime = 0.0f;
 	float NormalDeltaTime = 0.0f;
 
 	int CreateEXCount = 1;
@@ -476,5 +486,9 @@ private:
 	void IntroStart();
 	void IntroUpdate(float _DeltaTime);
 	void IntroEnd();
+
+	void FallPointStart();
+	void FallPointUpdate(float _DeltaTime);
+	void FallPointEnd();
 };
 

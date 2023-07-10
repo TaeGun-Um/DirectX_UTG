@@ -84,6 +84,9 @@ void Player::ChangeState(PlayerState _StateValue)
 	case PlayerState::Intro:
 		IntroStart();
 		break;
+	case PlayerState::FallPoint:
+		FallPointStart();
+		break;
 	default:
 		break;
 	}
@@ -154,6 +157,9 @@ void Player::ChangeState(PlayerState _StateValue)
 		break;
 	case PlayerState::Intro:
 		IntroEnd();
+		break;
+	case PlayerState::FallPoint:
+		FallPointEnd();
 		break;
 	default:
 		break;
@@ -230,6 +236,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::Intro:
 		IntroUpdate(_DeltaTime);
 		break;
+	case PlayerState::FallPoint:
+		FallPointUpdate(_DeltaTime);
+		break;
 	default:
 		break;
 	}
@@ -245,7 +254,13 @@ void Player::FallStart()
 }
 void Player::FallUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		MoveDirect = float4::Zero;
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -335,7 +350,7 @@ void Player::FallUpdate(float _DeltaTime)
 }
 void Player::FallEnd()
 {
-	if (false == IsSlap)
+	if (false == IsSlap && false == IsHitJump)
 	{
 		MoveDirect = float4::Zero;
 	}
@@ -357,7 +372,12 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -463,7 +483,12 @@ void Player::MoveUpdate(float _DeltaTime)
 {
 	MoveTime += _DeltaTime;
 
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -637,7 +662,12 @@ void Player::DuckReadyStart()
 }
 void Player::DuckReadyUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -730,7 +760,13 @@ void Player::DuckStart()
 }
 void Player::DuckUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		IsDuck = false;
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		IsDuck = false;
 		ChangeState(PlayerState::Hit);
@@ -829,7 +865,13 @@ void Player::JumpStart()
 }
 void Player::JumpUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		MoveDirect = float4::Zero;
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -927,7 +969,7 @@ void Player::JumpUpdate(float _DeltaTime)
 }
 void Player::JumpEnd()
 {
-	if (false == IsSlap)
+	if (false == IsSlap && false == IsHitJump)
 	{
 		MoveDirect = float4::Zero;
 		JumpTime = 0.0f;
@@ -945,7 +987,12 @@ void Player::SlapStart()
 }
 void Player::SlapUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -1058,7 +1105,12 @@ void Player::AttackReadyStart()
 }
 void Player::AttackReadyUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -1139,7 +1191,12 @@ void Player::AttackStart()
 }
 void Player::AttackUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -1256,7 +1313,12 @@ void Player::RunAttackUpdate(float _DeltaTime)
 {
 	MoveTime += _DeltaTime;
 
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -1379,7 +1441,14 @@ void Player::DuckAttackStart()
 }
 void Player::DuckAttackUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		IsDuckAttack = false;
+		IsDuck = false;
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		IsDuckAttack = false;
 		IsDuck = false;
@@ -1692,7 +1761,12 @@ void Player::HoldingStart()
 }
 void Player::HoldingUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -1800,7 +1874,12 @@ void Player::HoldingAttackStart()
 }
 void Player::HoldingAttackUpdate(float _DeltaTime)
 {
-	if (true == IsHit)
+	if (true == IsHit && true == IsHitJump)
+	{
+		ChangeState(PlayerState::FallPoint);
+		return;
+	}
+	else if (true == IsHit)
 	{
 		ChangeState(PlayerState::Hit);
 		return;
@@ -2161,4 +2240,79 @@ void Player::IntroUpdate(float _DeltaTime)
 void Player::IntroEnd()
 {
 	IsIntro = false;
+}
+
+void Player::FallPointStart()
+{
+	MoveDirect = float4::Zero;
+	JumpTime = 0.0f;
+	GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
+
+	IsSlap = false;
+	IsDash = false;
+	IsEXAttack = false;
+	IsDuck = false;
+	IsDuckAttack = false;
+	IsHold = false;
+	PushBackAble = false;
+
+	IsCameraShaking = true;
+	ShakingMaxCount = 8;
+
+	RenderPtr->ChangeAnimation("AirHit");
+
+	MoveDirect.y = 1800.0f;
+
+	RenderPtr->GetTransform()->SetLocalScale({ 300, 330 });
+}
+void Player::FallPointUpdate(float _DeltaTime)
+{
+	if (0 == RenderPtr->GetCurrentFrame() || 5 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 160 });
+	}
+	else if (1 == RenderPtr->GetCurrentFrame() || 4 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 170 });
+	}
+	else if (2 == RenderPtr->GetCurrentFrame() || 3 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ 0, 180 });
+	}
+
+	if (true == IsHitJump)
+	{
+		MoveDirect.y += -3000.0f * _DeltaTime;
+		GetTransform()->AddLocalPosition(MoveDirect * _DeltaTime);
+	}
+
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		GetTransform()->AddLocalPosition({ MoveDis, 0 });
+	}
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		GetTransform()->AddLocalPosition({ -MoveDis, 0 });
+	}
+
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		if (0 == PlayerHP)
+		{
+			ChangeState(PlayerState::Death);
+			return;
+		}
+		else
+		{
+			ChangeState(PlayerState::Fall);
+			return;
+		}
+	}
+}
+void Player::FallPointEnd()
+{
+	IsHitJump = false;
+	IsHit = false;
 }

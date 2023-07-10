@@ -37,4 +37,5 @@ enum class CollisionOrder
 	ParrySpot,		    
 	Portal,				
 	Wall,
+	FallPoint,
 };

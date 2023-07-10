@@ -404,6 +404,8 @@ void Player::CollisionCalculation(float _DeltaTime)
 
 	HitCollisionCheck(_DeltaTime);
 
+	FallCollisionCheck(_DeltaTime);
+
 	PortalCheck();
 
 	WallCollisionCheck(_DeltaTime);
@@ -417,6 +419,14 @@ void Player::HitBlink(float _DeltaTime)
 	}
 
 	if (2.95f <= HitTime)
+	{
+		Inter = 0.0f;
+		MulColorCheck = false;
+		RenderPtr->ColorOptionValue.MulColor.a = OriginMulColor;
+		return;
+	}
+
+	if (0.295f <= FallHitTime)
 	{
 		Inter = 0.0f;
 		MulColorCheck = false;
@@ -634,7 +644,7 @@ void Player::CollisionSetting()
 		}
 	}
 
-	if (true == IsDash || true == IsEXAttack || true == HitTimeCheck)
+	if (true == IsDash || true == IsEXAttack || true == HitTimeCheck || true == FallHitTimeCheck)
 	{
 		BodyCollisionRenderPtr->Off();
 		BodyCollisionPtr->Off();
@@ -805,6 +815,39 @@ void Player::HitCollisionCheck(float _DeltaTime)
 	{
 		HitTimeCheck = false;
 		HitTime = 0.0f;
+		BodyCollisionPtr->On();
+	}
+}
+
+void Player::FallCollisionCheck(float _DeltaTime)
+{
+	if (true == IsPlayerDeath)
+	{
+		return;
+	}
+
+	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::FallPoint), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	{
+		IsHit = true;
+		FallHitTimeCheck = true;
+		IsHitJump = true;
+
+		MinusPlayerHP();
+		CreateHitEffect();
+
+		BodyCollisionPtr->Off();
+	}
+
+	if (true == FallHitTimeCheck)
+	{
+		FallHitTime += _DeltaTime;
+		HitBlink(_DeltaTime);
+	}
+
+	if (0.3f <= FallHitTime)
+	{
+		FallHitTimeCheck = false;
+		FallHitTime = 0.0f;
 		BodyCollisionPtr->On();
 	}
 }

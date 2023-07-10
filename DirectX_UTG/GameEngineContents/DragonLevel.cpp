@@ -17,6 +17,7 @@
 #include "Dragon_FrontGround.h"
 #include "Dragon_CloudPlatform.h"
 #include "Dragon_ColMap.h"
+#include "Dragon_FallPoint.h"
 
 #include "OverworldLevel.h"
 
@@ -248,6 +249,11 @@ void DragonLevel::LevelChangeStart()
 
 			CloudPlatformObject0->SetStandingAnimation();
 		}
+	}
+
+	{
+		std::shared_ptr<class Dragon_FallPoint> FallPointObject = CreateActor<Dragon_FallPoint>();
+		FallPointObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 330, PlayMapHeight_Half - 300 , -10 });
 	}
 
 	// Boss
