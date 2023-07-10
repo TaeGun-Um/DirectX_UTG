@@ -59,6 +59,7 @@ void Dragon_CloudPlatform::Start()
 		PlatformCollisionRenderPtr->Off();
 	}
 
+	ChangeState(CloudState::Idle);
 	MoveSpeed = 70.0f;
 }
 
@@ -79,7 +80,7 @@ void Dragon_CloudPlatform::Update(float _DeltaTime)
 
 	if (CurPos.x <= -100.0f)
 	{
-		GetTransform()->SetWorldPosition({ 1370.0f , ActorInitPosition.y });
+		GetTransform()->SetWorldPosition({ 1370.0f , ActorInitPosition.y, ActorInitPosition.z });
 	}
 }
 
@@ -176,6 +177,12 @@ void Dragon_CloudPlatform::IdleUpdate(float _DeltaTime)
 		ChangeState(CloudState::Plat_Intro);
 		return;
 	}
+
+	if (true == IsInit)
+	{
+		ChangeState(CloudState::Plat);
+		return;
+	}
 }
 void Dragon_CloudPlatform::IdleEnd()
 {
@@ -210,6 +217,11 @@ void Dragon_CloudPlatform::PlatStart()
 }
 void Dragon_CloudPlatform::PlatUpdate(float _DeltaTime)
 {
+	if (false == IsMove)
+	{
+		return;
+	}
+
 	if (false == IsStanding)
 	{
 		ChangeState(CloudState::Plat_Outro);
@@ -218,7 +230,7 @@ void Dragon_CloudPlatform::PlatUpdate(float _DeltaTime)
 }
 void Dragon_CloudPlatform::PlatEnd()
 {
-
+	IsInit = false;
 }
 
 void Dragon_CloudPlatform::Plat_OutroStart()

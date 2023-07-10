@@ -216,15 +216,15 @@ void DragonLevel::LevelChangeStart()
 			CloudPlatformObject7 = CreateActor<Dragon_CloudPlatform>();
 			CloudPlatformObject8 = CreateActor<Dragon_CloudPlatform>();
 
-			float4 CloudPlatformObjectPosition0 = { PlayMapWidth_Half - 480, PlayMapHeight_Half - 120 , 1 };
-			float4 CloudPlatformObjectPosition1 = { PlayMapWidth_Half - 450, PlayMapHeight_Half + 200 , 1 };
-			float4 CloudPlatformObjectPosition2 = { PlayMapWidth_Half - 200, PlayMapHeight_Half + 20 , 1 };
-			float4 CloudPlatformObjectPosition3 = { PlayMapWidth_Half - 160, PlayMapHeight_Half - 220 , 1 };
-			float4 CloudPlatformObjectPosition4 = { PlayMapWidth_Half + 65, PlayMapHeight_Half + 160 , 1 };
-			float4 CloudPlatformObjectPosition5 = { PlayMapWidth_Half + 170, PlayMapHeight_Half - 170 , 1 };
-			float4 CloudPlatformObjectPosition6 = { PlayMapWidth_Half + 365, PlayMapHeight_Half - 5 , 1 };
-			float4 CloudPlatformObjectPosition7 = { PlayMapWidth_Half + 550, PlayMapHeight_Half + 250 , 1 };
-			float4 CloudPlatformObjectPosition8 = { PlayMapWidth_Half + 630, PlayMapHeight_Half - 250 , 1 };
+			float4 CloudPlatformObjectPosition0 = { PlayMapWidth_Half - 480, PlayMapHeight_Half - 120 , 10 };
+			float4 CloudPlatformObjectPosition1 = { PlayMapWidth_Half - 450, PlayMapHeight_Half + 200 , 10 };
+			float4 CloudPlatformObjectPosition2 = { PlayMapWidth_Half - 200, PlayMapHeight_Half + 20 , 10 };
+			float4 CloudPlatformObjectPosition3 = { PlayMapWidth_Half - 160, PlayMapHeight_Half - 220 , 10 };
+			float4 CloudPlatformObjectPosition4 = { PlayMapWidth_Half + 65, PlayMapHeight_Half + 160 , 10 };
+			float4 CloudPlatformObjectPosition5 = { PlayMapWidth_Half + 170, PlayMapHeight_Half - 170 , 10 };
+			float4 CloudPlatformObjectPosition6 = { PlayMapWidth_Half + 365, PlayMapHeight_Half - 5 , 10 };
+			float4 CloudPlatformObjectPosition7 = { PlayMapWidth_Half + 550, PlayMapHeight_Half + 250 , 10 };
+			float4 CloudPlatformObjectPosition8 = { PlayMapWidth_Half + 630, PlayMapHeight_Half - 250 , 10 };
 
 			CloudPlatformObject0->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition0);
 			CloudPlatformObject1->GetTransform()->SetLocalPosition(CloudPlatformObjectPosition1);
@@ -245,6 +245,8 @@ void DragonLevel::LevelChangeStart()
 			CloudPlatformObject6->SetActorInitPosition(CloudPlatformObjectPosition6);
 			CloudPlatformObject7->SetActorInitPosition(CloudPlatformObjectPosition7);
 			CloudPlatformObject8->SetActorInitPosition(CloudPlatformObjectPosition8);
+
+			CloudPlatformObject0->SetStandingAnimation();
 		}
 	}
 
