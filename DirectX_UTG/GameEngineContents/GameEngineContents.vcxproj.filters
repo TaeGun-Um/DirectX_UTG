@@ -124,6 +124,9 @@
     <Filter Include="Levels\5. Bosses\2. Dragon\Object\Boss">
       <UniqueIdentifier>{121a1ff5-24c0-4e32-9485-af2da875585d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels\5. Bosses\2. Dragon\Object\Boss\Effect">
+      <UniqueIdentifier>{b542a94d-cd97-4914-a041-ca189add61c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CupheadCore.h">

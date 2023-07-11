@@ -23,6 +23,11 @@ public:
 	GrimMatchstick& operator=(const GrimMatchstick& _Other) = delete;
 	GrimMatchstick& operator=(GrimMatchstick&& _Other) noexcept = delete;
 
+	bool GetIsStageEnd()
+	{
+		return IsStageEnd;
+	}
+
 	float GetBossHP()
 	{
 		return HP;
@@ -50,6 +55,13 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> UpRenderPtr = nullptr;
+
+	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
+
+	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;
@@ -61,7 +73,16 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
+	float SpawnDelayTime = 0.0f;
+
+	bool IsSpawn = false;
+	bool Directbool = false;
+
 	void ActorInitSetting();
+	void HitBlink(float _DeltaTime);
+	void CollisionCheck();
+	void CollisionSetting();
+	void DirectCheck();
 
 	DragonState StateValue = DragonState::Idle;
 

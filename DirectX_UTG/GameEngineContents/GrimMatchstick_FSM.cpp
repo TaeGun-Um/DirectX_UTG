@@ -50,31 +50,24 @@ void GrimMatchstick::UpdateState(float _DeltaTime)
 
 void GrimMatchstick::IntroStart()
 {
-	//MouseRenderPtr->ChangeAnimation("Mouse_Intro");
-	//CanRenderPtr->ChangeAnimation("Can_Idle");
+	RenderPtr->ChangeAnimation("Dragon_Intro");
 }
 void GrimMatchstick::IntroUpdate(float _DeltaTime)
 {
-	//SetIntroMouseUpTexture();
-	//SetIntroCanUpTexture();
-	//SetIntroCanBackTexture();
-
-	//if (true == MouseRenderPtr->IsAnimationEnd())
-	//{
-	//	MouseRenderPtr->Off();
-	//	CanUpRenderPtr->Off();
-	//	ChangeState(MouseState::MouseIn);
-	//	return;
-	//}
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(DragonState::Idle);
+		return;
+	}
 }
 void GrimMatchstick::IntroEnd()
 {
-	//IsIntro = false;
+
 }
 
 void GrimMatchstick::IdleStart()
 {
-
+	RenderPtr->ChangeAnimation("Dragon_Idle");
 }
 void GrimMatchstick::IdleUpdate(float _DeltaTime)
 {
