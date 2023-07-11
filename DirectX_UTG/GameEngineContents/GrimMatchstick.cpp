@@ -10,6 +10,10 @@
 #include "Spread.h"
 #include "Spread_EX.h"
 
+#include "Object_GreenRing.h"
+#include "Object_Meteor.h"
+#include "Object_Tail.h"
+
 GrimMatchstick* GrimMatchstick::GrimMatchstickPtr = nullptr;
 
 GrimMatchstick::GrimMatchstick() 
@@ -189,6 +193,41 @@ void GrimMatchstick::CollisionSetting()
 ///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void GrimMatchstick::CreateRing()
+{
+
+}
+
+void GrimMatchstick::CreateMeteor()
+{
+	std::shared_ptr<Object_Meteor> Meteor0 = GetLevel()->CreateActor<Object_Meteor>();
+	std::shared_ptr<Object_Meteor> Meteor1 = GetLevel()->CreateActor<Object_Meteor>();
+
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ -220, 50, -5 };
+
+	if (true == IsDebugRender)
+	{
+		Meteor0->SetCollisionRenderOn();
+		Meteor1->SetCollisionRenderOn();
+	}
+	else
+	{
+		Meteor0->SetCollisionRenderOff();
+		Meteor1->SetCollisionRenderOff();
+	}
+
+	Meteor0->SetStartPosition(ProjectilePosition);
+	Meteor1->SetStartPosition(ProjectilePosition);
+
+	Meteor1->SetReverse();
+}
+
+void GrimMatchstick::CreateTail()
+{
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,6 +274,26 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Outro").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Object_GreenRing"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase1");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_GreenRing").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_PinkRing").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_EyesAttack").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Meteor").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_MeteorSmoke").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Tail").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -261,6 +320,15 @@ void GrimMatchstick::ActorInitSetting()
 	//	UpRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Idle", .SpriteName = "Dragon_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 	//	UpRenderPtr->ChangeAnimation("Dragon_Idle");
 	//}
+
+	if (nullptr == EyeRenderPtr)
+	{
+		EyeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		EyeRenderPtr->CreateAnimation({ .AnimationName = "SFX_EyesAttack", .SpriteName = "SFX_EyesAttack", .FrameInter = 0.03f, .Loop = true , .ScaleToTexture = true });
+		EyeRenderPtr->GetTransform()->SetLocalPosition({ -55, 300 });
+		EyeRenderPtr->ChangeAnimation("SFX_EyesAttack");
+		EyeRenderPtr->Off();
+	}
 
 	if (nullptr == BodyCollisionPtr)
 	{

@@ -66,6 +66,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> UpRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> EyeRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -93,6 +94,10 @@ private:
 	void CollisionCheck();
 	void CollisionSetting();
 	void DirectCheck();
+
+	void CreateRing();
+	void CreateMeteor();
+	void CreateTail();
 
 	DragonState StateValue = DragonState::Idle;
 	int ChangeStateCount = 0;

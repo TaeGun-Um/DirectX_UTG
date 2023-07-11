@@ -149,6 +149,7 @@ void GrimMatchstick::Phase1_PeashootCountFunction()
 void GrimMatchstick::Phase1_MeteorMaxCountFunction()
 {
 	MeteorMax += 1;
+	CreateMeteor();
 }
 
 void GrimMatchstick::Phase1_PeashootMaxCountFunction()
@@ -192,18 +193,21 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 	if (3 == ChangeStateCount)
 	{
 		ChangeStateCount = 0;
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
-		if (0 == RandC)
-		{
-			ChangeState(DragonState::Meteor_Intro);
-			return;
-		}
-		else
-		{
-			ChangeState(DragonState::Peashoot_Intro);
-			return;
-		}
+		//if (0 == RandC)
+		//{
+		//	ChangeState(DragonState::Meteor_Intro);
+		//	return;
+		//}
+		//else
+		//{
+		//	ChangeState(DragonState::Peashoot_Intro);
+		//	return;
+		//}
+
+		ChangeState(DragonState::Meteor_Intro);
+		return;
 	}
 }
 void GrimMatchstick::IdleEnd()
@@ -213,7 +217,6 @@ void GrimMatchstick::IdleEnd()
 
 void GrimMatchstick::Meteor_IntroStart()
 {
-	MeteorMax = 0;
 	RenderPtr->ChangeAnimation("Dragon_MeteorAttack_Intro");
 }
 void GrimMatchstick::Meteor_IntroUpdate(float _DeltaTime)
@@ -313,12 +316,11 @@ void GrimMatchstick::Meteor_OutroUpdate(float _DeltaTime)
 }
 void GrimMatchstick::Meteor_OutroEnd()
 {
-
+	MeteorMax = 0;
 }
 
 void GrimMatchstick::Peashoot_IntroStart()
 {
-	PeashootMax = 0;
 	RenderPtr->ChangeAnimation("Dragon_PeashotAttack_Intro");
 }
 void GrimMatchstick::Peashoot_IntroUpdate(float _DeltaTime)
@@ -336,6 +338,7 @@ void GrimMatchstick::Peashoot_IntroEnd()
 
 void GrimMatchstick::Peashoot_ShootStart()
 {
+	EyeRenderPtr->On();
 	RenderPtr->ChangeAnimation("Dragon_PeashotAttack_Shoot");
 }
 void GrimMatchstick::Peashoot_ShootUpdate(float _DeltaTime)
@@ -380,6 +383,8 @@ void GrimMatchstick::Peashoot_Shoot_PlusEnd()
 
 void GrimMatchstick::Peashoot_OutroStart()
 {
+	EyeRenderPtr->Off();
+	EyeRenderPtr->ChangeAnimation("SFX_EyesAttack");
 	RenderPtr->ChangeAnimation("Dragon_PeashotAttack_Outro");
 }
 void GrimMatchstick::Peashoot_OutroUpdate(float _DeltaTime)
@@ -392,5 +397,5 @@ void GrimMatchstick::Peashoot_OutroUpdate(float _DeltaTime)
 }
 void GrimMatchstick::Peashoot_OutroEnd()
 {
-	
+	PeashootMax = 0;
 }

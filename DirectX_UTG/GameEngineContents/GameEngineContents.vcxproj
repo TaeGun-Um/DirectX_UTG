@@ -422,6 +422,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Object_GreenRing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Object_Meteor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Object_Tail.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="OldFilm.h" />
     <ClInclude Include="OverworldGUI.h">
       <SubType>
@@ -502,6 +514,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Second_OpeningLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SFX_MeteorSmoke.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -867,6 +883,18 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Object_GreenRing.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Object_Meteor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Object_Tail.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="OldFilm.cpp" />
     <ClCompile Include="OverworldGUI.cpp">
       <SubType>
@@ -959,6 +987,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Second_OpeningLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SFX_MeteorSmoke.cpp">
       <SubType>
       </SubType>
     </ClCompile>
