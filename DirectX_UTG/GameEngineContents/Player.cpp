@@ -51,6 +51,10 @@ void Player::Update(float _DeltaTime)
 		SetPlayerHP(GetHP());           // 레벨 진입 시 스탯 세팅
 		SetPlayerEXGauge(GetEXGauge());
 		SetPlayerEXStack(GetEXStack());
+
+		RenderPtr->SetAnimationStartEvent("AirHit", 0, std::bind(&Player::MinusPlayerHP, this));
+		RenderPtr->SetAnimationStartEvent("Hit", 0, std::bind(&Player::MinusPlayerHP, this));
+
 		return;
 	}
 
@@ -426,7 +430,7 @@ void Player::HitBlink(float _DeltaTime)
 		return;
 	}
 
-	if (0.295f <= FallHitTime)
+	if (0.9f <= FallHitTime)
 	{
 		Inter = 0.0f;
 		MulColorCheck = false;
@@ -799,7 +803,7 @@ void Player::HitCollisionCheck(float _DeltaTime)
 		IsHit = true;
 		HitTimeCheck = true;
 
-		MinusPlayerHP();
+		//MinusPlayerHP();
 		CreateHitEffect();
 
 		BodyCollisionPtr->Off();
@@ -826,13 +830,16 @@ void Player::FallCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	if (nullptr != BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::FallPoint), ColType::AABBBOX2D, ColType::AABBBOX2D))
+	if (nullptr != StandCollisionPtr->Collision(static_cast<int>(CollisionOrder::FallPoint), ColType::AABBBOX2D, ColType::AABBBOX2D)
+		&& FallHitCheck == true)
 	{
 		IsHit = true;
 		FallHitTimeCheck = true;
 		IsHitJump = true;
 
-		MinusPlayerHP();
+		FallHitCheck = false;
+
+		//MinusPlayerHP();
 		CreateHitEffect();
 
 		BodyCollisionPtr->Off();
@@ -840,11 +847,17 @@ void Player::FallCollisionCheck(float _DeltaTime)
 
 	if (true == FallHitTimeCheck)
 	{
+		FallCheckDelayTime += _DeltaTime;
 		FallHitTime += _DeltaTime;
 		HitBlink(_DeltaTime);
 	}
 
-	if (0.3f <= FallHitTime)
+	if (0.1f <= FallCheckDelayTime)
+	{
+		FallHitCheck = true;
+	}
+
+	if (1.0f <= FallHitTime)
 	{
 		FallHitTimeCheck = false;
 		FallHitTime = 0.0f;

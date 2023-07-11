@@ -374,6 +374,8 @@ private:
 	bool IsIntro = false;
 	bool IsPlayerDeath = false;
 
+	bool FallHitCheck = true;
+
 	bool ElderKettleInterAction = false;
 	bool IsWattingRoomIntro = false;
 	bool ElderKettleInterActioning = false;
@@ -389,6 +391,7 @@ private:
 	float HitTime = 0.0f;
 	float FallHitTime = 0.0f;
 	float NormalDeltaTime = 0.0f;
+	float FallCheckDelayTime = 0.0f;
 
 	int CreateEXCount = 1;
 	int ParryCountSet = 1;

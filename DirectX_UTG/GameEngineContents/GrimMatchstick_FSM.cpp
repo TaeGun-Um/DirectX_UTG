@@ -155,7 +155,12 @@ void GrimMatchstick::Phase1_MeteorMaxCountFunction()
 void GrimMatchstick::Phase1_PeashootMaxCountFunction()
 {
 	PeashootMax += 1;
-	CreateRing();
+
+	if (1 == PeashootMax || 3 == PeashootMax || 6 == PeashootMax)
+	{
+		GetRingAngleWithDotProduct3D();
+		RingCreate = true;
+	}
 }
 
 void GrimMatchstick::IntroStart()
@@ -344,7 +349,7 @@ void GrimMatchstick::Peashoot_ShootStart()
 }
 void GrimMatchstick::Peashoot_ShootUpdate(float _DeltaTime)
 {
-	if (2 <= PeashootMax)
+	if (5 <= PeashootMax)
 	{
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
@@ -371,7 +376,7 @@ void GrimMatchstick::Peashoot_Shoot_PlusStart()
 }
 void GrimMatchstick::Peashoot_Shoot_PlusUpdate(float _DeltaTime)
 {
-	if (true == RenderPtr->IsAnimationEnd())
+	if (8 <= PeashootMax)
 	{
 		ChangeState(DragonState::Peashoot_Outro);
 		return;

@@ -72,6 +72,8 @@ void GrimMatchstick::Update(float _DeltaTime)
 	CollisionCheck();
 	CollisionSetting();
 	HitBlink(_DeltaTime);
+
+	CreateRing(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +108,30 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 
 		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 	}
+}
+
+void GrimMatchstick::GetRingAngleWithDotProduct3D()
+{
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	RingProjectilePostion = StartPosition + float4{ -55, 300, -5 };
+
+	float4 ForwardVector = float4{ -1, 0, 0 };
+	float4 ForwardDirectNormal = ForwardVector.NormalizeReturn();
+
+	float4 PlayerPosition = Player::MainPlayer->GetTransform()->GetLocalPosition() + float4{ 0, 40, 0 };
+	float4 Direct = PlayerPosition - RingProjectilePostion;
+	float4 RotationDirectNormal = Direct.NormalizeReturn();
+
+	if (0.0f <= RotationDirectNormal.y)
+	{
+		RingReverse = true;
+	}
+	else
+	{
+		RingReverse = false;
+	}
+
+	RingRotationZ = float4::GetAngleVectorToVectorDeg(ForwardDirectNormal, RotationDirectNormal);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,12 +219,33 @@ void GrimMatchstick::CollisionSetting()
 ///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GrimMatchstick::CreateRing()
+void GrimMatchstick::CreateRing(float _DeltaTime)
 {
+	if (false == RingCreate)
+	{
+		return;
+	}
+
+	if (RingMaxCreateCount == RingCreateCount)
+	{
+		RingSpawnDelayTime = 0.0f;
+		RingCreate = false;
+		RingCreateCount = 0;
+		return;
+	}
+
+	RingSpawnDelayTime += _DeltaTime;
+
+	if (0.25f >= RingSpawnDelayTime)
+	{
+		return;
+	}
+
+	++RingCreateCount;
+
 	std::shared_ptr<Object_GreenRing> RingObject = GetLevel()->CreateActor<Object_GreenRing>();
 
-	float4 StartPosition = GetTransform()->GetWorldPosition();
-	float4 ProjectilePosition = StartPosition + float4{ -55, 300, -5 };
+	RingObject->SetStartPosition(RingProjectilePostion);
 
 	if (true == IsDebugRender)
 	{
@@ -209,7 +256,21 @@ void GrimMatchstick::CreateRing()
 		RingObject->SetCollisionRenderOff();
 	}
 
-	RingObject->SetStartPosition(ProjectilePosition);
+	if (false == RingReverse)
+	{
+		RingObject->SetProjectileRotation({ 0, 0, RingRotationZ });
+	}
+	else
+	{
+		RingObject->SetProjectileRotation({ 0, 0, -RingRotationZ });
+	}
+
+	if (3 == RingCreateCount)
+	{
+		RingObject->SetParryRingCreate();
+	}
+
+	RingSpawnDelayTime = 0.0f;
 }
 
 void GrimMatchstick::CreateMeteor()
