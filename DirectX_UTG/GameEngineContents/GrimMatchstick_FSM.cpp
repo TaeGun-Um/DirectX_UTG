@@ -155,6 +155,7 @@ void GrimMatchstick::Phase1_MeteorMaxCountFunction()
 void GrimMatchstick::Phase1_PeashootMaxCountFunction()
 {
 	PeashootMax += 1;
+	CreateRing();
 }
 
 void GrimMatchstick::IntroStart()
@@ -206,7 +207,7 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 		//	return;
 		//}
 
-		ChangeState(DragonState::Meteor_Intro);
+		ChangeState(DragonState::Peashoot_Intro);
 		return;
 	}
 }

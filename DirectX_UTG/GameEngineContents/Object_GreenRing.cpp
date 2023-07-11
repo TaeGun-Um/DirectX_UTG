@@ -43,5 +43,27 @@ void Object_GreenRing::Start()
 
 void Object_GreenRing::Update(float _DeltaTime)
 {
+	MoveCalculation(_DeltaTime);
+	DeathCheck();
+}
 
+void Object_GreenRing::MoveCalculation(float _DeltaTime)
+{
+	float MoveDist = MoveSpeed * _DeltaTime;
+
+	float4 MoveDist4 = float4::Zero;
+	float4 Correction = float4::Zero;
+
+	Correction = GetTransform()->GetWorldRightVector().NormalizeReturn();
+	GetTransform()->AddLocalPosition(-(Correction * MoveSpeed * _DeltaTime));
+}
+
+void Object_GreenRing::DeathCheck()
+{
+	float4 CurPos = GetTransform()->GetLocalPosition();
+
+	if (InitPosition.x - 1200.0f >= CurPos.x)
+	{
+		Death();
+	}
 }

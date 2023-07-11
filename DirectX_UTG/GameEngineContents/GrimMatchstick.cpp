@@ -195,7 +195,21 @@ void GrimMatchstick::CollisionSetting()
 
 void GrimMatchstick::CreateRing()
 {
+	std::shared_ptr<Object_GreenRing> RingObject = GetLevel()->CreateActor<Object_GreenRing>();
 
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ -55, 300, -5 };
+
+	if (true == IsDebugRender)
+	{
+		RingObject->SetCollisionRenderOn();
+	}
+	else
+	{
+		RingObject->SetCollisionRenderOff();
+	}
+
+	RingObject->SetStartPosition(ProjectilePosition);
 }
 
 void GrimMatchstick::CreateMeteor()
