@@ -250,15 +250,7 @@ void DragonLevel::LevelChangeStart()
 		FallPointObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 330, PlayMapHeight_Half - 300 , -10 });
 	}
 
-	// Boss
-	{
-		if (nullptr == DragonObject)
-		{
-			DragonObject = CreateActor<GrimMatchstick>();
-		}
 
-		DragonObject->GetTransform()->SetLocalPosition({ 1150 , 300, -1 });	
-	}
 	{
 		if (nullptr == PlayerObject)
 		{
@@ -274,6 +266,17 @@ void DragonLevel::LevelChangeStart()
 
 		PlayerObject->SetIsDragonSetting();
 	}
+
+	// Boss
+	{
+		if (nullptr == DragonObject)
+		{
+			DragonObject = CreateActor<GrimMatchstick>();
+		}
+
+		DragonObject->GetTransform()->SetLocalPosition({ 1150 , 300, -1 });
+	}
+
 	//{
 	//	if (nullptr == FrontMapObject)
 	//	{

@@ -52,8 +52,8 @@ void Player::Update(float _DeltaTime)
 		SetPlayerEXGauge(GetEXGauge());
 		SetPlayerEXStack(GetEXStack());
 
-		RenderPtr->SetAnimationStartEvent("AirHit", 0, std::bind(&Player::MinusPlayerHP, this));
-		RenderPtr->SetAnimationStartEvent("Hit", 0, std::bind(&Player::MinusPlayerHP, this));
+		RenderPtr->SetAnimationStartEvent("AirHit", 0, std::bind(&Player::HitAnimationBindFunction, this));
+		RenderPtr->SetAnimationStartEvent("Hit", 0, std::bind(&Player::HitAnimationBindFunction, this));
 
 		return;
 	}
@@ -85,6 +85,12 @@ void Player::Update(float _DeltaTime)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::HitAnimationBindFunction()
+{
+	MinusPlayerHP();
+	CreateHitEffect();
+}
 
 // 플레이어 이동 방해(바람, 플랫폼 등), X만 해당
 void Player::PlayerMoveDisturbance(float _Value)
@@ -804,7 +810,7 @@ void Player::HitCollisionCheck(float _DeltaTime)
 		HitTimeCheck = true;
 
 		//MinusPlayerHP();
-		CreateHitEffect();
+		//CreateHitEffect();
 
 		BodyCollisionPtr->Off();
 	}
@@ -840,7 +846,7 @@ void Player::FallCollisionCheck(float _DeltaTime)
 		FallHitCheck = false;
 
 		//MinusPlayerHP();
-		CreateHitEffect();
+		//CreateHitEffect();
 
 		BodyCollisionPtr->Off();
 	}

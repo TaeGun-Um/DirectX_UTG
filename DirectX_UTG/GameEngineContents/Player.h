@@ -291,6 +291,7 @@ private:
 	void PlayerDebugRenderer();
 	void HitBlink(float _DeltaTime);
 	void PortalCheck();
+	void HitAnimationBindFunction();
 
 	// 픽셀, 충돌체 체크 모음
 	void CollisionCalculation(float _DeltaTime);
