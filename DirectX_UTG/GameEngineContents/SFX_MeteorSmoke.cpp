@@ -16,7 +16,7 @@ void SFX_MeteorSmoke::Start()
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr->CreateAnimation({ .AnimationName = "SFX_MeteorSmoke", .SpriteName = "SFX_MeteorSmoke", .FrameInter = 0.05f, .Loop = false , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "SFX_MeteorSmoke", .SpriteName = "SFX_MeteorSmoke", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
 		RenderPtr->ChangeAnimation("SFX_MeteorSmoke");
 	}
 }

@@ -51,7 +51,7 @@ private:
 
 	float4 InitPosition = float4::Zero;
 	float MoveTime = 0.0f;
-	float SmokeCreateDelayTime = 0.0f;
+	float SmokeCreateDelayTime = 0.2f;
 	
 	bool IsReverse = false;
 };

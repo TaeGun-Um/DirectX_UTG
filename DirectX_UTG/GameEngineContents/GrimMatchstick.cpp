@@ -204,7 +204,7 @@ void GrimMatchstick::CreateMeteor()
 	std::shared_ptr<Object_Meteor> Meteor1 = GetLevel()->CreateActor<Object_Meteor>();
 
 	float4 StartPosition = GetTransform()->GetWorldPosition();
-	float4 ProjectilePosition = StartPosition + float4{ -220, 50, -5 };
+	float4 ProjectilePosition = StartPosition + float4{ -250, 70, -5 };
 
 	if (true == IsDebugRender)
 	{
