@@ -225,7 +225,9 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Idle").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Intro_Loop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Shoot_Front").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Shoot_LollBack").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Outro").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Intro").GetFullPath());
@@ -241,11 +243,13 @@ void GrimMatchstick::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Idle", .SpriteName = "Dragon_Idle", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_MeteorAttack_Intro", .SpriteName = "Dragon_MeteorAttack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_MeteorAttack_Intro_Loop", .SpriteName = "Dragon_MeteorAttack_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_MeteorAttack_Shoot_Front", .SpriteName = "Dragon_MeteorAttack_Shoot_Front", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_MeteorAttack_Shoot_LollBack", .SpriteName = "Dragon_MeteorAttack_Shoot_LollBack", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_MeteorAttack_Outro", .SpriteName = "Dragon_MeteorAttack_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Intro", .SpriteName = "Dragon_PeashotAttack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Shoot", .SpriteName = "Dragon_PeashotAttack_Shoot", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Shoot", .SpriteName = "Dragon_PeashotAttack_Shoot", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Outro", .SpriteName = "Dragon_PeashotAttack_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Dragon_Intro");

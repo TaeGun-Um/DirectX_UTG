@@ -124,6 +124,11 @@ public:
 		return CurAnimation->FrameIndex[CurAnimation->CurFrame];
 	}
 
+	void SetCurrentFrame(size_t _Value)
+	{
+		CurAnimation->FrameIndex[CurAnimation->CurFrame] = _Value;
+	}
+
 	float4 GetAtlasData()
 	{
 		return AtlasData;

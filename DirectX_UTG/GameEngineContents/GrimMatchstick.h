@@ -5,6 +5,16 @@ enum class DragonState
 	Intro,
 	Idle,
 
+	Meteor_Intro,
+	Meteor_Intro_Loop,
+	Meteor_Shoot,
+	Meteor_Shoot_LollBack,
+	Meteor_Outro,
+
+	Peashoot_Intro,
+	Peashoot_Shoot,
+	Peashoot_Shoot_Plus,
+	Peashoot_Outro,
 };
 
 // Ό³Έν :
@@ -85,6 +95,17 @@ private:
 	void DirectCheck();
 
 	DragonState StateValue = DragonState::Idle;
+	int ChangeStateCount = 0;
+	int MeteorCount = 0;
+	int PeashootCount = 0;
+	int MeteorMax = 0;
+	int PeashootMax = 0;
+
+	void Phase1_ChangeStateCountFunction();
+	void Phase1_MeteorCountFunction();
+	void Phase1_PeashootCountFunction();
+	void Phase1_MeteorMaxCountFunction();
+	void Phase1_PeashootMaxCountFunction();
 
 	void ChangeState(DragonState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -96,6 +117,42 @@ private:
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
+
+	void Meteor_IntroStart();
+	void Meteor_IntroUpdate(float _DeltaTime);
+	void Meteor_IntroEnd();
+
+	void Meteor_Intro_LoopStart();
+	void Meteor_Intro_LoopUpdate(float _DeltaTime);
+	void Meteor_Intro_LoopEnd();
+
+	void Meteor_ShootStart();
+	void Meteor_ShootUpdate(float _DeltaTime);
+	void Meteor_ShootEnd();
+
+	void Meteor_Shoot_LollBackStart();
+	void Meteor_Shoot_LollBackUpdate(float _DeltaTime);
+	void Meteor_Shoot_LollBackEnd();
+
+	void Meteor_OutroStart();
+	void Meteor_OutroUpdate(float _DeltaTime);
+	void Meteor_OutroEnd();
+
+	void Peashoot_IntroStart();
+	void Peashoot_IntroUpdate(float _DeltaTime);
+	void Peashoot_IntroEnd();
+
+	void Peashoot_ShootStart();
+	void Peashoot_ShootUpdate(float _DeltaTime);
+	void Peashoot_ShootEnd();
+
+	void Peashoot_Shoot_PlusStart();
+	void Peashoot_Shoot_PlusUpdate(float _DeltaTime);
+	void Peashoot_Shoot_PlusEnd();
+
+	void Peashoot_OutroStart();
+	void Peashoot_OutroUpdate(float _DeltaTime);
+	void Peashoot_OutroEnd();
 
 };
 
