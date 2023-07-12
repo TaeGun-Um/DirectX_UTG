@@ -12,6 +12,7 @@ enum class FireWorkState
 {
 	Move,
 	Jump_Intro,
+	Jump_Inter,
 	Jump,
 };
 
@@ -61,8 +62,11 @@ private:
 	void DeathCheck();
 
 	float4 InitPosition = float4::Zero;
+	float4 MoveDirect = float4::Zero;
 	float MoveSpeed = 300.0f;
 	
+	bool Directbool = true;
+
 	FireWorkType TypeValue = FireWorkType::Leader;
 	FireWorkState StateValue = FireWorkState::Move;
 
@@ -76,6 +80,10 @@ private:
 	void Jump_IntroStart();
 	void Jump_IntroUpdate(float _DeltaTime);
 	void Jump_IntroEnd();
+
+	void Jump_InterStart();
+	void Jump_InterUpdate(float _DeltaTime);
+	void Jump_InterEnd();
 
 	void JumpStart();
 	void JumpUpdate(float _DeltaTime);

@@ -577,6 +577,7 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_B_Move").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Move").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Inter").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Loop").GetFullPath());
 	}
 
