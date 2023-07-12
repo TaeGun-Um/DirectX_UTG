@@ -99,15 +99,17 @@ private:
 	float4 RingProjectilePostion = float4::Zero;
 	float RingRotationZ = 0.0f;
 	float RingSpawnDelayTime = 0.0f;
+	float TailSpawnTime = 6.0f;
+	bool IsTailSpawn = false;
 	bool RingReverse = false;
 	bool RingCreate = false;
 
 	int RingMaxCreateCount = 3;
 	int RingCreateCount = 0;
 
+	void CreateTail(float _DeltaTime);
 	void CreateRing(float _DeltaTime);
 	void CreateMeteor();
-	void CreateTail();
 
 	DragonState StateValue = DragonState::Idle;
 	int ChangeStateCount = 0;

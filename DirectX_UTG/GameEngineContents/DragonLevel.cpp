@@ -503,17 +503,37 @@ void DragonLevel::ReLoadSetting()
 
 void DragonLevel::PlayerDebugRenderOn()
 {
-
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOn();
+	}
 }
 void DragonLevel::PlayerDebugRenderOff()
 {
-
+	if (nullptr != PlayerObject)
+	{
+		PlayerObject->PlayerDebugRenderOff();
+	}
 }
 void DragonLevel::LevelDebugOn()
 {
-
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOn();
+	}
+	if (nullptr != DragonObject)
+	{
+		DragonObject->DebugRenderOn();
+	}
 }
 void DragonLevel::LevelDebugOff()
 {
-
+	if (nullptr != ThisColMap)
+	{
+		ThisColMap->ColMapDebugRenderOff();
+	}
+	if (nullptr != DragonObject)
+	{
+		DragonObject->DebugRenderOff();
+	}
 }

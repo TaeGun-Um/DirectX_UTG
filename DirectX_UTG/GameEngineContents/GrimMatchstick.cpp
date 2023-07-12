@@ -74,6 +74,7 @@ void GrimMatchstick::Update(float _DeltaTime)
 	HitBlink(_DeltaTime);
 
 	CreateRing(_DeltaTime);
+	CreateTail(_DeltaTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +220,34 @@ void GrimMatchstick::CollisionSetting()
 ///////////////////////////////////////////                     CreateActor                      ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void GrimMatchstick::CreateTail(float _DeltaTime)
+{
+	TailSpawnTime += _DeltaTime;
+
+	if (20.0f >= TailSpawnTime)
+	{
+		return;
+	}
+
+	std::shared_ptr<Object_Tail> TailObject = GetLevel()->CreateActor<Object_Tail>();
+
+	float4 PlayerPosition = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	float4 ProjectilePosition = float4{ PlayerPosition.x, -450, -5 };
+
+	if (true == IsDebugRender)
+	{
+		TailObject->SetCollisionRenderOn();
+	}
+	else
+	{
+		TailObject->SetCollisionRenderOff();
+	}
+
+	TailObject->SetStartPosition(ProjectilePosition);
+
+	TailSpawnTime = 0.0f;
+}
+
 void GrimMatchstick::CreateRing(float _DeltaTime)
 {
 	if (false == RingCreate)
@@ -296,11 +325,6 @@ void GrimMatchstick::CreateMeteor()
 	Meteor1->SetStartPosition(ProjectilePosition);
 
 	Meteor1->SetReverse();
-}
-
-void GrimMatchstick::CreateTail()
-{
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
