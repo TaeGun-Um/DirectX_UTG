@@ -4,6 +4,8 @@
 class Dragon_BackGround : public GameEngineActor
 {
 public:
+	static Dragon_BackGround* BackGroundPtr;
+
 	// constrcuter destructer
 	Dragon_BackGround();
 	~Dragon_BackGround();
@@ -13,6 +15,17 @@ public:
 	Dragon_BackGround(Dragon_BackGround&& _Other) noexcept = delete;
 	Dragon_BackGround& operator=(const Dragon_BackGround& _Other) = delete;
 	Dragon_BackGround& operator=(Dragon_BackGround&& _Other) noexcept = delete;
+
+	void SetIsDragonDash()
+	{
+		DragonDashRenderPtr->On();
+		IsDragonDash = true;
+	}
+
+	bool GetIsDragonDashEnd()
+	{
+		return IsDragonDashEnd;
+	}
 
 protected:
 	void Start();
@@ -32,6 +45,8 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> Low_BackCloudRenderPtr_One = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> Low_BackCloudRenderPtr_Two = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> DragonDashRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> TowerRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> Low_FrontCloudRenderPtr_One = nullptr;
@@ -43,6 +58,10 @@ private:
 	void Middle_Two_CloudLerp(float _DeltaTime);
 	void LowCloudLerp(float _DeltaTime);
 	void LowFrontCloudLerp(float _DeltaTime);
+	void DragonDash(float _DeltaTime);
+
+	bool IsDragonDash = false;
+	bool IsDragonDashEnd = false;
 
 	float4 BackGroundScale = float4::Zero;
 	float4 StartPosition_One = float4::Zero;

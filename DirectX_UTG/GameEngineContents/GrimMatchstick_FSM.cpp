@@ -2,6 +2,9 @@
 #include "GrimMatchstick.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineCore/GameEngineCollision.h>
+
+#include "Dragon_BackGround.h"
 
 void GrimMatchstick::ChangeState(DragonState _StateValue)
 {
@@ -171,6 +174,8 @@ void GrimMatchstick::IntroStart()
 	MeteorCount = 0;
 	PeashootCount = 0;
 
+	InitPosition = GetTransform()->GetWorldPosition();
+
 	RenderPtr->SetAnimationStartEvent("Dragon_Idle", 15, std::bind(&GrimMatchstick::Phase1_ChangeStateCountFunction, this));
 	RenderPtr->SetAnimationStartEvent("Dragon_MeteorAttack_Intro_Loop", 6, std::bind(&GrimMatchstick::Phase1_MeteorCountFunction, this));
 	RenderPtr->SetAnimationStartEvent("Dragon_PeashotAttack_Shoot", 15, std::bind(&GrimMatchstick::Phase1_PeashootCountFunction, this));
@@ -196,6 +201,39 @@ void GrimMatchstick::IdleStart()
 }
 void GrimMatchstick::IdleUpdate(float _DeltaTime)
 {
+	//if (700.0f >= HP)
+	{
+		BodyCollisionPtr->Off();
+		EXCollisionPtr->Off();
+
+		float4 CurPos = GetTransform()->GetLocalPosition();
+
+		if (2300.0f <= CurPos.x)
+		{
+			if (false == Dragon_BackGround::BackGroundPtr->GetIsDragonDashEnd())
+			{
+				Dragon_BackGround::BackGroundPtr->SetIsDragonDash();
+			}
+			else
+			{
+				int a = 0;
+			}
+			
+			return;
+		}
+
+		float MoveDis = 2.5f * _DeltaTime;
+
+		if (2.0f >= abs(MoveAccel.x))
+		{
+			MoveAccel += float4{ MoveDis, 0 };
+		}
+
+		GetTransform()->AddLocalPosition(MoveAccel);
+
+		return;
+	}
+
 	if (3 == ChangeStateCount)
 	{
 		ChangeStateCount = 0;
@@ -404,4 +442,30 @@ void GrimMatchstick::Peashoot_OutroUpdate(float _DeltaTime)
 void GrimMatchstick::Peashoot_OutroEnd()
 {
 	PeashootMax = 0;
+}
+
+void GrimMatchstick::Ph2_IntroStart()
+{
+
+}
+void GrimMatchstick::Ph2_IntroUpdate(float _DeltaTime)
+{
+
+}
+void GrimMatchstick::Ph2_IntroEnd()
+{
+
+}
+
+void GrimMatchstick::Ph2_IdleStart()
+{
+
+}
+void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
+{
+
+}
+void GrimMatchstick::Ph2_IdleEnd()
+{
+
 }

@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+Dragon_BackGround* Dragon_BackGround::BackGroundPtr = nullptr;
+
 Dragon_BackGround::Dragon_BackGround() 
 {
 }
@@ -26,7 +28,7 @@ void Dragon_BackGround::HBSCControl(std::shared_ptr<class GameEngineSpriteRender
 
 void Dragon_BackGround::Start()
 {
-	//MouseBackObjectPtr = this;
+	BackGroundPtr = this;
 
 	if (nullptr == GameEngineTexture::Find("mouse_bg_bullet_a.png"))
 	{
@@ -86,6 +88,19 @@ void Dragon_BackGround::Start()
 	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
 	//}
 
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Dash"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Dash").GetFullPath());
+	}
+
 	if (nullptr == BackGroundRenderPtr_One)
 	{
 		BackGroundRenderPtr_One = CreateComponent<GameEngineSpriteRenderer>();
@@ -138,6 +153,17 @@ void Dragon_BackGround::Start()
 		Low_BackCloudRenderPtr_Two = CreateComponent<GameEngineSpriteRenderer>();
 		Low_BackCloudRenderPtr_Two->SetScaleToTexture("Dragon_Background_Clouds1.png");
 		Low_BackCloudRenderPtr_Two->GetTransform()->SetLocalPosition({ 0, -250 });
+	}
+
+	if (nullptr == DragonDashRenderPtr)
+	{
+		DragonDashRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		DragonDashRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Dash", .SpriteName = "Dragon_Ph2_Dash", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+
+		DragonDashRenderPtr->GetTransform()->SetLocalPosition({ 900, 0 });
+
+		DragonDashRenderPtr->ChangeAnimation("Dragon_Ph2_Dash");
+		DragonDashRenderPtr->Off();
 	}
 
 	//if (nullptr == TowerRenderPtr)
@@ -221,6 +247,28 @@ void Dragon_BackGround::Update(float _DeltaTime)
 	Middle_Two_CloudLerp(_DeltaTime);
 	LowCloudLerp(_DeltaTime);
 	LowFrontCloudLerp(_DeltaTime);
+	DragonDash(_DeltaTime);
+}
+
+void Dragon_BackGround::DragonDash(float _DeltaTime)
+{
+	if (false == IsDragonDash)
+	{
+		return;
+	}
+
+	float4 CurPos = DragonDashRenderPtr->GetTransform()->GetLocalPosition();
+
+	if (-1200.0f >= CurPos.x)
+	{
+		IsDragonDash = false;
+		IsDragonDashEnd = true;
+		DragonDashRenderPtr->Off();
+	}
+
+	float MoveDis = 1000.0f * _DeltaTime;
+
+	DragonDashRenderPtr->GetTransform()->AddLocalPosition({ -MoveDis , 0 });
 }
 
 void Dragon_BackGround::BackGroundLerp(float _DeltaTime)

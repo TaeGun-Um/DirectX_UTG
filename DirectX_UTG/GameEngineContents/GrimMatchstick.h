@@ -15,6 +15,9 @@ enum class DragonState
 	Peashoot_Shoot,
 	Peashoot_Shoot_Plus,
 	Peashoot_Outro,
+
+	Ph2_Intro,
+	Ph2_Idle,
 };
 
 // Ό³Έν :
@@ -97,6 +100,9 @@ private:
 	void GetRingAngleWithDotProduct3D();
 
 	float4 RingProjectilePostion = float4::Zero;
+	float4 InitPosition = float4::Zero;
+	float4 MoveAccel = float4::Zero;
+
 	float RingRotationZ = 0.0f;
 	float RingSpawnDelayTime = 0.0f;
 	float TailSpawnTime = 6.0f;
@@ -170,6 +176,14 @@ private:
 	void Peashoot_OutroStart();
 	void Peashoot_OutroUpdate(float _DeltaTime);
 	void Peashoot_OutroEnd();
+
+	void Ph2_IntroStart();
+	void Ph2_IntroUpdate(float _DeltaTime);
+	void Ph2_IntroEnd();
+
+	void Ph2_IdleStart();
+	void Ph2_IdleUpdate(float _DeltaTime);
+	void Ph2_IdleEnd();
 
 };
 
