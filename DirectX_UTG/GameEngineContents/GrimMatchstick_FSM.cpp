@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Dragon_BackGround.h"
+#include "Player.h"
 
 void GrimMatchstick::ChangeState(DragonState _StateValue)
 {
@@ -595,11 +596,18 @@ void GrimMatchstick::Ph2_DeathStart()
 }
 void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 {
+	ExplosionTime += _DeltaTime;
 
+	if (0.4f <= ExplosionTime)
+	{
+		ExplosionTime = 0.0f;
+		Player::MainPlayer->StartCameraShaking(6);
+		CreateDeathExplosion(_DeltaTime);
+	}
 }
 void GrimMatchstick::Ph2_DeathEnd()
 {
-
+	ExplosionTime = 0.0f;
 }
 
 void GrimMatchstick::UpRenderSetting()

@@ -15,6 +15,7 @@
 #include "Object_Meteor.h"
 #include "Object_Tail.h"
 #include "Object_FireWork.h"
+#include "DeathExplosion.h"
 
 GrimMatchstick* GrimMatchstick::GrimMatchstickPtr = nullptr;
 
@@ -447,6 +448,20 @@ void GrimMatchstick::CreateFireWork()
 	Ph2FireWorkInit = true;
 }
 
+void GrimMatchstick::CreateDeathExplosion(float _DeltaTime)
+{
+	std::shared_ptr<DeathExplosion> Explosion = GetLevel()->CreateActor<DeathExplosion>();
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+
+	int RandX = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -200 ~ 200
+	int RandY = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -350 ~ 100
+
+	float4 ExplosionPosition = StartPosition + float4{ static_cast<float>(RandX), static_cast<float>(RandY), -1 };
+
+	ExplosionPosition += float4{ 0, 0, -10 };
+
+	Explosion->SetStartPosition(ExplosionPosition);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
@@ -599,6 +614,18 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_MeteorSmoke").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Tail").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
 	}
 
 	if (nullptr == RenderPtr)

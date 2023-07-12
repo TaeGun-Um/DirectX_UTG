@@ -131,6 +131,7 @@ private:
 	float TailSpawnTime = 6.0f;
 	float FireWaitingTime = 0.0f;
 	float FireWorkSpawnDelayTime = 0.0f;
+	float ExplosionTime = 0.0f;
 	bool IsTailSpawn = false;
 	bool RingReverse = false;
 	bool RingCreate = false;
@@ -144,6 +145,7 @@ private:
 	void CreateRing(float _DeltaTime);
 	void CreateMeteor();
 	void CreateFireWork();
+	void CreateDeathExplosion(float _DeltaTime);
 
 	DragonState StateValue = DragonState::Idle;
 	FireRenderState FireStateValue = FireRenderState::Object_Fire_Intro;
