@@ -99,7 +99,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> Plus_EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> FireCollisionPtr = nullptr;
 
-	float HP = 1000.0f;
+	float HP = 405.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;
@@ -121,6 +121,7 @@ private:
 	void DirectCheck();
 	void GetRingAngleWithDotProduct3D();
 	void UpRenderSetting();
+	void UpRenderSetting_Death();
 
 	float4 RingProjectilePostion = float4::Zero;
 	float4 InitPosition = float4::Zero;

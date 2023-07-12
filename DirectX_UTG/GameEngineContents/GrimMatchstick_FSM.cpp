@@ -257,7 +257,7 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 				ChangeState(DragonState::Ph2_Intro_Loop);
 				return;
 			}
-			
+
 			return;
 		}
 
@@ -568,6 +568,12 @@ void GrimMatchstick::Ph2_IdleStart()
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
+	if (400.0f >= HP)
+	{
+		ChangeState(DragonState::Ph2_Death);
+		return;
+	}
+
 	if (true == EyeRenderPtr->FindAnimation("Dragon_Ph2_Tounge_Intro")->IsEnd())
 	{
 		EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro_Loop", false);
@@ -596,6 +602,8 @@ void GrimMatchstick::Ph2_DeathStart()
 }
 void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 {
+	UpRenderSetting_Death();
+
 	ExplosionTime += _DeltaTime;
 
 	if (0.4f <= ExplosionTime)
@@ -607,7 +615,44 @@ void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 }
 void GrimMatchstick::Ph2_DeathEnd()
 {
+	UpRenderPtr->Off();
 	ExplosionTime = 0.0f;
+}
+
+void GrimMatchstick::UpRenderSetting_Death()
+{
+	if (7 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_007.png");
+	}
+	else if (6 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_006.png");
+	}
+	else if (5 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_005.png");
+	}
+	else if (4 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_004.png");
+	}
+	else if (3 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_003.png");
+	}
+	else if (2 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_002.png");
+	}
+	else if (1 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_001.png");
+	}
+	else if (0 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_DeathUp_000.png");
+	}
 }
 
 void GrimMatchstick::UpRenderSetting()

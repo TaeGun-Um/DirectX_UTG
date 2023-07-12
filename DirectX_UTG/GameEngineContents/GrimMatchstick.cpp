@@ -552,6 +552,27 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_013.png").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("Ph2_DeathUp_000.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+		NewDir.Move("Dragon_Ph2_Death_T");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_000.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_007.png").GetFullPath());
+	}
+
 	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge"))
 	{
 		GameEngineDirectory NewDir;
