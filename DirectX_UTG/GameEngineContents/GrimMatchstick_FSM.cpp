@@ -558,6 +558,9 @@ void GrimMatchstick::Ph2_IdleStart()
 	EyeRenderPtr->GetTransform()->SetLocalPosition({ 700, -180 });
 	EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro");
 	EyeRenderPtr->On();
+
+	UpRenderPtr->GetTransform()->AddLocalPosition({ 0, 0, -1 });
+
 	UpRenderPtr->On();
 
 	ChangeState_FireRender(FireRenderState::Object_Fire_Waiting);
@@ -572,6 +575,14 @@ void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 	UpRenderSetting();
 
 	UpdateState_FireRender(_DeltaTime);
+
+	FireWorkSpawnDelayTime += _DeltaTime;
+
+	if (0.8f <= FireWorkSpawnDelayTime)
+	{
+		FireWorkSpawnDelayTime = 0.0f;
+		CreateFireWork();
+	}
 }
 void GrimMatchstick::Ph2_IdleEnd()
 {

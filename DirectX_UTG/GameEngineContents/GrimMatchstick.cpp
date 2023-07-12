@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GrimMatchstick.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
@@ -13,6 +14,7 @@
 #include "Object_GreenRing.h"
 #include "Object_Meteor.h"
 #include "Object_Tail.h"
+#include "Object_FireWork.h"
 
 GrimMatchstick* GrimMatchstick::GrimMatchstickPtr = nullptr;
 
@@ -402,6 +404,50 @@ void GrimMatchstick::CreateMeteor()
 	Meteor1->SetReverse();
 }
 
+void GrimMatchstick::CreateFireWork()
+{
+	std::shared_ptr<Object_FireWork> FireWork = GetLevel()->CreateActor<Object_FireWork>();
+
+	float4 StartPosition = GetTransform()->GetWorldPosition();
+	float4 ProjectilePosition = StartPosition + float4{ 135, -125 };
+
+	if (true == IsDebugRender)
+	{
+		FireWork->SetCollisionRenderOn();
+	}
+	else
+	{
+		FireWork->SetCollisionRenderOff();
+	}
+
+	if (true == Ph2FireWorkInit)
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		FireWorkType WorkType = FireWorkType::Leader;
+
+		if (0 == RandC)
+		{
+			WorkType = FireWorkType::Work_A;
+		}
+		else if (1 == RandC)
+		{
+			WorkType = FireWorkType::Work_B;
+			ProjectilePosition += { 0, -15 };
+		}
+		else if (2 == RandC)
+		{
+			WorkType = FireWorkType::Work_C;
+		}
+
+		FireWork->SelectFireWork(WorkType);
+		ProjectilePosition += { 0, -20 };
+	}
+
+	FireWork->SetStartPosition(ProjectilePosition);
+	Ph2FireWorkInit = true;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                         FSM                       /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -526,6 +572,7 @@ void GrimMatchstick::ActorInitSetting()
 		NewDir.Move("2_Grim_Matchstick");
 		NewDir.Move("Phase2");
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_Leader").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_A_Move").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_B_Move").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Move").GetFullPath());

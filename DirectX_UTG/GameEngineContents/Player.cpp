@@ -1196,6 +1196,8 @@ void Player::CreatePeashooter()
 		break;
 	}
 
+	ProjectilePosition += {0, 0, -1};
+
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
@@ -1441,6 +1443,12 @@ void Player::CreateSpread()
 		break;
 	}
 
+	ProjectilePosition0 += {0, 0, -1};
+	ProjectilePosition1 += {0, 0, -1};
+	ProjectilePosition2 += {0, 0, -1};
+	ProjectilePosition3 += {0, 0, -1};
+	ProjectilePosition4 += {0, 0, -1};
+
 	Projectile0->SetStartPosition(ProjectilePosition0);
 	Projectile1->SetStartPosition(ProjectilePosition1);
 	Projectile2->SetStartPosition(ProjectilePosition2);
@@ -1570,6 +1578,8 @@ void Player::CreatePeashooter_EX()
 		break;
 	}
 
+	ProjectilePosition += {0, 0, -1};
+
 	Projectile->SetStartPosition(ProjectilePosition);
 	Projectile->SetProjectileRotation(ProjectileRotation);
 	Projectile->SetDirection(Directbool);
@@ -1625,6 +1635,15 @@ void Player::CreateSpread_EX()
 	ProjectileRotation5 += float4{ 0, 0, 225 };
 	ProjectileRotation6 += float4{ 0, 0, 270 };
 	ProjectileRotation7 += float4{ 0, 0, 315 };
+
+	ProjectilePosition0 += {0, 0, -1};
+	ProjectilePosition1 += {0, 0, -1};
+	ProjectilePosition2 += {0, 0, -1};
+	ProjectilePosition3 += {0, 0, -1};
+	ProjectilePosition4 += {0, 0, -1};
+	ProjectilePosition5 += {0, 0, -1};
+	ProjectilePosition6 += {0, 0, -1};
+	ProjectilePosition7 += {0, 0, -1};
 
 	Projectile0->SetStartPosition(ProjectilePosition0);
 	Projectile1->SetStartPosition(ProjectilePosition1);

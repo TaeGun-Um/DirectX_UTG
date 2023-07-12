@@ -470,6 +470,9 @@
     <ClInclude Include="Object_Tail.h">
       <Filter>Levels\5. Bosses\2. Dragon\Object\Boss\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Object_FireWork.h">
+      <Filter>Levels\5. Bosses\2. Dragon\Object\Boss\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -853,6 +856,9 @@
     </ClCompile>
     <ClCompile Include="FireRender_FSM.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object_FireWork.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object\Boss\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

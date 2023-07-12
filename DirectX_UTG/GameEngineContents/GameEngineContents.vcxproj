@@ -422,6 +422,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Object_FireWork.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Object_GreenRing.h">
       <SubType>
       </SubType>
@@ -884,6 +888,10 @@
     </ClCompile>
     <ClCompile Include="NPCDataBase.cpp" />
     <ClCompile Include="NPC_TextBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Object_FireWork.cpp">
       <SubType>
       </SubType>
     </ClCompile>

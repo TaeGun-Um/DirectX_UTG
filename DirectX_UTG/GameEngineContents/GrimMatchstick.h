@@ -130,10 +130,12 @@ private:
 	float RingSpawnDelayTime = 0.0f;
 	float TailSpawnTime = 6.0f;
 	float FireWaitingTime = 0.0f;
+	float FireWorkSpawnDelayTime = 0.0f;
 	bool IsTailSpawn = false;
 	bool RingReverse = false;
 	bool RingCreate = false;
 	bool Ph2FireSetting = false;
+	bool Ph2FireWorkInit = false;
 
 	int RingMaxCreateCount = 3;
 	int RingCreateCount = 0;
@@ -141,6 +143,7 @@ private:
 	void CreateTail(float _DeltaTime);
 	void CreateRing(float _DeltaTime);
 	void CreateMeteor();
+	void CreateFireWork();
 
 	DragonState StateValue = DragonState::Idle;
 	FireRenderState FireStateValue = FireRenderState::Object_Fire_Intro;

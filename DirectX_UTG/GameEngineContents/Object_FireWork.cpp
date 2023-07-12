@@ -1,0 +1,186 @@
+#include "PrecompileHeader.h"
+#include "Object_FireWork.h"
+
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
+
+#include "Player.h"
+
+Object_FireWork::Object_FireWork() 
+{
+}
+
+Object_FireWork::~Object_FireWork() 
+{
+}
+
+void Object_FireWork::SelectFireWork(FireWorkType _Type)
+{
+	TypeValue = _Type;
+
+	switch (_Type)
+	{
+	case FireWorkType::Leader:
+		RenderPtr->ChangeAnimation("Object_Firework_Leader");
+		break;
+	case FireWorkType::Work_A:
+		RenderPtr->ChangeAnimation("Object_Firework_A_Move");
+		break;
+	case FireWorkType::Work_B:
+		RenderPtr->ChangeAnimation("Object_Firework_B_Move");
+		break;
+	case FireWorkType::Work_C:
+		RenderPtr->ChangeAnimation("Object_Firework_C_Move");
+		break;
+	default:
+		break;
+	}
+}
+
+void Object_FireWork::Start()
+{
+	if (nullptr == RenderPtr)
+	{
+		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_Leader", .SpriteName = "Object_Firework_Leader", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_A_Move", .SpriteName = "Object_Firework_A_Move", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_B_Move", .SpriteName = "Object_Firework_B_Move", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_C_Move", .SpriteName = "Object_Firework_C_Move", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_C_Jump_Intro", .SpriteName = "Object_Firework_C_Jump_Intro", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Object_Firework_C_Jump_Loop", .SpriteName = "Object_Firework_C_Jump_Loop", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+
+		RenderPtr->ChangeAnimation("Object_Firework_Leader");
+	}
+
+	if (nullptr == BodyCollisionPtr)
+	{
+		BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+		BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 80, 120, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ -10, -20 });
+	}
+
+	if (nullptr == BodyCollisionRenderPtr)
+	{
+		BodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
+		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		BodyCollisionRenderPtr->Off();
+	}
+
+	ChangeState(FireWorkState::Move);
+}
+
+void Object_FireWork::Update(float _DeltaTime)
+{
+	UpdateState(_DeltaTime);
+	DeathCheck();
+}
+
+void Object_FireWork::DeathCheck()
+{
+	float4 CurPos = GetTransform()->GetLocalPosition();
+
+	if (InitPosition.x + 1200.0f <= CurPos.x)
+	{
+		Death();
+	}
+}
+
+void Object_FireWork::ChangeState(FireWorkState _StateValue)
+{
+	FireWorkState NextState = _StateValue;
+	FireWorkState PrevState = StateValue;
+
+	StateValue = NextState;
+
+	switch (NextState)
+	{
+	case FireWorkState::Move:
+		MoveStart();
+		break;
+	case FireWorkState::Jump_Intro:
+		Jump_IntroStart();
+		break;
+	case FireWorkState::Jump:
+		JumpStart();
+		break;
+	default:
+		break;
+	}
+
+	switch (PrevState)
+	{
+	case FireWorkState::Move:
+		MoveEnd();
+		break;
+	case FireWorkState::Jump_Intro:
+		Jump_IntroEnd();
+		break;
+	case FireWorkState::Jump:
+		JumpEnd();
+		break;
+	default:
+		break;
+	}
+}
+void Object_FireWork::UpdateState(float _DeltaTime) 
+{
+	switch (StateValue)
+	{
+	case FireWorkState::Move:
+		MoveUpdate(_DeltaTime);
+		break;
+	case FireWorkState::Jump_Intro:
+		Jump_IntroUpdate(_DeltaTime);
+		break;
+	case FireWorkState::Jump:
+		JumpUpdate(_DeltaTime);
+		break;
+	default:
+		break;
+	}
+}
+
+void Object_FireWork::MoveStart()
+{
+
+}
+void Object_FireWork::MoveUpdate(float _DeltaTime)
+{
+	float MoveDis = MoveSpeed * _DeltaTime;
+
+	GetTransform()->AddLocalPosition({ MoveDis , 0 });
+}
+void Object_FireWork::MoveEnd()
+{
+
+}
+
+void Object_FireWork::Jump_IntroStart() 
+{
+
+}
+void Object_FireWork::Jump_IntroUpdate(float _DeltaTime)
+{
+
+}
+void Object_FireWork::Jump_IntroEnd()
+{
+
+}
+
+void Object_FireWork::JumpStart()
+{
+
+}
+void Object_FireWork::JumpUpdate(float _DeltaTime)
+{
+
+}
+void Object_FireWork::JumpEnd()
+{
+
+}
