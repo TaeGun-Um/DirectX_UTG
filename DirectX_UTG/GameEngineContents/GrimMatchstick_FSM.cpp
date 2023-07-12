@@ -48,6 +48,18 @@ void GrimMatchstick::ChangeState(DragonState _StateValue)
 	case DragonState::Peashoot_Outro:
 		Peashoot_OutroStart();
 		break;
+	case DragonState::Ph2_Intro_Loop:
+		Ph2_Intro_LoopStart();
+		break;
+	case DragonState::Ph2_Intro:
+		Ph2_IntroStart();
+		break;
+	case DragonState::Ph2_Idle:
+		Ph2_IdleStart();
+		break;
+	case DragonState::Ph2_Death:
+		Ph2_DeathStart();
+		break;
 	default:
 		break;
 	}
@@ -86,6 +98,18 @@ void GrimMatchstick::ChangeState(DragonState _StateValue)
 		break;
 	case DragonState::Peashoot_Outro:
 		Peashoot_OutroEnd();
+		break;
+	case DragonState::Ph2_Intro_Loop:
+		Ph2_Intro_LoopEnd();
+		break;
+	case DragonState::Ph2_Intro:
+		Ph2_IntroEnd();
+		break;
+	case DragonState::Ph2_Idle:
+		Ph2_IdleEnd();
+		break;
+	case DragonState::Ph2_Death:
+		Ph2_DeathEnd();
 		break;
 	default:
 		break;
@@ -128,6 +152,18 @@ void GrimMatchstick::UpdateState(float _DeltaTime)
 		break;
 	case DragonState::Peashoot_Outro:
 		Peashoot_OutroUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph2_Intro_Loop:
+		Ph2_Intro_LoopUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph2_Intro:
+		Ph2_IntroUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph2_Idle:
+		Ph2_IdleUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph2_Death:
+		Ph2_DeathUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -203,6 +239,7 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 {
 	//if (700.0f >= HP)
 	{
+		IsTailSpawn = true;
 		BodyCollisionPtr->Off();
 		EXCollisionPtr->Off();
 
@@ -216,7 +253,8 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 			}
 			else
 			{
-				int a = 0;
+				ChangeState(DragonState::Ph2_Intro_Loop);
+				return;
 			}
 			
 			return;
@@ -237,21 +275,18 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 	if (3 == ChangeStateCount)
 	{
 		ChangeStateCount = 0;
-		//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 
-		//if (0 == RandC)
-		//{
-		//	ChangeState(DragonState::Meteor_Intro);
-		//	return;
-		//}
-		//else
-		//{
-		//	ChangeState(DragonState::Peashoot_Intro);
-		//	return;
-		//}
-
-		ChangeState(DragonState::Peashoot_Intro);
-		return;
+		if (0 == RandC)
+		{
+			ChangeState(DragonState::Meteor_Intro);
+			return;
+		}
+		else
+		{
+			ChangeState(DragonState::Peashoot_Intro);
+			return;
+		}
 	}
 }
 void GrimMatchstick::IdleEnd()
@@ -444,13 +479,75 @@ void GrimMatchstick::Peashoot_OutroEnd()
 	PeashootMax = 0;
 }
 
-void GrimMatchstick::Ph2_IntroStart()
+void GrimMatchstick::Ph2_Intro_LoopStart()
+{
+	BodyCollisionPtr->On();
+	EXCollisionPtr->On();
+
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 450, -50 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 450, -50 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0 });
+
+	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
+	EXCollisionRenderPtr->GetTransform()->SetLocalScale(EXCollisionPtr->GetTransform()->GetLocalScale());
+	EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
+
+	Plus_BodyCollisionPtr->On();
+	Plus_EXCollisionPtr->On();
+
+	Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 300, 120, -50 });
+	Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200 });
+	Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 300, 120, -50 });
+	Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200 });
+
+	Plus_BodyCollisionRenderPtr->On();
+	Plus_EXCollisionRenderPtr->On();
+
+	Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_BodyCollisionPtr->GetTransform()->GetLocalScale());
+	Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_BodyCollisionPtr->GetTransform()->GetLocalPosition());
+	Plus_EXCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_EXCollisionPtr->GetTransform()->GetLocalScale());
+	Plus_EXCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_EXCollisionPtr->GetTransform()->GetLocalPosition());
+
+	float4 CurPos = GetTransform()->GetWorldPosition();
+
+	GetTransform()->SetWorldPosition({ -400, CurPos.y, CurPos.z });
+
+	RenderPtr->ChangeAnimation("Dragon_Ph2_Intro_Loop");
+}
+void GrimMatchstick::Ph2_Intro_LoopUpdate(float _DeltaTime)
+{
+	float4 CurPos = GetTransform()->GetWorldPosition();
+
+	if (130.0f >= CurPos.x)
+	{
+		float MoveDis = 600.0f * _DeltaTime;
+
+		GetTransform()->AddWorldPosition({ MoveDis , 0 });
+	}
+	else
+	{
+		ChangeState(DragonState::Ph2_Intro);
+		return;
+	}
+}
+void GrimMatchstick::Ph2_Intro_LoopEnd()
 {
 
 }
+
+void GrimMatchstick::Ph2_IntroStart()
+{
+	RenderPtr->ChangeAnimation("Dragon_Ph2_Intro");
+}
 void GrimMatchstick::Ph2_IntroUpdate(float _DeltaTime)
 {
-
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(DragonState::Ph2_Idle);
+		return;
+	}
 }
 void GrimMatchstick::Ph2_IntroEnd()
 {
@@ -459,13 +556,26 @@ void GrimMatchstick::Ph2_IntroEnd()
 
 void GrimMatchstick::Ph2_IdleStart()
 {
-
+	RenderPtr->ChangeAnimation("Dragon_Ph2_Idle");
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
 
 }
 void GrimMatchstick::Ph2_IdleEnd()
+{
+
+}
+
+void GrimMatchstick::Ph2_DeathStart()
+{
+	RenderPtr->ChangeAnimation("Dragon_Ph2_Death");
+}
+void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
+{
+
+}
+void GrimMatchstick::Ph2_DeathEnd()
 {
 
 }

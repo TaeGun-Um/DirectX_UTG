@@ -16,8 +16,10 @@ enum class DragonState
 	Peashoot_Shoot_Plus,
 	Peashoot_Outro,
 
+	Ph2_Intro_Loop,
 	Ph2_Intro,
 	Ph2_Idle,
+	Ph2_Death,
 };
 
 // Ό³Έν :
@@ -73,9 +75,13 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> Plus_BodyCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> Plus_EXCollisionRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> Plus_BodyCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> Plus_EXCollisionPtr = nullptr;
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;
@@ -177,6 +183,10 @@ private:
 	void Peashoot_OutroUpdate(float _DeltaTime);
 	void Peashoot_OutroEnd();
 
+	void Ph2_Intro_LoopStart();
+	void Ph2_Intro_LoopUpdate(float _DeltaTime);
+	void Ph2_Intro_LoopEnd();
+
 	void Ph2_IntroStart();
 	void Ph2_IntroUpdate(float _DeltaTime);
 	void Ph2_IntroEnd();
@@ -184,6 +194,10 @@ private:
 	void Ph2_IdleStart();
 	void Ph2_IdleUpdate(float _DeltaTime);
 	void Ph2_IdleEnd();
+
+	void Ph2_DeathStart();
+	void Ph2_DeathUpdate(float _DeltaTime);
+	void Ph2_DeathEnd();
 
 };
 

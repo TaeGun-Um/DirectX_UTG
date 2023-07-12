@@ -208,6 +208,74 @@ void GrimMatchstick::CollisionCheck()
 
 		IsBlink = true;
 	}
+
+	/////////////// Normal
+	if (nullptr != Plus_BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = Plus_BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Peashooter), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Peashooter*>(Projectile)->SetPeashooterDeath();
+		dynamic_cast<Peashooter*>(Projectile)->SetHitture();
+		HP -= 1.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != Plus_BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = Plus_BodyCollisionPtr->Collision(static_cast<int>(CollisionOrder::Spread), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Spread*>(Projectile)->SetSpreadDeath();
+		dynamic_cast<Spread*>(Projectile)->SetHitture();
+		HP -= 0.4f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	/////////////// EX
+	if (nullptr != Plus_EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = Plus_EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::PeashooterEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Peashooter_EX*>(Projectile)->SetHitture();
+		HP -= 5.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
+
+	if (nullptr != Plus_EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)
+		&& HP > 0.0f)
+	{
+		GameEngineActor* Projectile = Plus_EXCollisionPtr->Collision(static_cast<int>(CollisionOrder::SpreadEX), ColType::AABBBOX2D, ColType::SPHERE2D)->GetActor();
+		dynamic_cast<Spread_EX*>(Projectile)->SetSpread_EXDeath();
+		HP -= 10.0f;
+
+		if (0 >= HP)
+		{
+			HP = 0.0f;
+			IsStageEnd = true;
+		}
+
+		IsBlink = true;
+	}
 }
 
 void GrimMatchstick::CollisionSetting()
@@ -222,6 +290,11 @@ void GrimMatchstick::CollisionSetting()
 
 void GrimMatchstick::CreateTail(float _DeltaTime)
 {
+	if (true == IsTailSpawn)
+	{
+		return;
+	}
+
 	TailSpawnTime += _DeltaTime;
 
 	if (20.0f >= TailSpawnTime)
@@ -373,6 +446,57 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Outro").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Death").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_B").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_Smoke").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Object_Firework_A_Move"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_A_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_B_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Loop").GetFullPath());
+	}
+
 	if (nullptr == GameEngineSprite::Find("Object_GreenRing"))
 	{
 		GameEngineDirectory NewDir;
@@ -409,6 +533,11 @@ void GrimMatchstick::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Intro", .SpriteName = "Dragon_PeashotAttack_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Shoot", .SpriteName = "Dragon_PeashotAttack_Shoot", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_PeashotAttack_Outro", .SpriteName = "Dragon_PeashotAttack_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Intro_Loop", .SpriteName = "Dragon_Ph2_Intro_Loop", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Intro", .SpriteName = "Dragon_Ph2_Intro", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Idle", .SpriteName = "Dragon_Ph2_Idle", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Death", .SpriteName = "Dragon_Ph2_Death", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Dragon_Intro");
 	}
@@ -463,6 +592,44 @@ void GrimMatchstick::ActorInitSetting()
 		EXCollisionRenderPtr->SetTexture("RedLine.png");
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		//EXCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == Plus_BodyCollisionPtr)
+	{
+		Plus_BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
+		Plus_BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
+		Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 570, -50 });
+		Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		Plus_BodyCollisionPtr->Off();
+	}
+
+	if (nullptr == Plus_BodyCollisionRenderPtr)
+	{
+		Plus_BodyCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_BodyCollisionPtr->GetTransform()->GetLocalScale());
+		Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_BodyCollisionPtr->GetTransform()->GetLocalPosition());
+		Plus_BodyCollisionRenderPtr->SetTexture("GreenLine.png");
+		Plus_BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		Plus_BodyCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == Plus_EXCollisionPtr)
+	{
+		Plus_EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
+		Plus_EXCollisionPtr->SetColType(ColType::AABBBOX2D);
+		Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 570, -50 });
+		Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		Plus_EXCollisionPtr->Off();
+	}
+
+	if (nullptr == Plus_EXCollisionRenderPtr)
+	{
+		Plus_EXCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		Plus_EXCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_EXCollisionPtr->GetTransform()->GetLocalScale());
+		Plus_EXCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_EXCollisionPtr->GetTransform()->GetLocalPosition());
+		Plus_EXCollisionRenderPtr->SetTexture("RedLine.png");
+		Plus_EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		Plus_EXCollisionRenderPtr->Off();
 	}
 
 	ChangeState(DragonState::Intro);
