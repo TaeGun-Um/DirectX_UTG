@@ -769,6 +769,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FireRender_FSM.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="First_OpeningLevel.cpp">
       <SubType>
       </SubType>

@@ -562,15 +562,20 @@ void GrimMatchstick::Ph2_IdleStart()
 	EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro");
 	EyeRenderPtr->On();
 	UpRenderPtr->On();
+
+	FireRenderPtr->GetTransform()->SetLocalPosition({ 130, 250 });
+	FireRenderPtr->On();
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
-	UpRenderSetting();
-
 	if (true == EyeRenderPtr->FindAnimation("Dragon_Ph2_Tounge_Intro")->IsEnd())
 	{
 		EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro_Loop", false);
 	}
+
+	UpRenderSetting();
+
+	UpdateState_FireRender(_DeltaTime);
 }
 void GrimMatchstick::Ph2_IdleEnd()
 {

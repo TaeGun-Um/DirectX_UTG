@@ -502,10 +502,16 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro_Loop").GetFullPath());
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Outro").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_A").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_B").GetFullPath());
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_Smoke").GetFullPath());
 	}
 
 	if (nullptr == GameEngineSprite::Find("Object_Firework_A_Move"))
@@ -586,6 +592,20 @@ void GrimMatchstick::ActorInitSetting()
 		UpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_000.png");
 		UpRenderPtr->Off();
+	}
+
+	if (nullptr == FireRenderPtr)
+	{
+		FireRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Intro", .SpriteName = "Object_Fire_Intro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Loop", .SpriteName = "Object_Fire_Loop", .FrameInter = 0.04f, .Loop = true , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Outro", .SpriteName = "Object_Fire_Outro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Intro", .SpriteName = "Object_FireSmoke_Intro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Loop", .SpriteName = "Object_FireSmoke_Loop", .FrameInter = 0.04f, .Loop = true , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Outro", .SpriteName = "Object_FireSmoke_Outro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->GetTransform()->SetLocalPosition({ -55, 300 });
+		FireRenderPtr->ChangeAnimation("Object_Fire_Intro");
+		FireRenderPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionPtr)

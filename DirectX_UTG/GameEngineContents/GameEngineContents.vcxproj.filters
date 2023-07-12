@@ -851,5 +851,8 @@
     <ClCompile Include="Object_Tail.cpp">
       <Filter>Levels\5. Bosses\2. Dragon\Object\Boss\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="FireRender_FSM.cpp">
+      <Filter>Levels\5. Bosses\2. Dragon\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

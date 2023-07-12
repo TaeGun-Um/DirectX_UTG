@@ -22,6 +22,17 @@ enum class DragonState
 	Ph2_Death,
 };
 
+enum class FireRenderState
+{
+	Object_Fire_Intro,
+	Object_Fire_Loop,
+	Object_Fire_Outro,
+
+	Object_FireSmoke_Intro,
+	Object_FireSmoke_Loop,
+	Object_FireSmoke_Outro,
+};
+
 // Ό³Έν :
 class GrimMatchstick : public GameEngineActor
 {
@@ -72,6 +83,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> UpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EyeRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FireRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -125,6 +137,8 @@ private:
 	void CreateMeteor();
 
 	DragonState StateValue = DragonState::Idle;
+	FireRenderState FireStateValue = FireRenderState::Object_Fire_Intro;
+
 	int ChangeStateCount = 0;
 	int MeteorCount = 0;
 	int PeashootCount = 0;
@@ -200,5 +214,31 @@ private:
 	void Ph2_DeathUpdate(float _DeltaTime);
 	void Ph2_DeathEnd();
 
+	void ChangeState_FireRender(FireRenderState _StateValue);
+	void UpdateState_FireRender(float _DeltaTime);
+
+	void Object_Fire_IntroStart();
+	void Object_Fire_IntroUpdate(float _DeltaTime);
+	void Object_Fire_IntroEnd();
+
+	void Object_Fire_LoopStart();
+	void Object_Fire_LoopUpdate(float _DeltaTime);
+	void Object_Fire_LoopEnd();
+
+	void Object_Fire_OutroStart();
+	void Object_Fire_OutroUpdate(float _DeltaTime);
+	void Object_Fire_OutroEnd();
+
+	void Object_FireSmoke_IntroStart();
+	void Object_FireSmoke_IntroUpdate(float _DeltaTime);
+	void Object_FireSmoke_IntroEnd();
+
+	void Object_FireSmoke_LoopStart();
+	void Object_FireSmoke_LoopUpdate(float _DeltaTime);
+	void Object_FireSmoke_LoopEnd();
+
+	void Object_FireSmoke_OutroStart();
+	void Object_FireSmoke_OutroUpdate(float _DeltaTime);
+	void Object_FireSmoke_OutroEnd();
 };
 
