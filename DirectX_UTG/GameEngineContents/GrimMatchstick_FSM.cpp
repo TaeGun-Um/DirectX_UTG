@@ -557,10 +557,20 @@ void GrimMatchstick::Ph2_IntroEnd()
 void GrimMatchstick::Ph2_IdleStart()
 {
 	RenderPtr->ChangeAnimation("Dragon_Ph2_Idle");
+
+	EyeRenderPtr->GetTransform()->SetLocalPosition({ 700, -180 });
+	EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro");
+	EyeRenderPtr->On();
+	UpRenderPtr->On();
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
+	UpRenderSetting();
 
+	if (true == EyeRenderPtr->FindAnimation("Dragon_Ph2_Tounge_Intro")->IsEnd())
+	{
+		EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro_Loop", false);
+	}
 }
 void GrimMatchstick::Ph2_IdleEnd()
 {
@@ -578,4 +588,64 @@ void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 void GrimMatchstick::Ph2_DeathEnd()
 {
 
+}
+
+void GrimMatchstick::UpRenderSetting()
+{
+	if (13 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_013.png");
+	}
+	else if (12 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_012.png");
+	}
+	else if (11 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_011.png");
+	}
+	else if (10 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_010.png");
+	}
+	else if (9 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_009.png");
+	}
+	else if (8 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_008.png");
+	}
+	else if (7 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_007.png");
+	}
+	else if (6 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_006.png");
+	}
+	else if (5 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_005.png");
+	}
+	else if (4 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_004.png");
+	}
+	else if (3 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_003.png");
+	}
+	else if (2 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_002.png");
+	}
+	else if (1 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_001.png");
+	}
+	else if (0 == RenderPtr->GetCurrentFrame())
+	{
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_000.png");
+	}
 }

@@ -104,6 +104,7 @@ private:
 	void CollisionSetting();
 	void DirectCheck();
 	void GetRingAngleWithDotProduct3D();
+	void UpRenderSetting();
 
 	float4 RingProjectilePostion = float4::Zero;
 	float4 InitPosition = float4::Zero;

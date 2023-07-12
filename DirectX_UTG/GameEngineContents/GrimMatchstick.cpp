@@ -462,6 +462,33 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Death").GetFullPath());
 	}
 
+	if (nullptr == GameEngineTexture::Find("Ph2_IdleUp_000.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+		NewDir.Move("Dragon_Ph2_Idle_T");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_000.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_010.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_011.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_012.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_013.png").GetFullPath());
+	}
+
 	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge"))
 	{
 		GameEngineDirectory NewDir;
@@ -472,7 +499,8 @@ void GrimMatchstick::ActorInitSetting()
 		NewDir.Move("2_Grim_Matchstick");
 		NewDir.Move("Phase2");
 
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro_Loop").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_A").GetFullPath());
@@ -542,20 +570,22 @@ void GrimMatchstick::ActorInitSetting()
 		RenderPtr->ChangeAnimation("Dragon_Intro");
 	}
 
-	//if (nullptr == UpRenderPtr)
-	//{
-	//	UpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	UpRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Idle", .SpriteName = "Dragon_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
-	//	UpRenderPtr->ChangeAnimation("Dragon_Idle");
-	//}
-
 	if (nullptr == EyeRenderPtr)
 	{
 		EyeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		EyeRenderPtr->CreateAnimation({ .AnimationName = "SFX_EyesAttack", .SpriteName = "SFX_EyesAttack", .FrameInter = 0.03f, .Loop = true , .ScaleToTexture = true });
+		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Intro", .SpriteName = "Dragon_Ph2_Tounge_Intro", .FrameInter = 0.03f, .Loop = false , .ScaleToTexture = true });
+		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Intro_Loop", .SpriteName = "Dragon_Ph2_Tounge_Intro_Loop", .FrameInter = 0.1f, .Loop = true , .ScaleToTexture = true });
 		EyeRenderPtr->GetTransform()->SetLocalPosition({ -55, 300 });
 		EyeRenderPtr->ChangeAnimation("SFX_EyesAttack");
 		EyeRenderPtr->Off();
+	}
+
+	if (nullptr == UpRenderPtr)
+	{
+		UpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_000.png");
+		UpRenderPtr->Off();
 	}
 
 	if (nullptr == BodyCollisionPtr)
