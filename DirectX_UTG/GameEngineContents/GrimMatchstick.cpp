@@ -99,6 +99,7 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 		BlinkMulColor.g = 0.2f;
 		BlinkMulColor.b = 0.35f;
 		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		UpRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -108,6 +109,7 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 		IsBlink = false;
 
 		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		UpRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 	}
 }
 
@@ -597,12 +599,12 @@ void GrimMatchstick::ActorInitSetting()
 	if (nullptr == FireRenderPtr)
 	{
 		FireRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Intro", .SpriteName = "Object_Fire_Intro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Loop", .SpriteName = "Object_Fire_Loop", .FrameInter = 0.04f, .Loop = true , .ScaleToTexture = true });
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Outro", .SpriteName = "Object_Fire_Outro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Intro", .SpriteName = "Object_FireSmoke_Intro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Loop", .SpriteName = "Object_FireSmoke_Loop", .FrameInter = 0.04f, .Loop = true , .ScaleToTexture = true });
-		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Outro", .SpriteName = "Object_FireSmoke_Outro", .FrameInter = 0.04f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Intro", .SpriteName = "Object_Fire_Intro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Loop", .SpriteName = "Object_Fire_Loop", .FrameInter = 0.07f, .Loop = true , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_Fire_Outro", .SpriteName = "Object_Fire_Outro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Intro", .SpriteName = "Object_FireSmoke_Intro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Loop", .SpriteName = "Object_FireSmoke_Loop", .FrameInter = 0.07f, .Loop = true , .ScaleToTexture = true });
+		FireRenderPtr->CreateAnimation({ .AnimationName = "Object_FireSmoke_Outro", .SpriteName = "Object_FireSmoke_Outro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
 		FireRenderPtr->GetTransform()->SetLocalPosition({ -55, 300 });
 		FireRenderPtr->ChangeAnimation("Object_Fire_Intro");
 		FireRenderPtr->Off();
@@ -680,6 +682,25 @@ void GrimMatchstick::ActorInitSetting()
 		Plus_EXCollisionRenderPtr->SetTexture("RedLine.png");
 		Plus_EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
 		Plus_EXCollisionRenderPtr->Off();
+	}
+
+	if (nullptr == FireCollisionPtr)
+	{
+		FireCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
+		FireCollisionPtr->SetColType(ColType::AABBBOX2D);
+		FireCollisionPtr->GetTransform()->SetLocalScale({ 50, 200, -50 });
+		FireCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		FireCollisionPtr->Off();
+	}
+
+	if (nullptr == FireCollisionRenderPtr)
+	{
+		FireCollisionRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		FireCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_EXCollisionPtr->GetTransform()->GetLocalScale());
+		FireCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_EXCollisionPtr->GetTransform()->GetLocalPosition());
+		FireCollisionRenderPtr->SetTexture("GreenBox.png");
+		FireCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
+		FireCollisionRenderPtr->Off();
 	}
 
 	ChangeState(DragonState::Intro);

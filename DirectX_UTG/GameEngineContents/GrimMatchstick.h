@@ -24,6 +24,8 @@ enum class DragonState
 
 enum class FireRenderState
 {
+	Object_Fire_Waiting,
+
 	Object_Fire_Intro,
 	Object_Fire_Loop,
 	Object_Fire_Outro,
@@ -89,11 +91,13 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> Plus_BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> Plus_EXCollisionRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FireCollisionRenderPtr = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> Plus_BodyCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> Plus_EXCollisionPtr = nullptr;
+	std::shared_ptr<class GameEngineCollision> FireCollisionPtr = nullptr;
 
 	float HP = 1000.0f;
 	bool IsDebugRender = false;
@@ -125,9 +129,11 @@ private:
 	float RingRotationZ = 0.0f;
 	float RingSpawnDelayTime = 0.0f;
 	float TailSpawnTime = 6.0f;
+	float FireWaitingTime = 0.0f;
 	bool IsTailSpawn = false;
 	bool RingReverse = false;
 	bool RingCreate = false;
+	bool Ph2FireSetting = false;
 
 	int RingMaxCreateCount = 3;
 	int RingCreateCount = 0;
@@ -216,6 +222,10 @@ private:
 
 	void ChangeState_FireRender(FireRenderState _StateValue);
 	void UpdateState_FireRender(float _DeltaTime);
+
+	void Object_Fire_WaitingStart();
+	void Object_Fire_WaitingUpdate(float _DeltaTime);
+	void Object_Fire_WaitingEnd();
 
 	void Object_Fire_IntroStart();
 	void Object_Fire_IntroUpdate(float _DeltaTime);

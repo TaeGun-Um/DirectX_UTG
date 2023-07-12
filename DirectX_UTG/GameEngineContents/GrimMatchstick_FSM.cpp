@@ -260,14 +260,11 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 			return;
 		}
 
-		float MoveDis = 2.5f * _DeltaTime;
+		float MoveDis = 300.0f;
 
-		if (2.0f >= abs(MoveAccel.x))
-		{
-			MoveAccel += float4{ MoveDis, 0 };
-		}
+		MoveAccel.x += MoveDis * _DeltaTime;
 
-		GetTransform()->AddLocalPosition(MoveAccel);
+		GetTransform()->AddLocalPosition(MoveAccel * _DeltaTime);
 
 		return;
 	}
@@ -563,8 +560,7 @@ void GrimMatchstick::Ph2_IdleStart()
 	EyeRenderPtr->On();
 	UpRenderPtr->On();
 
-	FireRenderPtr->GetTransform()->SetLocalPosition({ 130, 250 });
-	FireRenderPtr->On();
+	ChangeState_FireRender(FireRenderState::Object_Fire_Waiting);
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
