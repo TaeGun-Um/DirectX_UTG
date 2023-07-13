@@ -556,7 +556,7 @@ void GrimMatchstick::Ph2_IdleStart()
 {
 	RenderPtr->ChangeAnimation("Dragon_Ph2_Idle");
 
-	EyeRenderPtr->GetTransform()->SetLocalPosition({ 700, -180 });
+	EyeRenderPtr->GetTransform()->SetLocalPosition({ 650, -180 });
 	EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Intro");
 	EyeRenderPtr->On();
 
