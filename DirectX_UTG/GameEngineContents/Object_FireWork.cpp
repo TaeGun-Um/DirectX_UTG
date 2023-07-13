@@ -23,19 +23,34 @@ void Object_FireWork::SelectFireWork(FireWorkType _Type)
 	{
 	case FireWorkType::Leader:
 		RenderPtr->ChangeAnimation("Object_Firework_Leader");
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 80, 120, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ -10, -20 });
 		break;
 	case FireWorkType::Work_A:
 		RenderPtr->ChangeAnimation("Object_Firework_A_Move");
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 80, 80, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
 		break;
 	case FireWorkType::Work_B:
 		RenderPtr->ChangeAnimation("Object_Firework_B_Move");
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 80, 80, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
 		break;
 	case FireWorkType::Work_C:
 		RenderPtr->ChangeAnimation("Object_Firework_C_Move");
+
+		BodyCollisionPtr->GetTransform()->SetLocalScale({ 80, 80, -50 });
+		BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -20 });
 		break;
 	default:
 		break;
 	}
+
+	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
+	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 }
 
 void Object_FireWork::Start()

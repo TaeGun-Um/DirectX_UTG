@@ -283,6 +283,7 @@ private:
 	bool IsEXUse = false;
 	bool StageEndHPMax = false;
 	bool IsWeaponChange = false;
+	bool EXMotion = false;
 
 	// Assistant
 	void CheatKey();

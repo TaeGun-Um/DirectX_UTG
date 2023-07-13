@@ -1548,151 +1548,168 @@ void Player::EXAttackStart()
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
-	switch (ADValue)
+	if (RenderPtr->IsAnimationEnd() && true == IsJump
+		|| RenderPtr->IsAnimationEnd() && true == IsFall)
 	{
-	case AttackDirection::Right_Up:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Up", false);
-
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Up", false);
-		}
-
-		PushBackAble = false;
+		ChangeState(PlayerState::Fall);
+		return;
 	}
-	break;
-	case AttackDirection::Right_DiagonalUp:
+	else if (RenderPtr->IsAnimationEnd())
 	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
-		}
-
-		PushBackAble = true;
+		ChangeState(PlayerState::Idle);
+		return;
 	}
-	break;
-	case AttackDirection::Right_Front:
+
+	if (false == EXMotion)
 	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Straight", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Straight", false);
-		}
+		EXMotion = true;
 
-		PushBackAble = true;
-	}
-	break;
-	case AttackDirection::Right_DiagonalDown:
-	{
-		if (true == IsJump || true == IsFall)
+		switch (ADValue)
 		{
-			RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
-		}
-		else
+		case AttackDirection::Right_Up:
 		{
-			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
-		}
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Up", false);
 
-		PushBackAble = true;
-	}
-	break;
-	case AttackDirection::Right_Down:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Down", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Down", false);
-		}
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Up", false);
+			}
 
-		PushBackAble = false;
-	}
-	break;
-	case AttackDirection::Left_Up:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Up", false);
+			PushBackAble = false;
 		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Up", false);
-		}
-
-		PushBackAble = false;
-	}
-	break;
-	case AttackDirection::Left_DiagonalUp:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
-		}
-
-		PushBackAble = true;
-	}
-	break;
-	case AttackDirection::Left_Front:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Straight", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Straight", false);
-		}
-
-		PushBackAble = true;
-	}
-	break;
-	case AttackDirection::Left_DiagonalDown:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
-		}
-
-		PushBackAble = true;
-	}
-	break;
-	case AttackDirection::Left_Down:
-	{
-		if (true == IsJump || true == IsFall)
-		{
-			RenderPtr->ChangeAnimation("AirEx_Down", false);
-		}
-		else
-		{
-			RenderPtr->ChangeAnimation("Ex_Down", false);
-		}
-
-		PushBackAble = false;
-	}
-	break;
-	default:
 		break;
+		case AttackDirection::Right_DiagonalUp:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Right_Front:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Straight", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Straight", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Right_DiagonalDown:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Right_Down:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Down", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Down", false);
+			}
+
+			PushBackAble = false;
+		}
+		break;
+		case AttackDirection::Left_Up:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Up", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Up", false);
+			}
+
+			PushBackAble = false;
+		}
+		break;
+		case AttackDirection::Left_DiagonalUp:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_DiagonalUp", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_DiagonalUp", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Left_Front:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Straight", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Straight", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Left_DiagonalDown:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_DiagonalDown", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_DiagonalDown", false);
+			}
+
+			PushBackAble = true;
+		}
+		break;
+		case AttackDirection::Left_Down:
+		{
+			if (true == IsJump || true == IsFall)
+			{
+				RenderPtr->ChangeAnimation("AirEx_Down", false);
+			}
+			else
+			{
+				RenderPtr->ChangeAnimation("Ex_Down", false);
+			}
+
+			PushBackAble = false;
+		}
+		break;
+		default:
+			break;
+		}
 	}
 
 	if (true == ChargeUpRenderPtr->IsAnimationEnd())
@@ -1722,24 +1739,13 @@ void Player::EXAttackUpdate(float _DeltaTime)
 			GetTransform()->AddLocalPosition({ MoveDis, 0 });
 		}
 	}
-
-	if (RenderPtr->IsAnimationEnd() && true == IsJump
-		|| RenderPtr->IsAnimationEnd() && true == IsFall)
-	{
-		ChangeState(PlayerState::Fall);
-		return;
-	}
-	else if (RenderPtr->IsAnimationEnd())
-	{
-		ChangeState(PlayerState::Idle);
-		return;
-	}
 }
 void Player::EXAttackEnd()
 {
 	EXPushBack = false;
 	PushBackAble = false;
 	IsEXAttack = false;
+	EXMotion = false;
 	CreateEXCount = 1;
 
 	if (true == WeaponType)

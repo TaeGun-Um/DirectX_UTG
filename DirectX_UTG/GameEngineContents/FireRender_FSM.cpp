@@ -103,8 +103,8 @@ void GrimMatchstick::Object_Fire_WaitingStart()
 
 		FireRenderPtr->GetTransform()->SetLocalPosition({ 127, 265 });
 
-		FireCollisionPtr->GetTransform()->SetLocalScale({ 60, 400, -50 });
-		FireCollisionPtr->GetTransform()->SetLocalPosition({ 120, 200 });
+		FireCollisionPtr->GetTransform()->SetLocalScale({ 60, 400 });
+		FireCollisionPtr->GetTransform()->SetLocalPosition({ 120, 200, -50 });
 
 		FireCollisionRenderPtr->GetTransform()->SetLocalScale(FireCollisionPtr->GetTransform()->GetLocalScale());
 		FireCollisionRenderPtr->GetTransform()->SetLocalPosition(FireCollisionPtr->GetTransform()->GetLocalPosition());

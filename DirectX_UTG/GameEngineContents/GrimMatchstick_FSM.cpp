@@ -482,10 +482,10 @@ void GrimMatchstick::Ph2_Intro_LoopStart()
 	BodyCollisionPtr->On();
 	EXCollisionPtr->On();
 
-	BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 450, -50 });
-	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0 });
-	EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 450, -50 });
-	EXCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0 });
+	BodyCollisionPtr->GetTransform()->SetLocalScale({ 150, 450 });
+	BodyCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0, -50 });
+	EXCollisionPtr->GetTransform()->SetLocalScale({ 150, 450 });
+	EXCollisionPtr->GetTransform()->SetLocalPosition({ -100, 0, -50 });
 
 	BodyCollisionRenderPtr->GetTransform()->SetLocalScale(BodyCollisionPtr->GetTransform()->GetLocalScale());
 	BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
@@ -495,10 +495,10 @@ void GrimMatchstick::Ph2_Intro_LoopStart()
 	Plus_BodyCollisionPtr->On();
 	Plus_EXCollisionPtr->On();
 
-	Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 300, 120, -50 });
-	Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200 });
-	Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 300, 120, -50 });
-	Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200 });
+	Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 300, 120 });
+	Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200, -50 });
+	Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 300, 120 });
+	Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200, -50 });
 
 	Plus_BodyCollisionRenderPtr->On();
 	Plus_EXCollisionRenderPtr->On();
@@ -598,6 +598,12 @@ void GrimMatchstick::Ph2_IdleEnd()
 
 void GrimMatchstick::Ph2_DeathStart()
 {
+	BodyCollisionPtr->Off();
+	EXCollisionPtr->Off();
+
+	Plus_BodyCollisionPtr->Off();
+	Plus_EXCollisionPtr->Off();
+
 	RenderPtr->ChangeAnimation("Dragon_Ph2_Death");
 }
 void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)

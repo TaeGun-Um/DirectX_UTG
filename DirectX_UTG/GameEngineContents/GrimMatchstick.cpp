@@ -453,8 +453,8 @@ void GrimMatchstick::CreateDeathExplosion(float _DeltaTime)
 	std::shared_ptr<DeathExplosion> Explosion = GetLevel()->CreateActor<DeathExplosion>();
 	float4 StartPosition = GetTransform()->GetWorldPosition();
 
-	int RandX = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -200 ~ 200
-	int RandY = GameEngineRandom::MainRandom.RandomInt(-300, 300); // -350 ~ 100
+	int RandX = GameEngineRandom::MainRandom.RandomInt(-100, 300); // -200 ~ 200
+	int RandY = GameEngineRandom::MainRandom.RandomInt(-250, 300); // -350 ~ 100
 
 	float4 ExplosionPosition = StartPosition + float4{ static_cast<float>(RandX), static_cast<float>(RandY), -1 };
 
@@ -728,8 +728,8 @@ void GrimMatchstick::ActorInitSetting()
 	{
 		EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 570, -50 });
-		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 570 });
+		EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45, -50 });
 	}
 
 	if (nullptr == EXCollisionRenderPtr)
@@ -746,8 +746,8 @@ void GrimMatchstick::ActorInitSetting()
 	{
 		Plus_BodyCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		Plus_BodyCollisionPtr->SetColType(ColType::AABBBOX2D);
-		Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 570, -50 });
-		Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		Plus_BodyCollisionPtr->GetTransform()->SetLocalScale({ 180, 570 });
+		Plus_BodyCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45, -50 });
 		Plus_BodyCollisionPtr->Off();
 	}
 
@@ -765,8 +765,8 @@ void GrimMatchstick::ActorInitSetting()
 	{
 		Plus_EXCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::Monster));
 		Plus_EXCollisionPtr->SetColType(ColType::AABBBOX2D);
-		Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 570, -50 });
-		Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 180, 570 });
+		Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45, -50 });
 		Plus_EXCollisionPtr->Off();
 	}
 
@@ -784,8 +784,8 @@ void GrimMatchstick::ActorInitSetting()
 	{
 		FireCollisionPtr = CreateComponent<GameEngineCollision>(static_cast<int>(CollisionOrder::MonsterAttack));
 		FireCollisionPtr->SetColType(ColType::AABBBOX2D);
-		FireCollisionPtr->GetTransform()->SetLocalScale({ 50, 200, -50 });
-		FireCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45 });
+		FireCollisionPtr->GetTransform()->SetLocalScale({ 50, 200 });
+		FireCollisionPtr->GetTransform()->SetLocalPosition({ 0, 45, -50 });
 		FireCollisionPtr->Off();
 	}
 
