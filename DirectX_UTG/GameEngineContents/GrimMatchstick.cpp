@@ -103,6 +103,13 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 		BlinkMulColor.b = 0.35f;
 		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
 		UpRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+
+		if (true == A_HeadRenderPtr->IsUpdate())
+		{
+			A_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+			B_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+			C_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
+		}
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -113,6 +120,13 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 
 		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 		UpRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+
+		if (true == A_HeadRenderPtr->IsUpdate())
+		{
+			A_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+			B_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+			C_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
+		}
 	}
 }
 
@@ -585,6 +599,7 @@ void GrimMatchstick::ActorInitSetting()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Outro").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Intro").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Loop").GetFullPath());
@@ -649,6 +664,26 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Ph3_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase3");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Intro_End").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Idle_Body").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Idle_Head_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Idle_Head_B").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Ph3_Idle_Head_C").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -671,6 +706,11 @@ void GrimMatchstick::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Idle", .SpriteName = "Dragon_Ph2_Idle", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Death", .SpriteName = "Dragon_Ph2_Death", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 
+		RenderPtr->CreateAnimation({ .AnimationName = "Ph3_Intro", .SpriteName = "Ph3_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ph3_Intro_Loop", .SpriteName = "Ph3_Intro_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ph3_Intro_End", .SpriteName = "Ph3_Intro_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Ph3_Idle_Body", .SpriteName = "Ph3_Idle_Body", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
+
 		RenderPtr->ChangeAnimation("Dragon_Intro");
 	}
 
@@ -678,8 +718,9 @@ void GrimMatchstick::ActorInitSetting()
 	{
 		EyeRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		EyeRenderPtr->CreateAnimation({ .AnimationName = "SFX_EyesAttack", .SpriteName = "SFX_EyesAttack", .FrameInter = 0.03f, .Loop = true , .ScaleToTexture = true });
-		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Intro", .SpriteName = "Dragon_Ph2_Tounge_Intro", .FrameInter = 0.03f, .Loop = false , .ScaleToTexture = true });
+		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Intro", .SpriteName = "Dragon_Ph2_Tounge_Intro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
 		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Intro_Loop", .SpriteName = "Dragon_Ph2_Tounge_Intro_Loop", .FrameInter = 0.1f, .Loop = true , .ScaleToTexture = true });
+		EyeRenderPtr->CreateAnimation({ .AnimationName = "Dragon_Ph2_Tounge_Outro", .SpriteName = "Dragon_Ph2_Tounge_Outro", .FrameInter = 0.07f, .Loop = false , .ScaleToTexture = true });
 		EyeRenderPtr->GetTransform()->SetLocalPosition({ -55, 300 });
 		EyeRenderPtr->ChangeAnimation("SFX_EyesAttack");
 		EyeRenderPtr->Off();
@@ -690,6 +731,30 @@ void GrimMatchstick::ActorInitSetting()
 		UpRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_000.png");
 		UpRenderPtr->Off();
+	}
+
+	if (nullptr == C_HeadRenderPtr)
+	{
+		C_HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		C_HeadRenderPtr->CreateAnimation({ .AnimationName = "Ph3_Idle_Head_C", .SpriteName = "Ph3_Idle_Head_C", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		C_HeadRenderPtr->ChangeAnimation("Ph3_Idle_Head_C");
+		C_HeadRenderPtr->Off();
+	}
+
+	if (nullptr == B_HeadRenderPtr)
+	{
+		B_HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		B_HeadRenderPtr->CreateAnimation({ .AnimationName = "Ph3_Idle_Head_B", .SpriteName = "Ph3_Idle_Head_B", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true }); C_HeadRenderPtr->ChangeAnimation("Ph3_Idle_Head_C");
+		B_HeadRenderPtr->ChangeAnimation("Ph3_Idle_Head_B");
+		B_HeadRenderPtr->Off();
+	}
+
+	if (nullptr == A_HeadRenderPtr)
+	{
+		A_HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		A_HeadRenderPtr->CreateAnimation({ .AnimationName = "Ph3_Idle_Head_A", .SpriteName = "Ph3_Idle_Head_A", .FrameInter = 0.05f, .Loop = true , .ScaleToTexture = true });
+		A_HeadRenderPtr->ChangeAnimation("Ph3_Idle_Head_A");
+		A_HeadRenderPtr->Off();
 	}
 
 	if (nullptr == FireRenderPtr)

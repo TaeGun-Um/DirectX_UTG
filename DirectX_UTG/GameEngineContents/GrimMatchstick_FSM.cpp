@@ -61,6 +61,21 @@ void GrimMatchstick::ChangeState(DragonState _StateValue)
 	case DragonState::Ph2_Death:
 		Ph2_DeathStart();
 		break;
+	case DragonState::Ph3_Intro:
+		Ph3_IntroStart();
+		break;
+	case DragonState::Ph3_Intro_Loop:
+		Ph3_Intro_LoopStart();
+		break;
+	case DragonState::Ph3_Intro_End:
+		Ph3_Intro_EndStart();
+		break;
+	case DragonState::Ph3_Idle:
+		Ph3_IdleStart();
+		break;
+	case DragonState::Ph3_Death:
+		Ph3_DeathStart();
+		break;
 	default:
 		break;
 	}
@@ -111,6 +126,21 @@ void GrimMatchstick::ChangeState(DragonState _StateValue)
 		break;
 	case DragonState::Ph2_Death:
 		Ph2_DeathEnd();
+		break;
+	case DragonState::Ph3_Intro:
+		Ph3_IntroEnd();
+		break;
+	case DragonState::Ph3_Intro_Loop:
+		Ph3_Intro_LoopEnd();
+		break;
+	case DragonState::Ph3_Intro_End:
+		Ph3_Intro_EndEnd();
+		break;
+	case DragonState::Ph3_Idle:
+		Ph3_IdleEnd();
+		break;
+	case DragonState::Ph3_Death:
+		Ph3_DeathEnd();
 		break;
 	default:
 		break;
@@ -165,6 +195,21 @@ void GrimMatchstick::UpdateState(float _DeltaTime)
 		break;
 	case DragonState::Ph2_Death:
 		Ph2_DeathUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph3_Intro:
+		Ph3_IntroUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph3_Intro_Loop:
+		Ph3_Intro_LoopUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph3_Intro_End:
+		Ph3_Intro_EndUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph3_Idle:
+		Ph3_IdleUpdate(_DeltaTime);
+		break;
+	case DragonState::Ph3_Death:
+		Ph3_DeathUpdate(_DeltaTime);
 		break;
 	default:
 		break;
@@ -598,6 +643,7 @@ void GrimMatchstick::Ph2_IdleEnd()
 
 void GrimMatchstick::Ph2_DeathStart()
 {
+	FireRenderPtr->Off();
 	BodyCollisionPtr->Off();
 	EXCollisionPtr->Off();
 
@@ -611,6 +657,7 @@ void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 	UpRenderSetting_Death();
 
 	ExplosionTime += _DeltaTime;
+	Ph2DeathDelayTime += _DeltaTime;
 
 	if (0.4f <= ExplosionTime)
 	{
@@ -618,10 +665,21 @@ void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 		Player::MainPlayer->StartCameraShaking(6);
 		CreateDeathExplosion(_DeltaTime);
 	}
+
+	if (3.0f <= Ph2DeathDelayTime)
+	{
+		EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Outro", false);
+	}
+
+	if (true == EyeRenderPtr->FindAnimation("Dragon_Ph2_Tounge_Outro")->IsEnd())
+	{
+		ChangeState(DragonState::Ph3_Intro);
+		return;
+	}
 }
 void GrimMatchstick::Ph2_DeathEnd()
 {
-	UpRenderPtr->Off();
+	Ph2DeathDelayTime = 0.0f;
 	ExplosionTime = 0.0f;
 }
 
@@ -719,4 +777,121 @@ void GrimMatchstick::UpRenderSetting()
 	{
 		UpRenderPtr->SetScaleToTexture("Ph2_IdleUp_000.png");
 	}
+}
+
+void GrimMatchstick::Ph3_Intro_CountFunction()
+{
+	Ph3IntroCount += 1;
+}
+
+void GrimMatchstick::Ph3_IntroStart()
+{
+	EyeRenderPtr->Off();
+	UpRenderPtr->Off();
+	Plus_BodyCollisionPtr->Off();
+	Plus_EXCollisionPtr->Off();
+	Plus_BodyCollisionRenderPtr->Off();
+	Plus_EXCollisionRenderPtr->Off();
+
+	RenderPtr->ChangeAnimation("Ph3_Intro");
+
+	float4 RenderCurPos = RenderPtr->GetTransform()->GetLocalPosition();
+
+	RenderPtr->GetTransform()->SetLocalPosition({ ( RenderCurPos.x + 170.0f ), ( RenderCurPos.y + 110.0f ), RenderCurPos.z });
+
+	Ph3IdlePosition = RenderPtr->GetTransform()->GetLocalPosition();
+}
+void GrimMatchstick::Ph3_IntroUpdate(float _DeltaTime)
+{
+	if (7 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ (Ph3IdlePosition.x - 60.0f), (Ph3IdlePosition.y - 150.0f), Ph3IdlePosition.z });
+	}
+	else if (6 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ (Ph3IdlePosition.x - 40.0f), (Ph3IdlePosition.y - 110.0f), Ph3IdlePosition.z });
+	}
+	else if (5 == RenderPtr->GetCurrentFrame())
+	{
+		RenderPtr->GetTransform()->SetLocalPosition({ (Ph3IdlePosition.x - 20.0f), (Ph3IdlePosition.y - 70.0f), Ph3IdlePosition.z });
+	}
+
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(DragonState::Ph3_Intro_Loop);
+		return;
+	}
+}
+void GrimMatchstick::Ph3_IntroEnd()
+{
+
+}
+
+void GrimMatchstick::Ph3_Intro_LoopStart()
+{
+	RenderPtr->ChangeAnimation("Ph3_Intro_Loop");
+
+	Ph3IntroCount = 0;
+
+	RenderPtr->SetAnimationStartEvent("Ph3_Intro_Loop", 7, std::bind(&GrimMatchstick::Ph3_Intro_CountFunction, this));
+}
+void GrimMatchstick::Ph3_Intro_LoopUpdate(float _DeltaTime)
+{
+	Ph2DeathDelayTime += _DeltaTime;
+
+	if (5 <= Ph3IntroCount)
+	{
+		ChangeState(DragonState::Ph3_Intro_End);
+		return;
+	}
+}
+void GrimMatchstick::Ph3_Intro_LoopEnd()
+{
+
+}
+
+void GrimMatchstick::Ph3_Intro_EndStart()
+{
+	RenderPtr->ChangeAnimation("Ph3_Intro_End");
+}
+void GrimMatchstick::Ph3_Intro_EndUpdate(float _DeltaTime)
+{
+	if (true == RenderPtr->IsAnimationEnd())
+	{
+		ChangeState(DragonState::Ph3_Idle);
+		return;
+	}
+}
+void GrimMatchstick::Ph3_Intro_EndEnd()
+{
+
+}
+
+void GrimMatchstick::Ph3_IdleStart()
+{
+	RenderPtr->ChangeAnimation("Ph3_Idle_Body");
+	A_HeadRenderPtr->On();
+	B_HeadRenderPtr->On();
+	C_HeadRenderPtr->On();
+}
+void GrimMatchstick::Ph3_IdleUpdate(float _DeltaTime)
+{
+
+}
+void GrimMatchstick::Ph3_IdleEnd()
+{
+
+}
+
+void GrimMatchstick::Ph3_DeathStart()
+{
+
+}
+void GrimMatchstick::Ph3_DeathUpdate(float _DeltaTime)
+{
+
+}
+void GrimMatchstick::Ph3_DeathEnd()
+{
+
 }

@@ -20,6 +20,12 @@ enum class DragonState
 	Ph2_Intro,
 	Ph2_Idle,
 	Ph2_Death,
+
+	Ph3_Intro,
+	Ph3_Intro_Loop,
+	Ph3_Intro_End,
+	Ph3_Idle,
+	Ph3_Death,
 };
 
 enum class FireRenderState
@@ -87,6 +93,10 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> EyeRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FireRenderPtr = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> A_HeadRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> B_HeadRenderPtr = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> C_HeadRenderPtr = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> Plus_BodyCollisionRenderPtr = nullptr;
@@ -126,6 +136,7 @@ private:
 	float4 RingProjectilePostion = float4::Zero;
 	float4 InitPosition = float4::Zero;
 	float4 MoveAccel = float4::Zero;
+	float4 Ph3IdlePosition = float4::Zero;
 
 	float RingRotationZ = 0.0f;
 	float RingSpawnDelayTime = 0.0f;
@@ -133,6 +144,8 @@ private:
 	float FireWaitingTime = 0.0f;
 	float FireWorkSpawnDelayTime = 0.0f;
 	float ExplosionTime = 0.0f;
+	float Ph2DeathDelayTime = 0.0f;
+
 	bool IsTailSpawn = false;
 	bool RingReverse = false;
 	bool RingCreate = false;
@@ -156,12 +169,14 @@ private:
 	int PeashootCount = 0;
 	int MeteorMax = 0;
 	int PeashootMax = 0;
+	int Ph3IntroCount = 0;
 
 	void Phase1_ChangeStateCountFunction();
 	void Phase1_MeteorCountFunction();
 	void Phase1_PeashootCountFunction();
 	void Phase1_MeteorMaxCountFunction();
 	void Phase1_PeashootMaxCountFunction();
+	void Ph3_Intro_CountFunction();
 
 	void ChangeState(DragonState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -225,6 +240,26 @@ private:
 	void Ph2_DeathStart();
 	void Ph2_DeathUpdate(float _DeltaTime);
 	void Ph2_DeathEnd();
+
+	void Ph3_IntroStart();
+	void Ph3_IntroUpdate(float _DeltaTime);
+	void Ph3_IntroEnd();
+
+	void Ph3_Intro_LoopStart();
+	void Ph3_Intro_LoopUpdate(float _DeltaTime);
+	void Ph3_Intro_LoopEnd();
+
+	void Ph3_Intro_EndStart();
+	void Ph3_Intro_EndUpdate(float _DeltaTime);
+	void Ph3_Intro_EndEnd();
+
+	void Ph3_IdleStart();
+	void Ph3_IdleUpdate(float _DeltaTime);
+	void Ph3_IdleEnd();
+
+	void Ph3_DeathStart();
+	void Ph3_DeathUpdate(float _DeltaTime);
+	void Ph3_DeathEnd();
 
 	void ChangeState_FireRender(FireRenderState _StateValue);
 	void UpdateState_FireRender(float _DeltaTime);
