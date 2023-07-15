@@ -20,12 +20,6 @@ enum class DragonState
 	Ph2_Intro,
 	Ph2_Idle,
 	Ph2_Death,
-
-	Ph3_Intro,
-	Ph3_Intro_Loop,
-	Ph3_Intro_End,
-	Ph3_Idle,
-	Ph3_Death,
 };
 
 enum class FireRenderState
@@ -109,7 +103,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> Plus_EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> FireCollisionPtr = nullptr;
 
-	float HP = 405.0f;
+	float HP = 400.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;
@@ -176,7 +170,6 @@ private:
 	void Phase1_PeashootCountFunction();
 	void Phase1_MeteorMaxCountFunction();
 	void Phase1_PeashootMaxCountFunction();
-	void Ph3_Intro_CountFunction();
 
 	void ChangeState(DragonState _StateValue);
 	void UpdateState(float _DeltaTime);
@@ -240,26 +233,6 @@ private:
 	void Ph2_DeathStart();
 	void Ph2_DeathUpdate(float _DeltaTime);
 	void Ph2_DeathEnd();
-
-	void Ph3_IntroStart();
-	void Ph3_IntroUpdate(float _DeltaTime);
-	void Ph3_IntroEnd();
-
-	void Ph3_Intro_LoopStart();
-	void Ph3_Intro_LoopUpdate(float _DeltaTime);
-	void Ph3_Intro_LoopEnd();
-
-	void Ph3_Intro_EndStart();
-	void Ph3_Intro_EndUpdate(float _DeltaTime);
-	void Ph3_Intro_EndEnd();
-
-	void Ph3_IdleStart();
-	void Ph3_IdleUpdate(float _DeltaTime);
-	void Ph3_IdleEnd();
-
-	void Ph3_DeathStart();
-	void Ph3_DeathUpdate(float _DeltaTime);
-	void Ph3_DeathEnd();
 
 	void ChangeState_FireRender(FireRenderState _StateValue);
 	void UpdateState_FireRender(float _DeltaTime);
