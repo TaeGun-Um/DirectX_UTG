@@ -47,11 +47,6 @@ void OverworldLevel::Start()
 
 void OverworldLevel::Update(float _DeltaTime)
 {
-	{
-		FrogEnd = true;
-		MouseEnd = true;
-	}
-
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("TutorialLevel");
