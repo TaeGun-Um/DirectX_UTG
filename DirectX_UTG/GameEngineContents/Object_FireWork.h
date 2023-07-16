@@ -45,7 +45,7 @@ public:
 
 	void SetCollisionRenderOff()
 	{
-		BodyCollisionRenderPtr->On();
+		BodyCollisionRenderPtr->Off();
 	}
 
 protected:
