@@ -98,15 +98,18 @@ void OverworldLevel::BuildingFlagOn()
 		BuildingDataBase::MousePtr->FlagUpSetting();
 		PlayerObject->WinFSMSetting();
 	}
+
+	if (true == DragonEnd && 1 == DragonEndCount)
+	{
+		DragonEndCount = 0;
+		BuildingDataBase::DragonPtr->InterActionOff();
+		BuildingDataBase::DragonPtr->FlagUpSetting();
+		PlayerObject->WinFSMSetting();
+	}
 }
 
 void OverworldLevel::LevelChangeStart()
 {
-	//if (nullptr == FEffect)
-	//{
-	//	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
-	//}
-	
 	// ÄÝ¸Ê¿ë
 	if (nullptr == GameEngineTexture::Find("Overworld_ColMap.png"))
 	{

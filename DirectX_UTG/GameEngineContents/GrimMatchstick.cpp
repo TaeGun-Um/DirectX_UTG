@@ -36,24 +36,37 @@ void GrimMatchstick::Start()
 
 void GrimMatchstick::Update(float _DeltaTime)
 {
-	//if (true == IsDebugRender)
-	//{
-	//	if (true == BodyCollisionPtr->IsUpdate())
-	//	{
-	//		BodyCollisionRenderPtr->On();
-	//		EXCollisionRenderPtr->On();
-	//	}
-	//	else
-	//	{
-	//		BodyCollisionRenderPtr->Off();
-	//		EXCollisionRenderPtr->Off();
-	//	}
-	//}
-	//else
-	//{
-	//	BodyCollisionRenderPtr->Off();
-	//	EXCollisionRenderPtr->Off();
-	//}
+	if (true == IsDebugRender)
+	{
+		if (true == BodyCollisionPtr->IsUpdate())
+		{
+			BodyCollisionRenderPtr->On();
+			EXCollisionRenderPtr->On();
+		}
+		else
+		{
+			BodyCollisionRenderPtr->Off();
+			EXCollisionRenderPtr->Off();
+		}
+
+		if (true == Plus_BodyCollisionPtr->IsUpdate())
+		{
+			Plus_BodyCollisionRenderPtr->On();
+			Plus_BodyCollisionRenderPtr->On();
+		}
+		else
+		{
+			Plus_BodyCollisionRenderPtr->Off();
+			Plus_BodyCollisionRenderPtr->Off();
+		}
+	}
+	else
+	{
+		BodyCollisionRenderPtr->Off();
+		EXCollisionRenderPtr->Off();
+		Plus_BodyCollisionRenderPtr->Off();
+		Plus_BodyCollisionRenderPtr->Off();
+	}
 
 	if (false == IsSpawn)
 	{
@@ -103,13 +116,6 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 		BlinkMulColor.b = 0.35f;
 		RenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
 		UpRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
-
-		if (true == A_HeadRenderPtr->IsUpdate())
-		{
-			A_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
-			B_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
-			C_HeadRenderPtr->ColorOptionValue.MulColor += BlinkMulColor;
-		}
 	}
 
 	if (BlinkTime >= 0.1f)
@@ -120,13 +126,6 @@ void GrimMatchstick::HitBlink(float _DeltaTime)
 
 		RenderPtr->ColorOptionValue.MulColor = OriginMulColor;
 		UpRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
-
-		if (true == A_HeadRenderPtr->IsUpdate())
-		{
-			A_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
-			B_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
-			C_HeadRenderPtr->ColorOptionValue.MulColor = OriginMulColor;
-		}
 	}
 }
 
@@ -587,7 +586,7 @@ void GrimMatchstick::ActorInitSetting()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_007.png").GetFullPath());
 	}
 
-	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge"))
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge_Intro"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -737,7 +736,7 @@ void GrimMatchstick::ActorInitSetting()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("GreenLine.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
-		//BodyCollisionRenderPtr->Off();
+		BodyCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == EXCollisionPtr)
@@ -755,7 +754,7 @@ void GrimMatchstick::ActorInitSetting()
 		EXCollisionRenderPtr->GetTransform()->SetLocalPosition(EXCollisionPtr->GetTransform()->GetLocalPosition());
 		EXCollisionRenderPtr->SetTexture("RedLine.png");
 		EXCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
-		//EXCollisionRenderPtr->Off();
+		EXCollisionRenderPtr->Off();
 	}
 
 	if (nullptr == Plus_BodyCollisionPtr)

@@ -30,7 +30,7 @@ void Dragon_BackGround::Start()
 {
 	BackGroundPtr = this;
 
-	if (nullptr == GameEngineTexture::Find("mouse_bg_bullet_a.png"))
+	if (nullptr == GameEngineTexture::Find("Dragon_Background_Sky_Normal.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");
@@ -75,18 +75,18 @@ void Dragon_BackGround::Start()
 		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Foreground_Clouds_003.png").GetFullPath());
 	}
 
-	//if (nullptr == GameEngineSprite::Find("Tower_Light"))
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
-	//	NewDir.Move("Image");
-	//	NewDir.Move("Level");
-	//	NewDir.Move("2_Grim_Matchstick");
-	//	NewDir.Move("Tower");
+	if (nullptr == GameEngineSprite::Find("Tower_Light"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Tower");
 
-	//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
-	//}
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
+	}
 
 	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Dash"))
 	{
@@ -166,12 +166,12 @@ void Dragon_BackGround::Start()
 		DragonDashRenderPtr->Off();
 	}
 
-	//if (nullptr == TowerRenderPtr)
-	//{
-	//	TowerRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-	//	TowerRenderPtr->CreateAnimation({ .AnimationName = "Tower_Light", .SpriteName = "Tower_Light", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
-	//	TowerRenderPtr->ChangeAnimation("Tower_Light");
-	//}
+	if (nullptr == TowerRenderPtr)
+	{
+		TowerRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
+		TowerRenderPtr->CreateAnimation({ .AnimationName = "Tower_Light", .SpriteName = "Tower_Light", .FrameInter = 0.1f, .Loop = true, .ScaleToTexture = true });
+		TowerRenderPtr->ChangeAnimation("Tower_Light");
+	}
 
 	if (nullptr == Low_FrontCloudRenderPtr_One)
 	{
@@ -236,8 +236,6 @@ void Dragon_BackGround::Start()
 		Low_FrontCloudStartPosition_Two = Low_FrontCloudRenderPtr_Two->GetTransform()->GetLocalPosition();
 		Low_FrontCloudLerpPosition_Two = Low_FrontCloudStartPosition_Two - float4{ Low_FrontCloudScale.x, 0 };
 	}
-
-	//HBSCControl(BackRenderPtr_Bullet1, 0.45f, 0.6f, 0.49f);
 }
 
 void Dragon_BackGround::Update(float _DeltaTime)

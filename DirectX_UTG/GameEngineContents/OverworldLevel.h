@@ -38,6 +38,11 @@ public:
 		MouseEnd = true;
 	}
 
+	bool GetIsGameEnd()
+	{
+		return true == FrogEnd && true == DragonEnd && true == MouseEnd;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

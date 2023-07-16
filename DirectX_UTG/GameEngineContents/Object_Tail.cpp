@@ -4,6 +4,9 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "DragonLevel.h"
+#include "You_Died.h"
+
 Object_Tail::Object_Tail() 
 {
 }
@@ -36,12 +39,17 @@ void Object_Tail::Start()
 		BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(BodyCollisionPtr->GetTransform()->GetLocalPosition());
 		BodyCollisionRenderPtr->SetTexture("RedBox.png");
 		BodyCollisionRenderPtr->ColorOptionValue.MulColor.a = 0.7f;
-		//BodyCollisionRenderPtr->Off();
+		BodyCollisionRenderPtr->Off();
 	}
 }
 
 void Object_Tail::Update(float _DeltaTime)
 {
+	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	MoveCalculation(_DeltaTime);
 	DeathCheck();
 }

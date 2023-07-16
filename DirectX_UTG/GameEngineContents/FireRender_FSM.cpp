@@ -142,7 +142,6 @@ void GrimMatchstick::Object_Fire_WaitingEnd()
 void GrimMatchstick::Object_Fire_IntroStart()
 {
 	FireCollisionPtr->On();
-	FireCollisionRenderPtr->On();
 
 	FireRenderPtr->ChangeAnimation("Object_Fire_Intro");
 }
@@ -177,7 +176,6 @@ void GrimMatchstick::Object_Fire_LoopUpdate(float _DeltaTime)
 void GrimMatchstick::Object_Fire_LoopEnd()
 {
 	FireCollisionPtr->Off();
-	FireCollisionRenderPtr->Off();
 }
 
 void GrimMatchstick::Object_Fire_OutroStart()

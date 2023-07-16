@@ -87,10 +87,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> EyeRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> FireRenderPtr = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> A_HeadRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> B_HeadRenderPtr = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> C_HeadRenderPtr = nullptr;
-
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> Plus_BodyCollisionRenderPtr = nullptr;
@@ -103,7 +99,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> Plus_EXCollisionPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> FireCollisionPtr = nullptr;
 
-	float HP = 400.0f;
+	float HP = 700.0f;
 	bool IsDebugRender = false;
 	bool IsStageEnd = false;
 	bool IsBlink = false;

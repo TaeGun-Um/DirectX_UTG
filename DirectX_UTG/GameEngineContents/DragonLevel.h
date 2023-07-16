@@ -48,6 +48,7 @@ protected:
 private:
 	std::shared_ptr<class Dragon_BackGround> BackGroundObject = nullptr;
 	std::shared_ptr<class Dragon_FrontGround> FrontGroundObject = nullptr;
+	std::shared_ptr<class Dragon_FallPoint> FallPointObject = nullptr;
 
 	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject0 = nullptr;
 	std::shared_ptr<class Dragon_CloudPlatform> CloudPlatformObject1 = nullptr;

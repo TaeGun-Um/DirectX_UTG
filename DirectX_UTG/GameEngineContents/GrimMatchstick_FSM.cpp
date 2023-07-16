@@ -238,7 +238,7 @@ void GrimMatchstick::IdleStart()
 }
 void GrimMatchstick::IdleUpdate(float _DeltaTime)
 {
-	//if (700.0f >= HP)
+	if (300.0f >= HP)
 	{
 		IsTailSpawn = true;
 		BodyCollisionPtr->Off();
@@ -500,9 +500,6 @@ void GrimMatchstick::Ph2_Intro_LoopStart()
 	Plus_EXCollisionPtr->GetTransform()->SetLocalScale({ 300, 120 });
 	Plus_EXCollisionPtr->GetTransform()->SetLocalPosition({ 0, -200, -50 });
 
-	Plus_BodyCollisionRenderPtr->On();
-	Plus_EXCollisionRenderPtr->On();
-
 	Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_BodyCollisionPtr->GetTransform()->GetLocalScale());
 	Plus_BodyCollisionRenderPtr->GetTransform()->SetLocalPosition(Plus_BodyCollisionPtr->GetTransform()->GetLocalPosition());
 	Plus_EXCollisionRenderPtr->GetTransform()->SetLocalScale(Plus_EXCollisionPtr->GetTransform()->GetLocalScale());
@@ -568,7 +565,7 @@ void GrimMatchstick::Ph2_IdleStart()
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
-	if (400.0f >= HP)
+	if (true == IsStageEnd)
 	{
 		ChangeState(DragonState::Ph2_Death);
 		return;
@@ -619,11 +616,6 @@ void GrimMatchstick::Ph2_DeathUpdate(float _DeltaTime)
 		ExplosionTime = 0.0f;
 		Player::MainPlayer->StartCameraShaking(6);
 		CreateDeathExplosion(_DeltaTime);
-	}
-
-	if (3.0f <= Ph2DeathDelayTime)
-	{
-		EyeRenderPtr->ChangeAnimation("Dragon_Ph2_Tounge_Outro", false);
 	}
 }
 void GrimMatchstick::Ph2_DeathEnd()

@@ -65,6 +65,15 @@ void Dragon_CloudPlatform::Start()
 
 void Dragon_CloudPlatform::Update(float _DeltaTime)
 {
+	if (true == IsDebugRender)
+	{
+		PlatformCollisionRenderPtr->On();
+	}
+	else
+	{
+		PlatformCollisionRenderPtr->Off();
+	}
+
 	CollisionCheck();
 	UpdateState(_DeltaTime);
 

@@ -50,41 +50,41 @@ void DragonLevel::Update(float _DeltaTime)
 {
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
-	//if (true == DragonObject->GetIsStageEnd() && 1 == EndSetCount)
-	//{
-	//	PlayerObject->SetStageEndHP();
-	//	EndSetCount = 0;
-	//	KnockoutPtr->StartMessage();
-	//	IsBossEnd = true;
-	//	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
-	//}
+	if (true == DragonObject->GetIsStageEnd() && 1 == EndSetCount)
+	{
+		PlayerObject->SetStageEndHP();
+		EndSetCount = 0;
+		KnockoutPtr->StartMessage();
+		IsBossEnd = true;
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 0.0f);
+	}
 
-	//if (true == IsBossEnd)
-	//{
-	//	EndTime += _DeltaTime;
+	if (true == IsBossEnd)
+	{
+		EndTime += _DeltaTime;
 
-	//	if (true == KnockoutPtr->GetIsEnd())
-	//	{
-	//		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+		if (true == KnockoutPtr->GetIsEnd())
+		{
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
 
-	//		if (EndTime >= 4.5f && 1 == EndSetCount2)
-	//		{
-	//			EndSetCount2 = 0;
-	//			BlackBoxPtr->BoxSettingReset();
-	//			BlackBoxPtr->SetEnter();
-	//		}
-	//	}
+			if (EndTime >= 4.5f && 1 == EndSetCount2)
+			{
+				EndSetCount2 = 0;
+				BlackBoxPtr->BoxSettingReset();
+				BlackBoxPtr->SetEnter();
+			}
+		}
 
-	//	if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
-	//	{
-	//		IsDragonLevelEnd = true;
-	//		OverworldLevel::OverworldLevelPtr->SetMouseEnd();
-	//		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
-	//		GameEngineCore::ChangeLevel("LoadingLevel");
-	//	}
+		if (true == BlackBoxPtr->GetIsEnd() && 0 == EndSetCount2)
+		{
+			IsDragonLevelEnd = true;
+			OverworldLevel::OverworldLevelPtr->SetDragonEnd();
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
+		}
 
-	//	return;
-	//}
+		return;
+	}
 
 	////////////////////////////////////////// Player Death //////////////////////////////////////////
 
@@ -150,7 +150,7 @@ void DragonLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("BossHpDown"))
 	{
-		//
+		DragonObject->GrimMatchstickPtr->BossHPDown();
 	}
 }
 
@@ -246,8 +246,11 @@ void DragonLevel::LevelChangeStart()
 	}
 
 	{
-		std::shared_ptr<class Dragon_FallPoint> FallPointObject = CreateActor<Dragon_FallPoint>();
-		FallPointObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 330, PlayMapHeight_Half - 300 , -10 });
+		if (nullptr == FallPointObject)
+		{
+			FallPointObject = CreateActor<Dragon_FallPoint>();
+			FallPointObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 330, PlayMapHeight_Half - 300 , -10 });
+		}
 	}
 
 
@@ -277,14 +280,6 @@ void DragonLevel::LevelChangeStart()
 		DragonObject->GetTransform()->SetLocalPosition({ 1150 , 300, -1 });
 	}
 
-	//{
-	//	if (nullptr == FrontMapObject)
-	//	{
-	//		FrontMapObject = CreateActor<Mouse_FrontObject>();
-	//	}
-
-	//	FrontMapObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half, PlayMapHeight_Half, -4 });
-	//}
 	{
 		if (nullptr == ThisColMap)
 		{
@@ -421,31 +416,187 @@ void DragonLevel::LevelChangeEnd()
 		GameEngineSprite::UnLoad("Ready_WALLOP");
 	}
 
-	CloudPlatformObject0->Death();
-	CloudPlatformObject1->Death();
-	CloudPlatformObject2->Death();
-	CloudPlatformObject3->Death();
-	CloudPlatformObject4->Death();
-	CloudPlatformObject5->Death();
-	CloudPlatformObject6->Death();
-	CloudPlatformObject7->Death();
-	CloudPlatformObject8->Death();
+	if (nullptr != GameEngineSprite::Find("Dragon_Idle"))
+	{
+		GameEngineSprite::UnLoad("Dragon_Intro");
+		GameEngineSprite::UnLoad("Dragon_Idle");
 
-	CloudPlatformObject0 = nullptr;
-	CloudPlatformObject1 = nullptr;
-	CloudPlatformObject2 = nullptr;
-	CloudPlatformObject3 = nullptr;
-	CloudPlatformObject4 = nullptr;
-	CloudPlatformObject5 = nullptr;
-	CloudPlatformObject6 = nullptr;
-	CloudPlatformObject7 = nullptr;
-	CloudPlatformObject8 = nullptr;
+		GameEngineSprite::UnLoad("Dragon_MeteorAttack_Intro");
+		GameEngineSprite::UnLoad("Dragon_MeteorAttack_Intro_Loop");
+		GameEngineSprite::UnLoad("Dragon_MeteorAttack_Shoot_Front");
+		GameEngineSprite::UnLoad("Dragon_MeteorAttack_Shoot_LollBack");
+		GameEngineSprite::UnLoad("Dragon_MeteorAttack_Outro");
 
-	ReadyWallopCount = 1;
-	ReadyWallopTime = 0.0f;
-	CardObject->CartUIReset();
-	PlayerObject->MoveAbleTimeReset();
-	CloudMoveCount = 1;
+		GameEngineSprite::UnLoad("Dragon_PeashotAttack_Intro");
+		GameEngineSprite::UnLoad("Dragon_PeashotAttack_Shoot");
+		GameEngineSprite::UnLoad("Dragon_PeashotAttack_Outro");
+	}
+	if (nullptr != GameEngineSprite::Find("Dragon_Ph2_Idle"))
+	{
+		GameEngineSprite::UnLoad("Dragon_Ph2_Intro_Loop");
+		GameEngineSprite::UnLoad("Dragon_Ph2_Intro");
+		GameEngineSprite::UnLoad("Dragon_Ph2_Idle");
+		GameEngineSprite::UnLoad("Dragon_Ph2_Death");
+	}
+
+	if (nullptr != GameEngineTexture::Find("Ph2_IdleUp_000.png"))
+	{
+		GameEngineTexture::UnLoad("Ph2_IdleUp_000.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_001.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_002.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_003.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_004.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_005.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_006.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_007.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_008.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_009.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_010.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_011.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_012.png");
+		GameEngineTexture::UnLoad("Ph2_IdleUp_013.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Ph2_DeathUp_000.png"))
+	{
+		GameEngineTexture::UnLoad("Ph2_DeathUp_000.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_001.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_002.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_003.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_004.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_005.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_006.png");
+		GameEngineTexture::UnLoad("Ph2_DeathUp_007.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Dragon_Ph2_Tounge_Intro"))
+	{
+		GameEngineSprite::UnLoad("Dragon_Ph2_Tounge_Intro");
+		GameEngineSprite::UnLoad("Dragon_Ph2_Tounge_Intro_Loop");
+		GameEngineSprite::UnLoad("Dragon_Ph2_Tounge_Outro");
+		GameEngineSprite::UnLoad("Object_Fire_Intro");
+		GameEngineSprite::UnLoad("Object_Fire_Loop");
+		GameEngineSprite::UnLoad("Object_Fire_Outro");
+		GameEngineSprite::UnLoad("Object_FireSmoke_Intro");
+		GameEngineSprite::UnLoad("Object_FireSmoke_Loop");
+		GameEngineSprite::UnLoad("Object_FireSmoke_Outro");
+		GameEngineSprite::UnLoad("SFX_AttackSmoke_A");
+		GameEngineSprite::UnLoad("SFX_AttackSmoke_B");
+	}
+	if (nullptr != GameEngineSprite::Find("Object_Firework_A_Move"))
+	{
+		GameEngineSprite::UnLoad("Object_Firework_Leader");
+		GameEngineSprite::UnLoad("Object_Firework_A_Move");
+		GameEngineSprite::UnLoad("Object_Firework_B_Move");
+		GameEngineSprite::UnLoad("Object_Firework_C_Move");
+		GameEngineSprite::UnLoad("Object_Firework_C_Jump_Intro");
+		GameEngineSprite::UnLoad("Object_Firework_C_Jump_Inter");
+		GameEngineSprite::UnLoad("Object_Firework_C_Jump_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Object_GreenRing"))
+	{
+		GameEngineSprite::UnLoad("Object_GreenRing");
+		GameEngineSprite::UnLoad("Object_PinkRing");
+		GameEngineSprite::UnLoad("SFX_EyesAttack");
+
+		GameEngineSprite::UnLoad("Object_Meteor");
+		GameEngineSprite::UnLoad("SFX_MeteorSmoke");
+
+		GameEngineSprite::UnLoad("Object_Tail");
+	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineSprite::UnLoad("Explosion");
+	}
+
+	if (nullptr != GameEngineTexture::Find("Dragon_Foreground_Clouds_001.png"))
+	{
+		GameEngineTexture::UnLoad("Dragon_Foreground_Clouds_001.png");
+		GameEngineTexture::UnLoad("Dragon_Foreground_Clouds_002.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_ColMap.png"))
+	{
+		GameEngineTexture::UnLoad("Dragon_ColMap.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Cloud_Platform_Idle"))
+	{
+		GameEngineSprite::UnLoad("Cloud_Platform_Idle");
+		GameEngineSprite::UnLoad("Standing_Intro");
+		GameEngineSprite::UnLoad("Standing_Outro");
+		GameEngineSprite::UnLoad("Standing_Idle");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Background_Sky_Normal.png"))
+	{
+		GameEngineTexture::UnLoad("Dragon_Background_Sky_Normal.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Background_Clouds1.png"))
+	{
+		GameEngineTexture::UnLoad("Dragon_Background_Clouds1.png");
+		GameEngineTexture::UnLoad("Dragon_Background_Clouds2.png");
+		GameEngineTexture::UnLoad("Dragon_Background_Clouds3.png");
+		GameEngineTexture::UnLoad("Dragon_Background_Clouds4.png");
+		GameEngineTexture::UnLoad("Dragon_Background_Clouds5.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Foreground_Clouds_003.png"))
+	{
+		GameEngineTexture::UnLoad("Dragon_Foreground_Clouds_003.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Tower_Light"))
+	{
+		GameEngineSprite::UnLoad("Tower_Light");
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Dash"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Dash").GetFullPath());
+	}
+
+	{
+		ReadyWallopCount = 1;
+		ReadyWallopTime = 0.0f;
+		EndTime = 0.0f;
+		IsBossEnd = false;
+		IsDragonLevelEnd = false;
+		IsPlayerEnd = false;
+		EndSetCount = 1;
+		EndSetCount2 = 1;
+
+		CardObject->CartUIReset();
+		PlayerObject->MoveAbleTimeReset();
+		CloudMoveCount = 1;
+
+		CloudPlatformObject0->Death();
+		CloudPlatformObject1->Death();
+		CloudPlatformObject2->Death();
+		CloudPlatformObject3->Death();
+		CloudPlatformObject4->Death();
+		CloudPlatformObject5->Death();
+		CloudPlatformObject6->Death();
+		CloudPlatformObject7->Death();
+		CloudPlatformObject8->Death();
+
+		CloudPlatformObject0 = nullptr;
+		CloudPlatformObject1 = nullptr;
+		CloudPlatformObject2 = nullptr;
+		CloudPlatformObject3 = nullptr;
+		CloudPlatformObject4 = nullptr;
+		CloudPlatformObject5 = nullptr;
+		CloudPlatformObject6 = nullptr;
+		CloudPlatformObject7 = nullptr;
+		CloudPlatformObject8 = nullptr;
+
+		DragonObject->Death();
+		FallPointObject->Death();
+
+		DragonObject = nullptr;
+		FallPointObject = nullptr;
+	}
 }
 
 void DragonLevel::ReLoadSetting()
@@ -499,6 +650,134 @@ void DragonLevel::ReLoadSetting()
 	{
 		GameEngineSprite::ReLoad("Ready_WALLOP");
 	}
+
+	if (nullptr != GameEngineSprite::Find("Dragon_Idle"))
+	{
+		GameEngineSprite::ReLoad("Dragon_Intro");
+		GameEngineSprite::ReLoad("Dragon_Idle");
+
+		GameEngineSprite::ReLoad("Dragon_MeteorAttack_Intro");
+		GameEngineSprite::ReLoad("Dragon_MeteorAttack_Intro_Loop");
+		GameEngineSprite::ReLoad("Dragon_MeteorAttack_Shoot_Front");
+		GameEngineSprite::ReLoad("Dragon_MeteorAttack_Shoot_LollBack");
+		GameEngineSprite::ReLoad("Dragon_MeteorAttack_Outro");
+
+		GameEngineSprite::ReLoad("Dragon_PeashotAttack_Intro");
+		GameEngineSprite::ReLoad("Dragon_PeashotAttack_Shoot");
+		GameEngineSprite::ReLoad("Dragon_PeashotAttack_Outro");
+	}
+	if (nullptr != GameEngineSprite::Find("Dragon_Ph2_Idle"))
+	{
+		GameEngineSprite::ReLoad("Dragon_Ph2_Intro_Loop");
+		GameEngineSprite::ReLoad("Dragon_Ph2_Intro");
+		GameEngineSprite::ReLoad("Dragon_Ph2_Idle");
+		GameEngineSprite::ReLoad("Dragon_Ph2_Death");
+	}
+
+	if (nullptr != GameEngineTexture::Find("Ph2_IdleUp_000.png"))
+	{
+		GameEngineTexture::ReLoad("Ph2_IdleUp_000.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_001.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_002.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_003.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_004.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_005.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_006.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_007.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_008.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_009.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_010.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_011.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_012.png");
+		GameEngineTexture::ReLoad("Ph2_IdleUp_013.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Ph2_DeathUp_000.png"))
+	{
+		GameEngineTexture::ReLoad("Ph2_DeathUp_000.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_001.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_002.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_003.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_004.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_005.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_006.png");
+		GameEngineTexture::ReLoad("Ph2_DeathUp_007.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Dragon_Ph2_Tounge_Intro"))
+	{
+		GameEngineSprite::ReLoad("Dragon_Ph2_Tounge_Intro");
+		GameEngineSprite::ReLoad("Dragon_Ph2_Tounge_Intro_Loop");
+		GameEngineSprite::ReLoad("Dragon_Ph2_Tounge_Outro");
+		GameEngineSprite::ReLoad("Object_Fire_Intro");
+		GameEngineSprite::ReLoad("Object_Fire_Loop");
+		GameEngineSprite::ReLoad("Object_Fire_Outro");
+		GameEngineSprite::ReLoad("Object_FireSmoke_Intro");
+		GameEngineSprite::ReLoad("Object_FireSmoke_Loop");
+		GameEngineSprite::ReLoad("Object_FireSmoke_Outro");
+		GameEngineSprite::ReLoad("SFX_AttackSmoke_A");
+		GameEngineSprite::ReLoad("SFX_AttackSmoke_B");
+	}
+	if (nullptr != GameEngineSprite::Find("Object_Firework_A_Move"))
+	{
+		GameEngineSprite::ReLoad("Object_Firework_Leader");
+		GameEngineSprite::ReLoad("Object_Firework_A_Move");
+		GameEngineSprite::ReLoad("Object_Firework_B_Move");
+		GameEngineSprite::ReLoad("Object_Firework_C_Move");
+		GameEngineSprite::ReLoad("Object_Firework_C_Jump_Intro");
+		GameEngineSprite::ReLoad("Object_Firework_C_Jump_Inter");
+		GameEngineSprite::ReLoad("Object_Firework_C_Jump_Loop");
+	}
+	if (nullptr != GameEngineSprite::Find("Object_GreenRing"))
+	{
+		GameEngineSprite::ReLoad("Object_GreenRing");
+		GameEngineSprite::ReLoad("Object_PinkRing");
+		GameEngineSprite::ReLoad("SFX_EyesAttack");
+
+		GameEngineSprite::ReLoad("Object_Meteor");
+		GameEngineSprite::ReLoad("SFX_MeteorSmoke");
+
+		GameEngineSprite::ReLoad("Object_Tail");
+	}
+	if (nullptr != GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineSprite::ReLoad("Explosion");
+	}
+
+	if (nullptr != GameEngineTexture::Find("Dragon_Foreground_Clouds_001.png"))
+	{
+		GameEngineTexture::ReLoad("Dragon_Foreground_Clouds_001.png");
+		GameEngineTexture::ReLoad("Dragon_Foreground_Clouds_002.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_ColMap.png"))
+	{
+		GameEngineTexture::ReLoad("Dragon_ColMap.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Cloud_Platform_Idle"))
+	{
+		GameEngineSprite::ReLoad("Cloud_Platform_Idle");
+		GameEngineSprite::ReLoad("Standing_Intro");
+		GameEngineSprite::ReLoad("Standing_Outro");
+		GameEngineSprite::ReLoad("Standing_Idle");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Background_Sky_Normal.png"))
+	{
+		GameEngineTexture::ReLoad("Dragon_Background_Sky_Normal.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Background_Clouds1.png"))
+	{
+		GameEngineTexture::ReLoad("Dragon_Background_Clouds1.png");
+		GameEngineTexture::ReLoad("Dragon_Background_Clouds2.png");
+		GameEngineTexture::ReLoad("Dragon_Background_Clouds3.png");
+		GameEngineTexture::ReLoad("Dragon_Background_Clouds4.png");
+		GameEngineTexture::ReLoad("Dragon_Background_Clouds5.png");
+	}
+	if (nullptr != GameEngineTexture::Find("Dragon_Foreground_Clouds_003.png"))
+	{
+		GameEngineTexture::ReLoad("Dragon_Foreground_Clouds_003.png");
+	}
+	if (nullptr != GameEngineSprite::Find("Tower_Light"))
+	{
+		GameEngineSprite::ReLoad("Tower_Light");
+	}
 }
 
 void DragonLevel::PlayerDebugRenderOn()
@@ -525,6 +804,22 @@ void DragonLevel::LevelDebugOn()
 	{
 		DragonObject->DebugRenderOn();
 	}
+	if (nullptr != FallPointObject)
+	{
+		FallPointObject->DebugRenderOn();
+	}
+	if (nullptr != CloudPlatformObject0)
+	{
+		CloudPlatformObject0->DebugRenderOn();
+		CloudPlatformObject1->DebugRenderOn();
+		CloudPlatformObject2->DebugRenderOn();
+		CloudPlatformObject3->DebugRenderOn();
+		CloudPlatformObject4->DebugRenderOn();
+		CloudPlatformObject5->DebugRenderOn();
+		CloudPlatformObject6->DebugRenderOn();
+		CloudPlatformObject7->DebugRenderOn();
+		CloudPlatformObject8->DebugRenderOn();
+	}
 }
 void DragonLevel::LevelDebugOff()
 {
@@ -535,5 +830,21 @@ void DragonLevel::LevelDebugOff()
 	if (nullptr != DragonObject)
 	{
 		DragonObject->DebugRenderOff();
+	}
+	if (nullptr != FallPointObject)
+	{
+		FallPointObject->DebugRenderOff();
+	}
+	if (nullptr != CloudPlatformObject0)
+	{
+		CloudPlatformObject0->DebugRenderOff();
+		CloudPlatformObject1->DebugRenderOff();
+		CloudPlatformObject2->DebugRenderOff();
+		CloudPlatformObject3->DebugRenderOff();
+		CloudPlatformObject4->DebugRenderOff();
+		CloudPlatformObject5->DebugRenderOff();
+		CloudPlatformObject6->DebugRenderOff();
+		CloudPlatformObject7->DebugRenderOff();
+		CloudPlatformObject8->DebugRenderOff();
 	}
 }

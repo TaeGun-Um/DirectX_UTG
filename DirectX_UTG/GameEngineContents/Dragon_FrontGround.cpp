@@ -26,9 +26,7 @@ void Dragon_FrontGround::HBSCControl(std::shared_ptr<class GameEngineSpriteRende
 
 void Dragon_FrontGround::Start()
 {
-	//MouseBackObjectPtr = this;
-
-	if (nullptr == GameEngineTexture::Find("mouse_bg_bullet_a.png"))
+	if (nullptr == GameEngineTexture::Find("Dragon_Foreground_Clouds_001.png"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("CupHead_Resource");

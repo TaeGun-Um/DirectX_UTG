@@ -203,7 +203,6 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			//GameEngineCore::ChangeLevel("MouseLevel");
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::MouseLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
@@ -221,7 +220,6 @@ void BuildingDataBase::InterAction()
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
-			//GameEngineCore::ChangeLevel("FrogLevel");
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::FrogLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
@@ -229,10 +227,19 @@ void BuildingDataBase::InterAction()
 	break;
 	case BuildingValue::Dragon:
 	{
-		NextLevelPortal = false;
-		Player_Overworld::MainPlayer->SetIsPortalingfalse();
-		Player_Overworld::MainPlayer->PlayerCollisionPtrOn();
-		MsgTextBox("Dragon");
+		if (1 == BlackBoxCount)
+		{
+			BlackBoxCount = 0;
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
+			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
+		}
+
+		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
+		{
+			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
+			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::DragonLevel);
+			GameEngineCore::ChangeLevel("LoadingLevel");
+		}
 	}
 	break;
 	case BuildingValue::Zeplin:

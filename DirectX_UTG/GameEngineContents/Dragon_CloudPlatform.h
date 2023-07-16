@@ -37,6 +37,16 @@ public:
 		IsInit = true;
 	}
 
+	void DebugRenderOn()
+	{
+		IsDebugRender = true;
+	}
+
+	void DebugRenderOff()
+	{
+		IsDebugRender = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
@@ -56,6 +66,7 @@ private:
 	bool IsStanding = false;
 	bool IsMove = false;
 	bool IsInit = false;
+	bool IsDebugRender = false;
 
 	void CollisionCheck();
 

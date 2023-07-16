@@ -3,6 +3,9 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "DragonLevel.h"
+#include "You_Died.h"
+
 SFX_MeteorSmoke::SFX_MeteorSmoke() 
 {
 }
@@ -23,6 +26,11 @@ void SFX_MeteorSmoke::Start()
 
 void SFX_MeteorSmoke::Update(float _DeltaTime)
 {
+	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	if (true == RenderPtr->IsAnimationEnd())
 	{
 		Death();

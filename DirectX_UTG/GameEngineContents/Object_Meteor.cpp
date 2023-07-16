@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "SFX_MeteorSmoke.h"
+#include "DragonLevel.h"
+#include "You_Died.h"
 
 Object_Meteor::Object_Meteor() 
 {
@@ -44,6 +46,11 @@ void Object_Meteor::Start()
 
 void Object_Meteor::Update(float _DeltaTime)
 {
+	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	MoveCalculation(_DeltaTime);
 	DeathCheck();
 	CreateSmoke(_DeltaTime);

@@ -9,6 +9,7 @@
 #include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
 
+#include "OverworldLevel.h"
 #include "Loading.h"
 
 LoadingLevel* LoadingLevel::LoadingLevelPtr = nullptr;
@@ -51,6 +52,11 @@ void LoadingLevel::LevelChangeStart()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
+
+	if (true == OverworldLevel::OverworldLevelPtr->GetIsGameEnd())
+	{
+		LevelState = LevelValue::EndingLevel;
+	}
 
 	TextureLoadLevelSelect();
 
@@ -2774,6 +2780,285 @@ void DragonTexture(GameEngineThread* Thread)
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("EX_ChargeUp").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("ParryEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("HitSFX").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase1");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Idle").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Shoot_Front").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Shoot_LollBack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_MeteorAttack_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Shoot").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_PeashotAttack_Outro").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Death").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Ph2_IdleUp_000.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+		NewDir.Move("Dragon_Ph2_Idle_T");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_000.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_007.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_008.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_009.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_010.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_011.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_012.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_IdleUp_013.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Ph2_DeathUp_000.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+		NewDir.Move("Dragon_Ph2_Death_T");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_000.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_002.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_003.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_004.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_005.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_006.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Ph2_DeathUp_007.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Tounge_Intro"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Intro_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Tounge_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Fire_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Loop").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_FireSmoke_Outro").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_A").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_AttackSmoke_B").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Object_Firework_A_Move"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_Leader").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_A_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_B_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Move").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Inter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Firework_C_Jump_Loop").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Object_GreenRing"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase1");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_GreenRing").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_PinkRing").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_EyesAttack").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Meteor").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SFX_MeteorSmoke").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_Tail").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Explosion"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("Tutorial_Normal");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Explosion").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dragon_Foreground_Clouds_001.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("FrontClouds");
+		NewDir.Move("FrontWhite");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Foreground_Clouds_001.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Foreground_Clouds_002.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dragon_ColMap.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_ColMap.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Cloud_Platform_Idle"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Cloud_Platform");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Cloud_Platform_Idle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Standing_Intro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Standing_Outro").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Standing_Idle").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dragon_Background_Sky_Normal.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Background");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Sky_Normal.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dragon_Background_Clouds1.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("BackClouds");
+		NewDir.Move("Cloud_White");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Clouds1.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Clouds2.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Clouds3.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Clouds4.png").GetFullPath());
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Background_Clouds5.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineTexture::Find("Dragon_Foreground_Clouds_003.png"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("FrontClouds");
+		NewDir.Move("FrontWhite");
+
+		GameEngineTexture::Load(NewDir.GetPlusFileName("Dragon_Foreground_Clouds_003.png").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Tower_Light"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Tower");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Tower_Light").GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("Dragon_Ph2_Dash"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Character");
+		NewDir.Move("2_Grim_Matchstick");
+		NewDir.Move("Phase2");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Dragon_Ph2_Dash").GetFullPath());
 	}
 
 	IsTextureLoadEnd = true;

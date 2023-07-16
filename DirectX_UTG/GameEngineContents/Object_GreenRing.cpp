@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
+#include "DragonLevel.h"
+#include "You_Died.h"
 
 Object_GreenRing::Object_GreenRing() 
 {
@@ -63,6 +65,11 @@ void Object_GreenRing::Start()
 
 void Object_GreenRing::Update(float _DeltaTime)
 {
+	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	if (true == IsParryProjectile)
 	{
 		IsParryProjectile = false;

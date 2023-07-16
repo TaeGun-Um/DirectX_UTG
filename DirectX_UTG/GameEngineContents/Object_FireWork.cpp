@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
+#include "DragonLevel.h"
+#include "You_Died.h"
 
 Object_FireWork::Object_FireWork() 
 {
@@ -92,6 +94,11 @@ void Object_FireWork::Start()
 
 void Object_FireWork::Update(float _DeltaTime)
 {
+	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
+	{
+		Death();
+	}
+
 	UpdateState(_DeltaTime);
 	DeathCheck();
 }
