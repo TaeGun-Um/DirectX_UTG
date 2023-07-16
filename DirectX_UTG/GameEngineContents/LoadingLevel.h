@@ -50,6 +50,7 @@ private:
 	LevelValue LevelState = LevelValue::First_OpeningLevel;
 
 	float EndTime = 0.0f; // Å×½ºÆ®
+	bool GameEndSet = false;
 
 	void LevelChange();
 	void TextureLoadLevelSelect();

@@ -53,8 +53,9 @@ void LoadingLevel::LevelChangeStart()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -620.0f });
 
-	if (true == OverworldLevel::OverworldLevelPtr->GetIsGameEnd())
+	if (true == OverworldLevel::OverworldLevelPtr->GetIsGameEnd() && false == GameEndSet)
 	{
+		GameEndSet = true;
 		LevelState = LevelValue::EndingLevel;
 	}
 

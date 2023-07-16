@@ -53,6 +53,19 @@ void BookEndRender::Start()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Page_18-End").GetFullPath());
 	}
 
+	if (nullptr == GameEngineSprite::Find("Arrow"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Image");
+		NewDir.Move("Level");
+		NewDir.Move("UI");
+		NewDir.Move("TextBox");
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Arrow").GetFullPath());
+	}
+
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -66,19 +79,6 @@ void BookEndRender::Start()
 		RenderPtr->CreateAnimation({ .AnimationName = "Page_18-End", .SpriteName = "Page_18-End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Page_12-13");
-	}
-
-	if (nullptr == GameEngineSprite::Find("Arrow"))
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Image");
-		NewDir.Move("Level");
-		NewDir.Move("UI");
-		NewDir.Move("TextBox");
-
-		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Arrow").GetFullPath());
 	}
 
 	if (nullptr == ArrowRenderPtr)

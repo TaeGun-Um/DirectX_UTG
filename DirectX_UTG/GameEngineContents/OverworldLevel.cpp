@@ -47,6 +47,11 @@ void OverworldLevel::Start()
 
 void OverworldLevel::Update(float _DeltaTime)
 {
+	{
+		FrogEnd = true;
+		MouseEnd = true;
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("TutorialLevel");
@@ -351,7 +356,6 @@ void OverworldLevel::LevelChangeEnd()
 		GameEngineTexture::UnLoad("speech_balloon_tail_0001.png");
 		GameEngineTexture::UnLoad("speech_balloon_tail_0004.png");
 		GameEngineTexture::UnLoad("speech_balloon_tail_0009.png");
-		GameEngineSprite::UnLoad("Arrow");
 	}
 	if (nullptr != GameEngineSprite::Find("Dust_A.png"))
 	{
@@ -479,7 +483,6 @@ void OverworldLevel::ReLoadSetting()
 		GameEngineTexture::ReLoad("speech_balloon_tail_0001.png");
 		GameEngineTexture::ReLoad("speech_balloon_tail_0004.png");
 		GameEngineTexture::ReLoad("speech_balloon_tail_0009.png");
-		GameEngineSprite::ReLoad("Arrow");
 	}
 	if (nullptr != GameEngineSprite::Find("DD_Idle"))
 	{
