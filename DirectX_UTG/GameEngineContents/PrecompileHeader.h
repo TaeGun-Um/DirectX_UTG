@@ -10,3 +10,4 @@
 #include "ContentsEnum.h"
 
 #include <GameEngineCore/GameEngineDebug3D.h>
+#include <GameEnginePlatform/GameEngineSound.h>

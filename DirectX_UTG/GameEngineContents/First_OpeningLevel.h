@@ -36,6 +36,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 	std::shared_ptr<class Title_Background> BackgroundObject = nullptr;
 	std::shared_ptr<class TitleMenu> TitleMenuObject = nullptr;

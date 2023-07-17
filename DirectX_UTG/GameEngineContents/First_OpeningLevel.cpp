@@ -37,6 +37,20 @@ void First_OpeningLevel::Start()
 	First_OpeningLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("CupHead_Sound");
+		NewDir.Move("Opening");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("MDHR_LOGO_STING.wav").GetFullPath());
+
+		BGMPlayer = GameEngineSound::Play("MDHR_LOGO_STING.wav");
+	}
+	
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
