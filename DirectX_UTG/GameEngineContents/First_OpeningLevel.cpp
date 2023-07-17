@@ -43,8 +43,7 @@ void First_OpeningLevel::Start()
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Sound");
-		NewDir.Move("CupHead_Sound");
-		NewDir.Move("Opening");
+		NewDir.Move("OpeningMenu");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("MDHR_LOGO_STING.wav").GetFullPath());
 
