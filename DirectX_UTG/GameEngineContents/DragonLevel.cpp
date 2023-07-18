@@ -45,9 +45,26 @@ void DragonLevel::Start()
 	DragonLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("2_Grim_Matchstick");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Fiery Frolic.mp3").GetFullPath());
+	}
 }
 void DragonLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Fiery Frolic.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
 	if (true == DragonObject->GetIsStageEnd() && 1 == EndSetCount)
@@ -366,6 +383,8 @@ void DragonLevel::LevelChangeStart()
 
 void DragonLevel::LevelChangeEnd()
 {
+	BGMPlayer.Stop();
+
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
@@ -558,6 +577,7 @@ void DragonLevel::LevelChangeEnd()
 	}
 
 	{
+		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
 		EndTime = 0.0f;

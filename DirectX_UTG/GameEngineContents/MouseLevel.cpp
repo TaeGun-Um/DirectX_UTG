@@ -44,9 +44,26 @@ void MouseLevel::Start()
 	MouseLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("3_Werner_Werman");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Murine Corps.mp3").GetFullPath());
+	}
 }
 void MouseLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Murine Corps.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
 	if (true == MouseObject->GetIsStageEnd() && 1 == EndSetCount)
@@ -311,6 +328,8 @@ void MouseLevel::LevelChangeStart()
 
 void MouseLevel::LevelChangeEnd()
 {
+	BGMPlayer.Stop();
+
 	if (nullptr != GameEngineTexture::Find("Peashooter_Spawn.png"))
 	{
 		GameEngineSprite::UnLoad("Peashooter_Spawn.png");
@@ -634,6 +653,7 @@ void MouseLevel::LevelChangeEnd()
 	}
 
 	{
+		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
 		EndTime = 0.0f;

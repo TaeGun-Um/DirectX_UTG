@@ -44,6 +44,10 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class Frog_FrontObject> FrontObject = nullptr;
 	std::shared_ptr<class Frog_Map> MapObject = nullptr;
 	std::shared_ptr<class Frog_ColMap> ThisColMap = nullptr;

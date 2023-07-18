@@ -46,6 +46,10 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class Mouse_Map> MapObject = nullptr;
 	std::shared_ptr<class Mouse_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class Mouse_FrontObject> FrontMapObject = nullptr;

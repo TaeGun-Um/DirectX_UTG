@@ -52,9 +52,26 @@ void FrogLevel::Start()
 	FrogLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("1_Ribby_and_Croaks");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Clip Joint Calamity.mp3").GetFullPath());
+	}
 }
 void FrogLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Clip Joint Calamity.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	////////////////////////////////////////// Boss Clear //////////////////////////////////////////
 
 	if (true == CroakObject->GetIsStageEnd() && 1 == EndSetCount)
@@ -338,6 +355,8 @@ void FrogLevel::LevelChangeStart()
 
 void FrogLevel::LevelChangeEnd()
 {
+	BGMPlayer.Stop();
+
 	if (nullptr != GameEngineTexture::Find("Backstage_1.png"))
 	{
 		GameEngineTexture::UnLoad("Backstage_1.png");
@@ -560,6 +579,7 @@ void FrogLevel::LevelChangeEnd()
 	}
 
 	{
+		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
 		EndTime = 0.0f;

@@ -46,6 +46,10 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class Dragon_BackGround> BackGroundObject = nullptr;
 	std::shared_ptr<class Dragon_FrontGround> FrontGroundObject = nullptr;
 	std::shared_ptr<class Dragon_FallPoint> FallPointObject = nullptr;
