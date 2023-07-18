@@ -279,6 +279,15 @@ void OverworldLevel::LevelChangeStart()
 }
 void OverworldLevel::LevelChangeEnd()
 {
+	bool playing = false;
+
+	BGMPlayer.isPlaying(&playing);
+
+	if (true == playing)
+	{
+		BGMPlayer.Stop();
+	}
+
 	if (nullptr != GameEngineTexture::Find("Overworld_Map.png"))
 	{
 		GameEngineTexture::UnLoad("Overworld_Map.png");

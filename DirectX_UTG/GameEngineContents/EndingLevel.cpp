@@ -88,6 +88,15 @@ void EndingLevel::LevelChangeStart()
 
 void EndingLevel::LevelChangeEnd()
 {
+	bool playing = false;
+
+	BGMPlayer.isPlaying(&playing);
+
+	if (true == playing)
+	{
+		BGMPlayer.Stop();
+	}
+
 	if (nullptr != GameEngineSprite::Find("Page_12-13"))
 	{
 		GameEngineSprite::UnLoad("Page_12-13");

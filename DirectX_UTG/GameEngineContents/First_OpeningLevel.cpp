@@ -206,6 +206,18 @@ void First_OpeningLevel::LevelChangeStart()
 }
 void First_OpeningLevel::LevelChangeEnd()
 {
+	if (true == IsBGMOn)
+	{
+		bool playing = false;
+
+		BGMPlayer.isPlaying(&playing);
+
+		if (true == playing)
+		{
+			BGMPlayer.Stop();
+		}
+	}
+
 	if (nullptr != GameEngineSprite::Find("Cuphead_and_Mugman"))
 	{
 		GameEngineSprite::UnLoad("Cuphead_and_Mugman");
@@ -230,8 +242,6 @@ void First_OpeningLevel::LevelChangeEnd()
 	}
 
 	{
-		BGMPlayer.Stop();
-
 		IsBGMOn = false;
 		IsBGMLoopOn = false;
 		NextStep1 = false;

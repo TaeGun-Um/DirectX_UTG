@@ -221,6 +221,15 @@ void WaitingRoomLevel::LevelChangeStart()
 
 void WaitingRoomLevel::LevelChangeEnd()
 {
+	bool playing = false;
+
+	BGMPlayer.isPlaying(&playing);
+
+	if (true == playing)
+	{
+		BGMPlayer.Stop();
+	}
+
 	if (nullptr != GameEngineTexture::Find("WaitingRoom_Background.png"))
 	{
 		GameEngineTexture::UnLoad("WaitingRoom_Background.png");

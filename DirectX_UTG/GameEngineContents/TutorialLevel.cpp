@@ -219,6 +219,15 @@ void TutorialLevel::LevelChangeStart()
 }
 void TutorialLevel::LevelChangeEnd()
 {
+	bool playing = false;
+
+	BGMPlayer.isPlaying(&playing);
+
+	if (true == playing)
+	{
+		BGMPlayer.Stop();
+	}
+
 	if (nullptr != GameEngineTexture::Find("Tutorial_BackLayer_001.png"))
 	{
 		GameEngineTexture::UnLoad("Tutorial_BackLayer_001.png");

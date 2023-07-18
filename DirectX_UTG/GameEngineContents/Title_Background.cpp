@@ -60,7 +60,7 @@ void Title_Background::Start()
 	if (nullptr == RenderPtr1)
 	{
 		RenderPtr1 = CreateComponent<GameEngineSpriteRenderer>();
-		RenderPtr1->CreateAnimation({ .AnimationName = "Cuphead_and_Mugman", .SpriteName = "Cuphead_and_Mugman", .FrameInter = 0.05f, .ScaleToTexture = true });
+		RenderPtr1->CreateAnimation({ .AnimationName = "Cuphead_and_Mugman", .SpriteName = "Cuphead_and_Mugman", .FrameInter = 0.04f, .ScaleToTexture = true });
 		RenderPtr1->ChangeAnimation("Cuphead_and_Mugman");
 		RenderPtr1->GetTransform()->AddWorldPosition({ 50, -60 });
 		RenderPtr1->Off();

@@ -116,6 +116,18 @@ void Second_OpeningLevel::LevelChangeStart()
 
 void Second_OpeningLevel::LevelChangeEnd()
 {
+	if (true == IsBGMOn)
+	{
+		bool playing = false;
+
+		BGMPlayer.isPlaying(&playing);
+
+		if (true == playing)
+		{
+			BGMPlayer.Stop();
+		}
+	}
+
 	if (nullptr != GameEngineSprite::Find("Page_01"))
 	{
 		GameEngineSprite::UnLoad("Page_01");
