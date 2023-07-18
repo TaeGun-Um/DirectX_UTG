@@ -60,7 +60,6 @@ void AppleTraveller::TextBoxOn(float _DeltaTime)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
 			TextBoxSetting();
-			
 		}
 		else if (TextEndCount <= TextCount)
 		{

@@ -84,6 +84,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
+	bool IsEnterMessageSound = false;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr;
 

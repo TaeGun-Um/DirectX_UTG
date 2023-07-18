@@ -2249,7 +2249,7 @@ void Player::PlayerInitialSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ex_Up", .SpriteName = "Ex_Up", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		// Interaction & Intro
-		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "ElderKettleInteraction", .SpriteName = "ElderKettleInteraction", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Flex", .SpriteName = "Intro_Flex", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Intro_Regular", .SpriteName = "Intro_Regular", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Portal", .SpriteName = "Portal", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });

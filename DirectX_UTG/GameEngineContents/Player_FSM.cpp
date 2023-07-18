@@ -2196,6 +2196,8 @@ void Player::ElderKettleInterActionStart()
 	PopInterAction = false;
 	RenderPtr->ChangeAnimation("ElderKettleInteraction");
 	RenderPtr->GetTransform()->SetLocalPosition({ -55, 140 });
+
+	EffectPlayer = GameEngineSound::Play("player_powerup_01.wav");
 }
 void Player::ElderKettleInterActionUpdate(float _DeltaTime)
 {

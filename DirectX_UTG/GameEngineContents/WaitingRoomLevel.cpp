@@ -44,6 +44,7 @@ void WaitingRoomLevel::Start()
 		NewDir.Move("WattingRoom");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Elder Kettle.mp3").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("platform_trampoline_bounce_07.wav").GetFullPath());
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_001.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_002.wav").GetFullPath());
@@ -80,6 +81,27 @@ void WaitingRoomLevel::Start()
 		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_013.wav").GetFullPath());
 		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_014.wav").GetFullPath());
 		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_015.wav").GetFullPath());
+	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("No_Classification");
+		NewDir.Move("Menu");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Locked.wav").GetFullPath());
+	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Player");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_powerup_01.wav").GetFullPath());
 	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)

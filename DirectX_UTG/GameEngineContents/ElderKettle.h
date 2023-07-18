@@ -58,6 +58,7 @@ protected:
 private:
 	GameEngineSoundPlayer EffectPlayer;
 
+	bool IsEnterMessageSound = false;
 	bool SoundInit = false;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
@@ -71,6 +72,8 @@ private:
 
 	bool IsDebugRender = false;
 
+	void BottleAppearSound();
+	void BottleFXSound();
 	void TalkSound();
 	void ActorInitSetting();
 	void CollisionCheck(float _DeltaTime);

@@ -223,6 +223,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PeashooterRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ChargeUpRenderPtr = nullptr;

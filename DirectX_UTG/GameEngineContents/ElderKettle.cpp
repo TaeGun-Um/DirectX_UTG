@@ -144,6 +144,12 @@ void ElderKettle::CollisionCheck(float _DeltaTime)
 
 void ElderKettle::EnterMessageScaleUp(float _DeltaTime)
 {
+	if (false == IsEnterMessageSound)
+	{
+		IsEnterMessageSound = true;
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_BubbleAppear.wav");
+	}
+
 	ScaleCheckStart = true;
 	ScaleMinTime = 0.0f;
 	EnterMessageRenderPtr->On();
@@ -161,6 +167,12 @@ void ElderKettle::EnterMessageScaleDown(float _DeltaTime)
 	if (false == ScaleCheckStart)
 	{
 		return;
+	}
+
+	if (true == IsEnterMessageSound)
+	{
+		IsEnterMessageSound = false;
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_BubbleDisappear.wav");
 	}
 
 	ScaleMaxTime = 0.0f;
@@ -725,6 +737,19 @@ void ElderKettle::ActorInitSetting()
 
 	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
 	NPC_TextBoxRender->Off();
+
+	BottleRenderPtr->SetAnimationStartEvent("Bottle_Appear", 0, std::bind(&ElderKettle::BottleAppearSound, this));
+	BottleRenderPtr->SetAnimationStartEvent("Bottle_FX", 0, std::bind(&ElderKettle::BottleFXSound, this));
+}
+
+void ElderKettle::BottleAppearSound()
+{
+	EffectPlayer = GameEngineSound::Play("platform_trampoline_bounce_07.wav");
+}
+
+void ElderKettle::BottleFXSound()
+{
+	EffectPlayer = GameEngineSound::Play("Menu_Locked.wav");
 }
 
 void ElderKettle::TalkSound()

@@ -118,6 +118,12 @@ void Player_Overworld::PlayerDebugRenderer()
 
 void Player_Overworld::EnterMessageScaleUp(float _DeltaTime)
 {
+	if (false == IsEnterMessageSound)
+	{
+		IsEnterMessageSound = true;
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_BubbleAppear.wav");
+	}
+
 	ScaleCheckStart = true;
 	ScaleMinTime = 0.0f;
 	EnterMessageRenderPtr->On();
@@ -144,6 +150,12 @@ void Player_Overworld::EnterMessageScaleDown(float _DeltaTime)
 	if (false == ScaleCheckStart)
 	{
 		return;
+	}
+
+	if (true == IsEnterMessageSound)
+	{
+		IsEnterMessageSound = false;
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_BubbleDisappear.wav");
 	}
 
 	ScaleMaxTime = 0.0f;
