@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "BookRender.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -62,17 +63,17 @@ void BookRender::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_01", .SpriteName = "Page_01", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_01-02", .SpriteName = "Page_01-02", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_02-03", .SpriteName = "Page_02-03", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_03-04", .SpriteName = "Page_03-04", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_04-05", .SpriteName = "Page_04-05", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_05-06", .SpriteName = "Page_05-06", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_06-07", .SpriteName = "Page_06-07", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_07-08", .SpriteName = "Page_07-08", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_08-09", .SpriteName = "Page_08-09", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_09-10", .SpriteName = "Page_09-10", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_10-11", .SpriteName = "Page_10-11", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_01", .SpriteName = "Page_01", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_01-02", .SpriteName = "Page_01-02", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_02-03", .SpriteName = "Page_02-03", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_03-04", .SpriteName = "Page_03-04", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_04-05", .SpriteName = "Page_04-05", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_05-06", .SpriteName = "Page_05-06", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_06-07", .SpriteName = "Page_06-07", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_07-08", .SpriteName = "Page_07-08", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_08-09", .SpriteName = "Page_08-09", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_09-10", .SpriteName = "Page_09-10", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_10-11", .SpriteName = "Page_10-11", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Page_01");
 	}
@@ -101,7 +102,36 @@ void BookRender::Start()
 	}
 
 	HBSCControl(RenderPtr, 0.5f, 0.6f, 0.5f);
+
+	{
+		RenderPtr->SetAnimationStartEvent("Page_02-03", 10, std::bind(&BookRender::IntroDIceRollSound, this));
+		RenderPtr->SetAnimationStartEvent("Page_04-05", 10, std::bind(&BookRender::IntroDevilLaughSound, this));
+		RenderPtr->SetAnimationStartEvent("Page_05-06", 10, std::bind(&BookRender::IntroDIceRollSound, this));
+		RenderPtr->SetAnimationStartEvent("Page_06-07", 10, std::bind(&BookRender::IntroDevilSlamSound, this));
+		RenderPtr->SetAnimationStartEvent("Page_09-10", 10, std::bind(&BookRender::IntroDevilKickSound, this));
+	}
 }
+
+void BookRender::IntroDIceRollSound()
+{
+	EffectPlayer = GameEngineSound::Play("intro_dice_roll.wav");
+}
+
+void BookRender::IntroDevilSlamSound()
+{
+	EffectPlayer = GameEngineSound::Play("intro_devil_slam.wav");
+}
+
+void BookRender::IntroDevilLaughSound()
+{
+	EffectPlayer = GameEngineSound::Play("intro_devil_laugh.wav");
+}
+
+void BookRender::IntroDevilKickSound()
+{
+	EffectPlayer = GameEngineSound::Play("intro_devil_kick.wav");
+}
+
 void BookRender::Update(float _DeltaTime)
 {
 	if (true == RenderPtr->FindAnimation("Page_01")->IsEnd() && 0 == Page)
@@ -111,6 +141,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_01-02");
 		}
@@ -123,6 +156,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_02-03");
 		}
@@ -135,6 +171,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_03-04");
 		}
@@ -147,6 +186,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_04-05");
 		}
@@ -159,6 +201,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_05-06");
 		}
@@ -171,6 +216,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_06-07");
 		}
@@ -183,6 +231,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_07-08");
 		}
@@ -195,6 +246,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_08-09");
 		}
@@ -207,6 +261,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_09-10");
 		}
@@ -219,6 +276,9 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_10-11");
 		}
@@ -231,7 +291,26 @@ void BookRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
 			IsEnd = true;
 		}
+	}
+}
+
+void BookRender::RandPageturnSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_03.wav");
 	}
 }

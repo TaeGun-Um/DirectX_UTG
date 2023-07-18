@@ -70,7 +70,6 @@ void GameEngineSoundPlayer::SoundFadeOut(double _Time, float _Volume, bool _IsSt
 
 //////////////////////////// GameEngineSound ////////////////////////////
 
-// FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고
 FMOD::System* SoundSystem = nullptr;
 
 std::unordered_map<std::string, std::shared_ptr<GameEngineSound>> GameEngineSound::AllSound;

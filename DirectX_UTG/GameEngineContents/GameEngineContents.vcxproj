@@ -439,6 +439,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="OldFilm.h" />
+    <ClInclude Include="Opening_BlackBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="OverworldGUI.h">
       <SubType>
       </SubType>
@@ -908,6 +912,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="OldFilm.cpp" />
+    <ClCompile Include="Opening_BlackBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="OverworldGUI.cpp">
       <SubType>
       </SubType>

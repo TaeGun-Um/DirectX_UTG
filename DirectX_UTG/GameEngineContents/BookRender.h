@@ -36,9 +36,18 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ArrowRenderPtr = nullptr;
 	
+	GameEngineSoundPlayer EffectPlayer;
+	GameEngineSoundPlayer EffectPlayer_Two;
+
 	int Page = 0;
 	static bool IsEnd;
 
+	void IntroDIceRollSound();
+	void IntroDevilSlamSound();
+	void IntroDevilLaughSound();
+	void IntroDevilKickSound();
+
+	void RandPageturnSound();
 	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast);
 };
 

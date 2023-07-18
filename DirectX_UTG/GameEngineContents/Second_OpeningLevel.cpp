@@ -30,10 +30,35 @@ void Second_OpeningLevel::Start()
 {
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Book_Cutscene");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Introduction.mp3").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("intro_dice_roll.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("intro_devil_slam.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("intro_devil_laugh.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("intro_devil_kick.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("cutscene_pageturn_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("cutscene_pageturn_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("cutscene_pageturn_03.wav").GetFullPath());
+	}
 }
 
 void Second_OpeningLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Introduction.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("First_OpeningLevel");
@@ -46,6 +71,10 @@ void Second_OpeningLevel::Update(float _DeltaTime)
 	if (true == BookRender::GetBookAnimationIsEnd() && false == IsEnd)
 	{
 		IsEnd = true;
+
+		BGMPlayer.Stop();
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
@@ -84,6 +113,7 @@ void Second_OpeningLevel::LevelChangeStart()
 		BlackBoxPtr->SetExit();
 	}
 }
+
 void Second_OpeningLevel::LevelChangeEnd()
 {
 	if (nullptr != GameEngineSprite::Find("Page_01"))
@@ -109,6 +139,7 @@ void Second_OpeningLevel::LevelChangeEnd()
 	{
 		BlackBoxPtr->BoxSettingReset();
 		IsEnd = false;
+		IsBGMOn = false;
 	}
 }
 

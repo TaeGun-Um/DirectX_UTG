@@ -34,6 +34,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> StartRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EndRenderPtr = nullptr;
 
+	GameEngineSoundPlayer EffectPlayer;
+	bool IsSound = false;
+
 	int SelectCount = 0;
 	float SelectColor = 1.0f;
 	float NoneColor = 0.3f;

@@ -70,13 +70,13 @@ void BookEndRender::Start()
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_12-13", .SpriteName = "Page_12-13", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_13-14", .SpriteName = "Page_13-14", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_14-15", .SpriteName = "Page_14-15", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_15-16", .SpriteName = "Page_15-16", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_16-17", .SpriteName = "Page_16-17", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_17-18", .SpriteName = "Page_17-18", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Page_18-End", .SpriteName = "Page_18-End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_12-13", .SpriteName = "Page_12-13", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_13-14", .SpriteName = "Page_13-14", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_14-15", .SpriteName = "Page_14-15", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_15-16", .SpriteName = "Page_15-16", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_16-17", .SpriteName = "Page_16-17", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_17-18", .SpriteName = "Page_17-18", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Page_18-End", .SpriteName = "Page_18-End", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Page_12-13");
 	}

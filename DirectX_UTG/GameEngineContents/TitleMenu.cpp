@@ -67,6 +67,8 @@ void TitleMenu::Update(float _DeltaTime)
 	
 	if (true == GameEngineInput::IsDown("TitleUp") && 0 == SelectCount)
 	{
+		IsSound = true;
+
 		Delaytiem = 0.0f;
 		SelectCount = 1;
 		EndRenderPtr->ColorOptionValue.MulColor.a = SelectColor;
@@ -74,6 +76,8 @@ void TitleMenu::Update(float _DeltaTime)
 	}
 	else if (true == GameEngineInput::IsDown("TitleDown") && 0 == SelectCount)
 	{
+		IsSound = true;
+
 		Delaytiem = 0.0f;
 		SelectCount = 1;
 		EndRenderPtr->ColorOptionValue.MulColor.a = SelectColor;
@@ -81,6 +85,8 @@ void TitleMenu::Update(float _DeltaTime)
 	}
 	else if (true == GameEngineInput::IsDown("TitleUp") && 1 == SelectCount)
 	{
+		IsSound = true;
+
 		Delaytiem = 0.0f;
 		SelectCount = 0;
 		EndRenderPtr->ColorOptionValue.MulColor.a = NoneColor;
@@ -88,12 +94,20 @@ void TitleMenu::Update(float _DeltaTime)
 	}
 	else if (true == GameEngineInput::IsDown("TitleDown") && 1 == SelectCount)
 	{
+		IsSound = true;
+
 		Delaytiem = 0.0f;
 		SelectCount = 0;
 		EndRenderPtr->ColorOptionValue.MulColor.a = NoneColor;
 		StartRenderPtr->ColorOptionValue.MulColor.a = SelectColor;
 	}
 
+	if (true == IsSound)
+	{
+		IsSound = false;
+		EffectPlayer = GameEngineSound::Play("Menu_Move.wav");
+	}
+	
 	if (true == GameEngineInput::IsDown("TitleSelect") && 0 == SelectCount)
 	{
 		IsStart = true;

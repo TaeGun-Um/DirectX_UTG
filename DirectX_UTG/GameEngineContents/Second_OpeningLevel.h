@@ -24,6 +24,11 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer EffectPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 	std::shared_ptr<class BookRender> BookRenderObject = nullptr;
 

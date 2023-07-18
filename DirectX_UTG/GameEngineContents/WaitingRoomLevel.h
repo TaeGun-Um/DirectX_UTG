@@ -29,6 +29,10 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class ElderKettle> KettleObject = nullptr;
 	std::shared_ptr<class Player> PlayerObject = nullptr;
 	std::shared_ptr<class WaitingRoom_ColMap> ThisColMap = nullptr;

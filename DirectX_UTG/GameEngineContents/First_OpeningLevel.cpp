@@ -18,6 +18,7 @@
 #include "Screen_FX.h"
 #include "MDHR_Logo.h"
 #include "Title_Background.h"
+#include "Opening_BlackBox.h"
 
 #include <GameEngineCore/BlurEffect.h>
 #include "OldFilm.h"
@@ -45,14 +46,36 @@ void First_OpeningLevel::Start()
 		NewDir.Move("Sound");
 		NewDir.Move("OpeningMenu");
 
+		GameEngineSound::Load(NewDir.GetPlusFileName("Optical_Start_001.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("MDHR_LOGO_STING.wav").GetFullPath());
-
-		BGMPlayer = GameEngineSound::Play("MDHR_LOGO_STING.wav");
+		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Equipment_Move.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Move.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Category_Select.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Don't Deal with the Devil.mp3").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Don't Deal with the Devil (Instrumental).mp3").GetFullPath());
 	}
 	
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("UISFX");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_LevelSelect_BubbleAppear.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_LevelSelect_BubbleDisappear.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_LevelSelect_DiffucultySettings_Appear.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_LevelSelect_DiffucultySettings_Hover.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_LevelSelect_StartLevel.wav").GetFullPath());
+	}
 }
 void First_OpeningLevel::Update(float _DeltaTime)
 {
+	if (false == OpeningBlackBoxObject->GetIsEnd())
+	{
+		return;
+	}
+	
 	if (true == GameEngineInput::IsDown("NextLevel"))
 	{
 		GameEngineCore::ChangeLevel("Second_OpeningLevel");
@@ -60,7 +83,27 @@ void First_OpeningLevel::Update(float _DeltaTime)
 
 	if (true == MDHR_Logo::LogoPtr->GetLogoAnimationIsEnd())
 	{
+		if (false == IsBGMOn)
+		{
+			IsBGMOn = true;
+			BGMPlayer = GameEngineSound::Play("Don't Deal with the Devil.mp3");
+		}
+
 		AccessTime += _DeltaTime;
+	}
+
+	if (true == IsBGMOn)
+	{
+		bool playing = false;
+
+		BGMPlayer.isPlaying(&playing);
+		
+		if (false == playing && false == IsBGMLoopOn)
+		{
+			IsBGMLoopOn = true;
+			BGMPlayer = GameEngineSound::Play("Don't Deal with the Devil (Instrumental).mp3");
+			BGMPlayer.SetLoop(100);
+		}
 	}
 
 	if (true == GameEngineInput::IsAnyKey() && AccessTime >= 1.0f)
@@ -71,6 +114,9 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	if (true == NextStep1 && 1 == NextStep1Count)
 	{
 		NextStep1Count = 0;
+
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
@@ -92,6 +138,10 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	if (true == TitleMenuObject->GetIsEnd() && false == EndStep)
 	{
 		EndStep = true;
+
+		BGMPlayer.Stop();
+		EffectPlayer = GameEngineSound::Play("Menu_Category_Select.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
@@ -104,13 +154,16 @@ void First_OpeningLevel::Update(float _DeltaTime)
 	if (true == TitleMenuObject->GetIsStart() && false == StartStep)
 	{
 		StartStep = true;
+
+		BGMPlayer.Stop();
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
 
 	if (true == BlackBoxPtr->GetIsEnd() && true == StartStep)
 	{
-		//GameEngineCore::ChangeLevel("Second_OpeningLevel");
 		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::Second_OpeningLevel);
 		GameEngineCore::ChangeLevel("LoadingLevel");
 	}
@@ -133,7 +186,17 @@ void First_OpeningLevel::LevelChangeStart()
 		BackgroundObject->GetTransform()->AddWorldPosition({ 0, -3 });
 	}
 	{
-		std::shared_ptr<MDHR_Logo> Object = CreateActor<MDHR_Logo>();
+		if (nullptr == MDHR_LogoObject)
+		{
+			MDHR_LogoObject = CreateActor<MDHR_Logo>();
+			MDHR_LogoObject->Off();
+		}
+	}
+	{
+		if (nullptr == OpeningBlackBoxObject)
+		{
+			OpeningBlackBoxObject = CreateActor<Opening_BlackBox>();
+		}
 	}
 	{
 		BlackBoxPtr = CreateActor<RoundBlackBox>();
@@ -167,6 +230,10 @@ void First_OpeningLevel::LevelChangeEnd()
 	}
 
 	{
+		BGMPlayer.Stop();
+
+		IsBGMOn = false;
+		IsBGMLoopOn = false;
 		NextStep1 = false;
 		NextStep1Count = 1;
 		NextStep2 = false;
@@ -176,6 +243,11 @@ void First_OpeningLevel::LevelChangeEnd()
 		StartStep = false;
 		AccessTime = 0.0f;
 		BlackBoxPtr->BoxSettingReset();
+
+		MDHR_LogoObject->Death();
+		OpeningBlackBoxObject->Death();
+		MDHR_LogoObject = nullptr;
+		OpeningBlackBoxObject = nullptr;
 	}
 }
 

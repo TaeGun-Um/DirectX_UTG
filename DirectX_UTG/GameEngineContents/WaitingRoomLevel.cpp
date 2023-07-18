@@ -35,9 +35,26 @@ void WaitingRoomLevel::Start()
 	WaitingRoomLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("WattingRoom");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Elder Kettle.mp3").GetFullPath());
+	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Elder Kettle.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("Second_OpeningLevel");
@@ -58,6 +75,8 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 		if (nullptr == PortalDoorObject)
 		{
+			BGMPlayer.Stop();
+
 			PortalDoorObject = CreateActor<PortalDoor>();
 			PortalDoorObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half - 100, -5 });
 			PortalDoorObject->SetPortalValue(PortalValue::Tutorial);

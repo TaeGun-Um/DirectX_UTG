@@ -37,10 +37,17 @@ protected:
 
 private:
 	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer EffectPlayer;
+
+	bool IsBGMOn = false;
+	bool IsBGMLoopOn = false;
 
 	std::shared_ptr<class RoundBlackBox> BlackBoxPtr = nullptr;
 	std::shared_ptr<class Title_Background> BackgroundObject = nullptr;
 	std::shared_ptr<class TitleMenu> TitleMenuObject = nullptr;
+	std::shared_ptr<class Opening_BlackBox> OpeningBlackBoxObject = nullptr;
+	std::shared_ptr<class MDHR_Logo> MDHR_LogoObject = nullptr;
+	
 
 	bool NextStep1 = false;
 	int NextStep1Count = 1;
