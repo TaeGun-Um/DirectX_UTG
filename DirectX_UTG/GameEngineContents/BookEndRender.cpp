@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "BookEndRender.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -92,7 +93,15 @@ void BookEndRender::Start()
 	}
 
 	HBSCControl(RenderPtr, 0.5f, 0.6f, 0.5f);
+
+	RenderPtr->SetAnimationStartEvent("Page_16-17", 10, std::bind(&BookEndRender::EndingCherringSound, this));
 }
+
+void BookEndRender::EndingCherringSound()
+{
+	EffectPlayer = GameEngineSound::Play("outro_cheering.wav");
+}
+
 void BookEndRender::Update(float _DeltaTime)
 {
 	if (true == RenderPtr->FindAnimation("Page_12-13")->IsEnd() && 0 == Page)
@@ -102,6 +111,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_13-14");
 		}
@@ -114,6 +126,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_14-15");
 		}
@@ -126,6 +141,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_15-16");
 		}
@@ -138,6 +156,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_16-17");
 		}
@@ -150,6 +171,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_17-18");
 		}
@@ -162,6 +186,9 @@ void BookEndRender::Update(float _DeltaTime)
 		if (true == GameEngineInput::IsDown("Next"))
 		{
 			ArrowRenderPtr->Off();
+
+			RandPageturnSound();
+
 			++Page;
 			RenderPtr->ChangeAnimation("Page_18-End");
 		}
@@ -170,5 +197,23 @@ void BookEndRender::Update(float _DeltaTime)
 	if (true == RenderPtr->FindAnimation("Page_18-End")->IsEnd() && 6 == Page)
 	{
 		IsEnd = true;
+	}
+}
+
+void BookEndRender::RandPageturnSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("cutscene_pageturn_03.wav");
 	}
 }

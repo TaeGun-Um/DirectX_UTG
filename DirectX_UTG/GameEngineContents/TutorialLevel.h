@@ -21,6 +21,11 @@ public:
 		return BlackBoxPtr;
 	}
 
+	void TutorialLevelBGMStop()
+	{
+		BGMPlayer.Stop();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -29,6 +34,10 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class HealthUI> HealthObject = nullptr;
 	std::shared_ptr<class CardUI> CardObject = nullptr;
 	std::shared_ptr<class WeaponUI> WeaponObject = nullptr;

@@ -43,10 +43,29 @@ void OverworldLevel::Start()
 	OverworldLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Overworld");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("bgm_map_world_1.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("flag_raise.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("worldmap_menu_up.wav").GetFullPath());
+	}
 }
 
 void OverworldLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("bgm_map_world_1.wav");
+		BGMPlayer.SetLoop(100);
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("TutorialLevel");
@@ -71,6 +90,11 @@ void OverworldLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("NextLevel") && 1 == DebugBoxCount)
 	{
 		DebugBoxCount = 0;
+
+		BGMPlayer.Stop();
+
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
@@ -360,6 +384,7 @@ void OverworldLevel::LevelChangeEnd()
 	}
 
 	{
+		IsBGMOn = false;
 		DebugBoxCount = 1;
 		PlayerObject->InitReset();
 

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "ElderKettle.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -66,7 +67,8 @@ void ElderKettle::TextBoxOn(float _DeltaTime)
 		{
 			FontRender->SetText(NPCScript[TextCount]);
 			TextBoxSetting();
-
+			TalkSound();
+				
 			if (7 == TextCount)
 			{
 				IsPop = true;
@@ -90,6 +92,17 @@ void ElderKettle::TextBoxOn(float _DeltaTime)
 			FontRender->SetText(NPCScript[0]);
 			TextBoxSetting();
 			Player::MainPlayer->SetElderKettleInterActioning(false);
+
+			{
+				bool playing = false;
+
+				EffectPlayer.isPlaying(&playing);
+
+				if (true == playing)
+				{
+					EffectPlayer.Stop();
+				}
+			}
 
 			if (11 == Script)
 			{
@@ -382,6 +395,7 @@ void ElderKettle::IdleUpdate(float _DeltaTime)
 
 	if (true == CreateBox)
 	{
+		TalkSound();
 		ChangeState(KettleState::TalkA);
 		return;
 	}
@@ -711,4 +725,146 @@ void ElderKettle::ActorInitSetting()
 
 	NPC_TextBoxRender = GetLevel()->CreateActor<NPC_TextBox>();
 	NPC_TextBoxRender->Off();
+}
+
+void ElderKettle::TalkSound()
+{
+	EffectPlayer.Stop();
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 11);
+	
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_001.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_002.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_003.wav");
+	}
+	else if (3 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_004.wav");
+	}
+	else if (4 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_005.wav");
+	}
+	else if (5 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_006.wav");
+	}
+	else if (6 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_007.wav");
+	}
+	else if (7 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_008.wav");
+	}
+	else if (8 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_009.wav");
+	}
+	else if (9 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_010.wav");
+	}
+	else if (10 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_011.wav");
+	}
+	else if (11 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("EK_WarStory_012.wav");
+	}
+
+	//if (0 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_001.wav");
+	//}
+	//else if (1 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_002.wav");
+	//}
+	//else if (2 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_003.wav");
+	//}
+	//else if (3 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_004.wav");
+	//}
+	//else if (4 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_005.wav");
+	//}
+	//else if (5 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_McKellen_006.wav");
+	//}
+
+	//if (0 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_001.wav");
+	//}
+	//else if (1 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_002.wav");
+	//}
+	//else if (2 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_003.wav");
+	//}
+	//else if (3 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_004.wav");
+	//}
+	//else if (4 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_005.wav");
+	//}
+	//else if (5 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_006.wav");
+	//}
+	//else if (6 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_007.wav");
+	//}
+	//else if (7 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_008.wav");
+	//}
+	//else if (8 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_009.wav");
+	//}
+	//else if (9 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_010.wav");
+	//}
+	//else if (10 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_011.wav");
+	//}
+	//else if (11 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_012.wav");
+	//}
+	//else if (12 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_013.wav");
+	//}
+	//else if (13 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_014.wav");
+	//}
+	//else if (14 == RandC)
+	//{
+	//	EffectPlayer = GameEngineSound::Play("EK_ExcitedBurst_015.wav");
+	//}
 }

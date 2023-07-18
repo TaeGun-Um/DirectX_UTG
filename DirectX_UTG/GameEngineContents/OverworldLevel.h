@@ -43,6 +43,11 @@ public:
 		return true == FrogEnd && true == DragonEnd && true == MouseEnd;
 	}
 
+	void OverworldLevelBGMStop()
+	{
+		BGMPlayer.Stop();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -51,6 +56,11 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer EffectPlayer;
+
+	bool IsBGMOn = false;
+
 	std::shared_ptr<class Player_Overworld> PlayerObject = nullptr;
 	std::shared_ptr<class Overworld_ColMap> ThisColMap = nullptr;
 	std::shared_ptr<class OverworldGUI> GUI = nullptr;

@@ -105,13 +105,17 @@ void PortalDoor::LevelChange()
 		if (1 == BlackBoxCount)
 		{
 			BlackBoxCount = 0;
+
+			WaitingRoomLevel::WaitingRoomLevelPtr->WaitingRoomLevelBGMStop();
+
+			EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 			WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
 			WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->SetEnter();
 		}
 
 		if (WaitingRoomLevel::WaitingRoomLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			//GameEngineCore::ChangeLevel("TutorialLevel");
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::TutorialLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
 		}
@@ -122,13 +126,17 @@ void PortalDoor::LevelChange()
 		if (1 == BlackBoxCount)
 		{
 			BlackBoxCount = 0;
+
+			TutorialLevel::TutorialLevelPtr->TutorialLevelBGMStop();
+
+			EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 			TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
 			TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->SetEnter();
 		}
 
 		if (TutorialLevel::TutorialLevelPtr->GetBlackBoxPtr()->GetIsEnd() && 0 == BlackBoxCount)
 		{
-			//GameEngineCore::ChangeLevel("OverworldLevel");
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::OverworldLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
 		}

@@ -140,6 +140,12 @@ void BuildingDataBase::CardUIOn(float _DeltaTime)
 
 	CardInterActionDelayTime += _DeltaTime;
 
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		EffectPlayer = GameEngineSound::Play("worldmap_menu_up.wav");
+	}
+
 	if (0.5f >= CardInterActionDelayTime)
 	{
 		return;
@@ -157,6 +163,17 @@ void BuildingDataBase::CardUIOn(float _DeltaTime)
 		Stage_TitleCard->BoxPositionReset();
 		CardInterActionDelayTime = 0.0f;
 		CreateCard = false;
+
+		bool playing = false;
+
+		EffectPlayer.isPlaying(&playing);
+
+		if (true == playing)
+		{
+			EffectPlayer.Stop();
+		}
+
+		IsBGMOn = false;
 	}
 	else if (true == GameEngineInput::IsDown("Jump"))
 	{
@@ -166,6 +183,17 @@ void BuildingDataBase::CardUIOn(float _DeltaTime)
 		Stage_TitleCard->BoxPositionReset();
 		CardInterActionDelayTime = 0.0f;
 		CreateCard = false;
+
+		bool playing = false;
+
+		EffectPlayer.isPlaying(&playing);
+
+		if (true == playing)
+		{
+			EffectPlayer.Stop();
+		}
+
+		IsBGMOn = false;
 	}
 }
 
@@ -196,6 +224,10 @@ void BuildingDataBase::InterAction()
 		if (1 == BlackBoxCount)
 		{
 			BlackBoxCount = 0;
+
+			OverworldLevel::OverworldLevelPtr->OverworldLevelBGMStop();
+			EffectPlayer_Two = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
 		}
@@ -213,6 +245,10 @@ void BuildingDataBase::InterAction()
 		if (1 == BlackBoxCount)
 		{
 			BlackBoxCount = 0;
+
+			OverworldLevel::OverworldLevelPtr->OverworldLevelBGMStop();
+			EffectPlayer_Two = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
 		}
@@ -230,6 +266,10 @@ void BuildingDataBase::InterAction()
 		if (1 == BlackBoxCount)
 		{
 			BlackBoxCount = 0;
+
+			OverworldLevel::OverworldLevelPtr->OverworldLevelBGMStop();
+			EffectPlayer_Two = GameEngineSound::Play("WorldMap_LevelSelect_StartLevel.wav");
+
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->BoxSettingReset();
 			OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->SetEnter();
 		}

@@ -56,6 +56,10 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
+	bool SoundInit = false;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BottleRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EnterMessageRenderPtr = nullptr;
@@ -67,6 +71,7 @@ private:
 
 	bool IsDebugRender = false;
 
+	void TalkSound();
 	void ActorInitSetting();
 	void CollisionCheck(float _DeltaTime);
 	void EnterMessageScaleUp(float _DeltaTime);

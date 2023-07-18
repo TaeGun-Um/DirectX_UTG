@@ -43,10 +43,27 @@ void TutorialLevel::Start()
 	TutorialLevelPtr = this;
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Tutorial");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Tutorial.mp3").GetFullPath());
+	}
 }
 
 void TutorialLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Tutorial.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	if (true == GameEngineInput::IsDown("PrevLevel"))
 	{
 		GameEngineCore::ChangeLevel("WaitingRoomLevel");
@@ -235,6 +252,8 @@ void TutorialLevel::LevelChangeEnd()
 
 	CardObject->CartUIReset();
 	PlayerObject->MoveAbleTimeReset();
+
+	IsBGMOn = false;
 }
 
 void TutorialLevel::PlayerDebugRenderOn()

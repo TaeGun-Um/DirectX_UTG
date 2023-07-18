@@ -21,6 +21,11 @@ public:
 		return BlackBoxPtr;
 	}
 
+	void WaitingRoomLevelBGMStop()
+	{
+		BGMPlayer.Stop();
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

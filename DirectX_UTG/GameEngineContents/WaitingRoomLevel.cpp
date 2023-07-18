@@ -44,6 +44,42 @@ void WaitingRoomLevel::Start()
 		NewDir.Move("WattingRoom");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Elder Kettle.mp3").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_001.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_002.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_003.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_004.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_005.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_006.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_007.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_008.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_009.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_010.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_011.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_012.wav").GetFullPath());
+
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_001.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_002.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_003.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_004.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_005.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_006.wav").GetFullPath());
+
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_001.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_002.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_003.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_004.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_005.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_006.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_007.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_008.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_009.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_010.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_011.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_012.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_013.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_014.wav").GetFullPath());
+		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_015.wav").GetFullPath());
 	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
@@ -75,8 +111,6 @@ void WaitingRoomLevel::Update(float _DeltaTime)
 
 		if (nullptr == PortalDoorObject)
 		{
-			BGMPlayer.Stop();
-
 			PortalDoorObject = CreateActor<PortalDoor>();
 			PortalDoorObject->GetTransform()->SetLocalPosition({ PlayMapWidth_Half + 20, PlayMapHeight_Half - 100, -5 });
 			PortalDoorObject->SetPortalValue(PortalValue::Tutorial);
@@ -226,6 +260,7 @@ void WaitingRoomLevel::LevelChangeEnd()
 	}
 
 	{
+		IsBGMOn = false;
 		PlayMapWidth_Half = 0.0f;
 		PlayMapHeight_Half = 0.0f;
 		PlayerDist = 0.0f;

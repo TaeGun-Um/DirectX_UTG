@@ -20,12 +20,34 @@ void EndingLevel::Start()
 {
 	GetLastTarget()->CreateEffect<BlurEffect>();
 	GetLastTarget()->CreateEffect<OldFilm>();
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Book_Cutscene");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Winner Takes All.mp3").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("outro_cheering.wav").GetFullPath());
+	}
 }
 void EndingLevel::Update(float _DeltaTime)
 {
+	if (false == IsBGMOn)
+	{
+		IsBGMOn = true;
+		BGMPlayer = GameEngineSound::Play("Winner Takes All.mp3");
+		BGMPlayer.SetLoop(100);
+	}
+
 	if (true == BookEndRender::GetBookAnimationIsEnd() && false == IsEnd)
 	{
 		IsEnd = true;
+
+		BGMPlayer.Stop();
+		EffectPlayer = GameEngineSound::Play("WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
+
 		BlackBoxPtr->BoxSettingReset();
 		BlackBoxPtr->SetEnter();
 	}
