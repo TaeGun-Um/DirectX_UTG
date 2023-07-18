@@ -234,6 +234,7 @@ void BuildingDataBase::InterAction()
 
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
+			IsBGMOn = false;
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::MouseLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
@@ -255,6 +256,7 @@ void BuildingDataBase::InterAction()
 
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
+			IsBGMOn = false;
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::FrogLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
@@ -276,6 +278,7 @@ void BuildingDataBase::InterAction()
 
 		if (true == OverworldLevel::OverworldLevelPtr->GetBlackBoxPtr()->GetIsEnd())
 		{
+			IsBGMOn = false;
 			Player_Overworld::MainPlayer->PlayerCollisionPtrOff();
 			LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::DragonLevel);
 			GameEngineCore::ChangeLevel("LoadingLevel");
