@@ -106,6 +106,25 @@ void WaitingRoomLevel::Start()
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Locked.wav").GetFullPath());
 	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Announcer");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_Start_A.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_Start_B.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_Start_C.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_End_A.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_End_B.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("announcer_knockout_0004.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("knockout_bell.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("knockout_boom_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("level_boss_defeat_sting_08.wav").GetFullPath());
+	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)
 {

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "FrogLevel.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -65,7 +66,15 @@ void FrogLevel::Start()
 }
 void FrogLevel::Update(float _DeltaTime)
 {
-	if (false == IsBGMOn)
+	if (false == IsVoiceOn)
+	{
+		IsVoiceOn = true;
+		StartVoiceSound();
+	}
+
+	BGMDelayTime += _DeltaTime;
+
+	if (false == IsBGMOn && 1.0f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Clip Joint Calamity.mp3");
@@ -579,6 +588,8 @@ void FrogLevel::LevelChangeEnd()
 	}
 
 	{
+		BGMDelayTime = 0.0f;
+		IsVoiceOn = false;
 		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
@@ -856,5 +867,23 @@ void FrogLevel::LevelDebugOff()
 	{
 		RibbyObject->DebugRenderOff();
 		CroakObject->DebugRenderOff();
+	}
+}
+
+void FrogLevel::StartVoiceSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (1 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (2 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
 	}
 }

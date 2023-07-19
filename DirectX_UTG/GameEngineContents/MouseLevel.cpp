@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "MouseLevel.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -57,7 +58,15 @@ void MouseLevel::Start()
 }
 void MouseLevel::Update(float _DeltaTime)
 {
-	if (false == IsBGMOn)
+	if (false == IsVoiceOn)
+	{
+		IsVoiceOn = true;
+		StartVoiceSound();
+	}
+
+	BGMDelayTime += _DeltaTime;
+
+	if (false == IsBGMOn && 1.0f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Murine Corps.mp3");
@@ -653,6 +662,8 @@ void MouseLevel::LevelChangeEnd()
 	}
 
 	{
+		BGMDelayTime = 0.0f;
+		IsVoiceOn = false;
 		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
@@ -1053,5 +1064,23 @@ void MouseLevel::LevelDebugOff()
 	if (nullptr != MapObject)
 	{
 		MapObject->DebugRenderOff();
+	}
+}
+
+void MouseLevel::StartVoiceSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (1 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (2 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
 	}
 }

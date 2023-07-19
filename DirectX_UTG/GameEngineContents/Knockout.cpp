@@ -36,6 +36,9 @@ void Knockout::Start()
 		RenderPtr->ChangeAnimation("KNOCKOUT");
 		RenderPtr->Off();
 	}
+
+	RenderPtr->SetAnimationStartEvent("KNOCKOUT", 0, std::bind(&Knockout::KnockSound, this));
+	RenderPtr->SetAnimationStartEvent("KNOCKOUT", 7, std::bind(&Knockout::KnockBellSound, this));
 }
 
 void Knockout::Update(float _DeltaTime)
@@ -45,4 +48,14 @@ void Knockout::Update(float _DeltaTime)
 		IsEnd = true;
 		RenderPtr->Off();
 	}
+}
+
+void Knockout::KnockSound()
+{
+	VoicePlayer = GameEngineSound::Play("announcer_knockout_0004.wav");
+}
+
+void Knockout::KnockBellSound()
+{
+	VoicePlayer = GameEngineSound::Play("knockout_bell.wav");
 }

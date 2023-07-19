@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Ready_Wallop.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 
 Ready_Wallop::Ready_Wallop() 
@@ -36,6 +37,8 @@ void Ready_Wallop::Start()
 		RenderPtr->ChangeAnimation("Ready_Wallop");
 		RenderPtr->Off();
 	}
+
+	RenderPtr->SetAnimationStartEvent("Ready_Wallop", 20, std::bind(&Ready_Wallop::EndVoiceSound, this));
 }
 
 void Ready_Wallop::Update(float _DeltaTime)
@@ -44,5 +47,37 @@ void Ready_Wallop::Update(float _DeltaTime)
 	{
 		IsEnd = true;
 		RenderPtr->Off();
+	}
+}
+
+void Ready_Wallop::StartVoiceSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (1 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (2 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+}
+
+void Ready_Wallop::EndVoiceSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_End_A.wav");
+	}
+	else
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_End_B.wav");
 	}
 }

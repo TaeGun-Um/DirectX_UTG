@@ -45,8 +45,10 @@ protected:
 
 private:
 	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer VoicePlayer;
 
 	bool IsBGMOn = false;
+	bool IsVoiceOn = false;
 
 	std::shared_ptr<class Frog_FrontObject> FrontObject = nullptr;
 	std::shared_ptr<class Frog_Map> MapObject = nullptr;
@@ -70,12 +72,14 @@ private:
 	std::shared_ptr<class Dancer> DancerObject = nullptr;
 	std::shared_ptr<class Deliver> DeliverObject = nullptr;
 
+	void StartVoiceSound();
 	void ReLoadSetting();
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();
 	void LevelDebugOff();
 
+	float BGMDelayTime = 0.0f;
 	float ReadyWallopTime = 0.0f;
 	float EndTime = 0.0f;
 

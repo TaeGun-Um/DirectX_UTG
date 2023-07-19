@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "DragonLevel.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -58,7 +59,15 @@ void DragonLevel::Start()
 }
 void DragonLevel::Update(float _DeltaTime)
 {
-	if (false == IsBGMOn)
+	if (false == IsVoiceOn)
+	{
+		IsVoiceOn = true;
+		StartVoiceSound();
+	}
+
+	BGMDelayTime += _DeltaTime;
+
+	if (false == IsBGMOn && 1.0f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Fiery Frolic.mp3");
@@ -577,6 +586,8 @@ void DragonLevel::LevelChangeEnd()
 	}
 
 	{
+		BGMDelayTime = 0.0f;
+		IsVoiceOn = false;
 		IsBGMOn = false;
 		ReadyWallopCount = 1;
 		ReadyWallopTime = 0.0f;
@@ -866,5 +877,23 @@ void DragonLevel::LevelDebugOff()
 		CloudPlatformObject6->DebugRenderOff();
 		CloudPlatformObject7->DebugRenderOff();
 		CloudPlatformObject8->DebugRenderOff();
+	}
+}
+
+void DragonLevel::StartVoiceSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (1 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
+	}
+	else if (2 == RandC)
+	{
+		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
 	}
 }

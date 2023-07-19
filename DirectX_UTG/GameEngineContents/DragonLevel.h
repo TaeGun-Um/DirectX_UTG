@@ -47,8 +47,10 @@ protected:
 
 private:
 	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer VoicePlayer;
 
 	bool IsBGMOn = false;
+	bool IsVoiceOn = false;
 
 	std::shared_ptr<class Dragon_BackGround> BackGroundObject = nullptr;
 	std::shared_ptr<class Dragon_FrontGround> FrontGroundObject = nullptr;
@@ -77,12 +79,14 @@ private:
 	std::shared_ptr<class You_Died> YouDiedPtr = nullptr;
 	std::shared_ptr<class Ready_Wallop> ReadyWallopPtr = nullptr;
 
+	void StartVoiceSound();
 	void ReLoadSetting();
 	void PlayerDebugRenderOn();
 	void PlayerDebugRenderOff();
 	void LevelDebugOn();
 	void LevelDebugOff();
 
+	float BGMDelayTime = 0.0f;
 	float ReadyWallopTime = 0.0f;
 	float EndTime = 0.0f;
 

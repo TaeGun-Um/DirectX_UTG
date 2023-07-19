@@ -38,8 +38,12 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer VoicePlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	bool IsEnd = false;
 
+	void KnockSound();
+	void KnockBellSound();
 };
 
