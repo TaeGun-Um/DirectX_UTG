@@ -2073,6 +2073,7 @@ void Player::PortalStart()
 		RenderPtr->GetTransform()->SetLocalPosition({ 5, 70 });
 	}
 	
+	DashSound();
 }
 void Player::PortalUpdate(float _DeltaTime)
 {

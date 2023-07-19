@@ -30,6 +30,8 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BoxRenderPtr;
 	std::shared_ptr<class GameEngineSpriteRenderer> TargetRenderPtr;
 	std::shared_ptr<class GameEngineCollision> TargetCollisionPtr;
@@ -44,6 +46,7 @@ private:
 	int ColorCount = 1;
 	int HP = 10;
 
+	void DeathSound();
 	void CollisionCheck();
 	void BlinkSetting(float _DeltaTime);
 	void SetDeath();

@@ -65,17 +65,6 @@ void WaitingRoomLevel::Start()
 		NewDir.MoveParentToDirectory("CupHead_Resource");
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Sound");
-		NewDir.Move("No_Classification");
-		NewDir.Move("Menu");
-
-		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Locked.wav").GetFullPath());
-	}
-
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("CupHead_Resource");
-		NewDir.Move("CupHead_Resource");
-		NewDir.Move("Sound");
 		NewDir.Move("Player");
 		NewDir.Move("Player");
 
@@ -105,6 +94,17 @@ void WaitingRoomLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_parry_slap_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_hit_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_damage_crack_level3.wav").GetFullPath());
+	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("No_Classification");
+		NewDir.Move("Menu");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Menu_Locked.wav").GetFullPath());
 	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)

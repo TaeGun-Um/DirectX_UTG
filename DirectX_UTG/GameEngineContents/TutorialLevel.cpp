@@ -53,6 +53,16 @@ void TutorialLevel::Start()
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Tutorial.mp3").GetFullPath());
 	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Boss_Common");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_boss_death_0001.wav").GetFullPath());
+	}
 }
 
 void TutorialLevel::Update(float _DeltaTime)

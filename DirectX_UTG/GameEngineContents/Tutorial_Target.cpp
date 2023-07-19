@@ -104,6 +104,8 @@ void Tutorial_Target::Start()
 		BoxCollisionRenderPtr->GetTransform()->SetLocalScale(BoxCollisionPtr->GetTransform()->GetLocalScale());
 		BoxCollisionRenderPtr->GetTransform()->SetLocalPosition(BoxCollisionPtr->GetTransform()->GetLocalPosition());
 	}
+
+	TargetRenderPtr->SetAnimationStartEvent("Explosion", 0, std::bind(&Tutorial_Target::DeathSound, this));
 }
 
 void Tutorial_Target::Update(float _DeltaTime)
@@ -122,6 +124,11 @@ void Tutorial_Target::Update(float _DeltaTime)
 	SetDeath();
 	CollisionCheck();
 	BlinkSetting(_DeltaTime);
+}
+
+void Tutorial_Target::DeathSound()
+{
+	EffectPlayer = GameEngineSound::Play("explosion_boss_death_0001.wav");
 }
 
 void Tutorial_Target::CollisionCheck()
