@@ -108,6 +108,7 @@ private:
 	bool Directbool = true;
 
 	// Assistant Function
+	void WalkSoundSet(float _DeltaTime);
 	void CheatKey();
 	void DebugRendererSetting();
 	void EnterMessageScaleUp(float _DeltaTime);
@@ -138,7 +139,9 @@ private:
 	float ScaleMinTime = 0.0f;
 	float MoveTime = 0.0f;
 	float WinTime = 0.0f;
+	float MoveSoundTime = 0.0f;
 	int ScaleCount = 1;
+	bool MoveSoundbool = false;
 	bool ScaleCheckStart = false;
 	bool IsCollisionOn = true;
 	bool IsSpeedUp = false;

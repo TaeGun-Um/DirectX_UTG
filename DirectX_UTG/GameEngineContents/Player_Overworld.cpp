@@ -53,6 +53,27 @@ void Player_Overworld::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Player_Overworld::WalkSoundSet(float _DeltaTime)
+{
+	MoveSoundTime += _DeltaTime;
+
+	if (0.4f <= MoveSoundTime)
+	{
+		MoveSoundTime = 0.0f;
+
+		if (false == MoveSoundbool)
+		{
+			EffectPlayer = GameEngineSound::Play("WorldMap_Footstep_005.wav");
+			MoveSoundbool = true;
+		}
+		else if (true == MoveSoundbool)
+		{
+			EffectPlayer = GameEngineSound::Play("WorldMap_Footstep_006.wav");
+			MoveSoundbool = false;
+		}
+	}
+}
+
 void Player_Overworld::WinFSMSetting()
 {
 	WinSetting = true;
@@ -692,9 +713,23 @@ void Player_Overworld::IdleEnd()
 
 void Player_Overworld::MoveStart()
 {
+	MoveSoundTime = 0.0f;
+
+	if (false == MoveSoundbool)
+	{
+		EffectPlayer = GameEngineSound::Play("WorldMap_Footstep_005.wav");
+		MoveSoundbool = true;
+	}
+	else if (true == MoveSoundbool)
+	{
+		EffectPlayer = GameEngineSound::Play("WorldMap_Footstep_006.wav");
+		MoveSoundbool = false;
+	}
 }
 void Player_Overworld::MoveUpdate(float _DeltaTime)
 {
+	WalkSoundSet(_DeltaTime);
+
 	if (true == WinSetting)
 	{
 		ChangeState(OverworldState::Win);
@@ -836,6 +871,7 @@ void Player_Overworld::MoveUpdate(float _DeltaTime)
 void Player_Overworld::MoveEnd()
 {
 	MoveTime = 0.0f;
+	MoveSoundTime = 0.0f;
 }
 
 void Player_Overworld::PortalStart() 

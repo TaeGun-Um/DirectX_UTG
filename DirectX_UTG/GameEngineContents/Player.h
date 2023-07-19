@@ -223,6 +223,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer AttackSoundPlayer;
 	GameEngineSoundPlayer EffectPlayer;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
@@ -288,6 +289,9 @@ private:
 	bool EXMotion = false;
 
 	// Assistant
+	void PeashooterSoundOn();
+	void SpreadSoundOn();
+	void AttackSoundPlayerOff();
 	void CheatKey();
 	void PositionCorrection();
 	void DragonSetting();
@@ -346,6 +350,8 @@ private:
 	bool IsDragonSetting = false; // DragonLevel에서만 사용
 
 	// Air
+	bool AttackSoundbool = false;
+
 	bool IsJump = false;
 	bool IsFall = false;
 	bool PlatformCheckAble = false;

@@ -86,6 +86,24 @@ void Player::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                       //////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Player::PeashooterSoundOn()
+{
+	AttackSoundPlayer = GameEngineSound::Play("sfx_player_default_fire_loop_01.wav");
+	AttackSoundPlayer.SetLoop(-1);
+}
+
+void Player::SpreadSoundOn()
+{
+	AttackSoundPlayer = GameEngineSound::Play("sfx_player_spreadshot_fire_loop.wav");
+	AttackSoundPlayer.SetLoop(-1);
+}
+
+void Player::AttackSoundPlayerOff()
+{
+	AttackSoundbool = false;
+	AttackSoundPlayer.Stop();
+}
+
 void Player::HitAnimationBindFunction()
 {
 	MinusPlayerHP();
@@ -920,6 +938,7 @@ void Player::ProjectileCreate(float _DeltaTime)
 		|| true == IsIntro
 		|| true == IsPlayerDeath)
 	{
+		AttackSoundPlayerOff();
 		PeashooterRenderPtr->Off();
 		return;
 	}
@@ -928,6 +947,7 @@ void Player::ProjectileCreate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("WeaponSwap"))
 	{
+		AttackSoundPlayerOff();
 		IsWeaponChange = true;
 		WeaponType = !WeaponType;
 		ProjectileCreateTime = 0.06f;
@@ -945,10 +965,25 @@ void Player::ProjectileCreate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Attack"))
 	{
 		PeashooterRenderPtr->On();
+
+		if (false == AttackSoundbool)
+		{
+			AttackSoundbool = true;
+
+			if (true == WeaponType)
+			{
+				PeashooterSoundOn();
+			}
+			else
+			{
+				SpreadSoundOn();
+			}
+		}
 	}
 	else 
 	{
 		PeashooterRenderPtr->Off();
+		AttackSoundPlayerOff();
 	}
 
 	// WeaponType = true : Peashooter

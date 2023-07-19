@@ -58,29 +58,6 @@ void WaitingRoomLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_010.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_011.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("EK_WarStory_012.wav").GetFullPath());
-
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_001.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_002.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_003.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_004.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_005.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_McKellen_006.wav").GetFullPath());
-
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_001.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_002.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_003.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_004.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_005.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_006.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_007.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_008.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_009.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_010.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_011.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_012.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_013.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_014.wav").GetFullPath());
-		//GameEngineSound::Load(NewDir.GetPlusFileName("EK_ExcitedBurst_015.wav").GetFullPath());
 	}
 
 	{
@@ -100,8 +77,16 @@ void WaitingRoomLevel::Start()
 		NewDir.Move("CupHead_Resource");
 		NewDir.Move("Sound");
 		NewDir.Move("Player");
+		NewDir.Move("Player");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_powerup_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_default_fire_loop_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_spreadshot_fire_loop.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_parry_slap_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_hit_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_damage_crack_level3.wav").GetFullPath());
 	}
 }
 void WaitingRoomLevel::Update(float _DeltaTime)

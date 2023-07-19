@@ -55,6 +55,18 @@ void OverworldLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("flag_raise.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("worldmap_menu_up.wav").GetFullPath());
 	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("CupHead_Resource");
+		NewDir.Move("CupHead_Resource");
+		NewDir.Move("Sound");
+		NewDir.Move("Player");
+		NewDir.Move("Player");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_Footstep_005.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("WorldMap_Footstep_006.wav").GetFullPath());
+	}
 }
 
 void OverworldLevel::Update(float _DeltaTime)
