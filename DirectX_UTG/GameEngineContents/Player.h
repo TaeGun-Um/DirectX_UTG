@@ -289,6 +289,13 @@ private:
 	bool EXMotion = false;
 
 	// Assistant
+	void ParrySound();
+	void ParrySuccessSound();
+	void EXSound();
+	void JumpSound();
+	void HitSound();
+	void DashSound();
+	void LandGroundSound();
 	void PeashooterSoundOn();
 	void SpreadSoundOn();
 	void AttackSoundPlayerOff();

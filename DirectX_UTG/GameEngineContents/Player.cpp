@@ -55,6 +55,9 @@ void Player::Update(float _DeltaTime)
 		RenderPtr->SetAnimationStartEvent("AirHit", 0, std::bind(&Player::HitAnimationBindFunction, this));
 		RenderPtr->SetAnimationStartEvent("Hit", 0, std::bind(&Player::HitAnimationBindFunction, this));
 
+		RenderPtr->SetAnimationStartEvent("AirDash", 1, std::bind(&Player::DashSound, this));
+		RenderPtr->SetAnimationStartEvent("Dash", 1, std::bind(&Player::DashSound, this));
+
 		return;
 	}
 
@@ -104,10 +107,97 @@ void Player::AttackSoundPlayerOff()
 	AttackSoundPlayer.Stop();
 }
 
+void Player::LandGroundSound()
+{
+	EffectPlayer = GameEngineSound::Play("player_land_ground_01.wav");
+}
+
+void Player::DashSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_dash_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_dash_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_dash_03.wav");
+	}
+}
+
+void Player::HitSound()
+{
+	EffectPlayer = GameEngineSound::Play("sfx_player_hit_01.wav");
+	EffectPlayer = GameEngineSound::Play("sfx_player_damage_crack_level3.wav");
+}
+
+void Player::JumpSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_jump_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_jump_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_jump_03.wav");
+	}
+}
+
+void Player::EXSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_ex_forward_ground_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_ex_forward_ground_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_ex_forward_ground_03.wav");
+	}
+	else if (3 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_ex_forward_ground_04.wav");
+	}
+}
+
+void Player::ParrySound()
+{
+	EffectPlayer = GameEngineSound::Play("sfx_player_parry_slap_01.wav");
+}
+
+void Player::ParrySuccessSound()
+{
+	if (4 >= PlayerEXStack)
+	{
+		EffectPlayer = GameEngineSound::Play("player_parry_power_up_hit_01.wav");
+	}
+	else if (5 <= PlayerEXStack)
+	{
+		EffectPlayer = GameEngineSound::Play("player_parry_power_up_full.wav");
+	}
+}
+
 void Player::HitAnimationBindFunction()
 {
 	MinusPlayerHP();
 	CreateHitEffect();
+	HitSound();
 }
 
 // 플레이어 이동 방해(바람, 플랫폼 등), X만 해당
@@ -827,9 +917,6 @@ void Player::HitCollisionCheck(float _DeltaTime)
 		IsHit = true;
 		HitTimeCheck = true;
 
-		//MinusPlayerHP();
-		//CreateHitEffect();
-
 		BodyCollisionPtr->Off();
 	}
 
@@ -860,11 +947,7 @@ void Player::FallCollisionCheck(float _DeltaTime)
 		IsHit = true;
 		FallHitTimeCheck = true;
 		IsHitJump = true;
-
 		FallHitCheck = false;
-
-		//MinusPlayerHP();
-		//CreateHitEffect();
 
 		BodyCollisionPtr->Off();
 	}
@@ -1882,6 +1965,8 @@ void Player::CreateLandDust()
 
 	Dust->SetStartPosition(DustPosition);
 	Dust->SetDirection(Directbool);
+
+	LandGroundSound();
 }
 
 // Parry시 생성되는 Effect
@@ -1895,6 +1980,9 @@ void Player::CreateParryEffect()
 
 	Effect->SetStartPosition(EffectPosition);
 	Effect->SetDirection(Directbool);
+
+	ParrySound();
+	ParrySuccessSound();
 }
 
 void Player::CreateHitEffect()

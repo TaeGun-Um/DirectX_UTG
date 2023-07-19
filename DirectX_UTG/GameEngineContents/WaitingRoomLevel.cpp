@@ -79,7 +79,25 @@ void WaitingRoomLevel::Start()
 		NewDir.Move("Player");
 		NewDir.Move("Player");
 
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_land_ground_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_powerup_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_parry_power_up_full.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_parry_slap_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_parry_power_up_hit_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_ex_forward_ground_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_ex_forward_ground_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_ex_forward_ground_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_ex_forward_ground_04.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_dash_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_dash_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_dash_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_jump_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_jump_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_jump_03.wav").GetFullPath());
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_default_fire_loop_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_spreadshot_fire_loop.wav").GetFullPath());

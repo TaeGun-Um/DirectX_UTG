@@ -861,6 +861,8 @@ void Player::JumpStart()
 	{
 		MoveDirect.y = 900.0f;
 		IsJump = true;
+
+		JumpSound();
 	}
 }
 void Player::JumpUpdate(float _DeltaTime)
@@ -1545,6 +1547,8 @@ void Player::EXAttackStart()
 	ChargeUpRenderPtr->ChangeAnimation("EX_ChargeUp");
 	ChargeUpRenderPtr->On();
 	ChargeUpRenderPtr->GetTransform()->SetLocalPosition(float4{ -10, 80 });
+
+	EXSound();
 }
 void Player::EXAttackUpdate(float _DeltaTime)
 {
