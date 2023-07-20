@@ -26,8 +26,6 @@ CupheadCore::~CupheadCore()
 
 void CupheadCore::GameStart()
 {
-	new int(); // ½Å·ÚÀÇ ¸¯
-
 	ContentsKeyBind();
 	ContentsResourcesLoad();
 	ContentsResourcesCreate();
