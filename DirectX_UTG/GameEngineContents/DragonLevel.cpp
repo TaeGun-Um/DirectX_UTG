@@ -67,7 +67,7 @@ void DragonLevel::Update(float _DeltaTime)
 
 	BGMDelayTime += _DeltaTime;
 
-	if (false == IsBGMOn && 0.7f <= BGMDelayTime)
+	if (false == IsBGMOn && 0.6f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Fiery Frolic.mp3");
@@ -253,7 +253,8 @@ void DragonLevel::LevelChangeStart()
 			CloudPlatformObject6 = CreateActor<Dragon_CloudPlatform>();
 			CloudPlatformObject7 = CreateActor<Dragon_CloudPlatform>();
 			CloudPlatformObject8 = CreateActor<Dragon_CloudPlatform>();
-
+		}
+		{
 			float4 CloudPlatformObjectPosition0 = { PlayMapWidth_Half - 480, PlayMapHeight_Half - 120 , 10 };
 			float4 CloudPlatformObjectPosition1 = { PlayMapWidth_Half - 450, PlayMapHeight_Half + 200 , 10 };
 			float4 CloudPlatformObjectPosition2 = { PlayMapWidth_Half - 200, PlayMapHeight_Half + 20 , 10 };
@@ -619,25 +620,15 @@ void DragonLevel::LevelChangeEnd()
 		PlayerObject->MoveAbleTimeReset();
 		CloudMoveCount = 1;
 
-		CloudPlatformObject0->Death();
-		CloudPlatformObject1->Death();
-		CloudPlatformObject2->Death();
-		CloudPlatformObject3->Death();
-		CloudPlatformObject4->Death();
-		CloudPlatformObject5->Death();
-		CloudPlatformObject6->Death();
-		CloudPlatformObject7->Death();
-		CloudPlatformObject8->Death();
-
-		CloudPlatformObject0 = nullptr;
-		CloudPlatformObject1 = nullptr;
-		CloudPlatformObject2 = nullptr;
-		CloudPlatformObject3 = nullptr;
-		CloudPlatformObject4 = nullptr;
-		CloudPlatformObject5 = nullptr;
-		CloudPlatformObject6 = nullptr;
-		CloudPlatformObject7 = nullptr;
-		CloudPlatformObject8 = nullptr;
+		CloudPlatformObject0->SetIsMoveFalse();
+		CloudPlatformObject1->SetIsMoveFalse();
+		CloudPlatformObject2->SetIsMoveFalse();
+		CloudPlatformObject3->SetIsMoveFalse();
+		CloudPlatformObject4->SetIsMoveFalse();
+		CloudPlatformObject5->SetIsMoveFalse();
+		CloudPlatformObject6->SetIsMoveFalse();
+		CloudPlatformObject7->SetIsMoveFalse();
+		CloudPlatformObject8->SetIsMoveFalse();
 
 		DragonObject->Death();
 		FallPointObject->Death();

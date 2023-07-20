@@ -32,6 +32,12 @@ public:
 		IsMove = true;
 	}
 
+	void SetIsMoveFalse()
+	{
+		IsMove = false;
+		MoveDis = 0.0f;
+	}
+
 	void SetStandingAnimation()
 	{
 		IsInit = true;

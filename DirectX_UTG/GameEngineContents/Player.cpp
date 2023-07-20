@@ -333,7 +333,8 @@ void Player::PlayerReset()
 	HitTimeCheck = false;
 	IsPlayerDeath = false;
 	BottomJumpBlock = false;
-	// IsIntro
+
+	MoveDirect = float4::Zero;
 
 	GetTransform()->SetLocalPositiveScaleX();
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 90 });

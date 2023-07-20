@@ -210,6 +210,12 @@ void Dragon_CloudPlatform::Plat_IntroUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		ChangeState(CloudState::Plat_Outro);
+		return;
+	}
+
 	if (true == CloudRenderPtr->IsAnimationEnd())
 	{
 		ChangeState(CloudState::Plat);
@@ -232,6 +238,18 @@ void Dragon_CloudPlatform::PlatUpdate(float _DeltaTime)
 	}
 
 	if (false == IsStanding)
+	{
+		ChangeState(CloudState::Plat_Outro);
+		return;
+	}
+
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		ChangeState(CloudState::Plat_Outro);
+		return;
+	}
+
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
 	{
 		ChangeState(CloudState::Plat_Outro);
 		return;

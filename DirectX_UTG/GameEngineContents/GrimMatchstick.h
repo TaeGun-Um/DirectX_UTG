@@ -144,6 +144,8 @@ private:
 
 	int RingMaxCreateCount = 3;
 	int RingCreateCount = 0;
+	int MeteorMaxCount = 0;
+	int RingMaxCount = 0;
 
 	void CreateTail(float _DeltaTime);
 	void CreateRing(float _DeltaTime);

@@ -277,13 +277,37 @@ void GrimMatchstick::IdleUpdate(float _DeltaTime)
 
 		if (0 == RandC)
 		{
-			ChangeState(DragonState::Meteor_Intro);
-			return;
+			++MeteorMaxCount;
+
+			if (3 <= MeteorMaxCount)
+			{
+				MeteorMaxCount = 0;
+				++RingMaxCount;
+				ChangeState(DragonState::Peashoot_Intro);
+				return;
+			}
+			else
+			{
+				ChangeState(DragonState::Meteor_Intro);
+				return;
+			}
 		}
 		else
 		{
-			ChangeState(DragonState::Peashoot_Intro);
-			return;
+			++RingMaxCount;
+
+			if (3 <= RingMaxCount)
+			{
+				RingMaxCount = 0;
+				++MeteorMaxCount;
+				ChangeState(DragonState::Meteor_Intro);
+				return;
+			}
+			else
+			{
+				ChangeState(DragonState::Peashoot_Intro);
+				return;
+			}
 		}
 	}
 }
