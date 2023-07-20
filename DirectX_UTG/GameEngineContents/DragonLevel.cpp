@@ -67,7 +67,7 @@ void DragonLevel::Update(float _DeltaTime)
 
 	BGMDelayTime += _DeltaTime;
 
-	if (false == IsBGMOn && 0.5f <= BGMDelayTime)
+	if (false == IsBGMOn && 0.7f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Fiery Frolic.mp3");

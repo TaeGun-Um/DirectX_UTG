@@ -557,10 +557,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="TestPlatform.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="TitleMenu.h">
       <SubType>
       </SubType>
@@ -1039,10 +1035,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Stick.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestPlatform.cpp">
       <SubType>
       </SubType>
     </ClCompile>

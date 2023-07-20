@@ -189,7 +189,6 @@
     <ClInclude Include="TransformGUI.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="PixelCollision.h" />
     <ClInclude Include="Tutorial_ColMap.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
@@ -227,7 +226,6 @@
       <Filter>Levels\7. Player</Filter>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
-    <ClInclude Include="TestPlatform.h" />
     <ClInclude Include="DashDust.h">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClInclude>
@@ -267,7 +265,6 @@
     <ClInclude Include="PortalDoor.h">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClInclude>
-    <ClInclude Include="RoundBlackBox.h" />
     <ClInclude Include="TitleMenu.h">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClInclude>
@@ -364,7 +361,6 @@
     <ClInclude Include="Slot_FrontDust.h">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="DeathExplosion.h" />
     <ClInclude Include="Platform_Tiger.h">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClInclude>
@@ -476,6 +472,15 @@
     <ClInclude Include="Opening_BlackBox.h">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClInclude>
+    <ClInclude Include="RoundBlackBox.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathExplosion.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelCollision.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CupheadCore.cpp">
@@ -538,7 +543,6 @@
     <ClCompile Include="TransformGUI.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="PixelCollision.cpp" />
     <ClCompile Include="Tutorial_ColMap.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
@@ -575,7 +579,6 @@
     <ClCompile Include="Player_Overworld.cpp">
       <Filter>Levels\7. Player</Filter>
     </ClCompile>
-    <ClCompile Include="TestPlatform.cpp" />
     <ClCompile Include="DashDust.cpp">
       <Filter>Levels\7. Player\PlayerEffect\SFX</Filter>
     </ClCompile>
@@ -621,7 +624,6 @@
     <ClCompile Include="PortalDoor.cpp">
       <Filter>Levels\3. Tutorial\Object</Filter>
     </ClCompile>
-    <ClCompile Include="RoundBlackBox.cpp" />
     <ClCompile Include="TitleMenu.cpp">
       <Filter>Levels\1. Opening\First\Object</Filter>
     </ClCompile>
@@ -724,7 +726,6 @@
     <ClCompile Include="Slot_FrontDust.cpp">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="DeathExplosion.cpp" />
     <ClCompile Include="Platform_Tiger.cpp">
       <Filter>Levels\5. Bosses\1. Frog\Object\Boss\Effect</Filter>
     </ClCompile>
@@ -865,6 +866,15 @@
     </ClCompile>
     <ClCompile Include="Opening_BlackBox.cpp">
       <Filter>Levels\1. Opening\First\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathExplosion.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelCollision.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="RoundBlackBox.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

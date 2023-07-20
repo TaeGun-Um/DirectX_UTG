@@ -54,8 +54,9 @@ void EndingLevel::Update(float _DeltaTime)
 
 	if (true == BlackBoxPtr->GetIsEnd() && true == IsEnd)
 	{
-		LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::First_OpeningLevel);
-		GameEngineCore::ChangeLevel("LoadingLevel");
+		//LoadingLevel::LoadingLevelPtr->SetLevelState(LevelValue::First_OpeningLevel);
+		//GameEngineCore::ChangeLevel("LoadingLevel");
+		GameEngineWindow::AppOff();
 	}
 
 	ReLoadSetting();

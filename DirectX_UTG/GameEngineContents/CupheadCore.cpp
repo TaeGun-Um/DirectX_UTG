@@ -43,7 +43,7 @@ void CupheadCore::GameStart()
 	GameEngineCore::CreateLevel<EndingLevel>();
 	GameEngineCore::CreateLevel<LoadingLevel>();
 
-	GameEngineCore::ChangeLevel("FrogLevel");
+	GameEngineCore::ChangeLevel("DragonLevel");
 	GameEngineFont::Load("Cuphead Felix");
 }
 
