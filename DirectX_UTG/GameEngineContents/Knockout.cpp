@@ -37,8 +37,7 @@ void Knockout::Start()
 		RenderPtr->Off();
 	}
 
-	RenderPtr->SetAnimationStartEvent("KNOCKOUT", 0, std::bind(&Knockout::KnockSound, this));
-	RenderPtr->SetAnimationStartEvent("KNOCKOUT", 7, std::bind(&Knockout::KnockBellSound, this));
+	RenderPtr->SetAnimationStartEvent("KNOCKOUT", 5, std::bind(&Knockout::KnockBellSound, this));
 }
 
 void Knockout::Update(float _DeltaTime)

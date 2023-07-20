@@ -2096,6 +2096,8 @@ void Player::DeathStart()
 	BodyCollisionPtr->Off();
 	IsPlayerDeath = true;
 	CreateGhostEffect();
+
+	DeathSound();
 }
 void Player::DeathUpdate(float _DeltaTime)
 {

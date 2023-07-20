@@ -74,7 +74,7 @@ void FrogLevel::Update(float _DeltaTime)
 
 	BGMDelayTime += _DeltaTime;
 
-	if (false == IsBGMOn && 1.0f <= BGMDelayTime)
+	if (false == IsBGMOn && 0.4f <= BGMDelayTime)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Clip Joint Calamity.mp3");
@@ -85,6 +85,9 @@ void FrogLevel::Update(float _DeltaTime)
 
 	if (true == CroakObject->GetIsStageEnd() && 1 == EndSetCount)
 	{
+		KnockSound();
+		BGMPlayer.Stop();
+		PlayerObject->SetPlayerSoundOff();
 		PlayerObject->SetStageEndHP();
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
@@ -99,6 +102,18 @@ void FrogLevel::Update(float _DeltaTime)
 		if (true == KnockoutPtr->GetIsEnd())
 		{
 			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+
+			if (false == IsEndSound)
+			{
+				IsEndSound = true;
+				BGMPlayer = GameEngineSound::Play("knockout_boom_01.wav");
+			}
+
+			if (false == IsEndSound2 && EndTime >= 3.4f)
+			{
+				IsEndSound2 = true;
+				BGMPlayer = GameEngineSound::Play("level_boss_defeat_sting_08.wav");
+			}
 
 			if (EndTime >= 4.5f && 1 == EndSetCount2)
 			{
@@ -137,6 +152,8 @@ void FrogLevel::Update(float _DeltaTime)
 			if (EndTime >= 3.0f && 1 == EndSetCount2)
 			{
 				EndSetCount2 = 0;
+				BGMPlayer.Stop();
+				BGMPlayer = GameEngineSound::Play("WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
 				BlackBoxPtr->BoxSettingReset();
 				BlackBoxPtr->SetEnter();
 			}
@@ -886,4 +903,9 @@ void FrogLevel::StartVoiceSound()
 	{
 		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
 	}
+}
+
+void FrogLevel::KnockSound()
+{
+	VoicePlayer = GameEngineSound::Play("announcer_knockout_0004.wav");
 }

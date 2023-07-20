@@ -108,6 +108,7 @@ private:
 	bool Directbool = true;
 
 	// Assistant Function
+	void WinBounceSound();
 	void WalkSoundSet(float _DeltaTime);
 	void CheatKey();
 	void DebugRendererSetting();
@@ -163,6 +164,9 @@ private:
 	bool IsIdle = false;
 	bool IsWin = false;
 	bool WinSetting = false;
+
+	void WinCountFunction();
+	int WinCount = 0;
 
 	void IdleStart() override;
 	void IdleUpdate(float _DeltaTime) override;

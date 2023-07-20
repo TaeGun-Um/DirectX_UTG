@@ -64,9 +64,7 @@ void MouseLevel::Update(float _DeltaTime)
 		StartVoiceSound();
 	}
 
-	BGMDelayTime += _DeltaTime;
-
-	if (false == IsBGMOn && 1.0f <= BGMDelayTime)
+	if (false == IsBGMOn)
 	{
 		IsBGMOn = true;
 		BGMPlayer = GameEngineSound::Play("Murine Corps.mp3");
@@ -77,6 +75,9 @@ void MouseLevel::Update(float _DeltaTime)
 
 	if (true == MouseObject->GetIsStageEnd() && 1 == EndSetCount)
 	{
+		KnockSound();
+		BGMPlayer.Stop();
+		PlayerObject->SetPlayerSoundOff();
 		PlayerObject->SetStageEndHP();
 		EndSetCount = 0;
 		KnockoutPtr->StartMessage();
@@ -91,6 +92,18 @@ void MouseLevel::Update(float _DeltaTime)
 		if (true == KnockoutPtr->GetIsEnd())
 		{
 			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(0, 1.0f);
+
+			if (false == IsEndSound)
+			{
+				IsEndSound = true;
+				BGMPlayer = GameEngineSound::Play("knockout_boom_01.wav");
+			}
+
+			if (false == IsEndSound2 && EndTime >= 3.4f)
+			{
+				IsEndSound2 = true;
+				BGMPlayer = GameEngineSound::Play("level_boss_defeat_sting_08.wav");
+			}
 
 			if (EndTime >= 4.5f && 1 == EndSetCount2)
 			{
@@ -129,6 +142,8 @@ void MouseLevel::Update(float _DeltaTime)
 			if (EndTime >= 3.0f && 1 == EndSetCount2)
 			{
 				EndSetCount2 = 0;
+				BGMPlayer.Stop();
+				BGMPlayer = GameEngineSound::Play("WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
 				BlackBoxPtr->BoxSettingReset();
 				BlackBoxPtr->SetEnter();
 			}
@@ -662,7 +677,6 @@ void MouseLevel::LevelChangeEnd()
 	}
 
 	{
-		BGMDelayTime = 0.0f;
 		IsVoiceOn = false;
 		IsBGMOn = false;
 		ReadyWallopCount = 1;
@@ -1083,4 +1097,9 @@ void MouseLevel::StartVoiceSound()
 	{
 		VoicePlayer = GameEngineSound::Play("announcer_Start_A.wav");
 	}
+}
+
+void MouseLevel::KnockSound()
+{
+	VoicePlayer = GameEngineSound::Play("announcer_knockout_0004.wav");
 }

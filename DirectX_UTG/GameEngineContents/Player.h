@@ -50,6 +50,12 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	void SetPlayerSoundOff()
+	{
+		AttackSoundPlayer.Stop();
+		IsSoundOff = true;
+	}
+
 	void SetHitJump()
 	{
 		IsHitJump = true;
@@ -289,6 +295,7 @@ private:
 	bool EXMotion = false;
 
 	// Assistant
+	void DeathSound();
 	void ParrySound();
 	void ParrySuccessSound();
 	void EXSound();
@@ -358,7 +365,7 @@ private:
 
 	// Air
 	bool AttackSoundbool = false;
-
+	bool IsSoundOff = false;
 	bool IsJump = false;
 	bool IsFall = false;
 	bool PlatformCheckAble = false;

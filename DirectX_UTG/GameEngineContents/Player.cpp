@@ -91,12 +91,22 @@ void Player::Update(float _DeltaTime)
 
 void Player::PeashooterSoundOn()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	AttackSoundPlayer = GameEngineSound::Play("sfx_player_default_fire_loop_01.wav");
 	AttackSoundPlayer.SetLoop(-1);
 }
 
 void Player::SpreadSoundOn()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	AttackSoundPlayer = GameEngineSound::Play("sfx_player_spreadshot_fire_loop.wav");
 	AttackSoundPlayer.SetLoop(-1);
 }
@@ -109,11 +119,21 @@ void Player::AttackSoundPlayerOff()
 
 void Player::LandGroundSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	EffectPlayer = GameEngineSound::Play("player_land_ground_01.wav");
 }
 
 void Player::DashSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 
 	if (0 == RandC)
@@ -132,12 +152,22 @@ void Player::DashSound()
 
 void Player::HitSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	EffectPlayer = GameEngineSound::Play("sfx_player_hit_01.wav");
 	EffectPlayer = GameEngineSound::Play("sfx_player_damage_crack_level3.wav");
 }
 
 void Player::JumpSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 
 	if (0 == RandC)
@@ -156,6 +186,11 @@ void Player::JumpSound()
 
 void Player::EXSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 
 	if (0 == RandC)
@@ -178,11 +213,21 @@ void Player::EXSound()
 
 void Player::ParrySound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	EffectPlayer = GameEngineSound::Play("sfx_player_parry_slap_01.wav");
 }
 
 void Player::ParrySuccessSound()
 {
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
 	if (4 >= PlayerEXStack)
 	{
 		EffectPlayer = GameEngineSound::Play("player_parry_power_up_hit_01.wav");
@@ -190,6 +235,25 @@ void Player::ParrySuccessSound()
 	else if (5 <= PlayerEXStack)
 	{
 		EffectPlayer = GameEngineSound::Play("player_parry_power_up_full.wav");
+	}
+}
+
+void Player::DeathSound()
+{
+	if (true == IsSoundOff)
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_death_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("player_death_02.wav");
 	}
 }
 

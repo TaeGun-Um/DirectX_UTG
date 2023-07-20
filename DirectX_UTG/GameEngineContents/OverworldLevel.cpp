@@ -54,6 +54,7 @@ void OverworldLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("bgm_map_world_1.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("flag_raise.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("worldmap_menu_up.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("map_player_win_bounce_cuphead_01.wav").GetFullPath());
 	}
 
 	{
@@ -122,6 +123,9 @@ void OverworldLevel::BuildingFlagOn()
 	if (true == FrogEnd && 1 == FrogEndCount)
 	{
 		FrogEndCount = 0;
+
+		EffectPlayer = GameEngineSound::Play("flag_raise.wav");
+
 		BuildingDataBase::FrogPtr->InterActionOff();
 		BuildingDataBase::FrogPtr->FlagUpSetting();
 		PlayerObject->WinFSMSetting();
@@ -130,6 +134,9 @@ void OverworldLevel::BuildingFlagOn()
 	if (true == MouseEnd && 1 == MouseEndCount)
 	{
 		MouseEndCount = 0;
+
+		EffectPlayer = GameEngineSound::Play("flag_raise.wav");
+
 		BuildingDataBase::MousePtr->InterActionOff();
 		BuildingDataBase::MousePtr->FlagUpSetting();
 		PlayerObject->WinFSMSetting();
@@ -138,6 +145,9 @@ void OverworldLevel::BuildingFlagOn()
 	if (true == DragonEnd && 1 == DragonEndCount)
 	{
 		DragonEndCount = 0;
+
+		EffectPlayer = GameEngineSound::Play("flag_raise.wav");
+
 		BuildingDataBase::DragonPtr->InterActionOff();
 		BuildingDataBase::DragonPtr->FlagUpSetting();
 		PlayerObject->WinFSMSetting();

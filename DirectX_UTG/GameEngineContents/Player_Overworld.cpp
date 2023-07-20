@@ -74,6 +74,11 @@ void Player_Overworld::WalkSoundSet(float _DeltaTime)
 	}
 }
 
+void Player_Overworld::WinBounceSound()
+{
+	EffectPlayer = GameEngineSound::Play("map_player_win_bounce_cuphead_01.wav");
+}
+
 void Player_Overworld::WinFSMSetting()
 {
 	WinSetting = true;
@@ -963,7 +968,7 @@ void Player_Overworld::WinUpdate(float _DeltaTime)
 {
 	WinTime += _DeltaTime;
 
-	if (true == RenderPtr->IsAnimationEnd() && WinTime >= 2.0f)
+	if (4 <= WinCount)
 	{
 		ChangeState(OverworldState::Idle);
 		return;
@@ -973,6 +978,12 @@ void Player_Overworld::WinEnd()
 {
 	IsWin = false;
 	WinTime = 0.0f;
+	WinCount = 0;
+}
+
+void Player_Overworld::WinCountFunction()
+{
+	WinCount += 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1053,6 +1064,9 @@ void Player_Overworld::PlayerInitialSetting()
 	RenderPtr->GetTransform()->SetLocalScale({103, 113});
 	RenderPtr->GetTransform()->SetLocalPosition({ 0, 40 });
 	RenderPtr->ChangeAnimation("Down_Idle");
+
+	RenderPtr->SetAnimationStartEvent("InterAction_Win", 11, std::bind(&Player_Overworld::WinCountFunction, this));
+	RenderPtr->SetAnimationStartEvent("InterAction_Win", 3, std::bind(&Player_Overworld::WinBounceSound, this));
 
 	if (nullptr == EnterMessageRenderPtr)
 	{

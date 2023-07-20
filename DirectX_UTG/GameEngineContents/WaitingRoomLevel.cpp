@@ -72,6 +72,9 @@ void WaitingRoomLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_powerup_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_parry_power_up_full.wav").GetFullPath());
 
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_death_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_death_02.wav").GetFullPath());
+
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_parry_slap_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_parry_power_up_hit_01.wav").GetFullPath());
 

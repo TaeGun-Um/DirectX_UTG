@@ -79,6 +79,7 @@ private:
 	std::shared_ptr<class You_Died> YouDiedPtr = nullptr;
 	std::shared_ptr<class Ready_Wallop> ReadyWallopPtr = nullptr;
 
+	void KnockSound();
 	void StartVoiceSound();
 	void ReLoadSetting();
 	void PlayerDebugRenderOn();
@@ -90,6 +91,8 @@ private:
 	float ReadyWallopTime = 0.0f;
 	float EndTime = 0.0f;
 
+	bool IsEndSound = false;
+	bool IsEndSound2 = false;
 	bool IsBossEnd = false;
 	bool IsPlayerEnd = false;
 	bool IsDragonLevelEnd = false;
