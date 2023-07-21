@@ -77,6 +77,26 @@ void Werner_Werman::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Werner_Werman::MouseRollSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_dash_end.wav");
+}
+
+void Werner_Werman::DashStopSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_dash_stop_02.wav");
+}
+
+void Werner_Werman::CanDashStartSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_dash_start.wav");
+}
+
+void Werner_Werman::DashStartVoiceSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_charge_voice.wav");
+}
+
 void Werner_Werman::IntroSound()
 {
 	EffectPlayer = GameEngineSound::Play("mouse_can_intro.wav");

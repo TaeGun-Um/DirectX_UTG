@@ -173,6 +173,10 @@ private:
 	std::shared_ptr<class Stick> StickObject10 = nullptr;
 	std::shared_ptr<class Stick> StickObject11 = nullptr;
 
+	void CanDashStartSound();
+	void DashStartVoiceSound();
+	void MouseRollSound();
+	void DashStopSound();
 	void CannonStartSound();
 	void CannonEndSound();
 	void CatapultGlugSound();

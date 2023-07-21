@@ -75,8 +75,8 @@ void MouseLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_start.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_charge_voice.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_stop_02.wav").GetFullPath());
-
-		//mouse_can_dash_stop_02 mouse_can_dash_start
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_snarky_voice_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_end.wav").GetFullPath());
 	}
 }
 void MouseLevel::Update(float _DeltaTime)

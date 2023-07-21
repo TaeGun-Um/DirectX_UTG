@@ -209,6 +209,7 @@ void Werner_Werman::MouseOutUpdate(float _DeltaTime)
 
 	if (true == MouseRenderPtr->IsAnimationEnd() && DelayTime >= 0.21f)
 	{
+		EffectPlayer = GameEngineSound::Play("mouse_snarky_voice_02.wav");
 		ChangeState(MouseState::Dash_Intro);
 		return;
 	}
@@ -445,6 +446,9 @@ void Werner_Werman::Dash_IntroStart()
 
 	MouseRenderPtr->ChangeAnimation("Mouse_PopOut");
 	CanRenderPtr->ChangeAnimation("Can_Idle");
+
+	MouseRenderPtr->SetAnimationStartEvent("Mouse_Dash_Intro", 20, std::bind(&Werner_Werman::CanDashStartSound, this));
+	MouseRenderPtr->SetAnimationStartEvent("Mouse_Dash_Intro", 22, std::bind(&Werner_Werman::DashStartVoiceSound, this));
 }
 void Werner_Werman::Dash_IntroUpdate(float _DeltaTime)
 {
@@ -880,6 +884,9 @@ void Werner_Werman::Idle_Phase2End()
 void Werner_Werman::Dash_OutroStart()
 {
 	MouseRenderPtr->ChangeAnimation("Mouse_Dash_Outro");
+
+	MouseRenderPtr->SetAnimationStartEvent("Mouse_Dash_Outro", 0, std::bind(&Werner_Werman::DashStopSound, this));
+	MouseRenderPtr->SetAnimationStartEvent("Mouse_Dash_Outro", 21, std::bind(&Werner_Werman::MouseRollSound, this));
 }
 void Werner_Werman::Dash_OutroUpdate(float _DeltaTime)
 {
