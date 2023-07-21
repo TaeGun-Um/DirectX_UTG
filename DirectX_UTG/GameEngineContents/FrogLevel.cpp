@@ -62,6 +62,53 @@ void FrogLevel::Start()
 		NewDir.Move("1_Ribby_and_Croaks");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Clip Joint Calamity.mp3").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_ragefist_attack_loop_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_fireball_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_fireball_04.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_spit_shoot_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_spit_shoot_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_spit_shoot_04.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_firefly_death_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_firefly_death_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_firefly_death_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_rolling_start_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_rolling_crash_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_rolling_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_clap_shock_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_clap_shock_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_clap_shock_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_short_clap_shock_04.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_fan_start_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_fan_attack_loop_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_fan_end_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_tall_morph_end_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_attack_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_mouth_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_mouth_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_mouth_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_arm_down_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_arm_up_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_dial_spin_loop_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_spin_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_morphed_spin_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_platform_loop_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_flame_platform_fire_burst_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_flame_platform_fire_burst_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_flame_platform_fire_burst_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("frogs_flame_platform_fire_burst_04.wav").GetFullPath());
 	}
 }
 void FrogLevel::Update(float _DeltaTime)

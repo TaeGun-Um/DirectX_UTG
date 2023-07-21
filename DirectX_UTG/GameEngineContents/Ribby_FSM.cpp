@@ -362,7 +362,7 @@ void Ribby::FistAttack_Intro_OutUpdate(float _DeltaTime)
 }
 void Ribby::FistAttack_Intro_OutEnd()
 {
-
+	FistAttackRollSoundOn();
 }
 
 void Ribby::FistAttack_LoopStart()
@@ -392,6 +392,7 @@ void Ribby::FistAttack_LoopEnd()
 	ParryFistCount = 1;
 	ParryFistCreate = false;
 	FistAttackDelayTime = 0.0f;
+	FistAttackRollSoundOff();
 }
 
 void Ribby::FistAttack_EndStart()
@@ -499,6 +500,8 @@ void Ribby::Roll_LoopStart()
 	EXCollisionPtr->GetTransform()->SetLocalPosition({ -50, -100 });
 
 	RenderPtr->ChangeAnimation("Ribby_Roll_Loop");
+
+	RollStartSound();
 }
 void Ribby::Roll_LoopUpdate(float _DeltaTime)
 {
@@ -512,6 +515,7 @@ void Ribby::Roll_LoopUpdate(float _DeltaTime)
 
 			if (1.0f <= RollDelayTime)
 			{
+				RollCrashSound();
 				ChangeState(RibbyState::Roll_End);
 			}
 
@@ -566,6 +570,8 @@ void Ribby::Roll_EndStart()
 
 	BodyCollisionPtr->GetTransform()->SetLocalPosition({ 200, -100 });
 	EXCollisionPtr->GetTransform()->SetLocalPosition({ 200, -100 });
+
+	RollEndSound();
 }
 void Ribby::Roll_EndUpdate(float _DeltaTime)
 {

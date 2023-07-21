@@ -89,11 +89,157 @@ void Croak::Update(float _DeltaTime)
 	RulletActivate(_DeltaTime);
 
 	RulletActivate(_DeltaTime); // ·ê·¿
+
+	FanSoundOn();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Croak::PlatformLoopOn()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_platform_loop_01.wav");
+	EffectPlayer.SetLoop(100);
+}
+
+void Croak::SoundLoopOff()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer.Stop();
+}
+
+void Croak::RulletSoundOn()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_morphed_dial_spin_loop_01.wav");
+}
+
+void Croak::RulletSoundOff()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_morphed_spin_01.wav");
+}
+
+void Croak::RulletStopSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer_Two = GameEngineSound::Play("frogs_morphed_spin_03.wav");
+}
+
+void Croak::CoinAttackSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_morphed_mouth_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_morphed_mouth_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_morphed_mouth_03.wav");
+	}
+}
+
+void Croak::FanSoundOn()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	if (false == IsFanSound)
+	{
+		return;
+	}
+
+	if (false == IsFanStart)
+	{
+		IsFanStart = true;
+		EffectPlayer = GameEngineSound::Play("frogs_tall_fan_start_01.wav");
+	}
+
+	if (true == IsFanStart)
+	{
+		bool playing = false;
+
+		EffectPlayer.isPlaying(&playing);
+
+		if (false == playing && false == IsFanLoop)
+		{
+			IsFanLoop = true;
+			EffectPlayer = GameEngineSound::Play("frogs_tall_fan_attack_loop_01.wav");
+			EffectPlayer.SetLoop(-1);
+		}
+	}
+}
+
+void Croak::FanSoundOff()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	IsFanSound = false;
+	IsFanStart = false;
+	IsFanLoop = false;
+	EffectPlayer.Stop();
+	EffectPlayer = GameEngineSound::Play("frogs_tall_fan_end_01.wav");
+}
+
+void Croak::FireFlySpitSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_spit_shoot_02.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_spit_shoot_03.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_spit_shoot_04.wav");
+	}
+}
 
 void Croak::SetInitReset()
 {
@@ -144,6 +290,10 @@ void Croak::SetInitReset()
 	RulletWave0 = false;
 	RulletWave1 = false;
 	RulletWave2 = false;
+
+	IsFanSound = false;
+	IsFanStart = false;
+	IsFanLoop = false;
 
 	CreatePlus = 0;
 	CreateMobCount = 0;
@@ -1207,9 +1357,9 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_LoopB", .SpriteName = "Croaks_Fan_LoopB", .FrameInter = 0.04f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Croaks_Fan_Outro", .SpriteName = "Croaks_Fan_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Intro", .SpriteName = "Slot_Morph_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Intro", .SpriteName = "Slot_Morph_Intro", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Intro_Loop", .SpriteName = "Slot_Morph_Intro_Loop", .FrameInter = 0.07f, .Loop = true, .ScaleToTexture = true });
-		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Outro", .SpriteName = "Slot_Morph_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Morph_Outro", .SpriteName = "Slot_Morph_Outro", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_InitialOpen", .SpriteName = "Slot_InitialOpen", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Idle", .SpriteName = "Slot_Idle", .FrameInter = 0.06f, .Loop = true, .ScaleToTexture = true });
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Death_Intro", .SpriteName = "Slot_Death_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
@@ -1222,6 +1372,8 @@ void Croak::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Slot_Attack_Outro", .SpriteName = "Slot_Attack_Outro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Croaks_Idle");
+
+		RenderPtr->SetAnimationStartEvent("Croaks_CreateMob", 1, std::bind(&Croak::FireFlySpitSound, this));
 	}
 
 	if (nullptr == BodyCollisionPtr)
@@ -1313,6 +1465,8 @@ void Croak::ActorInitSetting()
 		SlotMouthRenderPtr->ChangeAnimation("Slot_CoinMouth");
 		SlotMouthRenderPtr->GetTransform()->AddLocalPosition({ -5, 65 });
 		SlotMouthRenderPtr->Off();
+
+		SlotMouthRenderPtr->SetAnimationStartEvent("Slot_CoinMouth", 2, std::bind(&Croak::CoinAttackSound, this));
 	}
 
 	// basic = 66, 301 // idle = 66, 200

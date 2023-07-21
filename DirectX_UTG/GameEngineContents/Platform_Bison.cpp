@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -35,6 +36,8 @@ void Platform_Bison::Start()
 		FireRenderPtr->CreateAnimation({ .AnimationName = "Bison_Flame_Large_Loop", .SpriteName = "Bison_Flame_Large_Loop", .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true });
 		FireRenderPtr->GetTransform()->AddLocalPosition({ 0, 50 });
 		FireRenderPtr->ChangeAnimation("Bison_Flame_Small_Loop");
+
+		FireRenderPtr->SetAnimationStartEvent("Bison_Flame_Large_Intro", 1, std::bind(&Platform_Bison::FireSound, this));
 	}
 
 	if (nullptr == FrontRenderPtr)
@@ -110,6 +113,33 @@ void Platform_Bison::Update(float _DeltaTime)
 	FrontSet();
 	MoveDirection(_DeltaTime);
 	DeathCheck();
+}
+
+void Platform_Bison::FireSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_flame_platform_fire_burst_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_flame_platform_fire_burst_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_flame_platform_fire_burst_03.wav");
+	}
+	else if (3 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_flame_platform_fire_burst_04.wav");
+	}
 }
 
 void Platform_Bison::FireChage(float _DeltaTime)

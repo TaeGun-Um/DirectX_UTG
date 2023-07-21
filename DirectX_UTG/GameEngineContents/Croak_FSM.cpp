@@ -517,6 +517,8 @@ void Croak::CreateMob_EndEnd()
 
 void Croak::Fan_IntroStart()
 {
+	IsFanSound = true;
+
 	PlusBodyCollisionPtr->Off();
 	PlusEXCollisionPtr->Off();
 
@@ -532,6 +534,7 @@ void Croak::Fan_IntroUpdate(float _DeltaTime)
 
 	if (400.0f >= HP)
 	{
+		FanSoundOff();
 		Ribby::RibbyPtr->IsClap = false;
 	}
 }
@@ -601,12 +604,14 @@ void Croak::Fan_Loop_BUpdate(float _DeltaTime)
 
 	if (8.5f <= BFanLoopTime)
 	{
+		FanSoundOff();
 		ChangeState(CroakState::Fan_End);
 		return;
 	}
 
 	if (400.0f >= HP)
 	{
+		FanSoundOff();
 		Ribby::RibbyPtr->IsClap = false;
 		Ribby::RibbyPtr->ClapCount = 0;
 		ChangeState(CroakState::Fan_End);
@@ -695,6 +700,8 @@ void Croak::Slot_Morph_Intro_LoopEnd()
 
 void Croak::Slot_Morph_OutroStart()
 {
+	EffectPlayer = GameEngineSound::Play("frogs_tall_morph_end_01.wav");
+
 	SlotInvincibility = true;
 
 	GetTransform()->AddLocalPosition({ -240, 0 });
@@ -766,6 +773,8 @@ void Croak::Slot_InitialOpenStart()
 	SlotImageRenderPtr2->GetTransform()->SetLocalPosition(SlotViporPosition2);
 
 	LowerLimit = SlotViporPosition0 + float4{ 0, -45 };
+
+	EffectPlayer = GameEngineSound::Play("frogs_morphed_attack_01.wav");
 }
 void Croak::Slot_InitialOpenUpdate(float _DeltaTime)
 {
@@ -810,6 +819,7 @@ void Croak::Slot_IdleUpdate(float _DeltaTime)
 		if (3.5f <= RulletTime && 1 == RulletSelectCount)
 		{
 			RulletSelectCount = 0;
+			RulletSoundOff();
 
 			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 
@@ -862,6 +872,8 @@ void Croak::Slot_ArmMove_IntroStart()
 	RulletActivateEnd = false;
 
 	RenderPtr->ChangeAnimation("Slot_ArmMove_Intro");
+
+	EffectPlayer = GameEngineSound::Play("frogs_morphed_arm_down_01.wav");
 }
 void Croak::Slot_ArmMove_IntroUpdate(float _DeltaTime)
 {
@@ -898,11 +910,15 @@ void Croak::Slot_ArmMove_LoopEnd()
 	SlotMouthRenderPtr->Off();
 	CreateCoinCount = 0;
 	CoinAttackTime = 0.0f;
+
+	EffectPlayer = GameEngineSound::Play("frogs_morphed_arm_up_01.wav");
 }
 
 void Croak::Slot_ArmMove_OutroStart()
 {
 	RenderPtr->ChangeAnimation("Slot_ArmMove_Outro");
+
+	RulletSoundOn();
 }
 void Croak::Slot_ArmMove_OutroUpdate(float _DeltaTime)
 {
@@ -914,7 +930,7 @@ void Croak::Slot_ArmMove_OutroUpdate(float _DeltaTime)
 }
 void Croak::Slot_ArmMove_OutroEnd()
 {
-
+	
 }
 
 void Croak::Slot_Attack_IntroStart()
@@ -922,11 +938,14 @@ void Croak::Slot_Attack_IntroStart()
 	SlotInvincibility = false;
 
 	RenderPtr->ChangeAnimation("Slot_Attack_Intro");
+
+	PlatformLoopOn();
 }
 void Croak::Slot_Attack_IntroUpdate(float _DeltaTime)
 {
 	if (true == IsStageEnd)
 	{
+		SoundLoopOff();
 		ChangeState(CroakState::Slot_Death_Intro);
 		return;
 	}
@@ -941,8 +960,6 @@ void Croak::Slot_Attack_IntroEnd()
 {
 
 }
-
-int Creta = 1;
 
 void Croak::Slot_Attack_LoopStart()
 {
@@ -971,6 +988,7 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 {
 	if (true == IsStageEnd)
 	{
+		SoundLoopOff();
 		ChangeState(CroakState::Slot_Death_Intro);
 		return;
 	}
@@ -1025,6 +1043,7 @@ void Croak::Slot_Attack_LoopUpdate(float _DeltaTime)
 		|| 0 == CreateBison && 0.5f <= RulletLoopTime
 		|| 0 == CreateTiger && 0.5f <= RulletLoopTime)
 	{
+		SoundLoopOff();
 		ChangeState(CroakState::Slot_Attack_Outro);
 		return;
 	}

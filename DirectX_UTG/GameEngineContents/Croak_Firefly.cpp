@@ -71,6 +71,29 @@ void Croak_Firefly::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 }
 
+void Croak_Firefly::FireFlyDeathSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_firefly_death_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_firefly_death_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_tall_firefly_death_03.wav");
+	}
+}
+
 void Croak_Firefly::SpawnMove(float _DeltaTime)
 {
 	if (true == IsDeath)
@@ -304,6 +327,7 @@ void Croak_Firefly::MoveEnd()
 void Croak_Firefly::DeathStart()
 {
 	RenderPtr->ChangeAnimation("Death");
+	FireFlyDeathSound();
 }
 void Croak_Firefly::DeathUpdate(float _DeltaTime)
 {

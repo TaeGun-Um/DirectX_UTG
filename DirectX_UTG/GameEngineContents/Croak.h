@@ -85,6 +85,9 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+	GameEngineSoundPlayer EffectPlayer_Two;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> WindRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> SlotMouthRenderPtr = nullptr;
@@ -114,7 +117,21 @@ private:
 	bool IsStageEnd = false;
 	bool IsDebugRender = false;
 	bool IsBlink = false;
-	
+	bool IsFanSound = false;
+	bool IsFanStart = false;
+	bool IsFanLoop = false;
+	bool IsFanEnd = false;
+
+	void SoundLoopOff();
+	void PlatformLoopOn();
+	void PlatformLoopOff();
+	void RulletSoundOn();
+	void RulletSoundOff();
+	void RulletStopSound();
+	void CoinAttackSound();
+	void FanSoundOn();
+	void FanSoundOff();
+	void FireFlySpitSound();
 	void RulletImageBlink(float _DeltaTime);
 	void RulletActivate(float _DeltaTime);
 	void CoinAttack(float _DeltaTime);

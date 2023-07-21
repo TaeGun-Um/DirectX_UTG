@@ -72,6 +72,103 @@ void Ribby::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Ribby::ClapSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_clap_shock_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_clap_shock_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_clap_shock_03.wav");
+	}
+	else if (3 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_clap_shock_04.wav");
+	}
+}
+
+void Ribby::RollStartSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_short_rolling_start_01.wav");
+}
+
+void Ribby::RollCrashSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_short_rolling_crash_01.wav");
+}
+
+void Ribby::RollEndSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer = GameEngineSound::Play("frogs_short_rolling_end.wav");
+}
+
+void Ribby::FistAttackRollSoundOn()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer_Two = GameEngineSound::Play("frogs_short_ragefist_attack_loop_01.wav");
+	EffectPlayer_Two.SetLoop(-1);
+}
+
+void Ribby::FistAttackRollSoundOff()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	EffectPlayer_Two.Stop();
+}
+
+void Ribby::FistAttackCreateSound()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_fireball_02.wav");
+	}
+	else
+	{
+		EffectPlayer = GameEngineSound::Play("frogs_short_fireball_04.wav");
+	}
+}
+
 void Ribby::HitBlink(float _DeltaTime)
 {
 	if (false == IsBlink)
@@ -274,6 +371,8 @@ void Ribby::CreateFistProjectile()
 	}
 
 	CreateFistSFX(ProjectilePosition);
+
+	FistAttackCreateSound();
 }
 
 void Ribby::CreateFistSFX(float4 _Position)
@@ -438,6 +537,8 @@ void Ribby::ActorInitSetting()
 		RenderPtr->CreateAnimation({ .AnimationName = "Ribby_ClapAttack_End", .SpriteName = "Ribby_ClapAttack_End", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("Ribby_Idle");
+
+		RenderPtr->SetAnimationStartEvent("Ribby_ClapAttack", 1, std::bind(&Ribby::ClapSound, this));
 	}
 
 	if (nullptr == BodyCollisionPtr)

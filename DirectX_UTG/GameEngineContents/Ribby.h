@@ -67,6 +67,9 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+	GameEngineSoundPlayer EffectPlayer_Two;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -80,6 +83,13 @@ private:
 	bool IsDebugRender = false;
 	bool IsBlink = false;
 
+	void ClapSound();
+	void RollStartSound();
+	void RollCrashSound();
+	void RollEndSound();
+	void FistAttackRollSoundOn();
+	void FistAttackRollSoundOff();
+	void FistAttackCreateSound();
 	void ActorInitSetting();
 	void DirectCheck();
 	void CollisionCheck();
