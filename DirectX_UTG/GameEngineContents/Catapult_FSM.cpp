@@ -197,6 +197,7 @@ void Werner_Werman::Catapult_ReloadEnd()
 void Werner_Werman::Catapult_Reload_LoopStart()
 {
 	WeaponRender->ChangeAnimation("Catapult_Reload_Loop");
+	CatapultGlugSound();
 }
 void Werner_Werman::Catapult_Reload_LoopUpdate(float _DeltaTime)
 {
@@ -221,6 +222,7 @@ void Werner_Werman::Catapult_FireUpdate(float _DeltaTime)
 {
 	if (5 == WeaponRender ->GetCurrentFrame() && true == IsCreateCatapultProjectile)
 	{
+		CatapultShootSound();
 		IsCreateCatapultProjectile = false;
 		CreateCatapultProjectile();
 	}

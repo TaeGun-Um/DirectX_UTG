@@ -74,6 +74,8 @@ void Werner_Werman::Cannon_OutStart()
 	WeaponRender->GetTransform()->SetLocalPosition({ -70, 250 });
 	WeaponRender->On();
 	WeaponRender->ChangeAnimation("Cannon_Out");
+
+	CannonStartSound();
 }
 void Werner_Werman::Cannon_OutUpdate(float _DeltaTime)
 {
@@ -92,6 +94,8 @@ void Werner_Werman::Cannon_InStart()
 	IsFire = false;
 	CannonFireCount = 0;
 	WeaponRender->ChangeAnimation("Cannon_In");
+
+	CannonEndSound();
 }
 void Werner_Werman::Cannon_InUpdate(float _DeltaTime)
 {
@@ -190,6 +194,7 @@ void Werner_Werman::Cannon_FireUpdate(float _DeltaTime)
 	if (1 == WeaponRender->GetCurrentFrame() && true == IsCreateProjectile)
 	{
 		IsCreateProjectile = false;
+		CannonSound();
 		CreateCherryBomb();
 		++CannonFireCount;
 	}

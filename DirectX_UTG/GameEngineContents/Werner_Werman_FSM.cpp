@@ -148,6 +148,8 @@ void Werner_Werman::IntroStart()
 {
 	MouseRenderPtr->ChangeAnimation("Mouse_Intro");
 	CanRenderPtr->ChangeAnimation("Can_Idle");
+
+	MouseRenderPtr->SetAnimationStartEvent("Mouse_Intro", 9, std::bind(&Werner_Werman::IntroSound, this));
 }
 void Werner_Werman::IntroUpdate(float _DeltaTime)
 {
@@ -359,6 +361,9 @@ void Werner_Werman::MoveUpdate(float _DeltaTime)
 		if ((GameEngineMath::PIE / 4) <= CosTime && 3 <= WeaponSwapCount && true == IsCreateSpringObject)
 		{
 			IsCreateSpringObject = false;
+
+			EffectPlayer = GameEngineSound::Play("mouse_can_springboard_shoot.wav");
+
 			CreateSpringObject();
 		}
 

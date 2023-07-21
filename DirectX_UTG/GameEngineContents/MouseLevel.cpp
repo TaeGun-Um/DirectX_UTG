@@ -54,6 +54,29 @@ void MouseLevel::Start()
 		NewDir.Move("3_Werner_Werman");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Murine Corps.mp3").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_intro.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_cannon_shoot.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cannon_bomb_explode_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cannon_bomb_explode_02.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_catapult.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_catapult.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_catapult_glug_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_springboard_shoot.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_springboard_land_01.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_springboard_land_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_cannon_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_start.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_charge_voice.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_stop_02.wav").GetFullPath());
+
+		//mouse_can_dash_stop_02 mouse_can_dash_start
 	}
 }
 void MouseLevel::Update(float _DeltaTime)

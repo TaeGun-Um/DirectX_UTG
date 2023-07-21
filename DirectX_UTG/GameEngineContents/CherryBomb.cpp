@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CherryBomb.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -17,6 +18,20 @@ CherryBomb::~CherryBomb()
 {
 }
 
+void CherryBomb::BombExplodeSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cannon_bomb_explode_01.wav");
+	}
+	else
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cannon_bomb_explode_02.wav");
+	}
+}
+
 void CherryBomb::Start()
 {
 	if (nullptr == RenderPtr)
@@ -28,6 +43,8 @@ void CherryBomb::Start()
 		RenderPtr->CreateAnimation({ .AnimationName = "CherryBomb_Explode", .SpriteName = "CherryBomb_Explode", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
 		RenderPtr->ChangeAnimation("CherryBomb_Normal");
+
+		RenderPtr->SetAnimationStartEvent("CherryBomb_Explode", 0, std::bind(&CherryBomb::BombExplodeSound, this));
 	}
 
 	if (nullptr == ProjectileCollisionPtr)

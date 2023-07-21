@@ -139,6 +139,8 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> CanRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CanBackRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> CanUpRenderPtr = nullptr;
@@ -171,6 +173,12 @@ private:
 	std::shared_ptr<class Stick> StickObject10 = nullptr;
 	std::shared_ptr<class Stick> StickObject11 = nullptr;
 
+	void CannonStartSound();
+	void CannonEndSound();
+	void CatapultGlugSound();
+	void CatapultShootSound();
+	void CannonSound();
+	void IntroSound();
 	void StiecActivateUp(bool _Is);
 	void StiecActivateDown(bool _Is);
 	void ActorInitSetting();

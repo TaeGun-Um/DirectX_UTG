@@ -67,6 +67,8 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;
@@ -82,6 +84,7 @@ private:
 	bool IsDeath = false;
 	bool IsParryProjectile = false;
 
+	void BombExplodeSound();
 	void MoveDirection(float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
 	void CollisionCheck();

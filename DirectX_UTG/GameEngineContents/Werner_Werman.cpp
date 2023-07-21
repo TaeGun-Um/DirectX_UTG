@@ -77,6 +77,38 @@ void Werner_Werman::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Werner_Werman::IntroSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_intro.wav");
+}
+
+void Werner_Werman::CannonStartSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_springboard_land_02.wav");
+}
+
+void Werner_Werman::CannonEndSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_cannon_end.wav");
+}
+
+void Werner_Werman::CannonSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_cannon_shoot.wav");
+}
+
+void Werner_Werman::CatapultShootSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_catapult.wav");
+}
+
+void Werner_Werman::CatapultGlugSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_can_catapult_glug_01.wav");
+}
+
+//mouse_can_springboard_land_02
+
 void Werner_Werman::HitBlink(float _DeltaTime)
 {
 	if (false == IsBlink)

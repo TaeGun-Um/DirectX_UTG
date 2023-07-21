@@ -127,6 +127,7 @@ void SpringObject::PixelCheck(float _DeltaTime)
 
 	if (true == PixelCollisionCheck.IsBlack(LandPixel))
 	{
+		EffectPlayer = GameEngineSound::Play("mouse_can_springboard_land_01.wav");
 		MoveDirect = float4::Zero;
 		IsLand = true;
 	}

@@ -57,6 +57,8 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> HeadRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> HeadParent = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyRenderPtr = nullptr;
