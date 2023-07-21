@@ -255,6 +255,12 @@ void Dragon_BackGround::DragonDash(float _DeltaTime)
 		return;
 	}
 
+	if (false == IsDashSound)
+	{
+		IsDashSound = true;
+		EffectPlayer = GameEngineSound::Play("dragon_tail_attack.wav");
+	}
+
 	float4 CurPos = DragonDashRenderPtr->GetTransform()->GetLocalPosition();
 
 	if (-1200.0f >= CurPos.x)

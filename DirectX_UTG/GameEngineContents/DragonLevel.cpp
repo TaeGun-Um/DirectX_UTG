@@ -55,6 +55,40 @@ void DragonLevel::Start()
 		NewDir.Move("2_Grim_Matchstick");
 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Fiery Frolic.mp3").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_peashot_in.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_peashot_fire_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_peashot_out.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_tail_appear.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_tail_attack.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_meteor_anticipation_loop.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_meteor_attack_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_meteor_attack_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_meteor_attack_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_meteor_attack_04.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_intro.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_tongue_intro.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_smoke_start.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_smoke_loop.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_smoke_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_fire_start.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_fire_loop.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_left_dragon_fire_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_crouch_start_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_crouch_start_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_crouch_start_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_jump_start_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_jump_start_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_fire_marcher_B_jump_start_03.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("dragon_dash.wav").GetFullPath());
 	}
 }
 void DragonLevel::Update(float _DeltaTime)
@@ -635,6 +669,8 @@ void DragonLevel::LevelChangeEnd()
 
 		DragonObject = nullptr;
 		FallPointObject = nullptr;
+
+		BackGroundObject->SetDashSoundFalse();
 	}
 }
 

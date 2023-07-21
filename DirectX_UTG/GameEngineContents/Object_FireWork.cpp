@@ -103,6 +103,42 @@ void Object_FireWork::Update(float _DeltaTime)
 	DeathCheck();
 }
 
+void Object_FireWork::CrouchSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_crouch_start_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_crouch_start_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_crouch_start_03.wav");
+	}
+}
+
+void Object_FireWork::JumpSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_jump_start_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_jump_start_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_fire_marcher_B_jump_start_03.wav");
+	}
+}
+
 void Object_FireWork::DeathCheck()
 {
 	float4 CurPos = GetTransform()->GetLocalPosition();
@@ -234,6 +270,8 @@ void Object_FireWork::Jump_IntroStart()
 	}
 
 	RenderPtr->ChangeAnimation("Object_Firework_C_Jump_Intro");
+
+	CrouchSound();
 }
 void Object_FireWork::Jump_IntroUpdate(float _DeltaTime)
 {
@@ -278,6 +316,8 @@ void Object_FireWork::Jump_InterStart()
 	{
 		MoveSpeed = 400.0f;
 	}
+
+	JumpSound();
 }
 void Object_FireWork::Jump_InterUpdate(float _DeltaTime)
 {

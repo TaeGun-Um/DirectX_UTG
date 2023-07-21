@@ -27,12 +27,21 @@ public:
 		return IsDragonDashEnd;
 	}
 
+	void SetDashSoundFalse()
+	{
+		IsDashSound = false;
+	}
+
 protected:
 	void Start();
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+	
+	bool IsDashSound = false;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BackGroundRenderPtr_One = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BackGroundRenderPtr_Two = nullptr;
 

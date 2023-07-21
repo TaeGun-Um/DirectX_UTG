@@ -62,6 +62,12 @@ void Object_Tail::MoveCalculation(float _DeltaTime)
 	{
 		float MoveDis = 300.0f * _DeltaTime;
 		GetTransform()->AddLocalPosition({ 0, MoveDis });
+
+		if (false == AppearSound)
+		{
+			AppearSound = true;
+			EffectPlayer = GameEngineSound::Play("dragon_tail_appear.wav");
+		}
 	}
 	else
 	{
@@ -79,6 +85,12 @@ void Object_Tail::MoveCalculation(float _DeltaTime)
 		{
 			float MoveDis = 1200.0f * _DeltaTime;
 			GetTransform()->AddLocalPosition({ 0, MoveDis });
+
+			if (false == AttackSound)
+			{
+				AttackSound = true;
+				EffectPlayer = GameEngineSound::Play("dragon_tail_attack.wav");
+			}
 		}
 		else
 		{

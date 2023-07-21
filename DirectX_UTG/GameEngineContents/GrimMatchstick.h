@@ -82,6 +82,9 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+	GameEngineSoundPlayer EffectPlayer_Two;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> UpRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EyeRenderPtr = nullptr;
@@ -113,7 +116,11 @@ private:
 
 	bool IsSpawn = false;
 	bool Directbool = false;
+	bool IsMeteorBreath = false;
+	bool MeteorBreathSound = false;
 
+	void MeteorBreathOn();
+	void MeteorBreathOff();
 	void ActorInitSetting();
 	void HitBlink(float _DeltaTime);
 	void CollisionCheck();

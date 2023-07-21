@@ -91,11 +91,50 @@ void GrimMatchstick::Update(float _DeltaTime)
 
 	CreateRing(_DeltaTime);
 	CreateTail(_DeltaTime);
+
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+	}
+
+	MeteorBreathOn();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GrimMatchstick::MeteorBreathOn()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	if (false == IsMeteorBreath)
+	{
+		return;
+	}
+
+	if (false == MeteorBreathSound)
+	{
+		MeteorBreathSound = true;
+		EffectPlayer_Two = GameEngineSound::Play("dragon_meteor_anticipation_loop.wav");
+		EffectPlayer_Two.SetLoop(-1);
+	}
+}
+
+void GrimMatchstick::MeteorBreathOff()
+{
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		return;
+	}
+
+	IsMeteorBreath = false;
+	MeteorBreathSound = false;
+	EffectPlayer_Two.Stop();
+}
 
 void GrimMatchstick::HitBlink(float _DeltaTime)
 {
@@ -362,6 +401,7 @@ void GrimMatchstick::CreateRing(float _DeltaTime)
 	}
 
 	++RingCreateCount;
+	EffectPlayer = GameEngineSound::Play("dragon_peashot_fire_03.wav");
 
 	std::shared_ptr<Object_GreenRing> RingObject = GetLevel()->CreateActor<Object_GreenRing>();
 

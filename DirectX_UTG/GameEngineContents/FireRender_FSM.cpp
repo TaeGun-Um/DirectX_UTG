@@ -144,6 +144,8 @@ void GrimMatchstick::Object_Fire_IntroStart()
 	FireCollisionPtr->On();
 
 	FireRenderPtr->ChangeAnimation("Object_Fire_Intro");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_fire_start.wav");
 }
 void GrimMatchstick::Object_Fire_IntroUpdate(float _DeltaTime)
 {
@@ -161,12 +163,14 @@ void GrimMatchstick::Object_Fire_IntroEnd()
 void GrimMatchstick::Object_Fire_LoopStart()
 {
 	FireRenderPtr->ChangeAnimation("Object_Fire_Loop");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_fire_loop.wav");
 }
 void GrimMatchstick::Object_Fire_LoopUpdate(float _DeltaTime)
 {
 	FireWaitingTime += _DeltaTime;
 
-	if (2.0f <= FireWaitingTime)
+	if (3.0f <= FireWaitingTime)
 	{
 		FireWaitingTime = 0.0f;
 		ChangeState_FireRender(FireRenderState::Object_Fire_Outro);
@@ -181,6 +185,8 @@ void GrimMatchstick::Object_Fire_LoopEnd()
 void GrimMatchstick::Object_Fire_OutroStart()
 {
 	FireRenderPtr->ChangeAnimation("Object_Fire_Outro");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_fire_end.wav");
 }
 void GrimMatchstick::Object_Fire_OutroUpdate(float _DeltaTime)
 {
@@ -198,6 +204,8 @@ void GrimMatchstick::Object_Fire_OutroEnd()
 void GrimMatchstick::Object_FireSmoke_IntroStart()
 {
 	FireRenderPtr->ChangeAnimation("Object_FireSmoke_Intro");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_smoke_start.wav");
 }
 void GrimMatchstick::Object_FireSmoke_IntroUpdate(float _DeltaTime)
 {
@@ -215,12 +223,14 @@ void GrimMatchstick::Object_FireSmoke_IntroEnd()
 void GrimMatchstick::Object_FireSmoke_LoopStart()
 {
 	FireRenderPtr->ChangeAnimation("Object_FireSmoke_Loop");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_smoke_loop.wav");
 }
 void GrimMatchstick::Object_FireSmoke_LoopUpdate(float _DeltaTime)
 {
 	FireWaitingTime += _DeltaTime;
 
-	if (2.0f <= FireWaitingTime)
+	if (1.7f <= FireWaitingTime)
 	{
 		FireWaitingTime = 0.0f;
 		ChangeState_FireRender(FireRenderState::Object_FireSmoke_Outro);
@@ -235,6 +245,8 @@ void GrimMatchstick::Object_FireSmoke_LoopEnd()
 void GrimMatchstick::Object_FireSmoke_OutroStart()
 {
 	FireRenderPtr->ChangeAnimation("Object_FireSmoke_Outro");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_smoke_end.wav");
 }
 void GrimMatchstick::Object_FireSmoke_OutroUpdate(float _DeltaTime)
 {

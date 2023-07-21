@@ -189,6 +189,26 @@ void GrimMatchstick::Phase1_PeashootCountFunction()
 void GrimMatchstick::Phase1_MeteorMaxCountFunction()
 {
 	MeteorMax += 1;
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_meteor_attack_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_meteor_attack_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_meteor_attack_03.wav");
+	}
+	else if (3 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("dragon_meteor_attack_04.wav");
+	}
+
 	CreateMeteor();
 }
 
@@ -319,6 +339,7 @@ void GrimMatchstick::IdleEnd()
 void GrimMatchstick::Meteor_IntroStart()
 {
 	RenderPtr->ChangeAnimation("Dragon_MeteorAttack_Intro");
+	IsMeteorBreath = true;
 }
 void GrimMatchstick::Meteor_IntroUpdate(float _DeltaTime)
 {
@@ -330,7 +351,7 @@ void GrimMatchstick::Meteor_IntroUpdate(float _DeltaTime)
 }
 void GrimMatchstick::Meteor_IntroEnd()
 {
-
+	
 }
 
 void GrimMatchstick::Meteor_Intro_LoopStart()
@@ -354,6 +375,7 @@ void GrimMatchstick::Meteor_Intro_LoopEnd()
 void GrimMatchstick::Meteor_ShootStart()
 {
 	RenderPtr->ChangeAnimation("Dragon_MeteorAttack_Shoot_Front");
+	MeteorBreathOff();
 }
 void GrimMatchstick::Meteor_ShootUpdate(float _DeltaTime)
 {
@@ -388,6 +410,7 @@ void GrimMatchstick::Meteor_ShootEnd()
 
 void GrimMatchstick::Meteor_Shoot_LollBackStart()
 {
+	IsMeteorBreath = true;
 	RenderPtr->ChangeAnimation("Dragon_MeteorAttack_Shoot_LollBack");
 }
 void GrimMatchstick::Meteor_Shoot_LollBackUpdate(float _DeltaTime)
@@ -423,6 +446,8 @@ void GrimMatchstick::Meteor_OutroEnd()
 void GrimMatchstick::Peashoot_IntroStart()
 {
 	RenderPtr->ChangeAnimation("Dragon_PeashotAttack_Intro");
+
+	EffectPlayer = GameEngineSound::Play("dragon_peashot_in.wav");
 }
 void GrimMatchstick::Peashoot_IntroUpdate(float _DeltaTime)
 {
@@ -484,6 +509,8 @@ void GrimMatchstick::Peashoot_Shoot_PlusEnd()
 
 void GrimMatchstick::Peashoot_OutroStart()
 {
+	EffectPlayer = GameEngineSound::Play("dragon_peashot_out.wav");
+
 	EyeRenderPtr->Off();
 	EyeRenderPtr->ChangeAnimation("SFX_EyesAttack");
 	RenderPtr->ChangeAnimation("Dragon_PeashotAttack_Outro");
@@ -534,6 +561,8 @@ void GrimMatchstick::Ph2_Intro_LoopStart()
 	GetTransform()->SetWorldPosition({ -400, CurPos.y, CurPos.z });
 
 	RenderPtr->ChangeAnimation("Dragon_Ph2_Intro_Loop");
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_intro.wav");
 }
 void GrimMatchstick::Ph2_Intro_LoopUpdate(float _DeltaTime)
 {
@@ -586,6 +615,8 @@ void GrimMatchstick::Ph2_IdleStart()
 	UpRenderPtr->On();
 
 	ChangeState_FireRender(FireRenderState::Object_Fire_Waiting);
+
+	EffectPlayer = GameEngineSound::Play("dragon_left_dragon_tongue_intro.wav");
 }
 void GrimMatchstick::Ph2_IdleUpdate(float _DeltaTime)
 {
