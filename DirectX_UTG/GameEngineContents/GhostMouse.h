@@ -29,6 +29,7 @@ public:
 		if (false == _Direction)
 		{
 			GetTransform()->SetLocalNegativeScaleX();
+			IsIntroSound = true;
 		}
 
 		Directbool = _Direction;
@@ -80,6 +81,8 @@ protected:
 	void Render(float _DeltaTime) override {}
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> BodyCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> EXCollisionRenderPtr = nullptr;
@@ -95,6 +98,7 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
+	void AttackSound();
 	void CollisionCheck();
 	void HitBlink(float _DeltaTime);
 	void CreateBall(bool _Is);
@@ -108,6 +112,7 @@ private:
 	bool IsDeath = false;
 	bool Directbool = false;
 	bool IsAttack = false;
+	bool IsIntroSound = false;
 
 	float AttackDelayTime = 0.0f;
 	float LerpTime = 0.0f;

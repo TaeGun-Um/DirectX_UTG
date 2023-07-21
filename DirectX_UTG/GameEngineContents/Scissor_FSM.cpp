@@ -94,6 +94,8 @@ void Werner_Werman::Scissor_IntroEnd()
 void Werner_Werman::DownStart()
 {
 	WeaponRender->ChangeAnimation("Scissor_Down");
+
+	EffectPlayer = GameEngineSound::Play("mouse_broken_can_scissor_going_down.wav");
 }
 void Werner_Werman::DownUpdate(float _DeltaTime)
 {
@@ -133,6 +135,8 @@ void Werner_Werman::Down_LoopEnd()
 void Werner_Werman::UpStart()
 {
 	WeaponRender->ChangeAnimation("Scissor_Up");
+
+	EffectPlayer = GameEngineSound::Play("mouse_broken_can_scissor_going_up.wav");
 }
 void Werner_Werman::UpUpdate(float _DeltaTime)
 {

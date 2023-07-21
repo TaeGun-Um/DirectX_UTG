@@ -98,6 +98,9 @@ void Peashooter_EX::DeathCheck()
 		if (false == Check)
 		{
 			Check = true;
+
+			EffectPlayer = GameEngineSound::Play("player_weapon_peashot_death_001.wav");
+
 			RenderPtr->ChangeAnimation("Death", false);
 			RenderPtr->GetTransform()->SetLocalPosition({ 60, 0 });
 		}

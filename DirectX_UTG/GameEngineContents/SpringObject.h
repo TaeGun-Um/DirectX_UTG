@@ -81,6 +81,7 @@ private:
 	bool IsDeath = false;
 	bool IsParryProjectile = false;
 
+	void DeathSound();
 	void MoveDirection(float _DeltaTime);
 	void PixelCheck(float _DeltaTime);
 	void CollisionCheck();

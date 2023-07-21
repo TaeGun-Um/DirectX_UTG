@@ -41,6 +41,7 @@ public:
 	{
 		IsHit = true;
 		--Stack;
+		EffectPlayer = GameEngineSound::Play("player_weapon_peashot_death_001.wav");
 	}
 
 	void SetPeashooter_EXDeath();
@@ -61,6 +62,8 @@ protected:
 	void Render(float _DeltaTime) override {};
 
 private:
+	GameEngineSoundPlayer EffectPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> RenderPtr = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> ProjectileCollisionRenderPtr = nullptr;
 	std::shared_ptr<class GameEngineCollision> ProjectileCollisionPtr = nullptr;

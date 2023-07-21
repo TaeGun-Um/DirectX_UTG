@@ -525,6 +525,8 @@ void Werner_Werman::Explosion_IntroStart()
 
 	WeaponRender->ChangeAnimation("Object_IntroBomb");
 	CanRenderPtr->ChangeAnimation("Can_Idle");
+
+	EffectPlayer = GameEngineSound::Play("mouse_can_explode_pre.wav");
 }
 void Werner_Werman::Explosion_IntroUpdate(float _DeltaTime)
 {
@@ -571,7 +573,7 @@ void Werner_Werman::Explosion_LoopUpdate(float _DeltaTime)
 {
 	ExplosionLoopTime += _DeltaTime;
 
-	if (0.7f <= ExplosionLoopTime)
+	if (0.5f <= ExplosionLoopTime)
 	{
 		ChangeState(MouseState::Explosion);
 		return;
@@ -627,6 +629,8 @@ void Werner_Werman::ExplosionStart()
 	MouseRenderPtr->GetTransform()->SetParent(Phase2Parent->GetTransform());
 	FlamecannonRenderPtr_Left->GetTransform()->SetParent(Phase2Parent->GetTransform());
 	FlamecannonRenderPtr_Right->GetTransform()->SetParent(Phase2Parent->GetTransform());
+
+	EffectPlayer = GameEngineSound::Play("mouse_can_explode.wav");
 }
 void Werner_Werman::ExplosionUpdate(float _DeltaTime)
 {

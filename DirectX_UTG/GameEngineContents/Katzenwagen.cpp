@@ -65,6 +65,16 @@ void Katzenwagen::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Katzenwagen::CreateGhostSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_ghost_mouse_wail_02.wav");
+}
+
+void Katzenwagen::Ph3IntroCatEatingScreamSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_cat_intro.wav");
+}
+
 void Katzenwagen::GhostMouseAttackSetting(float _DeltaTime)
 {
 	if (nullptr != GhostMouse_One)
@@ -319,6 +329,8 @@ void Katzenwagen::CreateGhostMouse()
 	GhostMouse_Two->SetStartPosition(GhostPosition);
 
 	CreateGhostMouseCount = 0;
+
+	CreateGhostSound();
 }
 
 void Katzenwagen::CreateWoodPiece_Left(float _DeltaTime)
@@ -703,7 +715,7 @@ void Katzenwagen::ActorInitSetting()
 	if (nullptr == HeadRenderPtr)
 	{
 		HeadRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
-		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Intro_Head", .SpriteName = "Cat_Intro_Head", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Left", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Idle_Head_Right", .SpriteName = "Cat_Idle_Head", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 		HeadRenderPtr->CreateAnimation({ .AnimationName = "Cat_Claw_Head_Intro", .SpriteName = "Cat_Claw_Head_Intro", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
@@ -717,6 +729,8 @@ void Katzenwagen::ActorInitSetting()
 		HeadRenderPtr->GetTransform()->SetLocalPosition({ 0, 0 });
 		HeadRenderPtr->ChangeAnimation("Cat_Intro_Head");
 		HeadRenderPtr->Off();
+
+		HeadRenderPtr->SetAnimationStartEvent("Cat_Intro_Head", 2, std::bind(&Katzenwagen::Ph3IntroCatEatingScreamSound, this));
 	}
 
 	if (nullptr == BodyCollisionPtr)

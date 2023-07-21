@@ -77,6 +77,34 @@ void MouseLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_stop_02.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_snarky_voice_02.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_dash_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_phase2_background_shelf_drop.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_explode_pre.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_can_explode.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_flamethrower_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_flamethrower_02.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_wood_smash_1.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_wood_smash_2.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_wood_smash_3.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_broken_can_scissor_going_up.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_broken_can_scissor_going_down.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_scream_death_voice.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cat_intro.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cat_paw_attack_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cat_paw_attack_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cat_paw_attack_03.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_cat_jail_end.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_ghost_mouse_wail_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_ghost_mouse_laugh.wav").GetFullPath());
+		
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_ghost_attack_1.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_ghost_attack_2.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("mouse_ghost_attack_3.wav").GetFullPath());
 	}
 }
 void MouseLevel::Update(float _DeltaTime)

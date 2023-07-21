@@ -254,6 +254,7 @@ void Werner_Werman::Trans_EndLoopStart()
 {
 	DelayTime = 0.0f;
 	MouseRenderPtr->ChangeAnimation("Mouse_Transition_EndLoop");
+	Ph3IntroScreamSound();
 }
 void Werner_Werman::Trans_EndLoopUpdate(float _DeltaTime)
 {

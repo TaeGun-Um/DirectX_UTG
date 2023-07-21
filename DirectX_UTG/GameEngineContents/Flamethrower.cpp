@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Flamethrower.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -200,6 +201,17 @@ void Flamethrower::IntroEnd()
 void Flamethrower::FireStart()
 {
 	RenderPtr->ChangeAnimation("Flamethrower_Fire");
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_flamethrower_01.wav");
+	}
+	else
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_flamethrower_02.wav");
+	}
 }
 void Flamethrower::FireUpdate(float _DeltaTime)
 {

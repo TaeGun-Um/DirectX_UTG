@@ -2,6 +2,7 @@
 #include "GhostMouse.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -21,6 +22,24 @@ GhostMouse::GhostMouse()
 
 GhostMouse::~GhostMouse() 
 {
+}
+
+void GhostMouse::AttackSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_ghost_attack_1.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_ghost_attack_2.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_ghost_attack_3.wav");
+	}
 }
 
 void GhostMouse::Start()
@@ -337,6 +356,12 @@ void GhostMouse::IdleUpdate(float _DeltaTime)
 
 	if (true == IsAttack)
 	{
+		if (true == IsIntroSound)
+		{
+			IsIntroSound = false;
+			EffectPlayer = GameEngineSound::Play("mouse_ghost_mouse_laugh.wav");
+		}
+
 		IsAttack = false;
 
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
@@ -373,6 +398,7 @@ void GhostMouse::BlueBallAttackUpdate(float _DeltaTime)
 
 	if (true == RenderPtr->IsAnimationEnd())
 	{
+		AttackSound();
 		ChangeState(GhostState::AttackOutro);
 		return;
 	}
@@ -397,6 +423,7 @@ void GhostMouse::PinkBallAttackUpdate(float _DeltaTime)
 
 	if (true == RenderPtr->IsAnimationEnd())
 	{
+		AttackSound();
 		ChangeState(GhostState::AttackOutro);
 		return;
 	}

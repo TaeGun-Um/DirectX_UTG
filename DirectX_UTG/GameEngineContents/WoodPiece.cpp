@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "WoodPiece.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
@@ -15,11 +16,26 @@ WoodPiece::~WoodPiece()
 {
 }
 
+void WoodPiece::WoodPieceDeathSound()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_wood_smash_1.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_wood_smash_2.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_wood_smash_3.wav");
+	}
+}
+
 void WoodPiece::Start()
 {
-	/*GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Loop").GetFullPath());
-	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("Object_WoodPiece_Death").GetFullPath());*/
-
 	if (nullptr == RenderPtr)
 	{
 		RenderPtr = CreateComponent<GameEngineSpriteRenderer>();
@@ -29,6 +45,8 @@ void WoodPiece::Start()
 
 		RenderPtr->ChangeAnimation("Object_WoodPiece_Loop");
 		ChangeState(WoodPieceState::Loop);
+
+		RenderPtr->SetAnimationStartEvent("Object_WoodPiece_Death", 0, std::bind(&WoodPiece::WoodPieceDeathSound, this));
 	}
 
 	if (nullptr == ProjectileCollisionPtr)

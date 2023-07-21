@@ -16,6 +16,11 @@ SpringObject::~SpringObject()
 {
 }
 
+void SpringObject::DeathSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_wood_smash_3.wav");
+}
+
 void SpringObject::Start()
 {
 	if (nullptr == RenderPtr)
@@ -30,6 +35,8 @@ void SpringObject::Start()
 
 		RenderPtr->ChangeAnimation("Spring_Intro");
 		ChangeState(SpringState::Intro);
+
+		RenderPtr->SetAnimationStartEvent("Spring_Death", 0, std::bind(&SpringObject::DeathSound, this));
 	}
 
 	if (nullptr == ParryCollisionPtr)

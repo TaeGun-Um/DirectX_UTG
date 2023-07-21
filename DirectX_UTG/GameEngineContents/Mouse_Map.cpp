@@ -29,6 +29,11 @@ void Mouse_Map::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Obj
 	_Object->ColorOptionValue.HBSCColor = ControlColor;
 }
 
+void Mouse_Map::PlatformSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_phase2_background_shelf_drop.wav");
+}
+
 void Mouse_Map::Start()
 {
 	MouseMapPtr = this;
@@ -71,10 +76,12 @@ void Mouse_Map::Start()
 	{
 		Phase2PlatformRenderPtr = CreateComponent<GameEngineSpriteRenderer>();
 		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase2_Platform", .SpriteName = "Phase2_Platform", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase3_WallBrake", .SpriteName = "Phase3_WallBrake", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		Phase2PlatformRenderPtr->CreateAnimation({ .AnimationName = "Phase3_WallBrake", .SpriteName = "Phase3_WallBrake", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 		Phase2PlatformRenderPtr->ChangeAnimation("Phase2_Platform");
 		Phase2PlatformRenderPtr->GetTransform()->SetLocalPosition({ -2, 80 });
 		Phase2PlatformRenderPtr->Off();
+
+		Phase2PlatformRenderPtr->SetAnimationStartEvent("Phase2_Platform", 0, std::bind(&Mouse_Map::PlatformSound, this));
 	}
 
 	if (nullptr == HouseBGRenderPtr)

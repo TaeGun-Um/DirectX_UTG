@@ -88,6 +88,9 @@ private:
 	float BlinkTime = 0.0f;
 	int BlinkCount = 1;
 
+	void CreateGhostSound();
+	void HandAttackOutroSound();
+	void Ph3IntroCatEatingScreamSound();
 	void GhostMouseAttackSetting(float _DeltaTime);
 	void DebugSetting();
 	void ActorInitSetting();

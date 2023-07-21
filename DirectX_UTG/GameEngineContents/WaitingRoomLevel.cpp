@@ -97,6 +97,9 @@ void WaitingRoomLevel::Start()
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_parry_slap_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_hit_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sfx_player_damage_crack_level3.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_weapon_peashot_death_001.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_shoot_hit_01.wav").GetFullPath());
 	}
 
 	{

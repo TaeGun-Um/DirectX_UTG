@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Katzenwagen.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
@@ -233,6 +234,8 @@ void Katzenwagen::AttackHand_OutroStart()
 	AttackHandRenderPtr->ChangeAnimation("Cat_Claw_Hand_Outro");
 	
 	Player::MainPlayer->StartCameraShaking(12);
+
+	HandAttackOutroSound();
 }
 void Katzenwagen::AttackHand_OutroUpdate(float _DeltaTime)
 {
@@ -265,9 +268,44 @@ void Katzenwagen::HandAttackCountFunction()
 {
 	HandAttackCount += 1;
 	Player::MainPlayer->StartCameraShaking(8);
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_03.wav");
+	}
 }
 
 void Katzenwagen::HandAttackShake()
 {
 	Player::MainPlayer->StartCameraShaking(8);
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	if (0 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_01.wav");
+	}
+	else if (1 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_02.wav");
+	}
+	else if (2 == RandC)
+	{
+		EffectPlayer = GameEngineSound::Play("mouse_cat_paw_attack_03.wav");
+	}
+}
+
+void Katzenwagen::HandAttackOutroSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_cat_jail_end.wav");
 }

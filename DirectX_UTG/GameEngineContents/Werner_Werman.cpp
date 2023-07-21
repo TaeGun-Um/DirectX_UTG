@@ -77,6 +77,11 @@ void Werner_Werman::Update(float _DeltaTime)
 ///////////////////////////////////////////                     AssistFunction                     ////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Werner_Werman::Ph3IntroScreamSound()
+{
+	EffectPlayer = GameEngineSound::Play("mouse_scream_death_voice.wav");
+}
+
 void Werner_Werman::MouseRollSound()
 {
 	EffectPlayer = GameEngineSound::Play("mouse_can_dash_end.wav");

@@ -173,6 +173,7 @@ private:
 	std::shared_ptr<class Stick> StickObject10 = nullptr;
 	std::shared_ptr<class Stick> StickObject11 = nullptr;
 
+	void Ph3IntroScreamSound();
 	void CanDashStartSound();
 	void DashStartVoiceSound();
 	void MouseRollSound();
