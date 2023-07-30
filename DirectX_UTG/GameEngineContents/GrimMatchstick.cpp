@@ -36,6 +36,12 @@ void GrimMatchstick::Start()
 
 void GrimMatchstick::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+		EffectPlayer_Two.Stop();
+	}
+
 	if (true == IsDebugRender)
 	{
 		if (true == BodyCollisionPtr->IsUpdate())

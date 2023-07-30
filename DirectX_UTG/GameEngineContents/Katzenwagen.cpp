@@ -37,6 +37,11 @@ void Katzenwagen::Start()
 
 void Katzenwagen::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+	}
+
 	if (false == IsIntro)
 	{
 		return;

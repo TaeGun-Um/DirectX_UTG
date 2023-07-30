@@ -37,6 +37,11 @@ void Werner_Werman::Start()
 
 void Werner_Werman::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+	}
+	
 	if (true == IsDebugRender)
 	{
 		if (true == BodyCollisionPtr->IsUpdate())

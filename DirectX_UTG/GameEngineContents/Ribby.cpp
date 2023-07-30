@@ -35,6 +35,12 @@ void Ribby::Start()
 
 void Ribby::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+		EffectPlayer_Two.Stop();
+	}
+
 	MoveAbleTime += _DeltaTime;
 
 	if (MoveAbleTime <= 1.8f)

@@ -47,6 +47,7 @@ void Object_Tail::Update(float _DeltaTime)
 {
 	if (true == DragonLevel::DragonLevelPtr->GetYouDiedPtr()->GetIsEnd())
 	{
+		EffectPlayer.Stop();
 		Death();
 	}
 

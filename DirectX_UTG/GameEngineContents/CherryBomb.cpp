@@ -85,6 +85,11 @@ void CherryBomb::Start()
 
 void CherryBomb::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+	}
+
 	if (true == MouseLevel::MouseLevelPtr->GetYouDiedPtr()->GetIsEnd())
 	{
 		Death();

@@ -41,6 +41,12 @@ void Croak::Start()
 
 void Croak::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->GetIsPlayerDeath())
+	{
+		EffectPlayer.Stop();
+		EffectPlayer_Two.Stop();
+	}
+
 	MoveAbleTime += _DeltaTime;
 
 	if (MoveAbleTime <= 0.5f)
