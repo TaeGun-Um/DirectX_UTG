@@ -1,9 +1,13 @@
 #pragma once
+
 #include <string>
 #include <string_view>
 #include <map>
 #include <list>
 #include <memory>
+#include <mutex>
+#include <atomic>
+
 #include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
